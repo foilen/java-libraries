@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+	<person>
+		<firstName>Alice</firstName>
+		<lastName>Al</lastName>
+	</person>
+	<person>
+		<firstName>Zoe</firstName>
+		<lastName>Zel</lastName>
+	</person>
+</test>
