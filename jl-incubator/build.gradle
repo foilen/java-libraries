@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':jl-smalltools')
+
+    testCompile project(':jl-smalltools-test')
+}
