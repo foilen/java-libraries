@@ -33,3 +33,9 @@ Upgrading the library in your project:
 - It is normal to not always upgrade all your libraries every day.
 - Since an API will stick for a year, it is safe to take any release that is up to one year later in the time. This is clearly visible by the release name since it is the date.
 - You should get a new version that is about 6 months later than yours, fix any deprecation warnings with the suggestion and repeat until you are at the latest version.
+
+
+Design choices
+--------------
+
+- Java 7: To support Android, the libraries needs to be compiled for Java 7
