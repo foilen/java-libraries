@@ -13,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import org.junit.Assert;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import com.foilen.smalltools.test.exception.StTestException;
 
@@ -64,6 +66,40 @@ public final class AssertTools {
 
         }
 
+    }
+
+    /**
+     * Compare the expected object to the actual object (by their Yaml dump).
+     * 
+     * @param expected
+     *            the expected object to compare
+     * @param actual
+     *            the actual object to compare to
+     */
+    public static void assertYamlComparison(Object expected, Object actual) {
+        DumperOptions dumperOptions = new DumperOptions();
+        dumperOptions.setPrettyFlow(true);
+        Yaml yaml = new Yaml(dumperOptions);
+        String expectedYaml = yaml.dump(expected);
+        String actualYaml = yaml.dump(actual);
+
+        Assert.assertEquals(expectedYaml, actualYaml);
+    }
+
+    /**
+     * Load an expected object from a Yaml resource file and compare it to the actual object (by their Yaml dump).
+     * 
+     * @param expectedResource
+     *            the filename of the resource
+     * @param expectedContext
+     *            the class in which the resource file is
+     * @param actual
+     *            the actual object to compare to
+     */
+    public static void assertYamlComparison(String expectedResource, Class<?> expectedContext, Object actual) {
+        Yaml yaml = new Yaml();
+        Object expected = yaml.load(expectedContext.getResourceAsStream(expectedResource));
+        assertYamlComparison(expected, actual);
     }
 
     private AssertTools() {
