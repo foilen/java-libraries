@@ -49,7 +49,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
  */
 public class TCPServerService implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(TCPServerService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(TCPServerService.class);
 
     private Thread thread;
     private ServerSocket serverSocket;
@@ -119,7 +119,7 @@ public class TCPServerService implements Runnable {
                 serverSocket.bind(new InetSocketAddress(port));
             }
         } catch (Exception e) {
-            logger.error( "Error binding server", e);
+            logger.error("Error binding server", e);
             throw new SmallToolsException(e);
         }
     }
@@ -141,7 +141,7 @@ public class TCPServerService implements Runnable {
                 logger.info("Client is connecting from {}:{}", new Object[] { remoteAddress.getHostName(), remoteAddress.getPort() });
                 socketCallback.newClient(socket);
             } catch (IOException e) {
-                logger.error( "Problem while accepting connection", e);
+                logger.error("Problem while accepting connection", e);
             }
         }
     }

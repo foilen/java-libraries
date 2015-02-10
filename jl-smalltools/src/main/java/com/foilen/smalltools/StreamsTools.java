@@ -27,7 +27,7 @@ import com.google.common.primitives.Ints;
  */
 public final class StreamsTools {
 
-    private static final Logger logger = LoggerFactory.getLogger(StreamsTools.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(StreamsTools.class);
 
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private static final int BUFFER_SIZE = 1024;

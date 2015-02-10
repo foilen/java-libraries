@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DarkLaunchingDisabledFeatures {
 
-    private static final Logger logger = LoggerFactory.getLogger(DarkLaunchingDisabledFeatures.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(DarkLaunchingDisabledFeatures.class);
     private List<String> disabledFeatures = new ArrayList<String>();
 
     /**

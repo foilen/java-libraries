@@ -41,7 +41,7 @@ import com.google.common.cache.CacheBuilder;
  */
 public class LocalBroadcastDiscoveryClient implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(LocalBroadcastDiscoveryClient.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(LocalBroadcastDiscoveryClient.class);
 
     private static final int CACHE_EXPIRE_IN_SECONDS = 60;
     private static final long CACHE_MAX_SIZE = 1000;

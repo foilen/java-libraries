@@ -24,7 +24,7 @@ import com.google.common.base.Objects;
  */
 public class DiscoverableService {
 
-    private static final Logger logger = LoggerFactory.getLogger(DiscoverableService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(DiscoverableService.class);
 
     private static final String SEPARATION_CHAR = "|";
 

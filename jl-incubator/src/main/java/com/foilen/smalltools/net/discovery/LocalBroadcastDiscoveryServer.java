@@ -46,7 +46,7 @@ import com.foilen.smalltools.net.services.TCPServerService;
  */
 public class LocalBroadcastDiscoveryServer implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(LocalBroadcastDiscoveryServer.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(LocalBroadcastDiscoveryServer.class);
 
     // Properties
     private int broadcastDelay = 5000;
@@ -132,7 +132,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
             datagramSocket.setBroadcast(true);
             datagramSocket.connect(InetAddress.getByName("255.255.255.255"), port);
         } catch (Exception e) {
-            logger.error( "Error binding broadcast", e);
+            logger.error("Error binding broadcast", e);
             throw new SmallToolsException(e);
         }
 
@@ -160,7 +160,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            logger.error( "Waiting interrupted", e);
+            logger.error("Waiting interrupted", e);
         }
 
         while (true) {
@@ -171,14 +171,14 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
                 try {
                     datagramSocket.send(packet);
                 } catch (IOException e) {
-                    logger.error( "Could not broadcast message " + new String(message), e);
+                    logger.error("Could not broadcast message " + new String(message), e);
                 }
 
                 // Wait
                 try {
                     Thread.sleep(broadcastDelay);
                 } catch (InterruptedException e) {
-                    logger.error( "Waiting interrupted", e);
+                    logger.error("Waiting interrupted", e);
                 }
             }
         }
