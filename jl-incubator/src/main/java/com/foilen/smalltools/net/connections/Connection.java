@@ -11,6 +11,7 @@ package com.foilen.smalltools.net.connections;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ import com.foilen.smalltools.net.connections.language.YamlConnectionLanguage;
 import com.foilen.smalltools.streampair.StreamPair;
 
 /**
- * This is a tcp network connection that is created by {@link ConnectionEntrance}.
+ * This is a tcp network connection that can send serialized messages.
  */
 public class Connection {
 
@@ -28,7 +29,6 @@ public class Connection {
     private Socket socket;
     private StreamPair streamPair;
     private ConnectionLanguage connectionLanguage = new YamlConnectionLanguage();
-    private ConnectionInterlocutor connectionInterlocutor;
 
     /**
      * Create a connection that uses Yaml to communicate.
@@ -86,14 +86,6 @@ public class Connection {
         }
     }
 
-    public void activateInterlocutor(ConnectionsInteractions connectionsInteractions) {
-        if (connectionInterlocutor != null) {
-            throw new SmallToolsException("This connection already has an interlocutor activated");
-        }
-        connectionInterlocutor = new ConnectionInterlocutor(this, connectionsInteractions);
-        connectionInterlocutor.start();
-    }
-
     /**
      * Close the connection.
      */
@@ -119,6 +111,15 @@ public class Connection {
     }
 
     /**
+     * Get the socket's inet address.
+     * 
+     * @return the inet address
+     */
+    public InetAddress getInetAddress() {
+        return socket.getInetAddress();
+    }
+
+    /**
      * Get the input stream (that can have been modified).
      * 
      * @return the input stream
@@ -134,6 +135,15 @@ public class Connection {
      */
     public OutputStream getOutputStream() {
         return streamPair.getOutputStream();
+    }
+
+    /**
+     * Get the socket's port.
+     * 
+     * @return the port
+     */
+    public int getPort() {
+        return socket.getPort();
     }
 
     /**
@@ -155,7 +165,7 @@ public class Connection {
     }
 
     /**
-     * Send an object to this connection. It will be wrapped in a Map with the "object" key. Warning: make sure that no other threads are using the {@link StreamPair} or the Streams.
+     * Send a message to this connection. Warning: make sure that no other threads are using the {@link StreamPair} or the Streams.
      * 
      * @param message
      *            the message to send
@@ -165,14 +175,15 @@ public class Connection {
     }
 
     /**
-     * Send an object to this connection. It will be wrapped in a Map with the "object" key. Warning: make sure that no other threads are using the {@link StreamPair} or the Streams.
+     * Send an object to this connection. It will be wrapped in a Map with the {@link ConnectionMessageConstants#OBJECT} key. Warning: make sure that no other threads are using the {@link StreamPair}
+     * or the Streams.
      * 
      * @param object
      *            the object to send
      */
     public synchronized void sendObject(Object object) {
         Map<String, Object> message = new HashMap<>();
-        message.put("object", object);
+        message.put(ConnectionMessageConstants.OBJECT, object);
         connectionLanguage.sendMessage(this, message);
     }
 

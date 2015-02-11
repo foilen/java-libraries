@@ -25,6 +25,12 @@ import com.foilen.smalltools.streampair.StreamPair;
  * Share a common password between two machines. The validation can be done in plain text since it is never sending the password in clear text.
  * 
  * <pre>
+ * Defaults:
+ * - stringTokenLength = 10
+ * - negociationTimeoutSeconds = 20
+ * </pre>
+ * 
+ * <pre>
  * Here is the process:
  * - Send a random token (tl : token local)
  * - Get the other's token (tr : token remote)
@@ -58,12 +64,14 @@ public class PasswordGateConnectionAction extends AbstractTimeoutConnectionActio
         return stringTokenLength;
     }
 
-    public void setPassword(String password) {
+    public PasswordGateConnectionAction setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-    public void setStringTokenLength(int stringTokenLength) {
+    public PasswordGateConnectionAction setStringTokenLength(int stringTokenLength) {
         this.stringTokenLength = stringTokenLength;
+        return this;
     }
 
     @Override

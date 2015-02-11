@@ -28,6 +28,13 @@ import com.foilen.smalltools.streamwrapper.SymmetricDecryptInputStreamWrapper;
  * Generates a random RSA and AES keys to crypt the streams.
  * 
  * <pre>
+ * Defaults:
+ * - rsaKeySize = 2048
+ * - aesKeySize = 256
+ * - negociationTimeoutSeconds = 20
+ * </pre>
+ * 
+ * <pre>
  * Steps:
  * - Generate a random RSA key
  * - Send the public key
@@ -65,9 +72,11 @@ public class CryptRsaAesConnectionAction extends AbstractTimeoutConnectionAction
      * 
      * @param aesKeySize
      *            the size of the key (e.g 128, 192, 256, ...)
+     * @return this
      */
-    public void setAesKeySize(int aesKeySize) {
+    public CryptRsaAesConnectionAction setAesKeySize(int aesKeySize) {
         this.aesKeySize = aesKeySize;
+        return this;
     }
 
     /**
@@ -75,9 +84,11 @@ public class CryptRsaAesConnectionAction extends AbstractTimeoutConnectionAction
      * 
      * @param rsaKeySize
      *            the size of the key (e.g 1024, 2048, 4096, ...)
+     * @return this
      */
-    public void setRsaKeySize(int rsaKeySize) {
+    public CryptRsaAesConnectionAction setRsaKeySize(int rsaKeySize) {
         this.rsaKeySize = rsaKeySize;
+        return this;
     }
 
     @Override

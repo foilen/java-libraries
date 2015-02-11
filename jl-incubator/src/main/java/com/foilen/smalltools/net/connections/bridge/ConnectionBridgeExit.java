@@ -14,7 +14,7 @@ import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.connections.Connection;
-import com.foilen.smalltools.net.connections.actions.ConnectionAssemblyLine;
+import com.foilen.smalltools.net.connections.ConnectionAssemblyLine;
 import com.foilen.smalltools.net.services.ExecutorServiceWrappedSocketCallback;
 import com.foilen.smalltools.net.services.SocketCallback;
 import com.foilen.smalltools.net.services.TCPServerService;

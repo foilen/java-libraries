@@ -22,4 +22,13 @@ public interface ConnectionFactory {
      */
     Connection createConnection(String id);
 
+    /**
+     * Generate the id for this connection.
+     * 
+     * @param connection
+     *            the connection
+     * @return the id that should be put on it
+     */
+    String generateId(Connection connection);
+
 }

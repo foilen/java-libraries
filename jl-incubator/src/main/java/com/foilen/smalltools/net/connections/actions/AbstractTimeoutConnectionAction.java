@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.foilen.smalltools.TimeoutHandler;
 import com.foilen.smalltools.TimeoutHandler.TimeoutHandlerRunnable;
 import com.foilen.smalltools.net.connections.Connection;
+import com.foilen.smalltools.net.connections.ConnectionAction;
 
 /**
  * An implementation of a socket action that needs to be completed in a certain amount of time. For example, sharing a password should be quick, so if it hangs, it might be because the client doesn't

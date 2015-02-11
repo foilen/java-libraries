@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.foilen.smalltools.StreamsTools;
-import com.foilen.smalltools.net.connections.actions.ConnectionAssemblyLine;
+import com.foilen.smalltools.net.connections.ConnectionAssemblyLine;
 import com.foilen.smalltools.net.connections.actions.CryptRsaAesConnectionAction;
 import com.foilen.smalltools.net.connections.actions.PasswordGateConnectionAction;
 import com.foilen.smalltools.net.connections.bridge.ConnectionBridgeEntry;

@@ -6,10 +6,9 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools.net.connections.actions;
+package com.foilen.smalltools.net.connections;
 
 import com.foilen.smalltools.assemblyline.AssemblyLineAction;
-import com.foilen.smalltools.net.connections.Connection;
 
 /**
  * An action to execute on a connection.

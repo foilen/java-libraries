@@ -6,10 +6,9 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools.net.connections.actions;
+package com.foilen.smalltools.net.connections;
 
 import com.foilen.smalltools.assemblyline.AssemblyLine;
-import com.foilen.smalltools.net.connections.Connection;
 
 public class ConnectionAssemblyLine extends AssemblyLine<ConnectionAction, Connection> {
 

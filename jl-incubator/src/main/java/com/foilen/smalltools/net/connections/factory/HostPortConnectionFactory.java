@@ -25,22 +25,13 @@ public class HostPortConnectionFactory implements ConnectionFactory {
     private static Logger logger = LoggerFactory.getLogger(HostPortConnectionFactory.class);
     private ConnectionLanguage connectionLanguage;
 
-    /**
-     * If you want to change the connection language instead of using the default one.
-     * 
-     * @param connectionLanguage
-     *            the language
-     */
-    public void setConnectionLanguage(ConnectionLanguage connectionLanguage) {
-        this.connectionLanguage = connectionLanguage;
-    }
-
     @Override
     public Connection createConnection(String id) {
         String[] parts = id.split(":");
 
         if (parts.length != 2) {
             logger.warn("{} is an invalid format. Expected host:port");
+            return null;
         }
 
         try {
@@ -57,6 +48,21 @@ public class HostPortConnectionFactory implements ConnectionFactory {
 
         return null;
 
+    }
+
+    @Override
+    public String generateId(Connection connection) {
+        return connection.getInetAddress().getHostAddress() + ":" + connection.getPort();
+    }
+
+    /**
+     * If you want to change the connection language instead of using the default one.
+     * 
+     * @param connectionLanguage
+     *            the language
+     */
+    public void setConnectionLanguage(ConnectionLanguage connectionLanguage) {
+        this.connectionLanguage = connectionLanguage;
     }
 
 }
