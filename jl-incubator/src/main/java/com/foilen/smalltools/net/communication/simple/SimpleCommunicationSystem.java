@@ -94,32 +94,38 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public void addConnectionAction(ConnectionAction connectionAction) {
+        log.debug("Adding a connection action to both channels of type {}", connectionAction.getClass().getName());
         incomingAssemblyLine.addAction(connectionAction);
         outgoingAssemblyLine.addAction(connectionAction);
     }
 
     @Override
     public void addConnectionActionToIncoming(ConnectionAction connectionAction) {
+        log.debug("Adding a connection action to incoming channel of type {}", connectionAction.getClass().getName());
         incomingAssemblyLine.addAction(connectionAction);
     }
 
     @Override
     public void addConnectionActionToOutgoing(ConnectionAction connectionAction) {
+        log.debug("Adding a connection action to outgoing channel of type {}", connectionAction.getClass().getName());
         outgoingAssemblyLine.addAction(connectionAction);
     }
 
     @Override
     public void addEventConnectedCallback(EventCallback<Connection> callback) {
+        log.debug("Adding an event to the connected event {}", callback.getClass().getName());
         eventsConnected.addCallback(callback);
     }
 
     @Override
     public void addEventDisconnectedCallback(EventCallback<Connection> callback) {
+        log.debug("Adding an event to the disconnected event {}", callback.getClass().getName());
         eventsDisconnected.addCallback(callback);
     }
 
     @Override
     public void addEventMessageReceivedCallback(EventCallback<Connection> callback) {
+        log.debug("Adding an event to the message received event {}", callback.getClass().getName());
         eventsMessageReceived.addCallback(callback);
     }
 
@@ -130,6 +136,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
      *            the message
      */
     protected void addNewMessage(Map<String, Object> message) {
+        log.debug("Adding a new message to the queue: {}", message);
+
         // Add
         incomingMessagesQueue.add(message);
 
@@ -139,14 +147,27 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public Connection connectTo(String id) {
+        log.debug("Getting a connection to {}", id);
+
         // Get from already connected
         Connection connection = connectionById.get(id);
-        if (connection == null) {
-            // Get from the connection factory
-            connection = connectionFactory.createConnection(id);
-            connection.setId(id);
+        if (connection != null) {
+            log.debug("Already connected to {}. Returning that connection", id);
+            return connection;
         }
+
+        // Get from the connection factory
+        log.debug("Not already connected to {}. Getting a new connection from the factory", id);
+        connection = connectionFactory.createConnection(id);
+        if (connection == null) {
+            log.warn("Could not connect to {}", id);
+            return null;
+        }
+        connection.setId(id);
+
+        // Go through the gates
         return registerOutgoingConnection(connection);
+
     }
 
     /**
@@ -156,6 +177,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
      *            the connection
      */
     protected void disconnect(Connection connection) {
+
+        log.debug("Disconnecting connection with id {}", connection.getId());
 
         // Remove if present
         Iterator<Entry<String, Connection>> it = connectionById.entrySet().iterator();
@@ -180,6 +203,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public void disconnect(String id) {
+        log.debug("Disconnecting any connection with id {}", id);
+
         Connection connection = connectionById.get(id);
         if (connection != null) {
             disconnect(connection);
@@ -200,6 +225,7 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public Map<String, Object> getNextMessage() {
+        log.debug("Getting next available received message");
         try {
             return incomingMessagesQueue.take();
         } catch (InterruptedException e) {
@@ -221,12 +247,15 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
      */
     public void init() {
 
+        log.info("Initializing the communication system");
+
         // Server
         if (tcpServerService != null) {
             throw new SmallToolsException("The server has already been initialized");
         }
 
         if (server) {
+            log.debug("Is a server");
             if (serverPort == null) {
                 tcpServerService = new TCPServerService(new SimpleIncomingConnection(this));
             } else {
@@ -234,12 +263,15 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
             }
 
             serverPort = tcpServerService.getPort();
+            log.info("Server listening on port {}", serverPort);
         }
 
         // Queue processors
         for (int i = 0; i < messagesExecutorThreadsAmount; ++i) {
             new CommunicationCommandExecutor(this);
         }
+
+        log.info("Initialization completed");
     }
 
     /**
@@ -259,6 +291,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
      */
     protected void registerConnection(Connection connection) {
 
+        log.debug("Registering a new connection {}", connection);
+
         String id = connection.getId();
 
         // Validate
@@ -273,11 +307,14 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
             disconnect(oldConnection);
         }
 
+        // Message sender
+        messageSenderByConnection.put(connection, new SimpleMessageSender(this, connection));
+
         // Event
         eventsConnected.dispatch(connection);
 
         // Add a listener
-        new SimpleMessageListener(this, connection);
+        new SimpleMessageReader(this, connection);
     }
 
     /**
@@ -287,15 +324,22 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
      *            the new incoming connection
      */
     protected void registerIncomingConnection(Connection connection) {
+
+        log.debug("Trying to register a new incoming connection {}", connection);
+
         if (connection == null) {
             return;
         }
 
         Connection finalConnection = incomingAssemblyLine.process(connection);
-        if (finalConnection != null) {
+
+        if (finalConnection == null) {
+            log.debug("The incoming connection {} did not passed the gates", connection);
+        } else {
             // If there is no id: ask connection factory
             if (finalConnection.getId() == null) {
-                finalConnection.setId(connectionFactory.generateId(connection));
+                log.debug("The incoming connection {} does not have an id. Requesting one from the factory", finalConnection);
+                finalConnection.setId(connectionFactory.generateId(finalConnection));
             }
 
             registerConnection(finalConnection);
@@ -310,12 +354,17 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
      * @return the final connection or null if failed
      */
     protected Connection registerOutgoingConnection(Connection connection) {
+
+        log.debug("Trying to register a new outgoing connection {}", connection);
+
         if (connection == null) {
             return null;
         }
 
         Connection finalConnection = outgoingAssemblyLine.process(connection);
-        if (finalConnection != null) {
+        if (finalConnection == null) {
+            log.debug("The outgoing connection {} did not passed the gates", connection);
+        } else {
             registerConnection(finalConnection);
         }
         return finalConnection;
@@ -323,6 +372,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public void sendMessage(Map<String, Object> message) {
+        log.debug("Sending a message to all connections {}", message);
+
         Iterator<Entry<Connection, SimpleMessageSender>> entryId = messageSenderByConnection.entrySet().iterator();
         while (entryId.hasNext()) {
             SimpleMessageSender messageSender = entryId.next().getValue();
@@ -332,6 +383,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public boolean sendMessage(String id, Map<String, Object> message) {
+
+        log.debug("Sending a message to {}: {}", id, message);
 
         // Get the connection
         Connection connection = connectTo(id);
@@ -351,6 +404,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public void sendObject(Object object) {
+        log.debug("Sending an object to all connections {}", object);
+
         Map<String, Object> message = new HashMap<>();
         message.put(ConnectionMessageConstants.OBJECT, object);
         sendMessage(message);
@@ -358,6 +413,8 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
 
     @Override
     public boolean sendObject(String id, Object object) {
+        log.debug("Sending an object to {}: {}", id, object);
+
         Map<String, Object> message = new HashMap<>();
         message.put(ConnectionMessageConstants.OBJECT, object);
         return sendMessage(id, message);

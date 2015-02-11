@@ -31,11 +31,12 @@ public class CommunicationCommandExecutor extends Thread {
     @Override
     public void run() {
 
-        log.info("Starting to execute messages when available");
+        log.debug("Starting to execute messages when available");
 
         while (true) {
             try {
                 Map<String, Object> message = communicationMessageReceiver.getNextMessage();
+                log.debug("Got a message to execute {}", message);
                 Object mainMessage = message.get(ConnectionMessageConstants.OBJECT);
 
                 // Check null
@@ -45,16 +46,18 @@ public class CommunicationCommandExecutor extends Thread {
                 }
 
                 // Check right type
+                log.debug("The message to execute is of type", mainMessage.getClass().getName());
                 if (!(mainMessage instanceof CommunicationCommand)) {
                     log.error("The message of type {} is not a CommunicationCommand.", mainMessage.getClass().getName());
                     continue;
                 }
 
                 // Execute
+                log.debug("Executing message");
                 CommunicationCommand command = (CommunicationCommand) mainMessage;
                 Connection connection = (Connection) message.get(ConnectionMessageConstants.CONNECTION);
                 command.execute(connection, message);
-
+                log.debug("Execution completed");
             } catch (Exception e) {
                 log.error("Problem executing the command", e);
             }

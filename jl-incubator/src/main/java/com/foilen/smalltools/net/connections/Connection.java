@@ -197,4 +197,9 @@ public class Connection {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Connection [id=" + id + "]";
+    }
+
 }
