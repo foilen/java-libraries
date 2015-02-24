@@ -10,6 +10,9 @@ package com.foilen.smalltools.streamwrapper.bytesprocessor;
 
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.foilen.smalltools.Assert;
 import com.google.common.primitives.Bytes;
 
@@ -17,6 +20,8 @@ import com.google.common.primitives.Bytes;
  * This is a buffer for many blocs of data to crypt.
  */
 public class BufferedSymmetricEncrypt {
+
+    private final static Logger log = LoggerFactory.getLogger(BufferedSymmetricEncrypt.class);
 
     private int blockSize;
 
@@ -144,6 +149,7 @@ public class BufferedSymmetricEncrypt {
         }
         byte[] blocksInProcessed = new byte[1];
         blocksInProcessed[0] = (byte) (processed.length / blockSize);
+        log.debug("number of blocks: {}", blocksInProcessed[0]);
         if (processedBlocks == null) {
             processedBlocks = Bytes.concat(blocksInProcessed, processed);
         } else {

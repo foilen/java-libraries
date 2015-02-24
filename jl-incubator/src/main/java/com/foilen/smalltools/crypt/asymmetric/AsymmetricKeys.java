@@ -8,20 +8,17 @@
  */
 package com.foilen.smalltools.crypt.asymmetric;
 
-import java.security.Key;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 
 /**
  * A public and private key pair. You might not always have both keys since if you are encrypting a message for someone else, you only have his public key.
  */
 public class AsymmetricKeys {
 
-    private PublicKey publicKey;
-    private PrivateKey privateKey;
+    private AsymmetricKeyParameter publicKey;
+    private AsymmetricKeyParameter privateKey;
 
     public AsymmetricKeys() {
-
     }
 
     /**
@@ -32,38 +29,24 @@ public class AsymmetricKeys {
      * @param privateKey
      *            (optional) the private key
      */
-    public AsymmetricKeys(PublicKey publicKey, PrivateKey privateKey) {
+    public AsymmetricKeys(AsymmetricKeyParameter publicKey, AsymmetricKeyParameter privateKey) {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
     }
 
-    /**
-     * @return the privateKey
-     */
-    public Key getPrivateKey() {
+    public AsymmetricKeyParameter getPrivateKey() {
         return privateKey;
     }
 
-    /**
-     * @return the publicKey
-     */
-    public Key getPublicKey() {
+    public AsymmetricKeyParameter getPublicKey() {
         return publicKey;
     }
 
-    /**
-     * @param privateKey
-     *            the privateKey to set
-     */
-    public void setPrivateKey(PrivateKey privateKey) {
+    public void setPrivateKey(AsymmetricKeyParameter privateKey) {
         this.privateKey = privateKey;
     }
 
-    /**
-     * @param publicKey
-     *            the publicKey to set
-     */
-    public void setPublicKey(PublicKey publicKey) {
+    public void setPublicKey(AsymmetricKeyParameter publicKey) {
         this.publicKey = publicKey;
     }
 

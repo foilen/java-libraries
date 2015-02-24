@@ -10,17 +10,13 @@ package com.foilen.smalltools.crypt.symmetric;
 
 import org.junit.Assert;
 
-import com.foilen.smalltools.crypt.symmetric.AESCrypt;
-import com.foilen.smalltools.crypt.symmetric.AESKeyDetails;
-import com.foilen.smalltools.crypt.symmetric.SymmetricKey;
-
 /**
  * Tests for {@link AESCrypt}.
  */
 public class AESCryptTest extends AbstractSymmetricCryptTest<AESCrypt, AESKeyDetails> {
 
     public AESCryptTest() {
-        super(128, new AESCrypt());
+        super(256, new AESCrypt());
     }
 
     @Override

@@ -11,14 +11,20 @@ package com.foilen.smalltools.streamwrapper;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.foilen.smalltools.crypt.symmetric.AbstractSymmetricCrypt;
 import com.foilen.smalltools.crypt.symmetric.SymmetricKey;
+import com.foilen.smalltools.streamwrapper.bytesprocessor.BufferedSymmetricEncrypt;
 import com.foilen.smalltools.streamwrapper.bytesprocessor.SymmetricDecryptBytesProcessor;
 
 /**
  * A stream wrapper that decrypts what is received.
  */
 public class SymmetricDecryptInputStreamWrapper extends AbstractInputStreamWrapper {
+
+    private final static Logger log = LoggerFactory.getLogger(BufferedSymmetricEncrypt.class);
 
     private byte[] decryptedBuffer;
     private int decryptedBufferPos;
@@ -87,6 +93,7 @@ public class SymmetricDecryptInputStreamWrapper extends AbstractInputStreamWrapp
 
             // Get from the stream. Make it wait for the full frame
             byte amountEncryptedBlocks = (byte) wrappedInputStream.read();
+            log.debug("amountEncryptedBlocks: {}", amountEncryptedBlocks);
             if (amountEncryptedBlocks == -1) {
                 eof = true;
                 break;

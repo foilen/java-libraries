@@ -1,5 +1,8 @@
 dependencies {
     compile project(':jl-smalltools')
+    compile 'org.bouncycastle:bcprov-jdk15on:1.51'
 
     testCompile project(':jl-smalltools-test')
+    testCompile 'ch.qos.logback:logback-core:1.1.2'
+    testCompile 'ch.qos.logback:logback-classic:1.1.2'
 }

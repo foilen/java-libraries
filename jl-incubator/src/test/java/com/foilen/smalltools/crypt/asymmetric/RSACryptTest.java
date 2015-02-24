@@ -12,17 +12,13 @@ import java.math.BigInteger;
 
 import org.junit.Assert;
 
-import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
-import com.foilen.smalltools.crypt.asymmetric.RSAKeyDetails;
-
 /**
  * Tests for {@link RSACrypt}.
  */
 public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDetails> {
 
     public RSACryptTest() {
-        super(1024, new RSACrypt());
+        super(2048, new RSACrypt());
     }
 
     @Override

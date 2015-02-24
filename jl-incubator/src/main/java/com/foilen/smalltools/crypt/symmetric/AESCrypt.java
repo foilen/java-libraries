@@ -10,13 +10,17 @@ package com.foilen.smalltools.crypt.symmetric;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.bouncycastle.crypto.BufferedBlockCipher;
+import org.bouncycastle.crypto.engines.AESFastEngine;
+import org.bouncycastle.crypto.modes.CBCBlockCipher;
+import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
+
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * AESCrypt cryptography. The IV (Initialization Vector) is automatically appended at the beginning of the encrypted data and automatically used by the decrypt method.
  * 
  * <pre>
- * Default:
  * <ul>
  * <li>AES: The cipher</li>
  * <li>CBC: Cipher Block Chaining Mode</li>
@@ -42,7 +46,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 public class AESCrypt extends AbstractSymmetricCrypt<AESKeyDetails> {
 
     public AESCrypt() {
-        super("AES/CBC/PKCS5Padding", "AES", true);
+        super("AES");
     }
 
     @Override
@@ -55,7 +59,7 @@ public class AESCrypt extends AbstractSymmetricCrypt<AESKeyDetails> {
         try {
 
             if (theKey != null) {
-                symmetricKey.setKey(new SecretKeySpec(theKey, keyAlgorithm));
+                symmetricKey.setKey(new SecretKeySpec(theKey, algorithmName));
             }
 
             return symmetricKey;
@@ -63,6 +67,11 @@ public class AESCrypt extends AbstractSymmetricCrypt<AESKeyDetails> {
         } catch (Exception e) {
             throw new SmallToolsException("Could not create the key", e);
         }
+    }
+
+    @Override
+    protected BufferedBlockCipher generateBufferedBlockCipher() {
+        return new PaddedBufferedBlockCipher(new CBCBlockCipher(new AESFastEngine()));
     }
 
     @Override

@@ -13,15 +13,12 @@ import org.hamcrest.core.IsNot;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.crypt.symmetric.SymmetricCrypt;
-import com.foilen.smalltools.crypt.symmetric.SymmetricKey;
-
 /**
  * Tests for any {@link SymmetricCrypt}.
  */
 public abstract class AbstractSymmetricCryptTest<T extends SymmetricCrypt<K>, K> {
 
-    protected int keySize = 1024;
+    protected int keySize = 256;
     protected T crypt;
 
     public AbstractSymmetricCryptTest(int keySize, T crypt) {

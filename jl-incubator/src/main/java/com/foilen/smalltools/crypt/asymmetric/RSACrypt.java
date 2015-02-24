@@ -9,9 +9,16 @@
 package com.foilen.smalltools.crypt.asymmetric;
 
 import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
+
+import org.bouncycastle.crypto.AsymmetricBlockCipher;
+import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
+import org.bouncycastle.crypto.KeyGenerationParameters;
+import org.bouncycastle.crypto.encodings.PKCS1Encoding;
+import org.bouncycastle.crypto.engines.RSAEngine;
+import org.bouncycastle.crypto.generators.RSAKeyPairGenerator;
+import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
+import org.bouncycastle.crypto.params.RSAKeyGenerationParameters;
+import org.bouncycastle.crypto.params.RSAKeyParameters;
 
 import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.exception.SmallToolsException;
@@ -45,10 +52,6 @@ import com.foilen.smalltools.exception.SmallToolsException;
  */
 public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
 
-    public RSACrypt() {
-        super("RSA/ECB/PKCS1Padding", "RSA");
-    }
-
     @Override
     public AsymmetricKeys createKeyPair(RSAKeyDetails keyDetails) {
 
@@ -59,18 +62,16 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
 
         try {
 
-            KeyFactory fact = KeyFactory.getInstance(keyAlgorithm);
-
             BigInteger publicExponent = keyDetails.getPublicExponent();
             BigInteger privateExponent = keyDetails.getPrivateExponent();
             if (publicExponent != null) {
-                RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, publicExponent);
-                asymmetricKeys.setPublicKey(fact.generatePublic(keySpec));
+                RSAKeyParameters publicKeyParameters = new RSAKeyParameters(false, modulus, publicExponent);
+                asymmetricKeys.setPublicKey(publicKeyParameters);
             }
 
             if (privateExponent != null) {
-                RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(modulus, privateExponent);
-                asymmetricKeys.setPrivateKey(fact.generatePrivate(keySpec));
+                RSAKeyParameters privateKeyParameters = new RSAKeyParameters(true, modulus, privateExponent);
+                asymmetricKeys.setPrivateKey(privateKeyParameters);
             }
 
             return asymmetricKeys;
@@ -81,30 +82,60 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
     }
 
     @Override
+    protected AsymmetricBlockCipher generateAsymmetricBlockCipher() {
+        return new PKCS1Encoding(new RSAEngine());
+    }
+
+    @Override
+    public AsymmetricKeys generateKeyPair(int keysize) {
+        // Generate
+        RSAKeyPairGenerator rsaKeyPairGenerator = new RSAKeyPairGenerator();
+        KeyGenerationParameters param = new RSAKeyGenerationParameters(new BigInteger("65537"), random, keysize, 80);
+        rsaKeyPairGenerator.init(param);
+        AsymmetricCipherKeyPair asymmetricCipherKeyPair = rsaKeyPairGenerator.generateKeyPair();
+
+        // Store
+        AsymmetricKeys asymmetricKeys = new AsymmetricKeys(asymmetricCipherKeyPair.getPublic(), asymmetricCipherKeyPair.getPrivate());
+        return asymmetricKeys;
+    }
+
+    @Override
     public RSAKeyDetails retrieveKeyDetails(AsymmetricKeys keyPair) {
         BigInteger modulus = null;
         BigInteger publicExponent = null;
         BigInteger privateExponent = null;
 
         try {
-            KeyFactory fact = KeyFactory.getInstance(keyAlgorithm);
-
             // Public key
             if (keyPair.getPublicKey() != null) {
-                RSAPublicKeySpec pub = fact.getKeySpec(keyPair.getPublicKey(), RSAPublicKeySpec.class);
-                publicExponent = pub.getPublicExponent();
-                modulus = pub.getModulus();
+                AsymmetricKeyParameter key = keyPair.getPublicKey();
+
+                if (!(key instanceof RSAKeyParameters)) {
+                    throw new SmallToolsException("The public key is not of type RSAKeyParameters. Type is " + key.getClass().getName());
+                }
+
+                RSAKeyParameters rsaKey = (RSAKeyParameters) key;
+                modulus = rsaKey.getModulus();
+                publicExponent = rsaKey.getExponent();
             }
 
             // Private key
             if (keyPair.getPrivateKey() != null) {
-                RSAPrivateKeySpec priv = fact.getKeySpec(keyPair.getPrivateKey(), RSAPrivateKeySpec.class);
-                privateExponent = priv.getPrivateExponent();
-                modulus = priv.getModulus();
+                AsymmetricKeyParameter key = keyPair.getPrivateKey();
+
+                if (!(key instanceof RSAKeyParameters)) {
+                    throw new SmallToolsException("The private key is not of type RSAKeyParameters. Type is " + key.getClass().getName());
+                }
+
+                RSAKeyParameters rsaKey = (RSAKeyParameters) key;
+                modulus = rsaKey.getModulus();
+                privateExponent = rsaKey.getExponent();
             }
 
             return new RSAKeyDetails(modulus, publicExponent, privateExponent);
 
+        } catch (SmallToolsException e) {
+            throw e;
         } catch (Exception e) {
             throw new SmallToolsException("Could not retrieve the details", e);
         }
