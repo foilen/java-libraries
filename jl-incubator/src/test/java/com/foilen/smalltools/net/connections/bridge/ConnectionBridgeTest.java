@@ -18,13 +18,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.net.connections.ConnectionAssemblyLine;
 import com.foilen.smalltools.net.connections.actions.CryptRsaAesConnectionAction;
 import com.foilen.smalltools.net.connections.actions.PasswordGateConnectionAction;
 import com.foilen.smalltools.net.connections.bridge.ConnectionBridgeEntry;
 import com.foilen.smalltools.net.connections.bridge.ConnectionBridgeExit;
 import com.foilen.smalltools.net.services.TCPServerService;
+import com.foilen.smalltools.tools.StreamsTools;
 
 public class ConnectionBridgeTest {
 

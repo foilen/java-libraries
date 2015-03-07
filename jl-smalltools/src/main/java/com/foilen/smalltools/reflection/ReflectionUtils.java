@@ -14,8 +14,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * Some helpers for reflection.
@@ -29,7 +29,7 @@ public final class ReflectionUtils {
      * @return the fields
      */
     public static List<Field> allFields(Class<?> clazz) {
-        Assert.assertNotNull(clazz, "The class cannot be null");
+        AssertTools.assertNotNull(clazz, "The class cannot be null");
 
         List<Field> result = new ArrayList<>();
         for (Class<?> currentType : allTypes(clazz)) {
@@ -51,7 +51,7 @@ public final class ReflectionUtils {
      * @return the fields with the specified annotation
      */
     public static List<Field> allFieldsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotationClass) {
-        Assert.assertNotNull(annotationClass, "The annotation cannot be null");
+        AssertTools.assertNotNull(annotationClass, "The annotation cannot be null");
         List<Field> result = new ArrayList<>();
 
         for (Field field : allFields(clazz)) {
@@ -71,7 +71,7 @@ public final class ReflectionUtils {
      * @return the methods
      */
     public static List<Method> allMethods(Class<?> clazz) {
-        Assert.assertNotNull(clazz, "The class cannot be null");
+        AssertTools.assertNotNull(clazz, "The class cannot be null");
 
         List<Method> result = new ArrayList<>();
         for (Class<?> currentType : allTypes(clazz)) {
@@ -93,7 +93,7 @@ public final class ReflectionUtils {
      * @return the methods with the specified annotation
      */
     public static List<Method> allMethodsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotationClass) {
-        Assert.assertNotNull(annotationClass, "The annotation cannot be null");
+        AssertTools.assertNotNull(annotationClass, "The annotation cannot be null");
         List<Method> result = new ArrayList<>();
 
         for (Method method : allMethods(clazz)) {
@@ -113,7 +113,7 @@ public final class ReflectionUtils {
      * @return all the types and super-types (including the specified one)
      */
     public static List<Class<?>> allTypes(Class<?> clazz) {
-        Assert.assertNotNull(clazz, "The class cannot be null");
+        AssertTools.assertNotNull(clazz, "The class cannot be null");
         List<Class<?>> result = new ArrayList<>();
         allTypes(result, clazz);
         return result;
@@ -128,7 +128,7 @@ public final class ReflectionUtils {
      *            the class
      */
     private static void allTypes(List<Class<?>> classes, Class<?> clazz) {
-        Assert.assertNotNull(clazz, "The class cannot be null");
+        AssertTools.assertNotNull(clazz, "The class cannot be null");
 
         // Current one
         classes.add(clazz);
@@ -189,8 +189,8 @@ public final class ReflectionUtils {
      *            the method to execute on each field
      */
     public static void visitAllFields(Object object, VisitField visitField) {
-        Assert.assertNotNull(object, "You must set an object");
-        Assert.assertNotNull(visitField, "You must have a visitor");
+        AssertTools.assertNotNull(object, "You must set an object");
+        AssertTools.assertNotNull(visitField, "You must have a visitor");
 
         for (Field field : ReflectionUtils.allFields(object.getClass())) {
             visitField.visitField(field, object);
@@ -206,8 +206,8 @@ public final class ReflectionUtils {
      *            the method to execute on each field
      */
     public static void visitAllFields(Object[] objects, VisitField visitField) {
-        Assert.assertNotNull(objects, "You must set an objects array");
-        Assert.assertNotNull(visitField, "You must have a visitor");
+        AssertTools.assertNotNull(objects, "You must set an objects array");
+        AssertTools.assertNotNull(visitField, "You must have a visitor");
 
         for (Object object : objects) {
             visitAllFields(object, visitField);

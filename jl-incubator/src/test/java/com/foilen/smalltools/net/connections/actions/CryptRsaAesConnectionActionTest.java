@@ -16,10 +16,10 @@ import java.util.concurrent.Future;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.net.SocketsPair;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.net.connections.actions.CryptRsaAesConnectionAction;
+import com.foilen.smalltools.tools.StreamsTools;
 
 public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionActionTest {
 

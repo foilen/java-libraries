@@ -10,8 +10,8 @@ package com.foilen.smalltools.crypt.asymmetric;
 
 import javax.crypto.Cipher;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.crypt.AbstractAsymmetricBlockCipherCrypt;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link Cipher}. This is for asymmetric algorithms.
@@ -23,13 +23,13 @@ public abstract class AbstractAsymmetricCrypt<K> extends AbstractAsymmetricBlock
 
     @Override
     public byte[] decrypt(AsymmetricKeys keyPair, byte[] data) {
-        Assert.assertNotNull(keyPair.getPrivateKey(), "The private key needs to be set to decrypt");
+        AssertTools.assertNotNull(keyPair.getPrivateKey(), "The private key needs to be set to decrypt");
         return decrypt(keyPair.getPrivateKey(), data);
     }
 
     @Override
     public byte[] encrypt(AsymmetricKeys keyPair, byte[] data) {
-        Assert.assertNotNull(keyPair.getPublicKey(), "The public key needs to be set to encrypt");
+        AssertTools.assertNotNull(keyPair.getPublicKey(), "The public key needs to be set to encrypt");
         return encrypt(keyPair.getPublicKey(), data);
     }
 

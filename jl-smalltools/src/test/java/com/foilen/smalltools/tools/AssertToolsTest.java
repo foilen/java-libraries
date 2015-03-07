@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import java.util.Date;
 
@@ -14,13 +14,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
- * Tests for {@link Assert}.
+ * Tests for {@link AssertTools}.
  */
-public class AssertTest {
+public class AssertToolsTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -29,96 +29,96 @@ public class AssertTest {
     public void testAssertFalseBooleanFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Value must be false");
-        Assert.assertFalse(true);
+        AssertTools.assertFalse(true);
     }
 
     @Test
     public void testAssertFalseBooleanStringFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Custom");
-        Assert.assertFalse(true, "Custom");
+        AssertTools.assertFalse(true, "Custom");
     }
 
     @Test
     public void testAssertFalseBooleanStringSuccess() {
-        Assert.assertFalse(false, "Custom");
+        AssertTools.assertFalse(false, "Custom");
     }
 
     @Test
     public void testAssertFalseBooleanSuccess() {
-        Assert.assertFalse(false);
+        AssertTools.assertFalse(false);
     }
 
     @Test
     public void testAssertTrueBooleanFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Value must be true");
-        Assert.assertTrue(false);
+        AssertTools.assertTrue(false);
     }
 
     @Test
     public void testAssertTrueBooleanStringFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Custom");
-        Assert.assertTrue(false, "Custom");
+        AssertTools.assertTrue(false, "Custom");
     }
 
     @Test
     public void testAssertTrueBooleanStringSuccess() {
-        Assert.assertTrue(true, "Custom");
+        AssertTools.assertTrue(true, "Custom");
     }
 
     @Test
     public void testAssertTrueBooleanSuccess() {
-        Assert.assertTrue(true);
+        AssertTools.assertTrue(true);
     }
 
     @Test
     public void testAssertNullBooleanFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Value must be null");
-        Assert.assertNull(new Date());
+        AssertTools.assertNull(new Date());
     }
 
     @Test
     public void testAssertNullBooleanStringFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Custom");
-        Assert.assertNull(new Date(), "Custom");
+        AssertTools.assertNull(new Date(), "Custom");
     }
 
     @Test
     public void testAssertNullBooleanStringSuccess() {
-        Assert.assertNull(null, "Custom");
+        AssertTools.assertNull(null, "Custom");
     }
 
     @Test
     public void testAssertNullBooleanSuccess() {
-        Assert.assertNull(null);
+        AssertTools.assertNull(null);
     }
 
     @Test
     public void testAssertNotNullBooleanFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Value must not be null");
-        Assert.assertNotNull(null);
+        AssertTools.assertNotNull(null);
     }
 
     @Test
     public void testAssertNotNullBooleanStringFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Custom");
-        Assert.assertNotNull(null, "Custom");
+        AssertTools.assertNotNull(null, "Custom");
     }
 
     @Test
     public void testAssertNotNullBooleanStringSuccess() {
-        Assert.assertNotNull(new Date(), "Custom");
+        AssertTools.assertNotNull(new Date(), "Custom");
     }
 
     @Test
     public void testAssertNotNullBooleanSuccess() {
-        Assert.assertNotNull(new Date());
+        AssertTools.assertNotNull(new Date());
     }
 
 }

@@ -6,14 +6,14 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * To check some assumptions during execution.
  */
-public final class Assert {
+public final class AssertTools {
 
     /**
      * Check that the value is false.
@@ -111,7 +111,7 @@ public final class Assert {
         }
     }
 
-    private Assert() {
+    private AssertTools() {
     }
 
 }

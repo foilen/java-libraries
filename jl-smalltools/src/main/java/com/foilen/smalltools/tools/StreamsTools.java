@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public final class StreamsTools {
      */
     public static byte[] consumeAsBytes(InputStream input) {
 
-        Assert.assertNotNull(input, "The input cannot be null");
+        AssertTools.assertNotNull(input, "The input cannot be null");
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -64,7 +64,7 @@ public final class StreamsTools {
      */
     public static String consumeAsString(InputStream input) {
 
-        Assert.assertNotNull(input, "The input cannot be null");
+        AssertTools.assertNotNull(input, "The input cannot be null");
 
         try {
             Reader reader = new InputStreamReader(input);
@@ -110,8 +110,8 @@ public final class StreamsTools {
      */
     public static void flowStream(InputStream source, OutputStream destination, boolean closeSource) {
 
-        Assert.assertNotNull(source, "The source cannot be null");
-        Assert.assertNotNull(destination, "The destination cannot be null");
+        AssertTools.assertNotNull(source, "The source cannot be null");
+        AssertTools.assertNotNull(destination, "The destination cannot be null");
 
         try {
             byte[] bytes = new byte[BUFFER_SIZE];
@@ -177,13 +177,13 @@ public final class StreamsTools {
         try {
             // Length
             byte[] lenBytes = new byte[4];
-            Assert.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
+            AssertTools.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
             int len = Ints.fromByteArray(lenBytes);
 
             // Content
             byte[] content = new byte[len];
             int actualLen = source.read(content);
-            Assert.assertTrue(actualLen == len, "Didn't read the right amount");
+            AssertTools.assertTrue(actualLen == len, "Didn't read the right amount");
             return content;
         } catch (IOException e) {
             throw new SmallToolsException("Issue reading from the stream", e);
@@ -203,15 +203,15 @@ public final class StreamsTools {
         try {
             // Length
             byte[] lenBytes = new byte[4];
-            Assert.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
+            AssertTools.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
             int len = Ints.fromByteArray(lenBytes);
-            Assert.assertTrue(len <= maxLength, "The length is bigger than the expected length");
-            Assert.assertTrue(len > 0, "The length is smaller than 1");
+            AssertTools.assertTrue(len <= maxLength, "The length is bigger than the expected length");
+            AssertTools.assertTrue(len > 0, "The length is smaller than 1");
 
             // Content
             byte[] content = new byte[len];
             int actualLen = source.read(content);
-            Assert.assertTrue(actualLen == len, "Didn't read the right amount");
+            AssertTools.assertTrue(actualLen == len, "Didn't read the right amount");
             return content;
         } catch (IOException e) {
             throw new SmallToolsException("Issue reading from the stream", e);
@@ -229,7 +229,7 @@ public final class StreamsTools {
         try {
             // Value
             byte[] value = new byte[4];
-            Assert.assertTrue(source.read(value) == 4, "Could not read the value");
+            AssertTools.assertTrue(source.read(value) == 4, "Could not read the value");
             return Ints.fromByteArray(value);
         } catch (IOException e) {
             throw new SmallToolsException("Issue reading from the stream", e);

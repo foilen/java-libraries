@@ -25,6 +25,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * To transform an XML using XSL.
@@ -36,22 +37,22 @@ import com.foilen.smalltools.exception.SmallToolsException;
  * - call a to* to make the transformation and store the XML
  * </pre>
  */
-public class XslTools {
+public class XslTransform {
 
     private static final TransformerFactory FACTORY = TransformerFactory.newInstance();
 
     private Transformer transformer;
     private StreamSource fromXml;
 
-    public XslTools() {
+    public XslTransform() {
     }
 
     /**
      * Check all fields have a value.
      */
     private void assertFields() {
-        Assert.assertNotNull(transformer, "XSL not set. Call any using* methods prior");
-        Assert.assertNotNull(fromXml, "XML not set. Call any from* methods prior");
+        AssertTools.assertNotNull(transformer, "XSL not set. Call any using* methods prior");
+        AssertTools.assertNotNull(fromXml, "XML not set. Call any from* methods prior");
     }
 
     /**
@@ -61,7 +62,7 @@ public class XslTools {
      *            the XML file
      * @return this
      */
-    public XslTools fromFile(File xmlFile) {
+    public XslTransform fromFile(File xmlFile) {
         try {
             fromXml = new StreamSource(xmlFile);
             return this;
@@ -77,7 +78,7 @@ public class XslTools {
      *            the XML file path
      * @return this
      */
-    public XslTools fromFile(String xmlPathName) {
+    public XslTransform fromFile(String xmlPathName) {
         try {
             return fromInputStream(new FileInputStream(xmlPathName));
         } catch (Exception e) {
@@ -92,7 +93,7 @@ public class XslTools {
      *            the XML as a stream
      * @return this
      */
-    public XslTools fromInputStream(InputStream xmlInputStream) {
+    public XslTransform fromInputStream(InputStream xmlInputStream) {
         fromXml = new StreamSource(xmlInputStream);
         return this;
     }
@@ -104,7 +105,7 @@ public class XslTools {
      *            the XML absolute resource path
      * @return this
      */
-    public XslTools fromResource(String xmlResourcePath) {
+    public XslTransform fromResource(String xmlResourcePath) {
         return fromInputStream(getClass().getResourceAsStream(xmlResourcePath));
     }
 
@@ -115,7 +116,7 @@ public class XslTools {
      *            the XML content as a String
      * @return this
      */
-    public XslTools fromText(String xmlContent) {
+    public XslTransform fromText(String xmlContent) {
         return fromInputStream(new ByteArrayInputStream(xmlContent.getBytes()));
     }
 
@@ -126,7 +127,7 @@ public class XslTools {
      *            the URL to the XML file
      * @return this
      */
-    public XslTools fromUrl(String xmlUrl) {
+    public XslTransform fromUrl(String xmlUrl) {
         try {
             fromXml = new StreamSource(xmlUrl);
             return this;
@@ -221,7 +222,7 @@ public class XslTools {
      *            the XSL file
      * @return this
      */
-    public XslTools usingFile(File xslFile) {
+    public XslTransform usingFile(File xslFile) {
         try {
             transformer = FACTORY.newTransformer(new StreamSource(xslFile));
             return this;
@@ -237,7 +238,7 @@ public class XslTools {
      *            the XSL file path
      * @return this
      */
-    public XslTools usingFile(String xslPathName) {
+    public XslTransform usingFile(String xslPathName) {
         try {
             transformer = FACTORY.newTransformer(new StreamSource(new File(xslPathName)));
             return this;
@@ -252,7 +253,7 @@ public class XslTools {
      * @param xslInputStream
      * @return this
      */
-    public XslTools usingInputStream(InputStream xslInputStream) {
+    public XslTransform usingInputStream(InputStream xslInputStream) {
         try {
             transformer = FACTORY.newTransformer(new StreamSource(xslInputStream));
             return this;
@@ -267,7 +268,7 @@ public class XslTools {
      * @param xslReader
      * @return this
      */
-    public XslTools usingReader(Reader xslReader) {
+    public XslTransform usingReader(Reader xslReader) {
         try {
             transformer = FACTORY.newTransformer(new StreamSource(xslReader));
             return this;
@@ -283,7 +284,7 @@ public class XslTools {
      *            the XSL absolute resource path
      * @return this
      */
-    public XslTools usingResource(String xslResourcePath) {
+    public XslTransform usingResource(String xslResourcePath) {
         return usingInputStream(getClass().getResourceAsStream(xslResourcePath));
     }
 
@@ -294,7 +295,7 @@ public class XslTools {
      *            the XSL full content as a String
      * @return this
      */
-    public XslTools usingText(String xslContent) {
+    public XslTransform usingText(String xslContent) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(xslContent.getBytes());
         return usingInputStream(inputStream);
     }
@@ -306,7 +307,7 @@ public class XslTools {
      *            the URL to the XSL file
      * @return this
      */
-    public XslTools usingUrl(String xslUrl) {
+    public XslTransform usingUrl(String xslUrl) {
         try {
             transformer = FACTORY.newTransformer(new StreamSource(xslUrl));
             return this;

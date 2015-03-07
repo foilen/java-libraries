@@ -6,13 +6,15 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Tests for {@link StreamsTools}.

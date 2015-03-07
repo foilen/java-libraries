@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.FileTools;
 
 /**
  * This is an iterable over a file. Each line will be iterated over. The file is automatically closed at the end of the file. Used by {@link FileTools#readFileLinesIteration(String)}

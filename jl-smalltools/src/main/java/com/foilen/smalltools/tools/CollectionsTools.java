@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import java.util.Iterator;
 import java.util.Map;

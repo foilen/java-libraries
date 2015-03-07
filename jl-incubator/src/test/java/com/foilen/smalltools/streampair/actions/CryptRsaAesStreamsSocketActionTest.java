@@ -16,10 +16,10 @@ import java.util.concurrent.Future;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.net.SocketsPair;
 import com.foilen.smalltools.streampair.StreamPair;
 import com.foilen.smalltools.streampair.actions.CryptRsaAesStreamsSocketAction;
+import com.foilen.smalltools.tools.StreamsTools;
 
 public class CryptRsaAesStreamsSocketActionTest extends AbstractTimeoutStreamPairActionTest {
 

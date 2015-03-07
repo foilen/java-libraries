@@ -6,14 +6,14 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * Some tools to execute commands in the console.
  */
-public final class Console {
+public final class ConsoleTools {
 
     /**
      * Execute the command, display the outputs to the screen while waiting for it to complete.
@@ -86,7 +86,7 @@ public final class Console {
         }
     }
 
-    private Console() {
+    private ConsoleTools() {
     }
 
 }

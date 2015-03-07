@@ -16,18 +16,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.foilen.smalltools.XslTransform;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.FileTools;
+import com.foilen.smalltools.tools.ResourceTools;
 
 /**
- * Tests for {@link XslTools}.
+ * Tests for {@link XslTransform}.
  */
-public class XslToolsTest {
+public class XslTransformTest {
 
-    private static String INPUT_RESOURCE_PATH = "/com/foilen/smalltools/XslToolsTest-resources/input.xml";
-    private static String INPUT2_RESOURCE_PATH = "/com/foilen/smalltools/XslToolsTest-resources/input2.xml";
-    private static String TRANSFORMATION_RESOURCE_PATH = "/com/foilen/smalltools/XslToolsTest-resources/transformation.xsl";
-    private static String OUTPUT_RESOURCE_PATH = "/com/foilen/smalltools/XslToolsTest-resources/output.xml";
-    private static String OUTPUT2_RESOURCE_PATH = "/com/foilen/smalltools/XslToolsTest-resources/output2.xml";
+    private static String INPUT_RESOURCE_PATH = "/com/foilen/smalltools/XslTransformTest-resources/input.xml";
+    private static String INPUT2_RESOURCE_PATH = "/com/foilen/smalltools/XslTransformTest-resources/input2.xml";
+    private static String TRANSFORMATION_RESOURCE_PATH = "/com/foilen/smalltools/XslTransformTest-resources/transformation.xsl";
+    private static String OUTPUT_RESOURCE_PATH = "/com/foilen/smalltools/XslTransformTest-resources/output.xml";
+    private static String OUTPUT2_RESOURCE_PATH = "/com/foilen/smalltools/XslTransformTest-resources/output2.xml";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -40,13 +43,13 @@ public class XslToolsTest {
         // First call
         String xml = ResourceTools.getResourceAsString(INPUT_RESOURCE_PATH);
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
-        String actual = new XslTools().usingText(xsl).fromText(xml).toText();
+        String actual = new XslTransform().usingText(xsl).fromText(xml).toText();
         Assert.assertEquals(expected, actual);
 
         // Second call
         xml = ResourceTools.getResourceAsString(INPUT2_RESOURCE_PATH);
         expected = ResourceTools.getResourceAsString(OUTPUT2_RESOURCE_PATH);
-        actual = new XslTools().usingText(xsl).fromText(xml).toText();
+        actual = new XslTransform().usingText(xsl).fromText(xml).toText();
         Assert.assertEquals(expected, actual);
     }
 
@@ -60,7 +63,7 @@ public class XslToolsTest {
         ResourceTools.copyToFile(TRANSFORMATION_RESOURCE_PATH, xslFile);
         ResourceTools.copyToFile(INPUT_RESOURCE_PATH, xmlFile);
 
-        new XslTools().usingFile(xslFile.getAbsolutePath()).fromFile(xmlFile.getAbsolutePath()).toFile(finalFile.getAbsolutePath());
+        new XslTransform().usingFile(xslFile.getAbsolutePath()).fromFile(xmlFile.getAbsolutePath()).toFile(finalFile.getAbsolutePath());
 
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
         String actual = FileTools.getFileAsString(finalFile.getAbsolutePath());
@@ -78,7 +81,7 @@ public class XslToolsTest {
         ResourceTools.copyToFile(TRANSFORMATION_RESOURCE_PATH, xslFile);
         ResourceTools.copyToFile(INPUT_RESOURCE_PATH, xmlFile);
 
-        new XslTools().usingFile(xslFile).fromFile(xmlFile).toFile(finalFile);
+        new XslTransform().usingFile(xslFile).fromFile(xmlFile).toFile(finalFile);
 
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
         String actual = FileTools.getFileAsString(finalFile);
@@ -88,7 +91,7 @@ public class XslToolsTest {
 
     @Test
     public void testUsingResources() {
-        String actual = new XslTools().usingResource(TRANSFORMATION_RESOURCE_PATH).fromResource(INPUT_RESOURCE_PATH).toText();
+        String actual = new XslTransform().usingResource(TRANSFORMATION_RESOURCE_PATH).fromResource(INPUT_RESOURCE_PATH).toText();
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
 
         Assert.assertEquals(expected, actual);
@@ -101,7 +104,7 @@ public class XslToolsTest {
         String xml = ResourceTools.getResourceAsString(INPUT_RESOURCE_PATH);
 
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
-        String actual = new XslTools().usingText(xsl).fromText(xml).toText();
+        String actual = new XslTransform().usingText(xsl).fromText(xml).toText();
 
         Assert.assertEquals(expected, actual);
     }
@@ -111,7 +114,7 @@ public class XslToolsTest {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("XML not set. Call any from* methods prior");
 
-        new XslTools().usingResource(TRANSFORMATION_RESOURCE_PATH).toText();
+        new XslTransform().usingResource(TRANSFORMATION_RESOURCE_PATH).toText();
     }
 
     @Test
@@ -119,7 +122,7 @@ public class XslToolsTest {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("XSL not set. Call any using* methods prior");
 
-        new XslTools().fromResource(INPUT_RESOURCE_PATH).toText();
+        new XslTransform().fromResource(INPUT_RESOURCE_PATH).toText();
     }
 
 }

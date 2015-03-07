@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.CollectionsTools;
+import com.foilen.smalltools.tools.CollectionsTools;
 
 public class CollectionsToolsTest {
 

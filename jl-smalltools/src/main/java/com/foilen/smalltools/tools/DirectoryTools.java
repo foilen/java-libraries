@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import java.io.File;
 import java.util.Stack;
@@ -115,6 +115,9 @@ public final class DirectoryTools {
         }
 
         return path;
+    }
+
+    private DirectoryTools() {
     }
 
 }

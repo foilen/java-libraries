@@ -23,8 +23,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.test.asserts.AssertTools;
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * To help testing stream wrappers.

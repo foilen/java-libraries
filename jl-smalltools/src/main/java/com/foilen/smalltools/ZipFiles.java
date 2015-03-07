@@ -22,6 +22,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Create a zip file with multiple files.
@@ -84,8 +86,8 @@ public class ZipFiles {
      */
     public void addDirectory(String directoryName, File directory) {
 
-        Assert.assertTrue(directory.exists(), "The directory does not exists");
-        Assert.assertTrue(directory.isDirectory(), "The directory is not a directory");
+        AssertTools.assertTrue(directory.exists(), "The directory does not exists");
+        AssertTools.assertTrue(directory.isDirectory(), "The directory is not a directory");
 
         // Sanitize
         if (!directoryName.endsWith("/")) {

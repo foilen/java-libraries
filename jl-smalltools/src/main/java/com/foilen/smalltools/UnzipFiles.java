@@ -18,6 +18,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.DirectoryTools;
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Take a zip file and extract the content
@@ -76,7 +79,7 @@ public class UnzipFiles {
      */
     public void extractTo(File destinationDirectory) {
 
-        Assert.assertTrue(destinationDirectory.isDirectory(), "The destination is not a directory");
+        AssertTools.assertTrue(destinationDirectory.isDirectory(), "The destination is not a directory");
 
         try {
             ZipEntry zipEntry = zis.getNextEntry();

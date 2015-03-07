@@ -25,11 +25,11 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.bean.annotation.BeanConfigure;
 import com.foilen.smalltools.comparator.ClassNameComparator;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * Manages the beans. Can configure outside objects and internal beans.
@@ -48,7 +48,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     @Override
     public <T> T add(Class<T> clazz) {
-        Assert.assertNotNull(clazz, "You cannot add a null class");
+        AssertTools.assertNotNull(clazz, "You cannot add a null class");
         LOG.debug("Adding the class {}", clazz.getName());
         T bean = ReflectionUtils.instantiate(clazz);
         addBeanInListAndMap(bean);
@@ -57,7 +57,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     @Override
     public Object add(Object object) {
-        Assert.assertNotNull(object, "You cannot add a null object");
+        AssertTools.assertNotNull(object, "You cannot add a null object");
         LOG.debug("Adding an object of class {}", object.getClass().getName());
         addBeanInListAndMap(object);
         return object;
@@ -65,7 +65,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     @Override
     public <T> T addAndConfig(Class<T> clazz) {
-        Assert.assertNotNull(clazz, "You cannot add a null class");
+        AssertTools.assertNotNull(clazz, "You cannot add a null class");
         LOG.debug("Adding the class {}", clazz.getName());
         T bean = ReflectionUtils.instantiate(clazz);
         addBeanInListAndMap(bean);
@@ -75,7 +75,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     @Override
     public Object addAndConfig(Object object) {
-        Assert.assertNotNull(object, "You cannot add a null object");
+        AssertTools.assertNotNull(object, "You cannot add a null object");
         LOG.debug("Adding an object of class {}", object.getClass().getName());
         config(object);
         addBeanInListAndMap(object);
@@ -119,7 +119,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     @Override
     public <T> T config(Class<T> clazz) {
-        Assert.assertNotNull(clazz, "You cannot configure a null class");
+        AssertTools.assertNotNull(clazz, "You cannot configure a null class");
         T object = ReflectionUtils.instantiate(clazz);
         config(object);
         return object;
@@ -127,7 +127,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     @Override
     public <T> T config(T object) {
-        Assert.assertNotNull(object, "You cannot configure a null object");
+        AssertTools.assertNotNull(object, "You cannot configure a null object");
         LOG.debug("Configuring an object of class {}", object.getClass().getName());
 
         // Fill all the fields
@@ -146,7 +146,7 @@ public class SimpleBeanRepository implements BeanRepository {
                 if (isCollection) {
                     // Get the type of the collection
                     valueType = field.getAnnotation(BeanConfigure.class).collectionType();
-                    Assert.assertFalse(valueType.equals(void.class), "When a field is a collection, you must specify a 'collectionType'");
+                    AssertTools.assertFalse(valueType.equals(void.class), "When a field is a collection, you must specify a 'collectionType'");
 
                     LOG.debug("Is a collection of type {}", valueType);
                     field.set(object, getBeans(valueType));
@@ -186,14 +186,14 @@ public class SimpleBeanRepository implements BeanRepository {
     @Override
     public <T> T getBean(Class<T> clazz) {
         Set<T> beans = getBeans(clazz);
-        Assert.assertTrue(beans.size() == 1, "There must be only one object of type " + clazz.getName() + " . Currently, there are " + beans.size());
+        AssertTools.assertTrue(beans.size() == 1, "There must be only one object of type " + clazz.getName() + " . Currently, there are " + beans.size());
         return beans.iterator().next();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> Set<T> getBeans(Class<T> clazz) {
-        Assert.assertNotNull(clazz, "You cannot retrieve a null class");
+        AssertTools.assertNotNull(clazz, "You cannot retrieve a null class");
         LOG.debug("Retrieving the beans with the class {}", clazz.getName());
 
         Set<T> result = (Set<T>) beansByType.get(clazz);

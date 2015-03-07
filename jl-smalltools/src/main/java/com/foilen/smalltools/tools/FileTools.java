@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +21,7 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.UserPrincipal;
 
+import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**

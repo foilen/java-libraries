@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * This class is looking at any changes made to any file in the directory and their sub-directory if needed.
@@ -79,8 +79,8 @@ public class FileSystemUpdateWatcher extends Thread {
      */
     public FileSystemUpdateWatcher init() {
 
-        Assert.assertFalse(initialized, "Already initialized");
-        Assert.assertFalse(fileSystemUpdateHandlers.isEmpty(), "There are no handlers");
+        AssertTools.assertFalse(initialized, "Already initialized");
+        AssertTools.assertFalse(fileSystemUpdateHandlers.isEmpty(), "There are no handlers");
 
         // Register the directories
         try {
@@ -206,7 +206,7 @@ public class FileSystemUpdateWatcher extends Thread {
      */
     public FileSystemUpdateWatcher setRecursive(boolean recursive) {
 
-        Assert.assertFalse(initialized, "Cannot set recursive when already initialized");
+        AssertTools.assertFalse(initialized, "Cannot set recursive when already initialized");
 
         this.recursive = recursive;
 

@@ -13,7 +13,7 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.Assert;
+import com.foilen.smalltools.tools.AssertTools;
 import com.google.common.primitives.Bytes;
 
 /**
@@ -88,7 +88,7 @@ public class BufferedSymmetricEncrypt {
      */
     private void bufferedProcessCompleteBlocks(BytesProcessor processor) {
 
-        Assert.assertNotNull(processor, "You need to provide a processor");
+        AssertTools.assertNotNull(processor, "You need to provide a processor");
 
         // Clear old values
         processedBlocks = null;
@@ -126,7 +126,7 @@ public class BufferedSymmetricEncrypt {
      */
     public void bufferedProcessFlushBlocks(BytesProcessor processor) {
 
-        Assert.assertNotNull(processor, "You need to provide a processor");
+        AssertTools.assertNotNull(processor, "You need to provide a processor");
 
         // Clear old values
         processedBlocks = null;

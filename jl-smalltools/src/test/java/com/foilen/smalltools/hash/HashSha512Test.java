@@ -14,8 +14,8 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.ResourceTools;
 import com.foilen.smalltools.hash.HashSha512;
+import com.foilen.smalltools.tools.ResourceTools;
 
 /**
  * Tests for {@link HashSha512}.

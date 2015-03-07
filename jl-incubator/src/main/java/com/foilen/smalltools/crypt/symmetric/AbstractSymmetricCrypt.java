@@ -11,8 +11,8 @@ package com.foilen.smalltools.crypt.symmetric;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.crypt.AbstractBufferedBlockCipherCrypt;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link Cipher}. This is for symmetric algorithms.
@@ -32,13 +32,13 @@ public abstract class AbstractSymmetricCrypt<K> extends AbstractBufferedBlockCip
 
     @Override
     public byte[] decrypt(SymmetricKey key, byte[] data) {
-        Assert.assertNotNull(key.getKey(), "The key needs to be set to decrypt");
+        AssertTools.assertNotNull(key.getKey(), "The key needs to be set to decrypt");
         return decryptWithIV(key.getKey(), data, ivLength);
     }
 
     @Override
     public byte[] encrypt(SymmetricKey key, byte[] data) {
-        Assert.assertNotNull(key.getKey(), "The key needs to be set to encrypt");
+        AssertTools.assertNotNull(key.getKey(), "The key needs to be set to encrypt");
         return encryptWithIV(key.getKey(), data);
     }
 

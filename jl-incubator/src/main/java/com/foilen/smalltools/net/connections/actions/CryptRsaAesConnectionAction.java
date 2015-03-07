@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
 import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
 import com.foilen.smalltools.crypt.asymmetric.RSAKeyDetails;
@@ -23,6 +22,7 @@ import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.streampair.StreamPair;
 import com.foilen.smalltools.streamwrapper.SymmetricCryptOutputStreamWrapper;
 import com.foilen.smalltools.streamwrapper.SymmetricDecryptInputStreamWrapper;
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Generates a random RSA and AES keys to crypt the streams.

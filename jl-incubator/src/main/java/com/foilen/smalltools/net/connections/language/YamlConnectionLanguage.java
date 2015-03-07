@@ -12,9 +12,9 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.net.connections.ConnectionLanguage;
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Communicate via Yaml messages.

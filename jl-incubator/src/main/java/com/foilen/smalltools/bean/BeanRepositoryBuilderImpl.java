@@ -14,8 +14,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * A builder to queue all the beans to create and create a BeanRepository once completely filled. The goal is to be able to insert the beans in any order.
@@ -81,9 +81,9 @@ public class BeanRepositoryBuilderImpl implements BeanRepositoryBuilder {
 
     @Override
     public BeanRepositoryBuilder queue(Class<?>... classes) {
-        Assert.assertNotNull(classes, "You cannot queue a null classes list");
+        AssertTools.assertNotNull(classes, "You cannot queue a null classes list");
         for (Class<?> clazz : classes) {
-            Assert.assertNotNull(clazz, "You cannot queue a null class");
+            AssertTools.assertNotNull(clazz, "You cannot queue a null class");
             LOG.debug("Queuing the class {}", clazz.getName());
             classesToInstanciate.add(clazz);
         }
@@ -92,9 +92,9 @@ public class BeanRepositoryBuilderImpl implements BeanRepositoryBuilder {
 
     @Override
     public BeanRepositoryBuilder queue(Object... objects) {
-        Assert.assertNotNull(objects, "You cannot queue a null objects list");
+        AssertTools.assertNotNull(objects, "You cannot queue a null objects list");
         for (Object object : objects) {
-            Assert.assertNotNull(object, "You cannot queue a null object");
+            AssertTools.assertNotNull(object, "You cannot queue a null object");
             LOG.debug("Queuing an object of class {}", object.getClass().getName());
             objectsToAdd.add(object);
         }
@@ -103,9 +103,9 @@ public class BeanRepositoryBuilderImpl implements BeanRepositoryBuilder {
 
     @Override
     public BeanRepositoryBuilder queueAndConfig(Class<?>... classes) {
-        Assert.assertNotNull(classes, "You cannot queue a null classes list");
+        AssertTools.assertNotNull(classes, "You cannot queue a null classes list");
         for (Class<?> clazz : classes) {
-            Assert.assertNotNull(clazz, "You cannot queue a null class");
+            AssertTools.assertNotNull(clazz, "You cannot queue a null class");
             LOG.debug("Queuing the class {} and it will be configured", clazz.getName());
             classesToInstanciateAndConfigure.add(clazz);
         }
@@ -114,9 +114,9 @@ public class BeanRepositoryBuilderImpl implements BeanRepositoryBuilder {
 
     @Override
     public BeanRepositoryBuilder queueAndConfig(Object... objects) {
-        Assert.assertNotNull(objects, "You cannot queue a null objects list");
+        AssertTools.assertNotNull(objects, "You cannot queue a null objects list");
         for (Object object : objects) {
-            Assert.assertNotNull(object, "You cannot queue a null object");
+            AssertTools.assertNotNull(object, "You cannot queue a null object");
             LOG.debug("Queuing an object of class {} and it will be configured", object.getClass().getName());
             objectsToAddAndConfigure.add(object);
         }
@@ -125,7 +125,7 @@ public class BeanRepositoryBuilderImpl implements BeanRepositoryBuilder {
 
     @Override
     public BeanRepositoryBuilder useProvider(Class<? extends BeansProvider> beanProviderClass) {
-        Assert.assertNotNull(beanProviderClass, "You cannot queue a null provider");
+        AssertTools.assertNotNull(beanProviderClass, "You cannot queue a null provider");
         BeansProvider beanProvider = ReflectionUtils.instantiate(beanProviderClass);
         beanProvider.provide(this);
         return this;

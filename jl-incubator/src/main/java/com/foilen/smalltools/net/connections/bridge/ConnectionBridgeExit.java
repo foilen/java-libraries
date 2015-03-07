@@ -10,14 +10,14 @@ package com.foilen.smalltools.net.connections.bridge;
 
 import java.net.Socket;
 
-import com.foilen.smalltools.Assert;
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.net.connections.ConnectionAssemblyLine;
 import com.foilen.smalltools.net.services.ExecutorServiceWrappedSocketCallback;
 import com.foilen.smalltools.net.services.SocketCallback;
 import com.foilen.smalltools.net.services.TCPServerService;
+import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * This is the part that gets a connection from {@link ConnectionBridgeEntry} and reach out to an external service.
@@ -124,7 +124,7 @@ public class ConnectionBridgeExit {
     }
 
     public TCPServerService initLocalServer() {
-        Assert.assertNull(tcpServerService, "The server is already activated");
+        AssertTools.assertNull(tcpServerService, "The server is already activated");
 
         if (serverPort == null) {
             tcpServerService = new TCPServerService(new ExecutorServiceWrappedSocketCallback(new ExitBridgeSocketCallback()));

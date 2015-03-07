@@ -15,8 +15,8 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
 import com.google.common.base.Objects;
 
 /**
@@ -84,9 +84,9 @@ public class DiscoverableService {
      */
     public Socket connecToTcpService() {
 
-        Assert.assertNotNull(serverHost, "The server host is not set");
-        Assert.assertTrue(serverPort > 0, "The server port is not correct or not set");
-        Assert.assertTrue(TCP.equals(serverType), "The server type must be TCP");
+        AssertTools.assertNotNull(serverHost, "The server host is not set");
+        AssertTools.assertTrue(serverPort > 0, "The server port is not correct or not set");
+        AssertTools.assertTrue(TCP.equals(serverType), "The server type must be TCP");
 
         try {
             return new Socket(serverHost, serverPort);
@@ -102,9 +102,9 @@ public class DiscoverableService {
      * @return the socket ready to send messages
      */
     public DatagramSocket connecToUdpService() {
-        Assert.assertNotNull(serverHost, "The server host is not set");
-        Assert.assertTrue(serverPort > 0, "The server port is not correct or not set");
-        Assert.assertTrue(UDP.equals(serverType), "The server type must be UDP");
+        AssertTools.assertNotNull(serverHost, "The server host is not set");
+        AssertTools.assertTrue(serverPort > 0, "The server port is not correct or not set");
+        AssertTools.assertTrue(UDP.equals(serverType), "The server type must be UDP");
 
         try {
             return new DatagramSocket(serverPort, InetAddress.getByName(serverHost));

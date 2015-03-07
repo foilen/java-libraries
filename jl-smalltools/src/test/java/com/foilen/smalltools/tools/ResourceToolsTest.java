@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.tools;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class ResourceToolsTest {
     @Test
     public void testGetResourceAsString() {
         String expected = "This is a test";
-        String actual = ResourceTools.getResourceAsString("/com/foilen/smalltools/ResourceToolsTest-getResourceString.txt");
+        String actual = ResourceTools.getResourceAsString("/com/foilen/smalltools/tools/ResourceToolsTest-getResourceString.txt");
 
         Assert.assertEquals(expected, actual);
     }

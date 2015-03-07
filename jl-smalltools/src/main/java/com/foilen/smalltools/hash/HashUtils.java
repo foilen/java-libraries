@@ -12,8 +12,8 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.foilen.smalltools.EncodingTools;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.EncodingTools;
 
 /**
  * The utils for hash algorithms.

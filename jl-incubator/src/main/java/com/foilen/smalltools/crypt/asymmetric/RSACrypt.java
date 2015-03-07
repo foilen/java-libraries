@@ -20,8 +20,8 @@ import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.bouncycastle.crypto.params.RSAKeyGenerationParameters;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * RSA cryptography.
@@ -56,7 +56,7 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
     public AsymmetricKeys createKeyPair(RSAKeyDetails keyDetails) {
 
         BigInteger modulus = keyDetails.getModulus();
-        Assert.assertNotNull(modulus, "The modulus must be present");
+        AssertTools.assertNotNull(modulus, "The modulus must be present");
 
         AsymmetricKeys asymmetricKeys = new AsymmetricKeys();
 

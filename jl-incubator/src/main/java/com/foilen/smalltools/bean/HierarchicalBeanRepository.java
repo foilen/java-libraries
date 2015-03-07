@@ -16,10 +16,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.Assert;
 import com.foilen.smalltools.bean.annotation.BeanConfigure;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * This {@link BeanRepository} has 2 of them:
@@ -76,7 +76,7 @@ public class HierarchicalBeanRepository implements BeanRepository {
      */
     @Override
     public <T> T config(Class<T> clazz) {
-        Assert.assertNotNull(clazz, "You cannot configure a null class");
+        AssertTools.assertNotNull(clazz, "You cannot configure a null class");
         T object = ReflectionUtils.instantiate(clazz);
         config(object);
         return object;
@@ -87,7 +87,7 @@ public class HierarchicalBeanRepository implements BeanRepository {
      */
     @Override
     public <T> T config(T object) {
-        Assert.assertNotNull(object, "You cannot configure a null object");
+        AssertTools.assertNotNull(object, "You cannot configure a null object");
         LOG.debug("Configuring an object of class {}", object.getClass().getName());
 
         // Fill all the fields
@@ -106,7 +106,7 @@ public class HierarchicalBeanRepository implements BeanRepository {
                 if (isCollection) {
                     // Get the type of the collection
                     valueType = field.getAnnotation(BeanConfigure.class).collectionType();
-                    Assert.assertFalse(valueType.equals(void.class), "When a field is a collection, you must specify a 'collectionType'");
+                    AssertTools.assertFalse(valueType.equals(void.class), "When a field is a collection, you must specify a 'collectionType'");
 
                     LOG.debug("Is a collection of type {}", valueType);
                     field.set(object, getBeans(valueType));
@@ -149,7 +149,7 @@ public class HierarchicalBeanRepository implements BeanRepository {
     @Override
     public <T> T getBean(Class<T> clazz) {
         Set<T> beans = getBeans(clazz);
-        Assert.assertTrue(beans.size() == 1, "There must be only one object of type " + clazz.getName() + " . Currently, there are " + beans.size());
+        AssertTools.assertTrue(beans.size() == 1, "There must be only one object of type " + clazz.getName() + " . Currently, there are " + beans.size());
         return beans.iterator().next();
     }
 

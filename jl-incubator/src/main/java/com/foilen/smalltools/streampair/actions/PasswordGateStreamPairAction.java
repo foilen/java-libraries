@@ -14,11 +14,11 @@ import java.io.OutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.Assert;
-import com.foilen.smalltools.SecureRandomTools;
-import com.foilen.smalltools.StreamsTools;
 import com.foilen.smalltools.hash.HashSha512;
 import com.foilen.smalltools.streampair.StreamPair;
+import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.SecureRandomTools;
+import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Share a common password between two machines. The validation can be done in plain text since it is never sending the password in clear text.
@@ -68,7 +68,7 @@ public class PasswordGateStreamPairAction extends AbstractTimeoutStreamPairActio
     @Override
     public StreamPair wrappedExecuteAction(StreamPair streamPair) {
 
-        Assert.assertNotNull(password, "The password is not set for the gate");
+        AssertTools.assertNotNull(password, "The password is not set for the gate");
 
         // Get the streams
         InputStream input = streamPair.getInputStream();

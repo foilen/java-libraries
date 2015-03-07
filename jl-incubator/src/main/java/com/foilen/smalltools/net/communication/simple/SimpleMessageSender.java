@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.SocketTools;
 import com.foilen.smalltools.net.connections.Connection;
+import com.foilen.smalltools.tools.SocketTools;
 
 /**
  * Send messages to a connection.

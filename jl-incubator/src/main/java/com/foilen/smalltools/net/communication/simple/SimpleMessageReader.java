@@ -13,9 +13,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.SocketTools;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.net.connections.ConnectionMessageConstants;
+import com.foilen.smalltools.tools.SocketTools;
 
 /**
  * Reading to a connection for incoming messages.
