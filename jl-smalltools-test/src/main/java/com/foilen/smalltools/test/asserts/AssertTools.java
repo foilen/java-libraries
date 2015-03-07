@@ -10,6 +10,7 @@ package com.foilen.smalltools.test.asserts;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import org.junit.Assert;
@@ -27,13 +28,29 @@ public final class AssertTools {
         // Check the file size
         Assert.assertEquals(expectedFile.length(), actualFile.length());
 
+        // Check the files
+        try {
+            assertStreamContent(new FileInputStream(expectedFile), new FileInputStream(actualFile));
+        } catch (FileNotFoundException e) {
+            throw new StTestException("Issue opening the files", e);
+        }
+
+    }
+
+    public static void assertFileContent(InputStream expectedStream, String actualFile) {
+        // Check the files
+        try {
+            assertStreamContent(expectedStream, new FileInputStream(actualFile));
+        } catch (FileNotFoundException e) {
+            throw new StTestException("Issue opening the file", e);
+        }
+    }
+
+    public static void assertStreamContent(InputStream expectedStream, InputStream actualStream) {
+
         // Check the content
-        InputStream expectedIS = null;
-        InputStream actualIS = null;
         long position = 0;
         try {
-            expectedIS = new FileInputStream(expectedFile);
-            actualIS = new FileInputStream(actualFile);
 
             byte[] expectedBytes = new byte[1024];
             int expectedLen;
@@ -41,8 +58,8 @@ public final class AssertTools {
             int actualLen;
 
             do {
-                expectedLen = expectedIS.read(expectedBytes);
-                actualLen = actualIS.read(actualBytes);
+                expectedLen = expectedStream.read(expectedBytes);
+                actualLen = actualStream.read(actualBytes);
 
                 Assert.assertEquals(expectedLen, actualLen);
                 Assert.assertArrayEquals("Position: " + position, expectedBytes, actualBytes);
@@ -53,19 +70,16 @@ public final class AssertTools {
         } catch (Exception e) {
             throw new StTestException("Issue copying the stream", e);
         } finally {
-
             // Close the sources
             try {
-                expectedIS.close();
+                expectedStream.close();
             } catch (Exception e) {
             }
             try {
-                actualIS.close();
+                actualStream.close();
             } catch (Exception e) {
             }
-
         }
-
     }
 
     /**
