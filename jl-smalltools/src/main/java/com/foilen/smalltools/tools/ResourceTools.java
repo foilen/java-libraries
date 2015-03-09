@@ -10,6 +10,7 @@ package com.foilen.smalltools.tools;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
@@ -72,6 +73,43 @@ public final class ResourceTools {
      */
     public static String getResourceAsString(String resource, Class<?> context) {
         return StreamsTools.consumeAsString(context.getResourceAsStream(resource));
+    }
+
+    /**
+     * Get the full path of the containing folder of the resource on the disk.
+     * 
+     * @param classType
+     *            the class to get the full path to
+     * @return the absolute path to the parent folder
+     */
+    public static String getResourceDir(Class<?> classType) {
+        String className = classType.getSimpleName();
+        return getResourceDir(className + ".class", classType);
+    }
+
+    /**
+     * Get the full path of the containing folder of the resource on the disk.
+     * 
+     * @param resource
+     *            the resource name
+     * @param context
+     *            the context class to use relative path
+     * @return the absolute path to the parent folder
+     */
+    public static String getResourceDir(String resource, Class<?> context) {
+        URL url = context.getResource(resource);
+        String resourcePath = url.toExternalForm();
+
+        // Remove "file:/"
+        resourcePath = resourcePath.substring(6);
+
+        // Remote trailing file name
+        int pos = resourcePath.lastIndexOf('/');
+        if (pos != -1) {
+            resourcePath = resourcePath.substring(0, pos + 1);
+        }
+
+        return resourcePath;
     }
 
     private ResourceTools() {
