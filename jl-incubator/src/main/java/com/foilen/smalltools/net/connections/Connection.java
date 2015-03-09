@@ -15,6 +15,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.connections.language.YamlConnectionLanguage;
@@ -29,6 +30,7 @@ public class Connection {
     private Socket socket;
     private StreamPair streamPair;
     private ConnectionLanguage connectionLanguage = new YamlConnectionLanguage();
+    private Map<String, String> metaData = new ConcurrentHashMap<>();
 
     /**
      * Create a connection that uses Yaml to communicate.
@@ -129,6 +131,17 @@ public class Connection {
     }
 
     /**
+     * Get the meta data value.
+     * 
+     * @param name
+     *            the meta data name
+     * @return the meta data value or null if not set
+     */
+    public String getMetaData(String name) {
+        return metaData.get(name);
+    }
+
+    /**
      * Get the output stream (that can have been modified).
      * 
      * @return the output stream
@@ -195,6 +208,18 @@ public class Connection {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * Set the meta data value.
+     * 
+     * @param name
+     *            the meta data name
+     * @param value
+     *            the meta data value
+     */
+    public void setMetaData(String name, String value) {
+        metaData.put(name, value);
     }
 
     @Override
