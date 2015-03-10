@@ -22,9 +22,6 @@ Steps
   Go on https://bintray.com/provirus/maven/com.foilen%3Ajl-smalltools/edit?tab=general and add a new version for jl-smalltools.zip
   Go on https://bintray.com/provirus/maven/com.foilen%3Ajl-smalltools-test/edit?tab=general and add a new version for jl-smalltools-test.zip
 
-- Commit
-  git commit -am '_VERSION_'
-
 - Merge to master and create tag
   git checkout master
   git merge _BRANCH_
@@ -33,8 +30,3 @@ Steps
   git tag -a -m "_VERSION_" "_VERSION_"
   git push
   git push --tags
-
-
-
-
-TODO: build with src and javadoc
