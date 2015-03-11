@@ -32,7 +32,7 @@ for i in `ls`
 do
   if [ -d $i/build/libs ]; then
     echo ----==[ Zip $i ]==----
-    rm $i.zip
+    rm -f $i.zip
     pushd $i/build/libs
     mkdir -p com/foilen/$i/$VERSION/
     mv *.jar com/foilen/$i/$VERSION/
