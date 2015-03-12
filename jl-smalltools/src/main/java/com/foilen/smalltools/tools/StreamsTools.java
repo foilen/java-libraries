@@ -19,6 +19,7 @@ import java.nio.charset.Charset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foilen.smalltools.exception.EndOfStreamException;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.google.common.primitives.Ints;
 
@@ -104,6 +105,9 @@ public final class StreamsTools {
             totalRead += len;
             while (totalRead != needed) {
                 logger.debug("Read {} bytes. Total read {} and need {}", len, totalRead, needed);
+                if (len == -1) {
+                    throw new EndOfStreamException("End of Stream");
+                }
                 len = source.read(buffer, totalRead, needed - totalRead);
             }
             logger.debug("Completly read {} bytes.", totalRead);
@@ -200,15 +204,11 @@ public final class StreamsTools {
      * @return the content
      */
     public static byte[] readBytes(InputStream source) {
-        int len = 0;
-        try {
-            // Length
-            byte[] lenBytes = new byte[4];
-            AssertTools.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
-            len = Ints.fromByteArray(lenBytes);
-        } catch (IOException e) {
-            throw new SmallToolsException("Issue reading from the stream", e);
-        }
+
+        // Length
+        byte[] lenBytes = new byte[4];
+        fillBuffer(source, lenBytes);
+        int len = Ints.fromByteArray(lenBytes);
 
         // Content
         byte[] content = new byte[len];
@@ -227,17 +227,13 @@ public final class StreamsTools {
      * @return the content
      */
     public static byte[] readBytes(InputStream source, int maxLength) {
-        int len = 0;
-        try {
-            // Length
-            byte[] lenBytes = new byte[4];
-            AssertTools.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
-            len = Ints.fromByteArray(lenBytes);
-            AssertTools.assertTrue(len <= maxLength, "The length is bigger than the expected length");
-            AssertTools.assertTrue(len > 0, "The length is smaller than 1");
-        } catch (IOException e) {
-            throw new SmallToolsException("Issue reading from the stream", e);
-        }
+
+        // Length
+        byte[] lenBytes = new byte[4];
+        fillBuffer(source, lenBytes);
+        int len = Ints.fromByteArray(lenBytes);
+        AssertTools.assertTrue(len <= maxLength, "The length is bigger than the expected length");
+        AssertTools.assertTrue(len > 0, "The length is smaller than 1");
 
         // Content
         byte[] content = new byte[len];

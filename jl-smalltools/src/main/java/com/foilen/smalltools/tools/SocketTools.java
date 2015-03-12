@@ -10,6 +10,8 @@ package com.foilen.smalltools.tools;
 
 import java.net.SocketException;
 
+import com.foilen.smalltools.exception.EndOfStreamException;
+
 /**
  * Some simple methods to play with sockets.
  */
@@ -26,6 +28,9 @@ public final class SocketTools {
             if ("Connection reset".equals(t.getMessage())) {
                 return true;
             }
+        }
+        if (t instanceof EndOfStreamException) {
+            return true;
         }
 
         // Cause

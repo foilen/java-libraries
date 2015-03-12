@@ -54,7 +54,7 @@ public class CommunicationCommandExecutor extends Thread {
                 }
 
                 // Check right type
-                log.debug("The message to execute is of type", mainMessage.getClass().getName());
+                log.debug("The message to execute is of type {}", mainMessage.getClass().getName());
                 if (!(mainMessage instanceof CommunicationCommand)) {
                     log.error("The message of type {} is not a CommunicationCommand.", mainMessage.getClass().getName());
                     continue;
