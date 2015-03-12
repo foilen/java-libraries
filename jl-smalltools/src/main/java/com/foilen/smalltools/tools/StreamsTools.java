@@ -87,6 +87,32 @@ public final class StreamsTools {
     }
 
     /**
+     * Read the stream until the buffer is full.
+     * 
+     * @param source
+     *            the input stream
+     * @param buffer
+     *            the buffer to fill
+     */
+    private static void fillBuffer(InputStream source, byte[] buffer) {
+
+        int needed = buffer.length;
+        int totalRead = 0;
+
+        try {
+            int len = source.read(buffer);
+            totalRead += len;
+            while (totalRead != needed) {
+                logger.debug("Read {} bytes. Total read {} and need {}", len, totalRead, needed);
+                len = source.read(buffer, totalRead, needed - totalRead);
+            }
+            logger.debug("Completly read {} bytes.", totalRead);
+        } catch (IOException e) {
+            throw new SmallToolsException("Issue reading from the stream", e);
+        }
+    }
+
+    /**
      * Consumes the content of the source, adds it to the destination and closes the source (the destination is still open).
      * 
      * @param source
@@ -174,20 +200,21 @@ public final class StreamsTools {
      * @return the content
      */
     public static byte[] readBytes(InputStream source) {
+        int len = 0;
         try {
             // Length
             byte[] lenBytes = new byte[4];
             AssertTools.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
-            int len = Ints.fromByteArray(lenBytes);
-
-            // Content
-            byte[] content = new byte[len];
-            int actualLen = source.read(content);
-            AssertTools.assertTrue(actualLen == len, "Didn't read the right amount");
-            return content;
+            len = Ints.fromByteArray(lenBytes);
         } catch (IOException e) {
             throw new SmallToolsException("Issue reading from the stream", e);
         }
+
+        // Content
+        byte[] content = new byte[len];
+        fillBuffer(source, content);
+        return content;
+
     }
 
     /**
@@ -200,22 +227,23 @@ public final class StreamsTools {
      * @return the content
      */
     public static byte[] readBytes(InputStream source, int maxLength) {
+        int len = 0;
         try {
             // Length
             byte[] lenBytes = new byte[4];
             AssertTools.assertTrue(source.read(lenBytes) == 4, "Could not read the length");
-            int len = Ints.fromByteArray(lenBytes);
+            len = Ints.fromByteArray(lenBytes);
             AssertTools.assertTrue(len <= maxLength, "The length is bigger than the expected length");
             AssertTools.assertTrue(len > 0, "The length is smaller than 1");
-
-            // Content
-            byte[] content = new byte[len];
-            int actualLen = source.read(content);
-            AssertTools.assertTrue(actualLen == len, "Didn't read the right amount");
-            return content;
         } catch (IOException e) {
             throw new SmallToolsException("Issue reading from the stream", e);
         }
+
+        // Content
+        byte[] content = new byte[len];
+        fillBuffer(source, content);
+        return content;
+
     }
 
     /**
