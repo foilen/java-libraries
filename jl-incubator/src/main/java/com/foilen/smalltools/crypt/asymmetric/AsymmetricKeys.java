@@ -8,7 +8,7 @@
  */
 package com.foilen.smalltools.crypt.asymmetric;
 
-import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
+import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 
 /**
  * A public and private key pair. You might not always have both keys since if you are encrypting a message for someone else, you only have his public key.

@@ -20,24 +20,31 @@ import com.foilen.smalltools.net.SocketsPair;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.tools.StreamsTools;
 
-@SuppressWarnings("deprecation")
-public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionActionTest {
+public class TlsConnectionActionTest extends AbstractTimeoutConnectionActionTest {
 
-    private CryptRsaAesConnectionAction createAction(int timeout) {
-        CryptRsaAesConnectionAction action = new CryptRsaAesConnectionAction();
+    private TlsClientConnectionAction createClientAction(int timeout) {
+        TlsClientConnectionAction action = new TlsClientConnectionAction();
         action.setNegociationTimeoutSeconds(timeout);
-        action.setAesKeySize(128);
+        return action;
+    }
+
+    private TlsServerConnectionAction createServerAction(int timeout) {
+        TlsServerConnectionAction action = new TlsServerConnectionAction();
+        action.setNegociationTimeoutSeconds(timeout);
         return action;
     }
 
     @Test(timeout = 30000)
     public void testExecuteActionNoTimeout() throws InterruptedException, ExecutionException, IOException {
-        CryptRsaAesConnectionAction clientAction = createAction(-1);
-        CryptRsaAesConnectionAction serverAction = createAction(-1);
+        TlsClientConnectionAction clientAction = createClientAction(-1);
+        TlsServerConnectionAction serverAction = createServerAction(-1);
 
         SocketsPair socketsPair = new SocketsPair();
-        Future<Connection> clientFuture = executeAction(new Connection(socketsPair.getClient()), clientAction);
-        Future<Connection> serverFuture = executeAction(new Connection(socketsPair.getServer()), serverAction);
+        Connection serverConnection = new Connection(socketsPair.getServer());
+        Connection clientConnection = new Connection(socketsPair.getClient());
+
+        Future<Connection> clientFuture = executeAction(clientConnection, clientAction);
+        Future<Connection> serverFuture = executeAction(serverConnection, serverAction);
 
         Connection clientActual = clientFuture.get();
         Connection serverActual = serverFuture.get();
@@ -77,30 +84,16 @@ public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionAc
     }
 
     @Test(timeout = 10000)
-    public void testExecuteActionNoTimeoutDifferentKeySize() throws InterruptedException, ExecutionException {
-        CryptRsaAesConnectionAction clientAction = createAction(-1);
-        clientAction.setAesKeySize(128);
-        CryptRsaAesConnectionAction serverAction = createAction(-1);
-
-        SocketsPair socketsPair = new SocketsPair();
-        Future<Connection> clientFuture = executeAction(new Connection(socketsPair.getClient()), clientAction);
-        Future<Connection> serverFuture = executeAction(new Connection(socketsPair.getServer()), serverAction);
-
-        Connection clientActual = clientFuture.get();
-        Connection serverActual = serverFuture.get();
-
-        Assert.assertNotNull(clientActual);
-        Assert.assertNotNull(serverActual);
-    }
-
-    @Test(timeout = 10000)
     public void testExecuteActionWithTimeout() throws InterruptedException, ExecutionException {
-        CryptRsaAesConnectionAction clientAction = createAction(10);
-        CryptRsaAesConnectionAction serverAction = createAction(10);
+        TlsClientConnectionAction clientAction = createClientAction(10);
+        TlsServerConnectionAction serverAction = createServerAction(10);
 
         SocketsPair socketsPair = new SocketsPair();
-        Future<Connection> clientFuture = executeAction(new Connection(socketsPair.getClient()), clientAction);
-        Future<Connection> serverFuture = executeAction(new Connection(socketsPair.getServer()), serverAction);
+        Connection serverConnection = new Connection(socketsPair.getServer());
+        Connection clientConnection = new Connection(socketsPair.getClient());
+
+        Future<Connection> clientFuture = executeAction(clientConnection, clientAction);
+        Future<Connection> serverFuture = executeAction(serverConnection, serverAction);
 
         Connection clientActual = clientFuture.get();
         Connection serverActual = serverFuture.get();
@@ -111,7 +104,7 @@ public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionAc
 
     @Test(timeout = 10000)
     public void testExecuteActionWithTimeoutThatTimedout() throws InterruptedException, ExecutionException {
-        CryptRsaAesConnectionAction clientAction = createAction(1);
+        TlsClientConnectionAction clientAction = createClientAction(1);
 
         SocketsPair socketsPair = new SocketsPair();
         Future<Connection> clientFuture = executeAction(new Connection(socketsPair.getClient()), clientAction);

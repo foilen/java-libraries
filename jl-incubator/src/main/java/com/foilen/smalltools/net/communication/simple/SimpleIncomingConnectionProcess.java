@@ -11,7 +11,7 @@ package com.foilen.smalltools.net.communication.simple;
 import com.foilen.smalltools.net.connections.Connection;
 
 /**
- * JAVADOC
+ * TODO JAVADOC
  */
 public class SimpleIncomingConnectionProcess implements Runnable {
 

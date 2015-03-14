@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.net.communication.simple;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -26,6 +27,8 @@ public class SimpleMessageSender extends Thread {
 
     private final static Logger log = LoggerFactory.getLogger(SimpleMessageSender.class);
 
+    public final static Map<String, Object> DISCONNECT_MESSAGE = new HashMap<>();
+
     private SimpleCommunicationSystem simpleCommunicationSystem;
     private Connection connection;
 
@@ -41,6 +44,7 @@ public class SimpleMessageSender extends Thread {
      *            the connection
      */
     public SimpleMessageSender(SimpleCommunicationSystem simpleCommunicationSystem, Connection connection) {
+        super("Messages Sender - " + connection.getId());
         this.simpleCommunicationSystem = simpleCommunicationSystem;
         this.connection = connection;
 
@@ -67,7 +71,7 @@ public class SimpleMessageSender extends Thread {
     @Override
     public void run() {
 
-        log.debug("Starting sending message for connection {}", connection);
+        log.debug("Starting sending messages for connection {}", connection);
 
         try {
 
@@ -76,8 +80,17 @@ public class SimpleMessageSender extends Thread {
                 if (message == null) {
                     continue;
                 }
+                if (message == DISCONNECT_MESSAGE) {
+                    log.debug("The connection {} got the local disconnect message", connection);
+                    stopRequested = true;
+                    simpleCommunicationSystem.disconnect(connection);
+                    continue;
+                }
+
+                // Send the message
                 log.debug("Sending message to the connection {}: {}", connection, message);
                 connection.sendMessage(message);
+                log.debug("Message sent to the connection {}", connection);
             }
 
         } catch (Exception e) {
@@ -89,8 +102,6 @@ public class SimpleMessageSender extends Thread {
             simpleCommunicationSystem.disconnect(connection);
         }
 
-        log.debug("Ending sending message for connection {}", connection);
-
+        log.debug("Ending sending messages for connection {}", connection);
     }
-
 }

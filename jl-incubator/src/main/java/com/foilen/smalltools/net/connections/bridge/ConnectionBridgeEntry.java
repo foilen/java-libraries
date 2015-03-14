@@ -16,7 +16,9 @@ import com.foilen.smalltools.net.services.ExecutorServiceWrappedSocketCallback;
 import com.foilen.smalltools.net.services.SocketCallback;
 import com.foilen.smalltools.net.services.TCPServerService;
 import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.StreamsTools;
+import com.foilen.smalltools.tools.internal.FlowStreamThread;
 
 /**
  * This is the part that gets an incoming connection and connects to the {@link ConnectionBridgeExit}.
@@ -35,7 +37,7 @@ import com.foilen.smalltools.tools.StreamsTools;
  * 
  * // If you want to secure the connection to the bridge
  * ConnectionAssemblyLine connectionAssemblyLine = new ConnectionAssemblyLine();
- * connectionAssemblyLine.addAction(new CryptRsaAesConnectionAction());
+ * connectionAssemblyLine.addAction(new TlsClientConnectionAction());
  * connectionBridgeEntry.setOutgoingAssemblyLine(connectionAssemblyLine);
  * 
  * // Start receiving calls
@@ -46,6 +48,7 @@ public class ConnectionBridgeEntry {
 
     private class EntryBridgeSocketCallback implements SocketCallback {
 
+        @SuppressWarnings("resource")
         @Override
         public void newClient(Socket entrySocket) {
 
@@ -62,8 +65,8 @@ public class ConnectionBridgeEntry {
                 }
 
                 // Start to relay
-                Thread thread1 = StreamsTools.flowStreamNonBlocking(entryConnection.getInputStream(), bridgeExitConnection.getOutputStream());
-                Thread thread2 = StreamsTools.flowStreamNonBlocking(bridgeExitConnection.getInputStream(), entryConnection.getOutputStream());
+                FlowStreamThread thread1 = StreamsTools.flowAndCloseStreamNonBlocking(entryConnection.getInputStream(), bridgeExitConnection.getOutputStream());
+                FlowStreamThread thread2 = StreamsTools.flowAndCloseStreamNonBlocking(bridgeExitConnection.getInputStream(), entryConnection.getOutputStream());
 
                 // Wait for the end
                 thread1.join();
@@ -72,8 +75,8 @@ public class ConnectionBridgeEntry {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                entryConnection.close();
-                bridgeExitConnection.close();
+                CloseableTools.close(entryConnection);
+                CloseableTools.close(bridgeExitConnection);
             }
         }
 

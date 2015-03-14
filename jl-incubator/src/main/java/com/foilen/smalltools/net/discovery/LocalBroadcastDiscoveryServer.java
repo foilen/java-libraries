@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.services.SocketCallback;
 import com.foilen.smalltools.net.services.TCPServerService;
+import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * A broadcasting service to use on a LAN. This service is sending an UDP broadcast message on the local network at a certain interval. The message includes the type of service and how to connect to
@@ -157,11 +158,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
         logger.info("Starting broadcasting on port {}", datagramSocket.getPort());
 
         // Wait before starting
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            logger.error("Waiting interrupted", e);
-        }
+        ThreadTools.sleep(100);
 
         while (true) {
             logger.debug("Broadcasting {} messages", messages.size());
@@ -175,11 +172,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
                 }
 
                 // Wait
-                try {
-                    Thread.sleep(broadcastDelay);
-                } catch (InterruptedException e) {
-                    logger.error("Waiting interrupted", e);
-                }
+                ThreadTools.sleep(broadcastDelay);
             }
         }
     }

@@ -8,7 +8,7 @@
  */
 package com.foilen.smalltools.net.connections;
 
-import java.io.IOException;
+import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -20,11 +20,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.connections.language.YamlConnectionLanguage;
 import com.foilen.smalltools.streampair.StreamPair;
+import com.foilen.smalltools.tools.CloseableTools;
 
 /**
  * This is a tcp network connection that can send serialized messages.
  */
-public class Connection {
+public class Connection implements Closeable {
 
     private String id;
     private Socket socket;
@@ -91,12 +92,10 @@ public class Connection {
     /**
      * Close the connection.
      */
+    @Override
     public void close() {
-        try {
-            socket.close();
-        } catch (IOException e) {
-        }
-        streamPair.close();
+        CloseableTools.close(streamPair);
+        CloseableTools.close(socket);
     }
 
     public ConnectionLanguage getConnectionLanguage() {

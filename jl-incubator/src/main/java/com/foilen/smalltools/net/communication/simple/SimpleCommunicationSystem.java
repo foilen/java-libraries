@@ -8,8 +8,10 @@
  */
 package com.foilen.smalltools.net.communication.simple;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -216,6 +218,56 @@ public class SimpleCommunicationSystem implements CommunicationSystem {
         Connection connection = connectionById.get(id);
         if (connection != null) {
             disconnect(connection);
+        }
+    }
+
+    @Override
+    public void disconnectAfterMessagesSent() {
+        log.debug("Sending disconnection instruction to all the message senders");
+
+        // Get the message senders
+        List<SimpleMessageSender> messageSenders = new ArrayList<SimpleMessageSender>();
+        messageSenders.addAll(messageSenderByConnection.values());
+
+        // Request disconnects
+        for (SimpleMessageSender messageSender : messageSenders) {
+            messageSender.addMessageToQueue(SimpleMessageSender.DISCONNECT_MESSAGE);
+        }
+
+        // Wait for completion
+        for (SimpleMessageSender messageSender : messageSenders) {
+            try {
+                messageSender.join();
+            } catch (InterruptedException e) {
+                log.error("Waiting for disconnection interrupted", e);
+            }
+        }
+    }
+
+    @Override
+    public void disconnectAfterMessagesSent(String id) {
+        log.debug("Sending disconnection instruction to the message sender of the connection id {}", id);
+
+        // Get the connection
+        Connection connection = connectionById.get(id);
+        if (connection == null) {
+            log.warn("The connection id {} is not connected. Cannot request disconnection", id);
+            return;
+        }
+
+        // Get the message sender
+        SimpleMessageSender messageSender = messageSenderByConnection.get(connection);
+        if (messageSender == null) {
+            log.warn("The connection id {} is not connected. Cannot request disconnection", id);
+        } else {
+            // Request disconnection after the last message is sent
+            messageSender.addMessageToQueue(SimpleMessageSender.DISCONNECT_MESSAGE);
+            // Wait for completion
+            try {
+                messageSender.join();
+            } catch (InterruptedException e) {
+                log.error("Waiting for disconnection interrupted", e);
+            }
         }
     }
 

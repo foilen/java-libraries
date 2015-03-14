@@ -10,11 +10,11 @@ package com.foilen.smalltools.crypt;
 
 import java.security.SecureRandom;
 
-import org.bouncycastle.crypto.AsymmetricBlockCipher;
-import org.bouncycastle.crypto.BufferedBlockCipher;
-import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.spongycastle.crypto.AsymmetricBlockCipher;
+import org.spongycastle.crypto.BufferedBlockCipher;
+import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
@@ -108,7 +108,7 @@ public abstract class AbstractAsymmetricBlockCipherCrypt {
      */
     private byte[] process(AsymmetricKeyParameter key, byte[] in, boolean crypt) {
 
-        log.debug("process() crypt {}  in.length {}", crypt, in.length);
+        log.debug("process() crypt {} in.length {}", crypt, in.length);
 
         try {
 

@@ -36,6 +36,7 @@ public class SimpleMessageReader extends Thread {
      *            the connection
      */
     public SimpleMessageReader(SimpleCommunicationSystem simpleCommunicationSystem, Connection connection) {
+        super("Messages Reader - " + connection.getId());
         this.simpleCommunicationSystem = simpleCommunicationSystem;
         this.connection = connection;
 

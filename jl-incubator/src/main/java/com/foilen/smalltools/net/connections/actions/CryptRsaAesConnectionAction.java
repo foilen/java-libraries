@@ -44,7 +44,10 @@ import com.foilen.smalltools.tools.StreamsTools;
  * - Read the remote AES key
  * - Decrypt the AES key
  * </pre>
+ * 
+ * FIXME: There seems to be an issue when multiple connections are made (concurrency issue). Until it is found, use {@link TlsConnectionAction} instead.
  */
+@Deprecated
 public class CryptRsaAesConnectionAction extends AbstractTimeoutConnectionAction {
 
     private static final int MAX_LENGTH = 1024 * 100;

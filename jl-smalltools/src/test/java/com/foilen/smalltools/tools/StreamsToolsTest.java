@@ -14,8 +14,6 @@ import java.io.ByteArrayOutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.tools.StreamsTools;
-
 /**
  * Tests for {@link StreamsTools}.
  */
@@ -35,7 +33,7 @@ public class StreamsToolsTest {
     }
 
     @Test
-    public void testFlowStreamNonBlocking() throws InterruptedException {
+    public void testFlowStreamNonBlocking() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         StreamsTools.flowStreamNonBlocking(getClass().getResourceAsStream("StStreamsToolsTest-file.txt"), outputStream);
 
@@ -43,7 +41,7 @@ public class StreamsToolsTest {
         Assert.assertNotEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
 
         // Wait one second and retry
-        Thread.sleep(1000);
+        ThreadTools.sleep(1000);
         Assert.assertEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
     }
 

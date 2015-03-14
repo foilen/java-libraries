@@ -19,10 +19,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.foilen.smalltools.net.connections.ConnectionAssemblyLine;
-import com.foilen.smalltools.net.connections.actions.CryptRsaAesConnectionAction;
 import com.foilen.smalltools.net.connections.actions.PasswordGateConnectionAction;
-import com.foilen.smalltools.net.connections.bridge.ConnectionBridgeEntry;
-import com.foilen.smalltools.net.connections.bridge.ConnectionBridgeExit;
+import com.foilen.smalltools.net.connections.actions.TlsClientConnectionAction;
+import com.foilen.smalltools.net.connections.actions.TlsServerConnectionAction;
 import com.foilen.smalltools.net.services.TCPServerService;
 import com.foilen.smalltools.tools.StreamsTools;
 
@@ -64,11 +63,13 @@ public class ConnectionBridgeTest {
     public void testCryptProxyBridge() throws Exception {
 
         // Protect
-        ConnectionAssemblyLine assemblyLine = new ConnectionAssemblyLine();
-        assemblyLine.addAction(new CryptRsaAesConnectionAction());
+        ConnectionAssemblyLine incomingAssemblyLine = new ConnectionAssemblyLine();
+        incomingAssemblyLine.addAction(new TlsServerConnectionAction());
+        ConnectionAssemblyLine outgoindAssemblyLine = new ConnectionAssemblyLine();
+        outgoindAssemblyLine.addAction(new TlsClientConnectionAction());
 
-        connectionBridgeEntry.setOutgoingAssemblyLine(assemblyLine);
-        connectionBridgeExit.setIncomingAssemblyLine(assemblyLine);
+        connectionBridgeEntry.setOutgoingAssemblyLine(outgoindAssemblyLine);
+        connectionBridgeExit.setIncomingAssemblyLine(incomingAssemblyLine);
 
         // Call the bridge
         String actual = StreamsTools.consumeAsString(new URL("http://127.0.0.1:" + bridgePort).openStream());
@@ -89,14 +90,21 @@ public class ConnectionBridgeTest {
     public void testPasswordAndCryptProxyBridge() throws Exception {
 
         // Protect
-        ConnectionAssemblyLine assemblyLine = new ConnectionAssemblyLine();
+        ConnectionAssemblyLine incomingAssemblyLine = new ConnectionAssemblyLine();
+        ConnectionAssemblyLine outgoindAssemblyLine = new ConnectionAssemblyLine();
+
+        // Password
         PasswordGateConnectionAction passwordAction = new PasswordGateConnectionAction();
         passwordAction.setPassword("myBridgePassword");
-        assemblyLine.addAction(passwordAction);
-        assemblyLine.addAction(new CryptRsaAesConnectionAction());
+        incomingAssemblyLine.addAction(passwordAction);
+        outgoindAssemblyLine.addAction(passwordAction);
 
-        connectionBridgeEntry.setOutgoingAssemblyLine(assemblyLine);
-        connectionBridgeExit.setIncomingAssemblyLine(assemblyLine);
+        // Encrypt
+        incomingAssemblyLine.addAction(new TlsServerConnectionAction());
+        outgoindAssemblyLine.addAction(new TlsClientConnectionAction());
+
+        connectionBridgeEntry.setOutgoingAssemblyLine(outgoindAssemblyLine);
+        connectionBridgeExit.setIncomingAssemblyLine(incomingAssemblyLine);
 
         // Call the bridge
         String actual = StreamsTools.consumeAsString(new URL("http://127.0.0.1:" + bridgePort).openStream());

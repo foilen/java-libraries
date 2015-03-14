@@ -16,10 +16,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foilen.smalltools.net.discovery.DiscoverableService;
-import com.foilen.smalltools.net.discovery.LocalBroadcastDiscoveryClient;
-import com.foilen.smalltools.net.discovery.LocalBroadcastDiscoveryServer;
 import com.foilen.smalltools.net.services.SocketCallback;
+import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * Tests for {@link LocalBroadcastDiscoveryServer} and {@link LocalBroadcastDiscoveryClient}.
@@ -40,7 +38,7 @@ public class LocalBroadcastDiscoveryTest implements SocketCallback {
     }
 
     @Test(timeout = 30000)
-    public void testDiscovery() throws InterruptedException {
+    public void testDiscovery() {
 
         // Create a service
         LocalBroadcastDiscoveryServer discoveryServer = new LocalBroadcastDiscoveryServer(PORT, 1000);
@@ -52,7 +50,7 @@ public class LocalBroadcastDiscoveryTest implements SocketCallback {
         LocalBroadcastDiscoveryClient discoveryClient = new LocalBroadcastDiscoveryClient(PORT);
         List<DiscoverableService> servicesList = discoveryClient.retrieveServicesList();
         while (servicesList.isEmpty()) {
-            Thread.sleep(100);
+            ThreadTools.sleep(100);
             servicesList = discoveryClient.retrieveServicesList();
         }
 

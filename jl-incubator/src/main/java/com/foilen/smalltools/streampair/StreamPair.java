@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.streampair;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,7 +19,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 /**
  * This is used to keep a pair of input and output. The main goal is to be able to wrap these with input and output stream wrapper and simply set the wrapper here.
  */
-public class StreamPair {
+public class StreamPair implements Closeable {
 
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -47,6 +48,7 @@ public class StreamPair {
     /**
      * Close both streams.
      */
+    @Override
     public void close() {
         if (inputStream != null) {
             try {

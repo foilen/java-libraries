@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.exception.EndOfStreamException;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.internal.FlowStreamThread;
 import com.google.common.primitives.Ints;
 
 /**
@@ -49,10 +50,7 @@ public final class StreamsTools {
             flowStream(input, outputStream);
             return outputStream.toByteArray();
         } finally {
-            try {
-                input.close();
-            } catch (Exception e) {
-            }
+            CloseableTools.close(input);
         }
     }
 
@@ -80,10 +78,7 @@ public final class StreamsTools {
         } catch (Exception e) {
             throw new SmallToolsException("Issue reading the stream", e);
         } finally {
-            try {
-                input.close();
-            } catch (Exception e) {
-            }
+            CloseableTools.close(input);
         }
     }
 
@@ -158,20 +153,13 @@ public final class StreamsTools {
             }
 
             logger.debug("Copy completed");
-
         } catch (Exception e) {
-
-            logger.error("Issue copying the stream", e);
             throw new SmallToolsException("Issue copying the stream", e);
 
         } finally {
-
             // Close the source
             if (closeSource) {
-                try {
-                    source.close();
-                } catch (Exception e) {
-                }
+                CloseableTools.close(source);
             }
         }
     }
@@ -185,13 +173,23 @@ public final class StreamsTools {
      *            the stream to send the data to
      * @return the thread
      */
-    public static Thread flowStreamNonBlocking(final InputStream source, final OutputStream destination) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                flowStream(source, destination);
-            }
-        });
+    public static FlowStreamThread flowStreamNonBlocking(InputStream source, OutputStream destination) {
+        FlowStreamThread thread = new FlowStreamThread(source, destination, false);
+        thread.start();
+        return thread;
+    }
+
+    /**
+     * Creates a separate thread to consume the content of the source, add it to the destination and close the source and the destination.
+     * 
+     * @param source
+     *            the stream from where to get the data
+     * @param destination
+     *            the stream to send the data to
+     * @return the thread
+     */
+    public static FlowStreamThread flowAndCloseStreamNonBlocking(InputStream source, OutputStream destination) {
+        FlowStreamThread thread = new FlowStreamThread(source, destination, true);
         thread.start();
         return thread;
     }
@@ -204,7 +202,6 @@ public final class StreamsTools {
      * @return the content
      */
     public static byte[] readBytes(InputStream source) {
-
         // Length
         byte[] lenBytes = new byte[4];
         fillBuffer(source, lenBytes);
@@ -214,7 +211,6 @@ public final class StreamsTools {
         byte[] content = new byte[len];
         fillBuffer(source, content);
         return content;
-
     }
 
     /**
@@ -239,7 +235,6 @@ public final class StreamsTools {
         byte[] content = new byte[len];
         fillBuffer(source, content);
         return content;
-
     }
 
     /**

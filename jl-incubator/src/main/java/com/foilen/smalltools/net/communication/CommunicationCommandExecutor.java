@@ -32,6 +32,7 @@ public class CommunicationCommandExecutor extends Thread {
      *            the communication message receiver
      */
     public CommunicationCommandExecutor(CommunicationMessageReceiver communicationMessageReceiver) {
+        super("Command Executor");
         this.communicationMessageReceiver = communicationMessageReceiver;
         start();
     }

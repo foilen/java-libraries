@@ -17,6 +17,13 @@ import com.foilen.smalltools.exception.EndOfStreamException;
  */
 public final class SocketTools {
 
+    /**
+     * Tells if the throwable or any cause of it is a disconnection from a socket.
+     * 
+     * @param t
+     *            the throwable
+     * @return true if is a disconnection from a socket
+     */
     public static boolean isADisconnectionException(Throwable t) {
 
         if (t == null) {
@@ -26,6 +33,12 @@ public final class SocketTools {
         // Current
         if (t instanceof SocketException) {
             if ("Connection reset".equals(t.getMessage())) {
+                return true;
+            }
+            if ("Socket closed".equals(t.getMessage())) {
+                return true;
+            }
+            if ("socket closed".equals(t.getMessage())) {
                 return true;
             }
         }

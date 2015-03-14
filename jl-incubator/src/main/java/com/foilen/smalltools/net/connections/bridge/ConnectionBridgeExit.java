@@ -17,7 +17,9 @@ import com.foilen.smalltools.net.services.ExecutorServiceWrappedSocketCallback;
 import com.foilen.smalltools.net.services.SocketCallback;
 import com.foilen.smalltools.net.services.TCPServerService;
 import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.StreamsTools;
+import com.foilen.smalltools.tools.internal.FlowStreamThread;
 
 /**
  * This is the part that gets a connection from {@link ConnectionBridgeEntry} and reach out to an external service.
@@ -36,7 +38,7 @@ import com.foilen.smalltools.tools.StreamsTools;
  * 
  * // If you want to secure the connection to the bridge
  * ConnectionAssemblyLine connectionAssemblyLine = new ConnectionAssemblyLine();
- * connectionAssemblyLine.addAction(new CryptRsaAesConnectionAction());
+ * connectionAssemblyLine.addAction(new TlsServerConnectionAction());
  * connectionBridgeExit.setIncomingAssemblyLine(connectionAssemblyLine);
  * 
  * // Start receiving calls from the ConnectionBridgeEntry
@@ -47,6 +49,7 @@ public class ConnectionBridgeExit {
 
     private class ExitBridgeSocketCallback implements SocketCallback {
 
+        @SuppressWarnings("resource")
         @Override
         public void newClient(Socket bridgeEntrySocket) {
 
@@ -65,8 +68,8 @@ public class ConnectionBridgeExit {
                 remoteConnection = new Connection(contactRemote(bridgeEntryConnection));
 
                 // Start to relay
-                Thread thread1 = StreamsTools.flowStreamNonBlocking(bridgeEntryConnection.getInputStream(), remoteConnection.getOutputStream());
-                Thread thread2 = StreamsTools.flowStreamNonBlocking(remoteConnection.getInputStream(), bridgeEntryConnection.getOutputStream());
+                FlowStreamThread thread1 = StreamsTools.flowAndCloseStreamNonBlocking(bridgeEntryConnection.getInputStream(), remoteConnection.getOutputStream());
+                FlowStreamThread thread2 = StreamsTools.flowAndCloseStreamNonBlocking(remoteConnection.getInputStream(), bridgeEntryConnection.getOutputStream());
 
                 // Wait for the end
                 thread1.join();
@@ -75,8 +78,8 @@ public class ConnectionBridgeExit {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                bridgeEntryConnection.close();
-                remoteConnection.close();
+                CloseableTools.close(bridgeEntryConnection);
+                CloseableTools.close(remoteConnection);
             }
         }
 

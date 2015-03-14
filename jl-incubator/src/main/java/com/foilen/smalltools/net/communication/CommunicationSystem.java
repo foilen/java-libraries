@@ -33,4 +33,17 @@ public interface CommunicationSystem extends CommunicationInitialiser, Communica
      */
     void disconnect(String id);
 
+    /**
+     * Wait for the sending queues to be empty and remove all the connections. This is waiting for the completion.
+     */
+    void disconnectAfterMessagesSent();
+
+    /**
+     * Wait for the sending queue to be empty and remove the connection. This is waiting for the completion.
+     * 
+     * @param id
+     *            the id that the {@link ConnectionFactory} understands
+     */
+    void disconnectAfterMessagesSent(String id);
+
 }
