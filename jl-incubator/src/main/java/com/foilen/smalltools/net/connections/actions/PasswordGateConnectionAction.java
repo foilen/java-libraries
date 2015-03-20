@@ -99,8 +99,8 @@ public class PasswordGateConnectionAction extends AbstractTimeoutConnectionActio
         }
 
         // Compute the hashes
-        String hl = HashSha512.hashString(password) + tl + tr + password;
-        String hr = HashSha512.hashString(password) + tr + tl + password;
+        String hl = HashSha512.hashString(password + tl + tr + password);
+        String hr = HashSha512.hashString(password + tr + tl + password);
 
         // Send our hash
         StreamsTools.write(output, hl);
