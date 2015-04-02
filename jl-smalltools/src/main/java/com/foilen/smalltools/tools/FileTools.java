@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.GroupPrincipal;
@@ -23,6 +24,7 @@ import java.nio.file.attribute.UserPrincipal;
 
 import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.streamwrapper.RenamingOnCloseOutputStreamWrapper;
 
 /**
  * Some common methods to manage files.
@@ -96,6 +98,37 @@ public final class FileTools {
      */
     public static void copyOwnerAndGroupFromParentDir(String fileOrDirectory, boolean recursive) {
         copyOwnerAndGroupFromParentDir(new File(fileOrDirectory), recursive);
+    }
+
+    /**
+     * Create a staging file to write to and when you will close it, it will rename to its final destination.
+     * 
+     * @param stagingFile
+     *            the file to write to temporarily
+     * @param finalFile
+     *            when closing, rename the staging file to this file
+     * @return the outputstream to write to the staging file and that needs to be closed to rename
+     */
+    public static OutputStream createStagingFile(File stagingFile, File finalFile) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(stagingFile);
+            return new RenamingOnCloseOutputStreamWrapper(outputStream, stagingFile, finalFile);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem creating the staging file", e);
+        }
+    }
+
+    /**
+     * Create a staging file to write to and when you will close it, it will rename to its final destination.
+     * 
+     * @param stagingFileName
+     *            the file to write to temporarily
+     * @param finalFileName
+     *            when closing, rename the staging file to this file
+     * @return the outputstream to write to the staging file and that needs to be closed to rename
+     */
+    public static OutputStream createStagingFile(String stagingFileName, String finalFileName) {
+        return createStagingFile(new File(stagingFileName), new File(finalFileName));
     }
 
     /**
