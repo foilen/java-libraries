@@ -10,7 +10,7 @@ package com.foilen.smalltools.tools;
 
 import java.security.SecureRandom;
 
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Some methods to get random values.
@@ -21,11 +21,33 @@ public class SecureRandomTools {
 
         AssertTools.assertTrue(length > 0, "The length must be at least 1");
 
+        int bytesLength = length * 3 / 4;
+        if (length % 4 == 1) {
+            ++bytesLength;
+        }
+
         SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[length];
+        byte[] bytes = new byte[bytesLength];
         random.nextBytes(bytes);
 
-        String text = String.valueOf(Base64Coder.encode(bytes));
+        String text = DatatypeConverter.printBase64Binary(bytes);
+        return text.substring(0, length);
+    }
+
+    public static String randomHexString(int length) {
+
+        AssertTools.assertTrue(length > 0, "The length must be at least 1");
+
+        int bytesLength = length / 2;
+        if (length % 2 == 1) {
+            ++bytesLength;
+        }
+
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[bytesLength];
+        random.nextBytes(bytes);
+
+        String text = DatatypeConverter.printHexBinary(bytes);
         return text.substring(0, length);
     }
 
