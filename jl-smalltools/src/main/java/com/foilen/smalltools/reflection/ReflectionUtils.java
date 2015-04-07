@@ -8,11 +8,16 @@
  */
 package com.foilen.smalltools.reflection;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
@@ -21,6 +26,7 @@ import com.foilen.smalltools.tools.AssertTools;
  * Some helpers for reflection.
  */
 public final class ReflectionUtils {
+
     /**
      * Find all the fields on the type and super-types.
      * 
@@ -142,6 +148,58 @@ public final class ReflectionUtils {
         Class<?> superClass = clazz.getSuperclass();
         if (superClass != null) {
             allTypes(classes, superClass);
+        }
+    }
+
+    /**
+     * Copy all the bean's properties. Useful for Transfer Objects and Forms.
+     * 
+     * @param from
+     *            the object to copy from
+     * @param to
+     *            the object to copy to
+     */
+    public static void copyAllProperties(Object from, Object to) {
+
+        AssertTools.assertNotNull(from, "The from cannot be null");
+        AssertTools.assertNotNull(to, "The to cannot be null");
+        try {
+            // Get all the properties on the source and destination
+            BeanInfo fromBeanInfo = Introspector.getBeanInfo(from.getClass());
+            BeanInfo toBeanInfo = Introspector.getBeanInfo(to.getClass());
+            PropertyDescriptor[] fromPropertyDescriptors = fromBeanInfo.getPropertyDescriptors();
+            PropertyDescriptor[] toPropertyDescriptors = toBeanInfo.getPropertyDescriptors();
+
+            // Map the properties names for the destination
+            Map<String, PropertyDescriptor> toPropertyDescriptorByName = new HashMap<>();
+            for (PropertyDescriptor toPropertyDescriptor : toPropertyDescriptors) {
+                if (toPropertyDescriptor.getWriteMethod() != null) {
+                    toPropertyDescriptorByName.put(toPropertyDescriptor.getName(), toPropertyDescriptor);
+                }
+            }
+
+            // Copy all fields when they exists on the destination
+            for (PropertyDescriptor fromPropertyDescriptor : fromPropertyDescriptors) {
+                PropertyDescriptor toPropertyDescriptor = toPropertyDescriptorByName.get(fromPropertyDescriptor.getName());
+
+                // Validate exists
+                if (toPropertyDescriptor == null) {
+                    continue;
+                }
+
+                // Validate type or sub-type
+                Class<?> fromType = fromPropertyDescriptor.getPropertyType();
+                Class<?> toType = toPropertyDescriptor.getPropertyType();
+                if (!toType.isAssignableFrom(fromType)) {
+                    continue;
+                }
+
+                // Copy
+                toPropertyDescriptor.getWriteMethod().invoke(to, fromPropertyDescriptor.getReadMethod().invoke(from));
+            }
+
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem copying properties", e);
         }
     }
 
