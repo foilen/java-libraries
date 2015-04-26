@@ -45,7 +45,7 @@ import com.foilen.smalltools.tools.StreamsTools;
  * - Decrypt the AES key
  * </pre>
  * 
- * FIXME: There seems to be an issue when multiple connections are made (concurrency issue). Until it is found, use {@link TlsConnectionAction} instead.
+ * FIXME: There seems to be an issue when multiple connections are made (concurrency issue). Until it is found, use {@link TlsClientConnectionAction} and {@link TlsServerConnectionAction} instead.
  */
 @Deprecated
 public class CryptRsaAesConnectionAction extends AbstractTimeoutConnectionAction {
