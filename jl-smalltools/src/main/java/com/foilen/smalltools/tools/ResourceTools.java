@@ -52,6 +52,30 @@ public final class ResourceTools {
     }
 
     /**
+     * Load a resource as bytes.
+     * 
+     * @param resource
+     *            the resource to open as an absolute path
+     * @return the bytes
+     */
+    public static byte[] getResourceAsBytes(String resource) {
+        return getResourceAsBytes(resource, ResourceTools.class);
+    }
+
+    /**
+     * Load a resource as a bytes.
+     * 
+     * @param resource
+     *            the resource to open
+     * @param context
+     *            the context class to use relative path
+     * @return the bytes
+     */
+    public static byte[] getResourceAsBytes(String resource, Class<?> context) {
+        return StreamsTools.consumeAsBytes(context.getResourceAsStream(resource));
+    }
+
+    /**
      * Load a resource as a String.
      * 
      * @param resource
