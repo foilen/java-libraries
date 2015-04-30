@@ -1,0 +1,60 @@
+package com.foilen.smalltools.executor;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.foilen.smalltools.exception.SmallToolsException;
+
+/**
+ * When new tasks are submitted, it will reuse free threads or start new ones up to the max. It will throw an exception if the max is reached.
+ */
+public class GradualThreadsExecutor implements Executor {
+
+    private AtomicInteger threadCount = new AtomicInteger();
+    private Queue<ExpirableTaskThread> freeThreads = new ConcurrentLinkedQueue<>();
+
+    private int maxThreads;
+    private long timeoutThreadMs;
+
+    public GradualThreadsExecutor(int maxThreads, long timeoutThreadMs) {
+        this.maxThreads = maxThreads;
+        this.timeoutThreadMs = timeoutThreadMs;
+    }
+
+    @Override
+    public void execute(Runnable command) {
+
+        // Get a free thread
+        ExpirableTaskThread thread = freeThreads.poll();
+        if (thread == null) {
+            // Create a new thread if possible
+            int currentNumber = threadCount.incrementAndGet();
+            if (currentNumber > maxThreads) {
+                threadCount.decrementAndGet();
+                throw new SmallToolsException("The maximum amount of threads [" + maxThreads + "] has been reached");
+            }
+
+            thread = new ExpirableTaskThread(currentNumber, timeoutThreadMs, this, command);
+            thread.start();
+        } else {
+            // Request execution
+            if (thread.setTask(command)) {
+                thread.interrupt();
+            } else {
+                // Got an expired thread, ask for another
+                execute(command);
+            }
+        }
+    }
+
+    protected void nowFree(ExpirableTaskThread expirableTaskThread) {
+        freeThreads.add(expirableTaskThread);
+    }
+
+    protected void expired(ExpirableTaskThread expirableTaskThread) {
+        freeThreads.remove(expirableTaskThread);
+        threadCount.decrementAndGet();
+    }
+}

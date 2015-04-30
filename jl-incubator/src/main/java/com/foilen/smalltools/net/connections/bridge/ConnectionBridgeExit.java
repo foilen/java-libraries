@@ -13,7 +13,7 @@ import java.net.Socket;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.net.connections.ConnectionAssemblyLine;
-import com.foilen.smalltools.net.services.ExecutorServiceWrappedSocketCallback;
+import com.foilen.smalltools.net.services.ExecutorWrappedSocketCallback;
 import com.foilen.smalltools.net.services.SocketCallback;
 import com.foilen.smalltools.net.services.TCPServerService;
 import com.foilen.smalltools.tools.AssertTools;
@@ -130,9 +130,9 @@ public class ConnectionBridgeExit {
         AssertTools.assertNull(tcpServerService, "The server is already activated");
 
         if (serverPort == null) {
-            tcpServerService = new TCPServerService(new ExecutorServiceWrappedSocketCallback(new ExitBridgeSocketCallback()));
+            tcpServerService = new TCPServerService(new ExecutorWrappedSocketCallback(new ExitBridgeSocketCallback()));
         } else {
-            tcpServerService = new TCPServerService(serverPort, new ExecutorServiceWrappedSocketCallback(new ExitBridgeSocketCallback()));
+            tcpServerService = new TCPServerService(serverPort, new ExecutorWrappedSocketCallback(new ExitBridgeSocketCallback()));
         }
 
         return tcpServerService;

@@ -8,7 +8,6 @@
  */
 package com.foilen.smalltools.net.services;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.CloseableTools;
 
 /**
  * This is a TCP server. All the logic to handle new connections is taken care of and all you need to have is a {@link SocketCallback}. Upon instantiation, a new thread is started right away.
@@ -134,13 +134,14 @@ public class TCPServerService implements Runnable {
     @Override
     public void run() {
         while (true) {
-            Socket socket;
+            Socket socket = null;
             try {
                 socket = serverSocket.accept();
                 InetSocketAddress remoteAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
                 logger.info("Client is connecting from {}:{}", new Object[] { remoteAddress.getHostName(), remoteAddress.getPort() });
                 socketCallback.newClient(socket);
-            } catch (IOException e) {
+            } catch (Exception e) {
+                CloseableTools.close(socket);
                 logger.error("Problem while accepting connection", e);
             }
         }
