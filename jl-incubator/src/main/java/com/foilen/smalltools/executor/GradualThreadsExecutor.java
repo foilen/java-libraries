@@ -21,6 +21,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 public class GradualThreadsExecutor implements Executor {
 
     private AtomicInteger threadCount = new AtomicInteger();
+    private AtomicInteger threadId = new AtomicInteger();
     private Queue<ExpirableTaskThread> freeThreads = new ConcurrentLinkedQueue<>();
 
     private int maxThreads;
@@ -38,13 +39,12 @@ public class GradualThreadsExecutor implements Executor {
         ExpirableTaskThread thread = freeThreads.poll();
         if (thread == null) {
             // Create a new thread if possible
-            int currentNumber = threadCount.incrementAndGet();
-            if (currentNumber > maxThreads) {
+            if (threadCount.incrementAndGet() > maxThreads) {
                 threadCount.decrementAndGet();
                 throw new SmallToolsException("The maximum amount of threads [" + maxThreads + "] has been reached");
             }
 
-            thread = new ExpirableTaskThread(currentNumber, timeoutThreadMs, this, command);
+            thread = new ExpirableTaskThread(threadId.getAndIncrement(), timeoutThreadMs, this, command);
             thread.start();
         } else {
             // Request execution
