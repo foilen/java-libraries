@@ -63,6 +63,7 @@ public class TimeoutHandler<T> {
         callThread.join(timeoutInMilliseconds);
         if (callThread.isAlive()) {
             runnable.stopRequested();
+            callThread.interrupt();
             throw new InterruptedException("The call is still running and the timeout passed");
         }
 
