@@ -15,6 +15,11 @@ import com.google.common.base.Joiner;
 
 /**
  * Some common methods to manage directories.
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.google.guava:guava:18.0'
+ * </pre>
  */
 public final class DirectoryTools {
 

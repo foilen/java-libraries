@@ -11,39 +11,41 @@ if [ $# -ne 1 ]
 fi
 
 VERSION=$1
+RUN_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Update copyrigths
-echo ----==[ Update copyrigths ]==----
-pushd scripts
+# Update copyrights
+echo ----==[ Update copyrights ]==----
+cd $RUN_PATH/scripts
 ./javaheaderchanger.sh > /dev/null
-popd
 
-# Update version
-echo ----==[ Update version ]==----
-cp build.gradle build.gradle.old
-sed "s/master-SNAPSHOT/$VERSION/g" build.gradle.old > build.gradle
-
-# Compile
-echo ----==[ Compile ]==----
-./gradlew clean install
-
-# Zip
-for i in `ls`
+cd $RUN_PATH
+rm -f *.zip
+for i in `cat projects-order.txt`
 do
-  if [ -d $i/build/libs ]; then
+  cd $RUN_PATH
+  if [ -f $i/pom.xml ]; then
+  
+    cd $RUN_PATH/$i
+
+    echo ----==[ Update version ]==----
+    cp pom.xml pom.xml.old
+    sed "s/master-SNAPSHOT/$VERSION/g" pom.xml.old > pom.xml
+  
+    echo ----==[ Compile $i ]==----
+    mvn clean install
+  
     echo ----==[ Zip $i ]==----
-    rm -f $i.zip
-    pushd $i/build/libs
+    cd $RUN_PATH/$i/target
     mkdir -p com/foilen/$i/$VERSION/
     mv *.jar com/foilen/$i/$VERSION/
-    mv ../poms/pom-default.xml com/foilen/$i/$VERSION/$i-$VERSION.pom
-		zip -r ../../../$i.zip com
-    popd
-	fi
+    cp ../pom.xml com/foilen/$i/$VERSION/$i-$VERSION.pom
+    zip -r $RUN_PATH/$i.zip com
+    
+    echo ----==[ Replace version ]==----
+    cd $RUN_PATH/$i
+    mv pom.xml.old pom.xml
+    
+  fi
 done
-
-# Replace version
-echo ----==[ Replace version ]==----
-mv build.gradle.old build.gradle
 
 echo ----==[ Operation completed successfully ]==----

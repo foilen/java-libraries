@@ -17,10 +17,16 @@ import org.junit.Assert;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import com.foilen.smalltools.test.exception.StTestException;
+import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * Assertions.
+ * 
+ * <pre>
+ * Dependencies:
+ * testCompile 'org.yaml:snakeyaml:1.15'
+ * testCompile 'junit:junit:4.12'
+ * </pre>
  */
 public final class AssertTools {
 
@@ -32,7 +38,7 @@ public final class AssertTools {
         try {
             assertStreamContent(new FileInputStream(expectedFile), new FileInputStream(actualFile));
         } catch (FileNotFoundException e) {
-            throw new StTestException("Issue opening the files", e);
+            throw new SmallToolsException("Issue opening the files", e);
         }
 
     }
@@ -42,7 +48,7 @@ public final class AssertTools {
         try {
             assertStreamContent(expectedStream, new FileInputStream(actualFile));
         } catch (FileNotFoundException e) {
-            throw new StTestException("Issue opening the file", e);
+            throw new SmallToolsException("Issue opening the file", e);
         }
     }
 
@@ -68,7 +74,7 @@ public final class AssertTools {
             } while (expectedLen != -1);
 
         } catch (Exception e) {
-            throw new StTestException("Issue copying the stream", e);
+            throw new SmallToolsException("Issue copying the stream", e);
         } finally {
             // Close the sources
             try {

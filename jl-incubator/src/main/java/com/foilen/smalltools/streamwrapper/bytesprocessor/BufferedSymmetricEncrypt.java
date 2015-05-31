@@ -18,6 +18,11 @@ import com.google.common.primitives.Bytes;
 
 /**
  * This is a buffer for many blocs of data to crypt.
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.google.guava:guava:18.0'
+ * </pre>
  */
 public class BufferedSymmetricEncrypt {
 

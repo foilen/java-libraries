@@ -20,7 +20,6 @@ Steps
 - Upload to jcenter
   Go on https://bintray.com/foilen/maven/com.foilen%3Ajl-incubator/edit?tab=general and add a new version for jl-incubator.zip
   Go on https://bintray.com/foilen/maven/com.foilen%3Ajl-smalltools/edit?tab=general and add a new version for jl-smalltools.zip
-  Go on https://bintray.com/foilen/maven/com.foilen%3Ajl-smalltools-test/edit?tab=general and add a new version for jl-smalltools-test.zip
 
 - Merge to master and create tag
   git checkout master

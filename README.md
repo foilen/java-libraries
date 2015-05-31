@@ -11,7 +11,12 @@ Projects
 
 - jl-smalltools: A couple of small tools that are mostly one class each.
 - jl-incubator: Everything that is new and that might be removed or that might be changed (like a different API)
-- jl-smalltools-test: A couple of small tools that are mostly one class each to help with unit tests.
+
+Usage
+-----
+
+Include this library to your project.
+When you use any classes, check the Javadoc to see which dependencies you should add.
 
 Process
 -------
@@ -39,6 +44,7 @@ Design choices
 --------------
 
 - Java 7: To support Android, the libraries needs to be compiled for Java 7
+- No transitive libraries: Since the goal is to provide a lot of diversity while reusing other libraries, it is better for you to include only the libraries you need.
 
 
 Deployment instructions

@@ -38,6 +38,11 @@ import com.google.common.cache.CacheBuilder;
  *     // ...
  * }
  * </pre>
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.google.guava:guava:18.0'
+ * </pre>
  */
 public class LocalBroadcastDiscoveryClient implements Runnable {
 

@@ -49,6 +49,13 @@ import com.foilen.smalltools.tools.AssertTools;
  * // Decrypt
  * byte[] decryptedData = crypt.decrypt(keyPair, cryptedData);
  * </pre>
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.madgag.spongycastle:prov:1.51.0.0'
+ * compile 'com.madgag.spongycastle:pkix:1.51.0.0'
+ * compile 'com.madgag.spongycastle:pg:1.51.0.0'
+ * </pre>
  */
 public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
 

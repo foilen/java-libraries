@@ -26,6 +26,11 @@ import com.google.common.primitives.Ints;
 
 /**
  * Some simple methods to play with streams.
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.google.guava:guava:18.0'
+ * </pre>
  */
 public final class StreamsTools {
 

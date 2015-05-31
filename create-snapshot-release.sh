@@ -3,29 +3,32 @@
 set -e
 
 VERSION=master-SNAPSHOT
+RUN_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Update copyrigths
-echo ----==[ Update copyrigths ]==----
-pushd scripts
+# Update copyrights
+echo ----==[ Update copyrights ]==----
+cd $RUN_PATH/scripts
 ./javaheaderchanger.sh > /dev/null
-popd
 
-# Compile
-echo ----==[ Compile ]==----
-./gradlew clean install
-
-# Zip
-for i in `ls`
+# Go through projects
+cd $RUN_PATH
+rm -f *.zip
+for i in `cat projects-order.txt`
 do
-  if [ -d $i/build/libs ]; then
+  cd $RUN_PATH
+  if [ -f $i/pom.xml ]; then
+  
+    cd $RUN_PATH/$i
+  
+    echo ----==[ Compile $i ]==----
+    mvn clean install
+  
     echo ----==[ Zip $i ]==----
-    rm -f $i.zip
-    pushd $i/build/libs
+    cd $RUN_PATH/$i/target
     mkdir -p com/foilen/$i/$VERSION/
     mv *.jar com/foilen/$i/$VERSION/
-    mv ../poms/pom-default.xml com/foilen/$i/$VERSION/$i-$VERSION.pom
-    zip -r ../../../$i.zip com
-    popd
+    cp ../pom.xml com/foilen/$i/$VERSION/$i-$VERSION.pom
+    zip -r $RUN_PATH/$i.zip com
   fi
 done
 

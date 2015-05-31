@@ -42,6 +42,13 @@ import com.foilen.smalltools.exception.SmallToolsException;
  * // Decrypt
  * byte[] decryptedData = crypt.decrypt(key, cryptedData);
  * </pre>
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.madgag.spongycastle:prov:1.51.0.0'
+ * compile 'com.madgag.spongycastle:pkix:1.51.0.0'
+ * compile 'com.madgag.spongycastle:pg:1.51.0.0'
+ * </pre>
  */
 public class AESCrypt extends AbstractSymmetricCrypt<AESKeyDetails> {
 

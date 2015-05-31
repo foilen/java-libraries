@@ -1,7 +1,0 @@
-dependencies {
-    compile 'com.google.guava:guava:18.0'
-    compile 'org.slf4j:slf4j-api:1.7.9'
-    compile 'org.yaml:snakeyaml:1.14'
-
-    testCompile project(':jl-smalltools-test')
-}

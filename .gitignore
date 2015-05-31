@@ -2,6 +2,7 @@
 .settings/
 build/
 bin/
+target/
 .classpath
 .project
 /*.zip

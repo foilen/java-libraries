@@ -18,6 +18,11 @@ import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Communicate via Yaml messages.
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'org.yaml:snakeyaml:1.15'
+ * </pre>
  */
 public class YamlConnectionLanguage implements ConnectionLanguage {
 
