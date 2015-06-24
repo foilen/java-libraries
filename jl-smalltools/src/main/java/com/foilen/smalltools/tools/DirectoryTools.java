@@ -11,6 +11,9 @@ package com.foilen.smalltools.tools;
 import java.io.File;
 import java.util.Stack;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Joiner;
 
 /**
@@ -19,9 +22,12 @@ import com.google.common.base.Joiner;
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
+ * compile 'org.slf4j:slf4j-api:1.7.12'
  * </pre>
  */
 public final class DirectoryTools {
+
+    private final static Logger log = LoggerFactory.getLogger(DirectoryTools.class);
 
     /**
      * Remove the . and .. from a path
@@ -83,6 +89,62 @@ public final class DirectoryTools {
      */
     public static boolean createPath(String directoryPath) {
         return createPath(new File(directoryPath));
+    }
+
+    /**
+     * Create the directory and all the parent ones if needed. Only the final folder will have the owner, group and permissions.
+     * 
+     * @param directoryPath
+     *            the path to the directory
+     * @param owner
+     *            the owner of the file
+     * @param group
+     *            the group of the file
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if well created or already exists
+     */
+    public static boolean createPath(String directoryPath, String owner, String group, String permissions) {
+
+        log.debug("createPath {} ", directoryPath);
+
+        // Create
+        if (!createPath(directoryPath)) {
+            return false;
+        }
+        // Change owner and permission
+        FileTools.changeOwnerAndGroup(directoryPath, false, owner, group);
+        FileTools.changePermissions(directoryPath, false, permissions);
+
+        return true;
+    }
+
+    /**
+     * Create the directory and all the parent ones if needed.
+     * 
+     * @param directoryPathParts
+     *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
+     * @return true if well created or already exists
+     */
+    public static boolean createPath(String[] directoryPathParts) {
+        return createPath(new File(FileTools.concatPath(directoryPathParts)));
+    }
+
+    /**
+     * Create the directory and all the parent ones if needed. Only the final folder will have the owner, group and permissions.
+     * 
+     * @param directoryPathParts
+     *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
+     * @param owner
+     *            the owner of the file
+     * @param group
+     *            the group of the file
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if well created or already exists
+     */
+    public static boolean createPath(String[] directoryPathParts, String owner, String group, String permissions) {
+        return createPath(FileTools.concatPath(directoryPathParts), owner, group, permissions);
     }
 
     /**
