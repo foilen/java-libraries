@@ -28,6 +28,7 @@ public class Vector2f {
      * Copy the values of the other vector.
      * 
      * @param vector
+     *            the other vector
      */
     public Vector2f(Vector2f vector) {
         set(vector);
@@ -110,6 +111,7 @@ public class Vector2f {
      * Copy the values of the other vector.
      * 
      * @param vector
+     *            the other vector
      */
     public void set(Vector2f vector) {
         this.x = vector.x;

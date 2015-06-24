@@ -52,6 +52,7 @@ public interface SymmetricCrypt<K> {
      * 
      * @param keysize
      *            the size of the key (e.g 128, 192, 256, ...)
+     * @return the symmetric key
      */
     SymmetricKey generateKey(int keysize);
 

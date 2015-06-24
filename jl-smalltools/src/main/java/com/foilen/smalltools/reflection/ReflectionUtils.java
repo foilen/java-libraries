@@ -208,6 +208,8 @@ public final class ReflectionUtils {
      * 
      * @param clazz
      *            the type
+     * @param <T>
+     *            the type of the object
      * @return the object
      */
     public static <T> T instantiate(Class<T> clazz) {

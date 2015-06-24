@@ -65,6 +65,8 @@ public class FileSystemUpdateWatcher extends Thread {
     /**
      * Add an handler.
      * 
+     * @param fileSystemUpdateHandler
+     *            the handler
      * @return this
      */
     public FileSystemUpdateWatcher addHandler(FileSystemUpdateHandler fileSystemUpdateHandler) {
@@ -202,6 +204,7 @@ public class FileSystemUpdateWatcher extends Thread {
      * Change the recursive parameter.
      * 
      * @param recursive
+     *            true to watch the subfolders as well
      * @return this
      */
     public FileSystemUpdateWatcher setRecursive(boolean recursive) {

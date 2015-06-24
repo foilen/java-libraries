@@ -45,7 +45,7 @@ public final class DateTools {
      *            the unit of the delta that is a constant on {@link Calendar}
      * @param delta
      *            the delta
-     * @return true if is expired ( dateToCheck + delta < currentTime)
+     * @return true if is expired ( dateToCheck + delta &lt; currentTime)
      */
     public static boolean isExpired(Date dateToCheck, Date currentTime, int calendarUnit, int delta) {
         Date expiresOn = addDate(dateToCheck, calendarUnit, delta);
@@ -61,7 +61,7 @@ public final class DateTools {
      *            the unit of the delta that is a constant on {@link Calendar}
      * @param delta
      *            the delta
-     * @return true if is expired ( dateToCheck + delta < now)
+     * @return true if is expired ( dateToCheck + delta &lt; now)
      */
     public static boolean isExpired(Date dateToCheck, int calendarUnit, int delta) {
         return isExpired(dateToCheck, new Date(), calendarUnit, delta);

@@ -251,6 +251,7 @@ public class XslTransform {
      * Set the XSL to use.
      * 
      * @param xslInputStream
+     *            the xsl input stream
      * @return this
      */
     public XslTransform usingInputStream(InputStream xslInputStream) {
@@ -266,6 +267,7 @@ public class XslTransform {
      * Set the XSL to use.
      * 
      * @param xslReader
+     *            the xsl reader
      * @return this
      */
     public XslTransform usingReader(Reader xslReader) {

@@ -21,6 +21,10 @@ public final class CollectionsTools {
      *            the map
      * @param valueToRemove
      *            the value to remove the entry
+     * @param <K>
+     *            the type of the key
+     * @param <V>
+     *            the type of the value
      * @return the removed key or null if not found
      */
     public static <K, V> K removeValue(Map<K, V> map, V valueToRemove) {
@@ -44,6 +48,10 @@ public final class CollectionsTools {
      *            the map
      * @param valueToRemove
      *            the value to remove the entries
+     * @param <K>
+     *            the type of the key
+     * @param <V>
+     *            the type of the value
      */
     public static <K, V> void removeValues(Map<K, V> map, V valueToRemove) {
         Iterator<Entry<K, V>> iterator = map.entrySet().iterator();

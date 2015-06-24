@@ -24,6 +24,9 @@ public interface BeanRepository {
      * 
      * @param clazz
      *            the type
+     * @param <T>
+     *            the type of object
+     * @return the instantiated object
      */
     <T> T add(Class<T> clazz);
 
@@ -32,6 +35,7 @@ public interface BeanRepository {
      * 
      * @param object
      *            the object
+     * @return the same object
      */
     Object add(Object object);
 
@@ -40,6 +44,9 @@ public interface BeanRepository {
      * 
      * @param clazz
      *            the type
+     * @param <T>
+     *            the type of object
+     * @return the configured object
      */
     <T> T addAndConfig(Class<T> clazz);
 
@@ -48,6 +55,7 @@ public interface BeanRepository {
      * 
      * @param object
      *            the object
+     * @return the same object
      */
     Object addAndConfig(Object object);
 
@@ -57,6 +65,8 @@ public interface BeanRepository {
      * 
      * @param clazz
      *            the type
+     * @param <T>
+     *            the type of object
      * @return the configured object
      */
     <T> T config(Class<T> clazz);
@@ -67,6 +77,8 @@ public interface BeanRepository {
      * 
      * @param object
      *            the object
+     * @param <T>
+     *            the type of object
      * @return the configured object
      */
     <T> T config(T object);
@@ -89,6 +101,9 @@ public interface BeanRepository {
      * Get a single bean of the desired type. If not exactly one available, it will throw an exception.
      * 
      * @param clazz
+     *            the type
+     * @param <T>
+     *            the type of object
      * @return the bean
      */
     <T> T getBean(Class<T> clazz);
@@ -97,6 +112,9 @@ public interface BeanRepository {
      * Get a list of beans of the desired type. If none, will return an empty list.
      * 
      * @param clazz
+     *            the type
+     * @param <T>
+     *            the type of object
      * @return the beans
      */
     <T> Set<T> getBeans(Class<T> clazz);

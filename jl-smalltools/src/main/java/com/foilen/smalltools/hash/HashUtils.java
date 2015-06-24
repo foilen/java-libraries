@@ -25,7 +25,10 @@ public final class HashUtils {
     /**
      * Take an {@link InputStream} and get its hash.
      * 
+     * @param algorithm
+     *            the algorithm to use
      * @param in
+     *            the input stream with the content
      * @return the hash in hex
      */
     public static String hashInputStream(String algorithm, InputStream in) {

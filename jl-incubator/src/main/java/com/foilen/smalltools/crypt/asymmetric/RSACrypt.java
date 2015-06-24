@@ -26,14 +26,12 @@ import com.foilen.smalltools.tools.AssertTools;
 /**
  * RSA cryptography.
  * 
- * <pre>
  * Default:
  * <ul>
  * <li>RSA: The cipher</li>
  * <li>ECB: Electronic Codebook Mode</li>
  * <li>PKCS1Padding: The padding algorithm</li>
- * <ul>
- * </pre>
+ * </ul>
  * 
  * Usage:
  * 

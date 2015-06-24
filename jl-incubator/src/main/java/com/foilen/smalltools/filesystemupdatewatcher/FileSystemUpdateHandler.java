@@ -19,6 +19,7 @@ public interface FileSystemUpdateHandler {
      * Called when a file or directory is created.
      * 
      * @param file
+     *            the file or directory
      */
     void created(File file);
 
@@ -26,6 +27,7 @@ public interface FileSystemUpdateHandler {
      * Called when a file or directory is deleted.
      * 
      * @param file
+     *            the file or directory
      */
     void deleted(File file);
 
@@ -33,6 +35,7 @@ public interface FileSystemUpdateHandler {
      * Called when a file or directory is modified.
      * 
      * @param file
+     *            the file or directory
      */
     void modified(File file);
 }

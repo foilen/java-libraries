@@ -17,7 +17,9 @@ public class MathUtils {
      * Tells if the signs are different.
      * 
      * @param a
+     *            first item
      * @param b
+     *            second item
      * @return true if different
      */
     static public boolean hasDifferentSigns(float a, float b) {

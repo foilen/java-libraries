@@ -212,6 +212,7 @@ public class DiscoverableService {
      * Server type is TCP or UDP.
      * 
      * @param serverType
+     *            TCP or UDP
      */
     public void setServerType(String serverType) {
         this.serverType = serverType;

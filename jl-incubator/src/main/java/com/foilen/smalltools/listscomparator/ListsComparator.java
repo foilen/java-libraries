@@ -23,6 +23,8 @@ public final class ListsComparator {
      *            ordered list
      * @param rights
      *            ordered list
+     * @param <T>
+     *            the type of the items
      * @return the comparison
      */
     public static <T extends Comparable<T>> List<ListsComparatorDifference<T>> compareLists(List<T> lefts, List<T> rights) {

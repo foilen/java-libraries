@@ -52,6 +52,7 @@ public interface AsymmetricCrypt<K> {
      * 
      * @param keysize
      *            the size of the key (e.g 1024, 2048, 4096, ...)
+     * @return the asymmetric key
      */
     AsymmetricKeys generateKeyPair(int keysize);
 

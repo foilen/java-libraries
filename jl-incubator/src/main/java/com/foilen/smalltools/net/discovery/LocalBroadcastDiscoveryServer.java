@@ -28,13 +28,12 @@ import com.foilen.smalltools.tools.ThreadTools;
  * A broadcasting service to use on a LAN. This service is sending an UDP broadcast message on the local network at a certain interval. The message includes the type of service and how to connect to
  * it. There can be multiple services. Upon instantiation, a new thread is started right away.
  * 
- * Defaults:
- * 
  * <pre>
+ * Defaults:
+ * </pre>
  * <ul>
  * <li>Broadcast delay: 5 seconds between broadcasts</li>
  * </ul>
- * </pre>
  * 
  * Usage:
  * 

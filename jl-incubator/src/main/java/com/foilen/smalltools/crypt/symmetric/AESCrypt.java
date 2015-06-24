@@ -20,13 +20,11 @@ import com.foilen.smalltools.exception.SmallToolsException;
 /**
  * AESCrypt cryptography. The IV (Initialization Vector) is automatically appended at the beginning of the encrypted data and automatically used by the decrypt method.
  * 
- * <pre>
  * <ul>
  * <li>AES: The cipher</li>
  * <li>CBC: Cipher Block Chaining Mode</li>
  * <li>PKCS5Padding: The padding algorithm</li>
- * <ul>
- * </pre>
+ * </ul>
  * 
  * Usage:
  * 

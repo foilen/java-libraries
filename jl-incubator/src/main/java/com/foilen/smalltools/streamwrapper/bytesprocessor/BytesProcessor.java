@@ -28,7 +28,9 @@ public interface BytesProcessor {
      * @param content
      *            the content to process
      * @param offset
+     *            the offset
      * @param length
+     *            the length
      * @return the modified bytes
      */
     byte[] process(byte[] content, int offset, int length);

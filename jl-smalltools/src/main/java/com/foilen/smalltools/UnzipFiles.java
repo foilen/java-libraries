@@ -131,6 +131,7 @@ public class UnzipFiles {
      * Set to true to skip the first folder in the zip. Good when a zip has a single root folder with the name and version of an application.
      * 
      * @param ignoreFirstSubpath
+     *            skip the first folder in the zip
      */
     public void setIgnoreFirstSubpath(boolean ignoreFirstSubpath) {
         this.ignoreFirstSubpath = ignoreFirstSubpath;

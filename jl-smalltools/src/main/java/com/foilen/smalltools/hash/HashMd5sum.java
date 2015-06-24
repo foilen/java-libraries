@@ -52,6 +52,7 @@ public final class HashMd5sum {
      * Take a {@link String} and get its hash.
      * 
      * @param in
+     *            the content
      * @return the hash in hex
      */
     public static String hashString(String in) {
