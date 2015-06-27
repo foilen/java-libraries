@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import com.foilen.smalltools.exception.SmallToolsException;
@@ -61,6 +63,17 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
      */
     public void openFile(File file) throws FileNotFoundException {
         bufferedReader = new BufferedReader(new FileReader(file));
+        readNextLine();
+    }
+
+    /**
+     * The stream to use.
+     * 
+     * @param inputStream
+     *            the stream to read
+     */
+    public void openStream(InputStream inputStream) {
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         readNextLine();
     }
 

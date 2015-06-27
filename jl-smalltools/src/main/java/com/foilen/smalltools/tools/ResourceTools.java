@@ -10,8 +10,10 @@ package com.foilen.smalltools.tools;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.URL;
 
+import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
@@ -76,6 +78,31 @@ public final class ResourceTools {
     }
 
     /**
+     * Load a resource as a stream.
+     * 
+     * @param resource
+     *            the resource to open as an absolute path
+     * @return the stream
+     */
+    public static InputStream getResourceAsStream(String resource) {
+        return getResourceAsStream(resource, ResourceTools.class);
+    }
+
+    /**
+     * Load a resource as a stream.
+     * 
+     * @param resource
+     *            the resource to open
+     * @param context
+     *            the context class to use relative path
+     * @return the stream
+     */
+    public static InputStream getResourceAsStream(String resource, Class<?> context) {
+        return context.getResourceAsStream(resource);
+    }
+
+
+    /**
      * Load a resource as a String.
      * 
      * @param resource
@@ -136,6 +163,31 @@ public final class ResourceTools {
         return resourcePath;
     }
 
+    /**
+     * Opens a resource and iterates over all the lines.
+     * 
+     * @param resource
+     *            the resource to open as an absolute path
+     * @return the lines iterable
+     */
+    public static FileLinesIterable readResourceLinesIteration(String resource) {
+        return readResourceLinesIteration(resource, ResourceTools.class);
+    }
+
+    /**
+     * Opens a resource and iterates over all the lines.
+     * 
+     * @param resource
+     *            the resource to open
+     * @param context
+     *            the context class to use relative path
+     * @return the lines iterable
+     */
+    public static FileLinesIterable readResourceLinesIteration(String resource, Class<?> context) {
+        FileLinesIterable fileLinesIterable = new FileLinesIterable();
+        fileLinesIterable.openStream(getResourceAsStream(resource, context));
+        return fileLinesIterable;
+    }
     private ResourceTools() {
     }
 }
