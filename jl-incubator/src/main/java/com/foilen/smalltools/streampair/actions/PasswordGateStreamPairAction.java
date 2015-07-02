@@ -35,8 +35,10 @@ import com.foilen.smalltools.tools.StreamsTools;
  * - Does not send the password in plain text (hash with salt)
  * - No replay-attack possible since the server has a say on the token it has to hash
  * - Cannot relay the remote token to another peer to get the answer since the other peer would send a different tr
+ *   - NOT TRUE: The attacker could relay tr to another node and the tr of that other node to the first one
  * </pre>
  */
+@Deprecated
 public class PasswordGateStreamPairAction extends AbstractTimeoutStreamPairAction {
 
     private static final Logger logger = LoggerFactory.getLogger(PasswordGateStreamPairAction.class);
