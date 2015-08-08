@@ -9,12 +9,14 @@
 package com.foilen.smalltools;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
 import com.foilen.smalltools.exception.SmallToolsException;
@@ -75,6 +77,20 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
     public void openStream(InputStream inputStream) {
         bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         readNextLine();
+    }
+
+    /**
+     * The String to use.
+     * 
+     * @param text
+     *            the text to read
+     */
+    public void openString(String text) {
+        try {
+            openStream(new ByteArrayInputStream(text.getBytes("UTF8")));
+        } catch (UnsupportedEncodingException e) {
+            throw new SmallToolsException(e);
+        }
     }
 
     /**

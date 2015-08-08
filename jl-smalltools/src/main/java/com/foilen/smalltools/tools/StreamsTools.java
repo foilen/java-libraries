@@ -117,6 +117,21 @@ public final class StreamsTools {
     }
 
     /**
+     * Creates a separate thread to consume the content of the source, add it to the destination and close the source and the destination.
+     * 
+     * @param source
+     *            the stream from where to get the data
+     * @param destination
+     *            the stream to send the data to
+     * @return the thread
+     */
+    public static FlowStreamThread flowAndCloseStreamNonBlocking(InputStream source, OutputStream destination) {
+        FlowStreamThread thread = new FlowStreamThread(source, destination, true);
+        thread.start();
+        return thread;
+    }
+
+    /**
      * Consumes the content of the source, adds it to the destination and closes the source (the destination is still open).
      * 
      * @param source
@@ -185,16 +200,18 @@ public final class StreamsTools {
     }
 
     /**
-     * Creates a separate thread to consume the content of the source, add it to the destination and close the source and the destination.
+     * Creates a separate thread to consume the content of the source, add it to the destination and close the source.
      * 
      * @param source
      *            the stream from where to get the data
      * @param destination
      *            the stream to send the data to
+     * @param closeAtEnd
+     *            tells if you want the destination to be closed when completed
      * @return the thread
      */
-    public static FlowStreamThread flowAndCloseStreamNonBlocking(InputStream source, OutputStream destination) {
-        FlowStreamThread thread = new FlowStreamThread(source, destination, true);
+    public static FlowStreamThread flowStreamNonBlocking(InputStream source, OutputStream destination, boolean closeAtEnd) {
+        FlowStreamThread thread = new FlowStreamThread(source, destination, closeAtEnd);
         thread.start();
         return thread;
     }

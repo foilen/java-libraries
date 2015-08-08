@@ -14,31 +14,77 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.tools.FileTools;
-
 public class FileToolsTest {
 
-    @Test
-    public void testIsWindowsStartPath() {
-        Assert.assertTrue(FileTools.isWindowsStartPath("c:\\windows\\notepad.exe"));
-        Assert.assertTrue(FileTools.isWindowsStartPath("C:\\windows\\notepad.exe"));
-        Assert.assertTrue(FileTools.isWindowsStartPath("c:/windows/note:pad.exe"));
-        Assert.assertFalse(FileTools.isWindowsStartPath("/windows/note:pad.exe"));
-        Assert.assertFalse(FileTools.isWindowsStartPath("\\windows\\note:pad.exe"));
-        Assert.assertFalse(FileTools.isWindowsStartPath("c\\windows\\notepad.exe"));
+    private void assertFileContent(File tmpExpected, File tmpActual) {
+        String expected = FileTools.getFileAsString(tmpExpected);
+        String actual = FileTools.getFileAsString(tmpActual);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testReadFileLinesIteration() throws IOException {
-        File tmpFile = File.createTempFile("junit", null);
-        String content = "This is the first line\nAnd the second one\nA last one";
-        Assert.assertTrue(FileTools.writeFile(content, tmpFile));
+    public void testAppendLineIfMissing_FileNotExists() throws Exception {
+        // Files
+        File tmpActual = File.createTempFile("junit", null);
+        tmpActual.delete();
+        File tmpExpected = File.createTempFile("junit", null);
 
-        String[] parts = content.split("\n");
-        int count = 0;
-        for (String nextLine : FileTools.readFileLinesIteration(tmpFile.getAbsolutePath())) {
-            Assert.assertEquals(parts[count++], nextLine);
-        }
+        // File not exists
+        FileTools.writeFile("hello world\n", tmpExpected);
+        FileTools.appendLineIfMissing(tmpActual.getAbsolutePath(), "hello world");
+        assertFileContent(tmpExpected, tmpActual);
+    }
+
+    @Test
+    public void testAppendLineIfMissing_WithLineAtEnd() throws Exception {
+        // Files
+        File tmpActual = File.createTempFile("junit", null);
+        File tmpExpected = File.createTempFile("junit", null);
+
+        // File without line and with an empty ending line
+        FileTools.writeFile("This is a nice project\nthat you are currently doing\nhello world\n", tmpActual);
+        FileTools.writeFile("This is a nice project\nthat you are currently doing\nhello world\n", tmpExpected);
+        FileTools.appendLineIfMissing(tmpActual.getAbsolutePath(), "hello world");
+        assertFileContent(tmpExpected, tmpActual);
+    }
+
+    @Test
+    public void testAppendLineIfMissing_WithLineInMiddle() throws Exception {
+        // Files
+        File tmpActual = File.createTempFile("junit", null);
+        File tmpExpected = File.createTempFile("junit", null);
+
+        // File with line in the middle
+        FileTools.writeFile("This is a nice project\nhello world\nthat you are currently doing", tmpActual);
+        FileTools.writeFile("This is a nice project\nhello world\nthat you are currently doing", tmpExpected);
+        FileTools.appendLineIfMissing(tmpActual.getAbsolutePath(), "hello world");
+        assertFileContent(tmpExpected, tmpActual);
+    }
+
+    @Test
+    public void testAppendLineIfMissing_WithoutLine() throws Exception {
+        // Files
+        File tmpActual = File.createTempFile("junit", null);
+        File tmpExpected = File.createTempFile("junit", null);
+
+        // File without line
+        FileTools.writeFile("This is a nice project\nthat you are currently doing", tmpActual);
+        FileTools.writeFile("This is a nice project\nthat you are currently doing\nhello world\n", tmpExpected);
+        FileTools.appendLineIfMissing(tmpActual.getAbsolutePath(), "hello world");
+        assertFileContent(tmpExpected, tmpActual);
+    }
+
+    @Test
+    public void testAppendLineIfMissing_WithoutLineWithEmptyEndingLine() throws Exception {
+        // Files
+        File tmpActual = File.createTempFile("junit", null);
+        File tmpExpected = File.createTempFile("junit", null);
+
+        // File without line and with an empty ending line
+        FileTools.writeFile("This is a nice project\nthat you are currently doing\n", tmpActual);
+        FileTools.writeFile("This is a nice project\nthat you are currently doing\nhello world\n", tmpExpected);
+        FileTools.appendLineIfMissing(tmpActual.getAbsolutePath(), "hello world");
+        assertFileContent(tmpExpected, tmpActual);
     }
 
     @Test
@@ -123,6 +169,29 @@ public class FileToolsTest {
         destinationPath = "junit\\file";
         actual = FileTools.getAbsolutePath(workingDirectory, destinationPath);
         Assert.assertEquals("c:\\tmp\\junit\\file", actual);
+    }
+
+    @Test
+    public void testIsWindowsStartPath() {
+        Assert.assertTrue(FileTools.isWindowsStartPath("c:\\windows\\notepad.exe"));
+        Assert.assertTrue(FileTools.isWindowsStartPath("C:\\windows\\notepad.exe"));
+        Assert.assertTrue(FileTools.isWindowsStartPath("c:/windows/note:pad.exe"));
+        Assert.assertFalse(FileTools.isWindowsStartPath("/windows/note:pad.exe"));
+        Assert.assertFalse(FileTools.isWindowsStartPath("\\windows\\note:pad.exe"));
+        Assert.assertFalse(FileTools.isWindowsStartPath("c\\windows\\notepad.exe"));
+    }
+
+    @Test
+    public void testReadFileLinesIteration() throws IOException {
+        File tmpFile = File.createTempFile("junit", null);
+        String content = "This is the first line\nAnd the second one\nA last one";
+        Assert.assertTrue(FileTools.writeFile(content, tmpFile));
+
+        String[] parts = content.split("\n");
+        int count = 0;
+        for (String nextLine : FileTools.readFileLinesIteration(tmpFile.getAbsolutePath())) {
+            Assert.assertEquals(parts[count++], nextLine);
+        }
     }
 
 }

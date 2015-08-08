@@ -54,6 +54,63 @@ public final class FileTools {
     private static final UserPrincipalLookupService USER_PRINCIPAL_LOOKUP_SERVICE = FileSystems.getDefault().getUserPrincipalLookupService();
 
     /**
+     * Check if the file does not contain the line and append it if missing.
+     * 
+     * @param path
+     *            the path to the file
+     * @param line
+     *            the line to add
+     */
+    public static void appendLineIfMissing(String path, String line) {
+        // Search
+        boolean endsWithEmptyLine = false;
+        OutputStream out = null;
+        File file = new File(path);
+        try {
+            for (String currLine : readFileLinesIteration(file)) {
+                if (currLine.equals(line)) {
+                    return;
+                }
+            }
+
+            // Check last character
+            FileInputStream fin = null;
+            try {
+                fin = new FileInputStream(file);
+                fin.skip(file.length() - 1);
+                char c = (char) fin.read();
+                endsWithEmptyLine = c == '\n' || c == '\r';
+            } catch (Exception e) {
+            } finally {
+                CloseableTools.close(fin);
+            }
+
+            // Open for appending
+            out = new FileOutputStream(file, true);
+        } catch (FileNotFoundException e) {
+            endsWithEmptyLine = true;
+            try {
+                // Open new file
+                out = new FileOutputStream(file);
+            } catch (FileNotFoundException e1) {
+            }
+        }
+
+        // Write
+        try {
+            if (endsWithEmptyLine) {
+                out.write((line + "\n").getBytes());
+            } else {
+                out.write(("\n" + line + "\n").getBytes());
+            }
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem writing to file", e);
+        } finally {
+            CloseableTools.close(out);
+        }
+    }
+
+    /**
      * Change the owner and group of the specified file or directory.
      * 
      * @param fileOrDirectory
@@ -465,15 +522,47 @@ public final class FileTools {
      * 
      * @param inputStream
      *            the content to write
-     * @param outFile
+     * @param file
      *            the file to write into
      * @return true if it worked
      */
-    public static boolean writeFile(InputStream inputStream, File outFile) {
+    public static boolean writeFile(InputStream inputStream, File file) {
         try {
-            FileOutputStream fos = new FileOutputStream(outFile);
+            FileOutputStream fos = new FileOutputStream(file);
             StreamsTools.flowStream(inputStream, fos);
             fos.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Save the stream to a file.
+     * 
+     * @param inputStream
+     *            the content to write
+     * @param file
+     *            the file to write into
+     * @param owner
+     *            the owner of the file
+     * @param group
+     *            the group of the file
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if it worked
+     */
+    public static boolean writeFile(InputStream inputStream, File file, String owner, String group, String permissions) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            StreamsTools.flowStream(inputStream, fos);
+            fos.close();
+
+            // Update owners and permissions
+            String path = file.getAbsolutePath();
+            changeOwnerAndGroup(path, false, owner, group);
+            changePermissions(path, false, permissions);
+
             return true;
         } catch (IOException e) {
             return false;
@@ -494,6 +583,38 @@ public final class FileTools {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(content.getBytes());
             fos.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Save some texts to a file.
+     * 
+     * @param content
+     *            the content to write
+     * @param file
+     *            the file to write into
+     * @param owner
+     *            the owner of the file
+     * @param group
+     *            the group of the file
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if it worked
+     */
+    public static boolean writeFile(String content, File file, String owner, String group, String permissions) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(content.getBytes());
+            fos.close();
+
+            // Update owners and permissions
+            String path = file.getAbsolutePath();
+            changeOwnerAndGroup(path, false, owner, group);
+            changePermissions(path, false, permissions);
+
             return true;
         } catch (IOException e) {
             return false;
@@ -582,6 +703,31 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      * 
+     * @param path
+     *            the path to the file
+     * @param content
+     *            the text content
+     * @param owner
+     *            the owner of the file
+     * @param group
+     *            the group of the file
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if the file was created or the content is different
+     */
+    public static boolean writeFileWithContentCheck(String path, String content, String owner, String group, String permissions) {
+        boolean needUpdate = writeFileWithContentCheck(path, content);
+
+        // Update owners and permissions
+        changeOwnerAndGroup(path, false, owner, group);
+        changePermissions(path, false, permissions);
+
+        return needUpdate;
+    }
+
+    /**
+     * Save some texts to a file.
+     * 
      * @param pathParts
      *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
      * @param contentLines
@@ -596,5 +742,24 @@ public final class FileTools {
      */
     public static boolean writeFileWithContentCheck(String[] pathParts, List<String> contentLines, String owner, String group, String permissions) {
         return writeFileWithContentCheck(concatPath(pathParts), contentLines, owner, group, permissions);
+    }
+
+    /**
+     * Save some texts to a file.
+     * 
+     * @param pathParts
+     *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
+     * @param content
+     *            the text content
+     * @param owner
+     *            the owner of the file
+     * @param group
+     *            the group of the file
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if the file was created or the content is different
+     */
+    public static boolean writeFileWithContentCheck(String[] pathParts, String content, String owner, String group, String permissions) {
+        return writeFileWithContentCheck(concatPath(pathParts), content, owner, group, permissions);
     }
 }
