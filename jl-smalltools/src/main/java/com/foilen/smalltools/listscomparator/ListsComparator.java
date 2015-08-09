@@ -28,10 +28,42 @@ public final class ListsComparator {
      * @return the comparison
      */
     public static <T extends Comparable<T>> List<ListsComparatorDifference<T>> compareLists(List<T> lefts, List<T> rights) {
+        final List<ListsComparatorDifference<T>> comparisons = new ArrayList<ListsComparatorDifference<T>>();
+
+        compareLists(lefts, rights, new ListComparatorHandler<T, T>() {
+            @Override
+            public void both(T left, T right) {
+            }
+
+            @Override
+            public void leftOnly(T left) {
+                comparisons.add(new ListsComparatorDifference<T>(left, -1));
+            }
+
+            @Override
+            public void rightOnly(T right) {
+                comparisons.add(new ListsComparatorDifference<T>(right, 1));
+            }
+        });
+
+        return comparisons;
+    }
+
+    /**
+     * Compare two ordered lists for differences.
+     * 
+     * @param lefts
+     *            ordered list
+     * @param rights
+     *            ordered list
+     * @param listComparatorHandler
+     *            the change handler
+     * @param <T>
+     *            the type of the items
+     */
+    public static <T extends Comparable<T>> void compareLists(List<T> lefts, List<T> rights, ListComparatorHandler<T, T> listComparatorHandler) {
         int posLeft = 0;
         int posRight = 0;
-
-        List<ListsComparatorDifference<T>> comparisons = new ArrayList<ListsComparatorDifference<T>>();
 
         while (posLeft < lefts.size() || posRight < rights.size()) {
             T left = null;
@@ -46,13 +78,13 @@ public final class ListsComparator {
             // If one is null
             if (left == null) {
                 ++posRight;
-                comparisons.add(new ListsComparatorDifference<T>(right, 1));
+                listComparatorHandler.rightOnly(right);
                 continue;
             }
 
             if (right == null) {
                 ++posLeft;
-                comparisons.add(new ListsComparatorDifference<T>(left, -1));
+                listComparatorHandler.leftOnly(left);
                 continue;
             }
 
@@ -60,17 +92,17 @@ public final class ListsComparator {
             int comparison = left.compareTo(right);
             if (comparison < 0) {
                 ++posLeft;
-                comparisons.add(new ListsComparatorDifference<T>(left, -1));
+                listComparatorHandler.leftOnly(left);
             } else if (comparison > 0) {
                 ++posRight;
-                comparisons.add(new ListsComparatorDifference<T>(right, 1));
+                listComparatorHandler.rightOnly(right);
             } else {
+                listComparatorHandler.both(left, right);
                 ++posLeft;
                 ++posRight;
             }
         }
 
-        return comparisons;
     }
 
     private ListsComparator() {
