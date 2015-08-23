@@ -66,6 +66,11 @@ public class ZerosInputStream extends InputStream {
             return 0;
         }
 
+        // Completed
+        if (bytesLeft == 0) {
+            return EOF;
+        }
+
         // Bigger
         if (len > bytesLeft) {
             len = (int) bytesLeft;
