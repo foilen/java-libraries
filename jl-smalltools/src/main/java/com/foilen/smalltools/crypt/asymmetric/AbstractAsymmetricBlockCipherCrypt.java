@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
     
  */
-package com.foilen.smalltools.crypt;
+package com.foilen.smalltools.crypt.asymmetric;
 
 import java.security.SecureRandom;
 

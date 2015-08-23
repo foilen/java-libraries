@@ -74,6 +74,18 @@ public class ConsoleRunner {
      *            the arguments
      * @return this
      */
+    public ConsoleRunner addArguments(List<String> arguments) {
+        this.arguments.addAll(arguments);
+        return this;
+    }
+
+    /**
+     * Add arguments to the command.
+     * 
+     * @param arguments
+     *            the arguments
+     * @return this
+     */
     public ConsoleRunner addArguments(String... arguments) {
         for (String argument : arguments) {
             this.arguments.add(argument);

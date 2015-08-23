@@ -115,6 +115,8 @@ public class TlsServerConnectionAction extends AbstractTimeoutConnectionAction {
             TlsServerProtocol tlsProtocol = new TlsServerProtocol(connection.getInputStream(), connection.getOutputStream(), secureRandom);
             tlsProtocol.accept(new DefaultTlsServer() {
 
+                // TODO Support notifyClientCertificate
+
                 @Override
                 protected TlsSignerCredentials getRSASignerCredentials() throws IOException {
                     return new DefaultTlsSignerCredentials(context, certificate, rsaKeyPair.getPrivate());

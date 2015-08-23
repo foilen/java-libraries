@@ -23,6 +23,17 @@ public final class HashSha512 {
     private static final String ALGORITHM = "SHA-512";
 
     /**
+     * Take bytes and get its hash.
+     * 
+     * @param in
+     *            the content
+     * @return the hash in hex
+     */
+    public static String hashBytes(byte[] in) {
+        return HashUtils.hashInputStream(ALGORITHM, new ByteArrayInputStream(in));
+    }
+
+    /**
      * Take a file and get its hash.
      * 
      * @param file

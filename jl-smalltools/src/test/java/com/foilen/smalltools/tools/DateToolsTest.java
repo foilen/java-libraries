@@ -25,6 +25,18 @@ public class DateToolsTest {
     }
 
     @Test
+    public void testIsAfter() throws Exception {
+        Assert.assertTrue(DateTools.isAfter(SDF.parse("2000-01-31 01:00:00"), SDF.parse("2000-01-01 01:00:00")));
+        Assert.assertFalse(DateTools.isAfter(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-31 01:00:00")));
+    }
+
+    @Test
+    public void testIsBefore() throws Exception {
+        Assert.assertTrue(DateTools.isBefore(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-31 01:00:00")));
+        Assert.assertFalse(DateTools.isBefore(SDF.parse("2000-01-31 01:00:00"), SDF.parse("2000-01-01 01:00:00")));
+    }
+
+    @Test
     public void testIsExpired() throws Exception {
 
         // One month later

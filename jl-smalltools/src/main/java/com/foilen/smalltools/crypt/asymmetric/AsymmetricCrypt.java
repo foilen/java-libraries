@@ -57,6 +57,15 @@ public interface AsymmetricCrypt<K> {
     AsymmetricKeys generateKeyPair(int keysize);
 
     /**
+     * Load the public and/or private keys from a PEM file.
+     * 
+     * @param fileName
+     *            the file name
+     * @return the pair of keys
+     */
+    AsymmetricKeys loadKeysPem(String fileName);
+
+    /**
      * To retrieve the details of a key pair.
      * 
      * @param keyPair
@@ -64,5 +73,35 @@ public interface AsymmetricCrypt<K> {
      * @return the key details
      */
     K retrieveKeyDetails(AsymmetricKeys keyPair);
+
+    /**
+     * Save the public and private keys in a PEM file.
+     * 
+     * @param keyPair
+     *            the pair of keys
+     * @param fileName
+     *            the file name
+     */
+    void saveKeysPem(AsymmetricKeys keyPair, String fileName);
+
+    /**
+     * Save the private key in a PEM file.
+     * 
+     * @param keyPair
+     *            the pair of keys
+     * @param fileName
+     *            the file name
+     */
+    void savePrivateKeyPem(AsymmetricKeys keyPair, String fileName);
+
+    /**
+     * Save the public key in a PEM file.
+     * 
+     * @param keyPair
+     *            the pair of keys
+     * @param fileName
+     *            the file name
+     */
+    void savePublicKeyPem(AsymmetricKeys keyPair, String fileName);
 
 }

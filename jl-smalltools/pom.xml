@@ -36,6 +36,24 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.madgag.spongycastle</groupId>
+      <artifactId>prov</artifactId>
+      <version>1.51.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.madgag.spongycastle</groupId>
+      <artifactId>pkix</artifactId>
+      <version>1.51.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.madgag.spongycastle</groupId>
+      <artifactId>pg</artifactId>
+      <version>1.51.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
       <version>1.5.2</version>

@@ -10,7 +10,6 @@ package com.foilen.smalltools.crypt.asymmetric;
 
 import javax.crypto.Cipher;
 
-import com.foilen.smalltools.crypt.AbstractAsymmetricBlockCipherCrypt;
 import com.foilen.smalltools.tools.AssertTools;
 
 /**

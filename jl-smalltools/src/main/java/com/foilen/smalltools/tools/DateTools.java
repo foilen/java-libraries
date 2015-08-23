@@ -35,6 +35,32 @@ public final class DateTools {
     }
 
     /**
+     * Check that the date before is really after.
+     * 
+     * @param dateAfter
+     *            the date that should be after
+     * @param dateBefore
+     *            the date that should be before
+     * @return true if really after
+     */
+    public static boolean isAfter(Date dateAfter, Date dateBefore) {
+        return dateBefore.getTime() <= dateAfter.getTime();
+    }
+
+    /**
+     * Check that the date before is really before.
+     * 
+     * @param dateBefore
+     *            the date that should be before
+     * @param dateAfter
+     *            the date that should be after
+     * @return true if really before
+     */
+    public static boolean isBefore(Date dateBefore, Date dateAfter) {
+        return dateBefore.getTime() <= dateAfter.getTime();
+    }
+
+    /**
      * Tell if the date to check is now expired if we add the delta.
      * 
      * @param dateToCheck

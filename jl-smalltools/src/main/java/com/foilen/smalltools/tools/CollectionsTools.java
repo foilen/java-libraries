@@ -8,11 +8,39 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public final class CollectionsTools {
+
+    /**
+     * Is true if any of the items is not null.
+     * 
+     * @param items
+     *            the items
+     * @return true if any is not null
+     */
+    public static boolean isAnyItemNotNull(Object... items) {
+        for (Object item : items) {
+            if (item != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Tells if the collection is null or empty.
+     * 
+     * @param collection
+     *            the collection to check
+     * @return true if is null or empty
+     */
+    public static boolean isNullOrEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
 
     /**
      * Remove the first entry with the specified value in the map.

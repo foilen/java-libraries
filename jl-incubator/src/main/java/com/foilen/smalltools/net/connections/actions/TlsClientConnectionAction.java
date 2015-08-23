@@ -60,10 +60,11 @@ public class TlsClientConnectionAction extends AbstractTimeoutConnectionAction {
                 @Override
                 public TlsAuthentication getAuthentication() throws IOException {
                     return new ServerOnlyTlsAuthentication() {
-
+                        // TODO Change for TlsAuthentication
                         @Override
                         public void notifyServerCertificate(Certificate certificateRequest) throws IOException {
                             // Ignoring the certificate since we do not authenticate
+                            // TODO Validate
                         }
                     };
                 }

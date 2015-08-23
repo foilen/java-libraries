@@ -24,6 +24,9 @@ import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -351,6 +354,16 @@ public final class FileTools {
     }
 
     /**
+     * Delete the file.
+     * 
+     * @param path
+     *            the path to the file
+     */
+    public static boolean deleteFile(String path) {
+        return new File(path).delete();
+    }
+
+    /**
      * Gives an absolute path. If the path is relative, the absolute will be composed of the working directory and the file.
      * 
      * @param workingDirectory
@@ -490,6 +503,46 @@ public final class FileTools {
     }
 
     /**
+     * List the names of the files that the content starts with the specified text.
+     * 
+     * @param path
+     *            the full path to the directory
+     * @param startText
+     *            the text that the files must start with
+     * @return the names of the files (sorted)
+     */
+    public static List<String> listFilesStartingWith(String path, String startText) {
+
+        // Check if directory
+        File directory = new File(path);
+        if (!directory.isDirectory()) {
+            throw new SmallToolsException(path + " is not a directory");
+        }
+
+        // Get the bytes
+        byte[] startBytes = startText.getBytes();
+        byte[] buffer = new byte[startBytes.length];
+
+        // Scan the directory
+        List<String> result = new ArrayList<>();
+        for (File file : directory.listFiles()) {
+            try (InputStream inputStream = new FileInputStream(file)) {
+                inputStream.read(buffer);
+                if (Arrays.equals(startBytes, buffer)) {
+                    result.add(file.getName());
+                }
+            } catch (Exception e) {
+                throw new SmallToolsException("Could not read file " + file.getAbsolutePath(), e);
+            }
+        }
+
+        // Sort
+        Collections.sort(result);
+
+        return result;
+    }
+
+    /**
      * Opens a file and iterates over all the lines.
      * 
      * @param file
@@ -510,11 +563,13 @@ public final class FileTools {
      * @param filePath
      *            the absolute file path
      * @return an iterable
-     * @throws FileNotFoundException
-     *             FileNotFoundException
      */
-    public static FileLinesIterable readFileLinesIteration(String filePath) throws FileNotFoundException {
-        return readFileLinesIteration(new File(filePath));
+    public static FileLinesIterable readFileLinesIteration(String filePath) {
+        try {
+            return readFileLinesIteration(new File(filePath));
+        } catch (FileNotFoundException e) {
+            throw new SmallToolsException("Problem reading the file", e);
+        }
     }
 
     /**
@@ -619,6 +674,18 @@ public final class FileTools {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    /**
+     * Save some texts to a file.
+     * 
+     * @param content
+     *            the content to write
+     * @param path
+     *            the path to the file
+     */
+    public static void writeFile(String content, String path) {
+        writeFile(content, new File(path));
     }
 
     /**

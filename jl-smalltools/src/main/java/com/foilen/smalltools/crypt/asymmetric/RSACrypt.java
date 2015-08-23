@@ -8,8 +8,14 @@
  */
 package com.foilen.smalltools.crypt.asymmetric;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.X509EncodedKeySpec;
 
+import org.spongycastle.asn1.pkcs.RSAPrivateKey;
 import org.spongycastle.crypto.AsymmetricBlockCipher;
 import org.spongycastle.crypto.AsymmetricCipherKeyPair;
 import org.spongycastle.crypto.KeyGenerationParameters;
@@ -19,9 +25,15 @@ import org.spongycastle.crypto.generators.RSAKeyPairGenerator;
 import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 import org.spongycastle.crypto.params.RSAKeyGenerationParameters;
 import org.spongycastle.crypto.params.RSAKeyParameters;
+import org.spongycastle.openssl.jcajce.JcaMiscPEMGenerator;
+import org.spongycastle.util.io.pem.PemObject;
+import org.spongycastle.util.io.pem.PemObjectGenerator;
+import org.spongycastle.util.io.pem.PemReader;
+import org.spongycastle.util.io.pem.PemWriter;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.CloseableTools;
 
 /**
  * RSA cryptography.
@@ -60,6 +72,10 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
     @Override
     public AsymmetricKeys createKeyPair(RSAKeyDetails keyDetails) {
 
+        if (keyDetails.getModulus() == null && keyDetails.getPrivateExponent() == null && keyDetails.getPublicExponent() == null) {
+            return null;
+        }
+
         BigInteger modulus = keyDetails.getModulus();
         AssertTools.assertNotNull(modulus, "The modulus must be present");
 
@@ -91,6 +107,7 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
         return new PKCS1Encoding(new RSAEngine());
     }
 
+
     @Override
     public AsymmetricKeys generateKeyPair(int keysize) {
         // Generate
@@ -102,6 +119,39 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
         // Store
         AsymmetricKeys asymmetricKeys = new AsymmetricKeys(asymmetricCipherKeyPair.getPublic(), asymmetricCipherKeyPair.getPrivate());
         return asymmetricKeys;
+    }
+
+    @Override
+    public AsymmetricKeys loadKeysPem(String fileName) {
+
+        RSAKeyDetails keyDetails = new RSAKeyDetails();
+        PemReader reader = null;
+        try {
+            reader = new PemReader(new FileReader(fileName));
+            PemObject pemObject;
+            while ((pemObject = reader.readPemObject()) != null) {
+                switch (pemObject.getType()) {
+                case "RSA PRIVATE KEY":
+                    RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pemObject.getContent());
+                    keyDetails.setModulus(rsaPrivateKey.getModulus());
+                    keyDetails.setPrivateExponent(rsaPrivateKey.getPrivateExponent());
+                    break;
+                case "PUBLIC KEY":
+                    KeyFactory kf = KeyFactory.getInstance("RSA");
+                    X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pemObject.getContent());
+                    RSAPublicKey rsaPublicKey = (RSAPublicKey) kf.generatePublic(keySpec);
+                    keyDetails.setModulus(rsaPublicKey.getModulus());
+                    keyDetails.setPublicExponent(rsaPublicKey.getPublicExponent());
+                    break;
+                }
+            }
+            return createKeyPair(keyDetails);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem loading the keys", e);
+        } finally {
+            CloseableTools.close(reader);
+        }
+
     }
 
     @Override
@@ -145,6 +195,54 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
             throw new SmallToolsException("Could not retrieve the details", e);
         }
 
+    }
+
+    @Override
+    public void saveKeysPem(AsymmetricKeys keyPair, String fileName) {
+        AssertTools.assertNotNull(keyPair.getPrivateKey(), "The private key needs to be set to save it");
+        AssertTools.assertNotNull(keyPair.getPublicKey(), "The public key needs to be set to save it");
+        PemWriter pemWriter = null;
+        try {
+            pemWriter = new PemWriter(new FileWriter(fileName));
+            PemObjectGenerator pemObjectGenerator = new JcaMiscPEMGenerator(retrieveKeyDetails(keyPair).getJcaPrivateKey());
+            pemWriter.writeObject(pemObjectGenerator);
+            pemObjectGenerator = new JcaMiscPEMGenerator(retrieveKeyDetails(keyPair).getJcaPublicKey());
+            pemWriter.writeObject(pemObjectGenerator);
+        } catch (Exception e) {
+            throw new SmallToolsException("Could not save keys", e);
+        } finally {
+            CloseableTools.close(pemWriter);
+        }
+    }
+
+    @Override
+    public void savePrivateKeyPem(AsymmetricKeys keyPair, String fileName) {
+        AssertTools.assertNotNull(keyPair.getPrivateKey(), "The private key needs to be set to save it");
+        PemWriter pemWriter = null;
+        try {
+            pemWriter = new PemWriter(new FileWriter(fileName));
+            PemObjectGenerator pemObjectGenerator = new JcaMiscPEMGenerator(retrieveKeyDetails(keyPair).getJcaPrivateKey());
+            pemWriter.writeObject(pemObjectGenerator);
+        } catch (Exception e) {
+            throw new SmallToolsException("Could not save key", e);
+        } finally {
+            CloseableTools.close(pemWriter);
+        }
+    }
+
+    @Override
+    public void savePublicKeyPem(AsymmetricKeys keyPair, String fileName) {
+        AssertTools.assertNotNull(keyPair.getPublicKey(), "The public key needs to be set to save it");
+        PemWriter pemWriter = null;
+        try {
+            pemWriter = new PemWriter(new FileWriter(fileName));
+            PemObjectGenerator pemObjectGenerator = new JcaMiscPEMGenerator(retrieveKeyDetails(keyPair).getJcaPublicKey());
+            pemWriter.writeObject(pemObjectGenerator);
+        } catch (Exception e) {
+            throw new SmallToolsException("Could not save key", e);
+        } finally {
+            CloseableTools.close(pemWriter);
+        }
     }
 
 }

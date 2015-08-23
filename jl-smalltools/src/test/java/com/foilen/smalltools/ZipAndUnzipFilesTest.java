@@ -15,8 +15,6 @@ import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.UnzipFiles;
-import com.foilen.smalltools.ZipFiles;
 import com.foilen.smalltools.tools.FileTools;
 import com.google.common.io.Files;
 
@@ -36,7 +34,6 @@ public class ZipAndUnzipFilesTest {
 
         // Create a temporary file
         File zipFile = File.createTempFile("junit", ".zip");
-        System.out.println("Temporary file: " + zipFile.getAbsolutePath());
 
         // Create the ZIP
         OutputStream outputStream = new FileOutputStream(zipFile);
@@ -52,7 +49,6 @@ public class ZipAndUnzipFilesTest {
 
         // Unzip as is
         File outputDirectory = Files.createTempDir();
-        System.out.println("Temporary output directory: " + outputDirectory.getAbsolutePath());
         UnzipFiles unzipFiles = new UnzipFiles(zipFile);
         unzipFiles.extractTo(outputDirectory);
 
@@ -63,7 +59,6 @@ public class ZipAndUnzipFilesTest {
 
         // Unzip ignoring root folder
         outputDirectory = Files.createTempDir();
-        System.out.println("Temporary output directory: " + outputDirectory.getAbsolutePath());
         unzipFiles = new UnzipFiles(zipFile);
         unzipFiles.setIgnoreFirstSubpath(true);
         unzipFiles.extractTo(outputDirectory);

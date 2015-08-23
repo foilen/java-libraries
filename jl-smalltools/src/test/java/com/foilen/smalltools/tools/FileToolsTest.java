@@ -10,9 +10,12 @@ package com.foilen.smalltools.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.common.io.Files;
 
 public class FileToolsTest {
 
@@ -179,6 +182,25 @@ public class FileToolsTest {
         Assert.assertFalse(FileTools.isWindowsStartPath("/windows/note:pad.exe"));
         Assert.assertFalse(FileTools.isWindowsStartPath("\\windows\\note:pad.exe"));
         Assert.assertFalse(FileTools.isWindowsStartPath("c\\windows\\notepad.exe"));
+    }
+
+    @Test
+    public void testListFilesStartingWith() throws Exception {
+        File directoryFile = Files.createTempDir();
+        String directory = directoryFile.getAbsolutePath();
+
+        FileTools.writeFile("#yes", directory + "/exact");
+        FileTools.writeFile("#yes\nThis is interesting", directory + "/yesAndMore");
+        FileTools.writeFile("Hello there", directory + "/random");
+        FileTools.writeFile("#ye", directory + "/tooShort");
+        FileTools.writeFile("#yeS", directory + "/near");
+
+        // Check
+        List<String> actual = FileTools.listFilesStartingWith(directory, "#yes");
+        Assert.assertEquals(2, actual.size());
+        int i = 0;
+        Assert.assertEquals("exact", actual.get(i++));
+        Assert.assertEquals("yesAndMore", actual.get(i++));
     }
 
     @Test

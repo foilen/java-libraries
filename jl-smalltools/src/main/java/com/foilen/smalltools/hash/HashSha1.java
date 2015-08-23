@@ -16,11 +16,11 @@ import java.io.FileNotFoundException;
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
- * To create hashes with SHA-256.
+ * To create hashes with SHA-512.
  */
-public final class HashSha256 {
+public final class HashSha1 {
 
-    private static final String ALGORITHM = "SHA-256";
+    private static final String ALGORITHM = "SHA-1";
 
     /**
      * Take bytes and get its hash.
@@ -70,6 +70,6 @@ public final class HashSha256 {
         return HashUtils.hashInputStream(ALGORITHM, new ByteArrayInputStream(in.getBytes()));
     }
 
-    private HashSha256() {
+    private HashSha1() {
     }
 }

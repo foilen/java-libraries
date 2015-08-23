@@ -88,6 +88,30 @@ public final class AssertTools {
     }
 
     /**
+     * Check that one and only one item is not null.
+     * 
+     * @param message
+     *            the error message to throw
+     * @param items
+     *            the items to check
+     */
+    public static void assertOnlyOneNotNull(String message, Object... items) {
+        int notNullCount = 0;
+        for (Object item : items) {
+            if (item != null) {
+                ++notNullCount;
+                if (notNullCount > 1) {
+                    break;
+                }
+            }
+        }
+
+        if (notNullCount != 1) {
+            throw new SmallToolsException(message);
+        }
+    }
+
+    /**
      * Check that the value is true.
      * 
      * @param actual
