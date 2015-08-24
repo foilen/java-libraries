@@ -12,7 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +60,9 @@ public class ConsoleRunner {
 
     private String command;
 
-    private List<String> arguments = new ArrayList<String>();
+    private List<String> arguments = new ArrayList<>();
+    private Map<String, String> environments = new HashMap<>();
+    private boolean overrideEnvironment = false;
     private InputStream consoleInput;
     private OutputStream consoleOutput = System.out;
     private OutputStream consoleError = System.err;
@@ -94,6 +98,20 @@ public class ConsoleRunner {
     }
 
     /**
+     * Add environment to the command.
+     * 
+     * @param name
+     *            the environment name
+     * @param value
+     *            the environment value
+     * @return this
+     */
+    public ConsoleRunner addEnvironment(String name, String value) {
+        this.environments.put(name, value);
+        return this;
+    }
+
+    /**
      * Execute the command using all the configured console input/output/error.
      * 
      * @return the status code
@@ -105,7 +123,7 @@ public class ConsoleRunner {
         if (timeoutInMilliseconds == null) {
             // No timeout
             consoleTimeoutHandlerRunnable.run();
-            return consoleTimeoutHandlerRunnable.result();
+            statusCode = consoleTimeoutHandlerRunnable.result();
         } else {
             // With timeout
             TimeoutHandler<Integer> handler = new TimeoutHandler<Integer>(timeoutInMilliseconds, consoleTimeoutHandlerRunnable);
@@ -172,6 +190,10 @@ public class ConsoleRunner {
         return consoleOutput;
     }
 
+    public Map<String, String> getEnvironments() {
+        return environments;
+    }
+
     public int getStatusCode() {
         return statusCode;
     }
@@ -186,6 +208,10 @@ public class ConsoleRunner {
 
     public boolean isCloseConsoleOutput() {
         return closeConsoleOutput;
+    }
+
+    public boolean isOverrideEnvironment() {
+        return overrideEnvironment;
     }
 
     /**
@@ -273,6 +299,30 @@ public class ConsoleRunner {
     }
 
     /**
+     * Set all the environments (overriding any previously set).
+     * 
+     * @param environments
+     *            the new environments
+     * @return this
+     */
+    public ConsoleRunner setEnvironments(Map<String, String> environments) {
+        this.environments = environments;
+        return this;
+    }
+
+    /**
+     * Tells if the environments should be cleared before adding the one configured with {@link #addEnvironment(String, String)}.
+     * 
+     * @param overrideEnvironment
+     *            true to override
+     * @return this
+     */
+    public ConsoleRunner setOverrideEnvironment(boolean overrideEnvironment) {
+        this.overrideEnvironment = overrideEnvironment;
+        return this;
+    }
+
+    /**
      * Set a timeout. Default null (none)
      * 
      * @param timeoutInMilliseconds
@@ -283,4 +333,5 @@ public class ConsoleRunner {
         this.timeoutInMilliseconds = timeoutInMilliseconds;
         return this;
     }
+
 }

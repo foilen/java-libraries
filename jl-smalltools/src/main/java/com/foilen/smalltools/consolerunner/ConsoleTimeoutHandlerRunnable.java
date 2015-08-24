@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,8 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
         OutputStream consoleError = consoleRunner.getConsoleError();
         boolean closeConsoleOutput = consoleRunner.isCloseConsoleOutput();
         boolean closeConsoleError = consoleRunner.isCloseConsoleError();
+        Map<String, String> environments = consoleRunner.getEnvironments();
+        boolean overrideEnvironment = consoleRunner.isOverrideEnvironment();
 
         // Check the parameters
         if (Strings.isNullOrEmpty(command)) {
@@ -66,7 +69,16 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
 
                 // Run the command
                 logger.debug("Command to run: {}", fullCommand);
-                process = Runtime.getRuntime().exec(fullCommand.toArray(new String[fullCommand.size()]));
+                ProcessBuilder processBuilder = new ProcessBuilder(fullCommand);
+
+                // Environment
+                Map<String, String> subProcEnv = processBuilder.environment();
+                if (overrideEnvironment) {
+                    subProcEnv.clear();
+                }
+                subProcEnv.putAll(environments);
+
+                process = processBuilder.start();
 
                 // Setup the streams
                 if (consoleInput == null) {
@@ -103,12 +115,12 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
 
                 // Check it was successful
                 if (statusCode != 0) {
-                    logger.error("Command {} failed. Exit code: {}", fullCommand, statusCode);
+                    logger.debug("Command {} failed. Exit code: {}", fullCommand, statusCode);
                     // Don't fail to get the result
                 }
 
             } catch (Exception e) {
-                logger.error("Command {} failed.", fullCommand, e);
+                logger.debug("Command {} failed.", fullCommand, e);
                 throw new SmallToolsException(e);
             }
         } catch (RuntimeException e) {
