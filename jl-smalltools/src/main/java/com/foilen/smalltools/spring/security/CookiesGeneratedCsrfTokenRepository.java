@@ -115,11 +115,14 @@ public class CookiesGeneratedCsrfTokenRepository implements CsrfTokenRepository 
 
         // Search all the cookies
         Map<String, String> valuesByName = new HashMap<>();
-        for (Cookie cookie : request.getCookies()) {
-            if (cookieNames.contains(cookie.getName())) {
-                String previousValue = valuesByName.put(cookie.getName(), cookie.getValue());
-                if (previousValue != null) {
-                    throw new SmallToolsException("The cookie with name " + cookie.getName() + " contains more than one value");
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieNames.contains(cookie.getName())) {
+                    String previousValue = valuesByName.put(cookie.getName(), cookie.getValue());
+                    if (previousValue != null) {
+                        throw new SmallToolsException("The cookie with name " + cookie.getName() + " contains more than one value");
+                    }
                 }
             }
         }
