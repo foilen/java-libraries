@@ -111,6 +111,42 @@ public final class JsonTools {
     }
 
     /**
+     * Read the JSON resource.
+     * 
+     * @param resource
+     *            the resource to open
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the object
+     */
+    public static <T> T readFromResource(String resource, Class<T> clazz) {
+        return readFromResource(resource, clazz, JsonTools.class);
+    }
+
+    /**
+     * Read the JSON resource.
+     * 
+     * @param resource
+     *            the resource to open
+     * @param clazz
+     *            the type of the final object
+     * @param context
+     *            the context class to use relative path
+     * @param <T>
+     *            the type of the final object
+     * @return the object
+     */
+    public static <T> T readFromResource(String resource, Class<T> clazz, Class<?> context) {
+        try {
+            return OBJECT_MAPPER.readValue(context.getResourceAsStream(resource), clazz);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem deserializing from JSON", e);
+        }
+    }
+
+    /**
      * Write the JSON to the file.
      * 
      * @param file

@@ -8,9 +8,12 @@
  */
 package com.foilen.smalltools.crypt.cert;
 
-import java.io.FileReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -44,6 +47,7 @@ import com.foilen.smalltools.hash.HashSha1;
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.DateTools;
+import com.foilen.smalltools.tools.FileTools;
 
 /**
  * To create self-signed certificates and to sign other certificates.
@@ -104,17 +108,29 @@ public class RSACertificate {
      *            the full path of the file
      * @return the certificate
      */
-    public static RSACertificate loadPem(String fileName) {
+    public static RSACertificate loadPemFromFile(String fileName) {
+        String pem = FileTools.getFileAsString(fileName);
+        return loadPemFromString(pem);
+    }
+
+    /**
+     * Load the certificate and keys (if present in the string).
+     * 
+     * @param pem
+     *            the pem
+     * @return the certificate
+     */
+    public static RSACertificate loadPemFromString(String pem) {
         RSACertificate certificate = new RSACertificate();
-        PemReader reader = null;
+        PemReader pemReader = null;
         try {
             // Keys if present
-            certificate.keysForSigning = rsaCrypt.loadKeysPem(fileName);
+            certificate.keysForSigning = rsaCrypt.loadKeysPemFromString(pem);
 
             // Certificate
-            reader = new PemReader(new FileReader(fileName));
+            pemReader = new PemReader(new StringReader(pem));
             PemObject pemObject;
-            while ((pemObject = reader.readPemObject()) != null) {
+            while ((pemObject = pemReader.readPemObject()) != null) {
                 if ("CERTIFICATE".equals(pemObject.getType())) {
                     certificate.certificateHolder = new X509CertificateHolder(pemObject.getContent());
                 }
@@ -124,7 +140,7 @@ public class RSACertificate {
         } catch (Exception e) {
             throw new SmallToolsException("Problem loading the certificate", e);
         } finally {
-            CloseableTools.close(reader);
+            CloseableTools.close(pemReader);
         }
 
     }
@@ -264,10 +280,24 @@ public class RSACertificate {
      *            the full path to the file
      */
     public void saveCertificatePem(String fileName) {
+        try {
+            saveCertificatePem(new FileWriter(fileName));
+        } catch (IOException e) {
+            throw new SmallToolsException("Could not save cert", e);
+        }
+    }
+
+    /**
+     * Save the certificate in a PEM writer.
+     * 
+     * @param writer
+     *            the writer. Will be closed at the end
+     */
+    public void saveCertificatePem(Writer writer) {
         AssertTools.assertNotNull(certificateHolder, "The certificate is not set");
         PemWriter pemWriter = null;
         try {
-            pemWriter = new PemWriter(new FileWriter(fileName));
+            pemWriter = new PemWriter(writer);
             PemObjectGenerator pemObjectGenerator = new MiscPEMGenerator(certificateHolder);
             pemWriter.writeObject(pemObjectGenerator);
         } catch (Exception e) {
@@ -275,6 +305,15 @@ public class RSACertificate {
         } finally {
             CloseableTools.close(pemWriter);
         }
+    }
+
+    /**
+     * Save the certificate in a PEM String.
+     */
+    public String saveCertificatePemAsString() {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        saveCertificatePem(new OutputStreamWriter(result));
+        return result.toString();
     }
 
     /**

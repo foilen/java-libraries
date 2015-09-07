@@ -8,8 +8,10 @@
  */
 package com.foilen.smalltools.crypt.asymmetric;
 
-import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
@@ -25,6 +27,7 @@ import org.spongycastle.crypto.generators.RSAKeyPairGenerator;
 import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 import org.spongycastle.crypto.params.RSAKeyGenerationParameters;
 import org.spongycastle.crypto.params.RSAKeyParameters;
+import org.spongycastle.crypto.params.RSAPrivateCrtKeyParameters;
 import org.spongycastle.openssl.jcajce.JcaMiscPEMGenerator;
 import org.spongycastle.util.io.pem.PemObject;
 import org.spongycastle.util.io.pem.PemObjectGenerator;
@@ -107,7 +110,6 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
         return new PKCS1Encoding(new RSAEngine());
     }
 
-
     @Override
     public AsymmetricKeys generateKeyPair(int keysize) {
         // Generate
@@ -122,12 +124,11 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
     }
 
     @Override
-    public AsymmetricKeys loadKeysPem(String fileName) {
-
+    public AsymmetricKeys loadKeysPemFromString(String pem) {
         RSAKeyDetails keyDetails = new RSAKeyDetails();
         PemReader reader = null;
         try {
-            reader = new PemReader(new FileReader(fileName));
+            reader = new PemReader(new StringReader(pem));
             PemObject pemObject;
             while ((pemObject = reader.readPemObject()) != null) {
                 switch (pemObject.getType()) {
@@ -151,14 +152,12 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
         } finally {
             CloseableTools.close(reader);
         }
-
     }
 
     @Override
     public RSAKeyDetails retrieveKeyDetails(AsymmetricKeys keyPair) {
-        BigInteger modulus = null;
-        BigInteger publicExponent = null;
-        BigInteger privateExponent = null;
+
+        RSAKeyDetails rsaKeyDetails = new RSAKeyDetails();
 
         try {
             // Public key
@@ -170,24 +169,34 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
                 }
 
                 RSAKeyParameters rsaKey = (RSAKeyParameters) key;
-                modulus = rsaKey.getModulus();
-                publicExponent = rsaKey.getExponent();
+                rsaKeyDetails.setModulus(rsaKey.getModulus());
+                rsaKeyDetails.setPublicExponent(rsaKey.getExponent());
             }
 
             // Private key
             if (keyPair.getPrivateKey() != null) {
                 AsymmetricKeyParameter key = keyPair.getPrivateKey();
-
                 if (!(key instanceof RSAKeyParameters)) {
                     throw new SmallToolsException("The private key is not of type RSAKeyParameters. Type is " + key.getClass().getName());
                 }
 
-                RSAKeyParameters rsaKey = (RSAKeyParameters) key;
-                modulus = rsaKey.getModulus();
-                privateExponent = rsaKey.getExponent();
+                RSAKeyParameters rsaKeyParameters = (RSAKeyParameters) key;
+                rsaKeyDetails.setModulus(rsaKeyParameters.getModulus());
+                rsaKeyDetails.setPrivateExponent(rsaKeyParameters.getExponent());
+
+                // CRT parameters
+                if (key instanceof RSAPrivateCrtKeyParameters) {
+                    RSAPrivateCrtKeyParameters rsaPrivateCrtKeyParameters = (RSAPrivateCrtKeyParameters) key;
+                    rsaKeyDetails.setCrt(true);
+                    rsaKeyDetails.setPrimeP(rsaPrivateCrtKeyParameters.getP());
+                    rsaKeyDetails.setPrimeQ(rsaPrivateCrtKeyParameters.getQ());
+                    rsaKeyDetails.setPrimeExponentP(rsaPrivateCrtKeyParameters.getDP());
+                    rsaKeyDetails.setPrimeExponentQ(rsaPrivateCrtKeyParameters.getDQ());
+                    rsaKeyDetails.setCrtCoefficient(rsaPrivateCrtKeyParameters.getQInv());
+                }
             }
 
-            return new RSAKeyDetails(modulus, publicExponent, privateExponent);
+            return rsaKeyDetails;
 
         } catch (SmallToolsException e) {
             throw e;
@@ -216,11 +225,11 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
     }
 
     @Override
-    public void savePrivateKeyPem(AsymmetricKeys keyPair, String fileName) {
+    public void savePrivateKeyPem(AsymmetricKeys keyPair, Writer writer) {
         AssertTools.assertNotNull(keyPair.getPrivateKey(), "The private key needs to be set to save it");
         PemWriter pemWriter = null;
         try {
-            pemWriter = new PemWriter(new FileWriter(fileName));
+            pemWriter = new PemWriter(writer);
             PemObjectGenerator pemObjectGenerator = new JcaMiscPEMGenerator(retrieveKeyDetails(keyPair).getJcaPrivateKey());
             pemWriter.writeObject(pemObjectGenerator);
         } catch (Exception e) {
@@ -232,10 +241,19 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
 
     @Override
     public void savePublicKeyPem(AsymmetricKeys keyPair, String fileName) {
+        try {
+            savePublicKeyPem(keyPair, new FileWriter(fileName));
+        } catch (IOException e) {
+            throw new SmallToolsException("Could not save key", e);
+        }
+    }
+
+    @Override
+    public void savePublicKeyPem(AsymmetricKeys keyPair, Writer writer) {
         AssertTools.assertNotNull(keyPair.getPublicKey(), "The public key needs to be set to save it");
         PemWriter pemWriter = null;
         try {
-            pemWriter = new PemWriter(new FileWriter(fileName));
+            pemWriter = new PemWriter(writer);
             PemObjectGenerator pemObjectGenerator = new JcaMiscPEMGenerator(retrieveKeyDetails(keyPair).getJcaPublicKey());
             pemWriter.writeObject(pemObjectGenerator);
         } catch (Exception e) {

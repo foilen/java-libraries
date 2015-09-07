@@ -8,6 +8,8 @@
  */
 package com.foilen.smalltools.crypt.asymmetric;
 
+import java.io.Writer;
+
 /**
  * An interface to define common methods for an Asymmetric cryptographic algorithm.
  * 
@@ -63,7 +65,16 @@ public interface AsymmetricCrypt<K> {
      *            the file name
      * @return the pair of keys
      */
-    AsymmetricKeys loadKeysPem(String fileName);
+    AsymmetricKeys loadKeysPemFromFile(String fileName);
+
+    /**
+     * Load the public and/or private keys from the String.
+     * 
+     * @param pem
+     *            the pem String
+     * @return the pair of keys
+     */
+    AsymmetricKeys loadKeysPemFromString(String pem);
 
     /**
      * To retrieve the details of a key pair.
@@ -95,6 +106,24 @@ public interface AsymmetricCrypt<K> {
     void savePrivateKeyPem(AsymmetricKeys keyPair, String fileName);
 
     /**
+     * Save the private key in a PEM writer.
+     * 
+     * @param keyPair
+     *            the pair of keys
+     * @param writer
+     *            the writer. Will be closed at the end
+     */
+    void savePrivateKeyPem(AsymmetricKeys keyPair, Writer writer);
+
+    /**
+     * Save the private key in a PEM String.
+     * 
+     * @param keyPair
+     *            the pair of keys
+     */
+    String savePrivateKeyPemAsString(AsymmetricKeys keyPair);
+
+    /**
      * Save the public key in a PEM file.
      * 
      * @param keyPair
@@ -103,5 +132,23 @@ public interface AsymmetricCrypt<K> {
      *            the file name
      */
     void savePublicKeyPem(AsymmetricKeys keyPair, String fileName);
+
+    /**
+     * Save the public key in a PEM writer.
+     * 
+     * @param keyPair
+     *            the pair of keys
+     * @param writer
+     *            the writer. Will be closed at the end
+     */
+    void savePublicKeyPem(AsymmetricKeys keyPair, Writer writer);
+
+    /**
+     * Save the public key in a PEM String.
+     * 
+     * @param keyPair
+     *            the pair of keys
+     */
+    String savePublicKeyPemAsString(AsymmetricKeys keyPair);
 
 }

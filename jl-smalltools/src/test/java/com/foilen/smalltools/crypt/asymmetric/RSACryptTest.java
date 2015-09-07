@@ -62,7 +62,7 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         crypt.saveKeysPem(asymmetricKeys, file.getAbsolutePath());
 
         // Load
-        AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPem(file.getAbsolutePath());
+        AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPemFromFile(file.getAbsolutePath());
         RSAKeyDetails loadedKeyDetails = crypt.retrieveKeyDetails(loadedAsymmetricKeys);
 
         Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
@@ -82,7 +82,7 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         crypt.savePrivateKeyPem(asymmetricKeys, file.getAbsolutePath());
 
         // Load
-        AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPem(file.getAbsolutePath());
+        AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPemFromFile(file.getAbsolutePath());
         RSAKeyDetails loadedKeyDetails = crypt.retrieveKeyDetails(loadedAsymmetricKeys);
 
         Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
@@ -102,7 +102,7 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         crypt.savePublicKeyPem(asymmetricKeys, file.getAbsolutePath());
 
         // Load
-        AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPem(file.getAbsolutePath());
+        AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPemFromFile(file.getAbsolutePath());
         RSAKeyDetails loadedKeyDetails = crypt.retrieveKeyDetails(loadedAsymmetricKeys);
 
         Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);

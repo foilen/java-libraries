@@ -101,8 +101,8 @@ public class RSACertificateTest {
         nodeCertificate.saveCertificatePem(fileNode.getAbsolutePath());
 
         // Load
-        RSACertificate loadedRootCertificate = RSACertificate.loadPem(fileRoot.getAbsolutePath());
-        RSACertificate loadedNodeCertificate = RSACertificate.loadPem(fileNode.getAbsolutePath());
+        RSACertificate loadedRootCertificate = RSACertificate.loadPemFromFile(fileRoot.getAbsolutePath());
+        RSACertificate loadedNodeCertificate = RSACertificate.loadPemFromFile(fileNode.getAbsolutePath());
 
         // Assert
         assertCerts(rootCertificate, loadedRootCertificate);
