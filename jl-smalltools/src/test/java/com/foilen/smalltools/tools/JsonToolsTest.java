@@ -97,10 +97,12 @@ public class JsonToolsTest {
     @Test
     public void testPrettyPrint() {
         String expected = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
+        expected = expected.replaceAll("\r", "");
         Type type = new Type();
         type.setA("hello");
         type.setB(10);
-        Assert.assertEquals(expected, JsonTools.prettyPrint(type));
+        String actual = JsonTools.prettyPrint(type).replaceAll("\r", "");
+        Assert.assertEquals(expected, actual);
     }
 
 }
