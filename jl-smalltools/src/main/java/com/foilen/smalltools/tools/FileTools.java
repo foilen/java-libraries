@@ -522,12 +522,12 @@ public final class FileTools {
 
         // Get the bytes
         byte[] startBytes = startText.getBytes();
-        byte[] buffer = new byte[startBytes.length];
 
         // Scan the directory
         List<String> result = new ArrayList<>();
         for (File file : directory.listFiles()) {
             try (InputStream inputStream = new FileInputStream(file)) {
+                byte[] buffer = new byte[startBytes.length];
                 inputStream.read(buffer);
                 if (Arrays.equals(startBytes, buffer)) {
                     result.add(file.getName());
