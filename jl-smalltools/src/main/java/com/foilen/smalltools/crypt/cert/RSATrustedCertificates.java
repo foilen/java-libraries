@@ -82,6 +82,7 @@ public class RSATrustedCertificates {
      * 
      * @param filePath
      *            the full path to the file
+     * @return this
      */
     public RSATrustedCertificates addIntermediateFromPemFile(String filePath) {
         addToList(intermediateCertificatesBySubject, filePath);
@@ -172,6 +173,7 @@ public class RSATrustedCertificates {
      * 
      * @param filePath
      *            the full path to the file
+     * @return this
      */
     public RSATrustedCertificates addTrustedFromPemFile(String filePath) {
         addToList(trustedCertificatesBySubject, filePath);

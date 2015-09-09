@@ -309,6 +309,8 @@ public class RSACertificate {
 
     /**
      * Save the certificate in a PEM String.
+     * 
+     * @return the pem
      */
     public String saveCertificatePemAsString() {
         ByteArrayOutputStream result = new ByteArrayOutputStream();

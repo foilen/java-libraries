@@ -120,6 +120,7 @@ public interface AsymmetricCrypt<K> {
      * 
      * @param keyPair
      *            the pair of keys
+     * @return the pem
      */
     String savePrivateKeyPemAsString(AsymmetricKeys keyPair);
 
@@ -148,6 +149,7 @@ public interface AsymmetricCrypt<K> {
      * 
      * @param keyPair
      *            the pair of keys
+     * @return the pem
      */
     String savePublicKeyPemAsString(AsymmetricKeys keyPair);
 

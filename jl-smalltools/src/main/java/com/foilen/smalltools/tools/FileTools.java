@@ -358,6 +358,7 @@ public final class FileTools {
      * 
      * @param path
      *            the path to the file
+     * @return true if the file was removed
      */
     public static boolean deleteFile(String path) {
         return new File(path).delete();
