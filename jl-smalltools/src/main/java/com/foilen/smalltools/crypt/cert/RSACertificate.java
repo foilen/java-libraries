@@ -19,7 +19,11 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.spongycastle.asn1.ASN1Primitive;
+import org.spongycastle.asn1.ASN1Set;
 import org.spongycastle.asn1.x500.AttributeTypeAndValue;
 import org.spongycastle.asn1.x500.RDN;
 import org.spongycastle.asn1.x500.X500Name;
@@ -186,8 +190,52 @@ public class RSACertificate {
         return null;
     }
 
+    /**
+     * Get the certificate's common names.
+     * 
+     * @return the common names
+     */
+    public Set<String> getCommonNames() {
+        AssertTools.assertNotNull(certificateHolder, "The certificate is not set");
+        X500Name subject = certificateHolder.getSubject();
+        Set<String> commonNames = new HashSet<>();
+        for (RDN rdn : subject.getRDNs()) {
+            ASN1Primitive primitive = rdn.toASN1Primitive();
+            if (primitive instanceof ASN1Set) {
+                ASN1Set asn1Set = (ASN1Set) primitive;
+                for (int i = 0; i < asn1Set.size(); ++i) {
+                    AttributeTypeAndValue next = AttributeTypeAndValue.getInstance(asn1Set.getObjectAt(i));
+                    if (OID_COMMON_NAME.equals(next.getType().toString())) {
+                        commonNames.add(next.getValue().toString());
+                    }
+                }
+            }
+        }
+        return commonNames;
+    }
+
+    /**
+     * Get the ending date of this certificate.
+     * 
+     * @return the ending date
+     */
+    public Date getEndDate() {
+        AssertTools.assertNotNull(certificateHolder, "The certificate is not set");
+        return certificateHolder.getNotAfter();
+    }
+
     public AsymmetricKeys getKeysForSigning() {
         return keysForSigning;
+    }
+
+    /**
+     * Get the starting date of this certificate.
+     * 
+     * @return the starting date
+     */
+    public Date getStartDate() {
+        AssertTools.assertNotNull(certificateHolder, "The certificate is not set");
+        return certificateHolder.getNotBefore();
     }
 
     /**
