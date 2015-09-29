@@ -52,6 +52,10 @@ public final class AssertTools {
         }
     }
 
+    public static void assertIgnoreLineFeed(String expected, String actual) {
+        Assert.assertEquals(expected.replaceAll("\r", ""), actual.replaceAll("\r", ""));
+    }
+
     public static void assertStreamContent(InputStream expectedStream, InputStream actualStream) {
 
         // Check the content
