@@ -365,6 +365,17 @@ public final class FileTools {
     }
 
     /**
+     * Tells if the file exists.
+     * 
+     * @param file
+     *            the file path
+     * @return true if exists
+     */
+    public static boolean exists(String file) {
+        return new File(file).exists();
+    }
+
+    /**
      * Gives an absolute path. If the path is relative, the absolute will be composed of the working directory and the file.
      * 
      * @param workingDirectory
