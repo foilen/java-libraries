@@ -18,6 +18,8 @@ import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +32,7 @@ import org.spongycastle.asn1.x500.X500Name;
 import org.spongycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.spongycastle.cert.X509CertificateHolder;
 import org.spongycastle.cert.X509v3CertificateBuilder;
+import org.spongycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.openssl.MiscPEMGenerator;
@@ -167,6 +170,20 @@ public class RSACertificate {
     public RSACertificate(X509CertificateHolder certificateHolder, AsymmetricKeys keysForSigning) {
         this.certificateHolder = certificateHolder;
         this.keysForSigning = keysForSigning;
+    }
+
+    /**
+     * Get the Java certificate.
+     * 
+     * @return the Java certificate
+     */
+    public X509Certificate getCertificate() {
+        AssertTools.assertNotNull(certificateHolder, "The certificate is not set");
+        try {
+            return new JcaX509CertificateConverter().getCertificate(certificateHolder);
+        } catch (CertificateException e) {
+            throw new SmallToolsException("Could not convert the certificate", e);
+        }
     }
 
     public X509CertificateHolder getCertificateHolder() {
