@@ -19,6 +19,7 @@ import org.spongycastle.crypto.tls.ServerOnlyTlsAuthentication;
 import org.spongycastle.crypto.tls.TlsAuthentication;
 import org.spongycastle.crypto.tls.TlsClientProtocol;
 
+import com.foilen.smalltools.net.commander.CommanderClient;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.streampair.StreamPair;
 
@@ -38,7 +39,10 @@ import com.foilen.smalltools.streampair.StreamPair;
  * compile 'com.madgag.spongycastle:pkix:1.51.0.0'
  * compile 'com.madgag.spongycastle:pg:1.51.0.0'
  * </pre>
+ * 
+ * Deprecated: Use {@link CommanderClient}
  */
+@Deprecated
 public class TlsClientConnectionAction extends AbstractTimeoutConnectionAction {
 
     private final static Logger log = LoggerFactory.getLogger(TlsClientConnectionAction.class);

@@ -1,0 +1,58 @@
+/*
+    Java Libraries https://github.com/foilen/java-libraries
+    Copyright (c) 2015 Foilen (http://foilen.com)
+
+    The MIT License
+    http://opensource.org/licenses/MIT
+    
+ */
+package com.foilen.smalltools.net.commander.channel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.foilen.smalltools.tools.JsonTools;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToByteEncoder;
+import io.netty.util.CharsetUtil;
+
+/**
+ * <pre>
+ * Encodes this protocol:
+ * - classNameSize:int
+ * - className:String (must be a {@link Runnable})
+ * - jsonContentSize:int
+ * - jsonContent:String
+ * </pre>
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.fasterxml.jackson.core:jackson-databind:2.4.5'
+ * compile 'io.netty:netty-all:5.0.0.Alpha2'
+ * </pre>
+ */
+public class CommanderEncoder extends MessageToByteEncoder<Runnable> {
+
+    private static final Logger logger = LoggerFactory.getLogger(CommanderEncoder.class);
+
+    @Override
+    protected void encode(ChannelHandlerContext ctx, Runnable msg, ByteBuf out) throws Exception {
+
+        logger.debug("Encoding message of type {}", msg.getClass().getName());
+
+        String className = msg.getClass().getName();
+        byte[] classNameBytes = className.getBytes(CharsetUtil.UTF_8);
+        String jsonContent = JsonTools.writeToString(msg);
+        byte[] jsonContentBytes = jsonContent.getBytes(CharsetUtil.UTF_8);
+
+        out.writeInt(classNameBytes.length);
+        out.writeBytes(classNameBytes);
+
+        out.writeInt(jsonContentBytes.length);
+        out.writeBytes(jsonContentBytes);
+
+    }
+
+}

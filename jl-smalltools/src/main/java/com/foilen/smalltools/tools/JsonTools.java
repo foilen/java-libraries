@@ -147,6 +147,25 @@ public final class JsonTools {
     }
 
     /**
+     * Read the JSON String.
+     * 
+     * @param text
+     *            the json content
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the object
+     */
+    public static <T> T readFromString(String text, Class<T> clazz) {
+        try {
+            return OBJECT_MAPPER.readValue(text, clazz);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem deserializing from JSON", e);
+        }
+    }
+
+    /**
      * Write the JSON to the file.
      * 
      * @param file
@@ -186,6 +205,20 @@ public final class JsonTools {
         try {
             OBJECT_MAPPER.writeValue(stream, object);
         } catch (IOException e) {
+            throw new SmallToolsException("Problem serializing in JSON", e);
+        }
+    }
+
+    /**
+     * Write the JSON to a String.
+     * 
+     * @param object
+     *            the object to serialize
+     */
+    public static String writeToString(Object object) {
+        try {
+            return OBJECT_MAPPER.writeValueAsString(object);
+        } catch (Exception e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
     }

@@ -163,6 +163,14 @@ public class RSACertificate {
         this.keysForSigning = keysForSigning;
     }
 
+    public RSACertificate(X509Certificate certificate) {
+        try {
+            this.certificateHolder = new X509CertificateHolder(certificate.getEncoded());
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem setting the certificate", e);
+        }
+    }
+
     public RSACertificate(X509CertificateHolder certificateHolder) {
         this.certificateHolder = certificateHolder;
     }

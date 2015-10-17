@@ -10,6 +10,10 @@ package com.foilen.smalltools.crypt.cert;
 
 import java.io.File;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.X509KeyManager;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.spongycastle.crypto.params.AsymmetricKeyParameter;
@@ -107,6 +111,22 @@ public class RSACertificateTest {
         // Assert
         assertCerts(rootCertificate, loadedRootCertificate);
         assertCerts(nodeCertificate, loadedNodeCertificate);
+    }
+
+    @Test
+    public void testTransformingToKeyManagerFactory() throws Exception {
+        AsymmetricKeys keys = rsaCrypt.generateKeyPair(2048);
+        RSACertificate certificate = new RSACertificate(keys);
+        RSACertificate rsaCertificate = certificate.selfSign(new CertificateDetails().setCommonName("me"));
+
+        KeyManagerFactory keyManagerFactory = RSATools.createKeyManagerFactory(rsaCertificate);
+
+        KeyManager[] keyManagers = keyManagerFactory.getKeyManagers();
+        Assert.assertEquals(1, keyManagers.length);
+        X509KeyManager keyManager = (X509KeyManager) keyManagers[0];
+        Assert.assertNotNull(keyManager.getPrivateKey("me"));
+        Assert.assertNull(keyManager.getPrivateKey("you"));
+
     }
 
 }

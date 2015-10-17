@@ -36,6 +36,7 @@ import org.spongycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
 import org.spongycastle.operator.bc.BcRSAContentSignerBuilder;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.net.commander.CommanderServer;
 import com.foilen.smalltools.net.connections.Connection;
 import com.foilen.smalltools.streampair.StreamPair;
 
@@ -56,7 +57,10 @@ import com.foilen.smalltools.streampair.StreamPair;
  * compile 'com.madgag.spongycastle:pkix:1.51.0.0'
  * compile 'com.madgag.spongycastle:pg:1.51.0.0'
  * </pre>
+ * 
+ * Deprecated: Use {@link CommanderServer}
  */
+@Deprecated
 public class TlsServerConnectionAction extends AbstractTimeoutConnectionAction {
 
     private final static Logger log = LoggerFactory.getLogger(TlsServerConnectionAction.class);

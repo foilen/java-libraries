@@ -9,8 +9,15 @@
 package com.foilen.smalltools.crypt.cert;
 
 import java.io.File;
+import java.security.KeyStore;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -110,6 +117,52 @@ public class RSATrustedCertificatesTest {
         rsaTrustedCertificates.addTrustedFromPemFile(file.getAbsolutePath());
         assertValid(rsaTrustedCertificates, certA, certAB);
         assertInvalid(rsaTrustedCertificates, certAB_Exp, certABC, certM, certMN, certX_Exp, certXY);
+    }
+
+    @Test
+    public void testTransformingToKeyStore() throws Exception {
+        RSATrustedCertificates rsaTrustedCertificates = new RSATrustedCertificates();
+        rsaTrustedCertificates.addTrustedRsaCertificate(certA);
+        rsaTrustedCertificates.addTrustedRsaCertificate(certM);
+        rsaTrustedCertificates.addIntermediateRsaCertificate(certAB);
+
+        KeyStore keyStore = RSATools.createKeyStore(rsaTrustedCertificates);
+
+        Assert.assertTrue(keyStore.containsAlias("A"));
+        Assert.assertTrue(keyStore.containsAlias("M"));
+        Assert.assertFalse(keyStore.containsAlias("AB"));
+    }
+
+    @Test
+    public void testTransformingToTrustManagerFactory() throws Exception {
+        RSATrustedCertificates rsaTrustedCertificates = new RSATrustedCertificates();
+        rsaTrustedCertificates.addTrustedRsaCertificate(certA);
+        rsaTrustedCertificates.addTrustedRsaCertificate(certM);
+        rsaTrustedCertificates.addIntermediateRsaCertificate(certAB);
+
+        TrustManagerFactory trustManagerFactory = RSATools.createTrustManagerFactory(rsaTrustedCertificates);
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+        Assert.assertEquals(1, trustManagers.length);
+        X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+
+        // Try success (with intermediate)
+        X509Certificate[] chain = new X509Certificate[2];
+        chain[0] = certAB.getCertificate();
+        chain[1] = certABC.getCertificate();
+        String authType = "RSA";
+        trustManager.checkServerTrusted(chain, authType);
+
+        // Try fail (without intermediate)
+        boolean hadException = false;
+        try {
+            chain = new X509Certificate[1];
+            chain[0] = certABC.getCertificate();
+            trustManager.checkServerTrusted(chain, authType);
+        } catch (CertificateException e) {
+            hadException = true;
+        }
+        Assert.assertTrue(hadException);
+
     }
 
 }

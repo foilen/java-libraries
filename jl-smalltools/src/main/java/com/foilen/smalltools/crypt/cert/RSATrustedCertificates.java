@@ -43,6 +43,13 @@ import com.foilen.smalltools.tools.CloseableTools;
  * rsaTrustedCertificates.isTrusted(certAB); // True
  * rsaTrustedCertificates.isTrusted(certABC); // True
  * </pre>
+ * 
+ * <pre>
+ * Dependencies:
+ * compile 'com.madgag.spongycastle:prov:1.51.0.0'
+ * compile 'com.madgag.spongycastle:pkix:1.51.0.0'
+ * compile 'com.madgag.spongycastle:pg:1.51.0.0'
+ * </pre>
  */
 public class RSATrustedCertificates {
 
@@ -220,6 +227,32 @@ public class RSATrustedCertificates {
         }
 
         return null;
+    }
+
+    /**
+     * Get the list of intermediates certificates.
+     * 
+     * @return the intermediates certificates
+     */
+    public List<RSACertificate> getIntermediatesCertificates() {
+        List<RSACertificate> intermediateCertificates = new ArrayList<>();
+        for (List<RSACertificate> current : intermediateCertificatesBySubject.values()) {
+            intermediateCertificates.addAll(current);
+        }
+        return intermediateCertificates;
+    }
+
+    /**
+     * Get the list of trusted certificates.
+     * 
+     * @return the trusted certificates
+     */
+    public List<RSACertificate> getTrustedCertificates() {
+        List<RSACertificate> trustedCertificates = new ArrayList<>();
+        for (List<RSACertificate> current : trustedCertificatesBySubject.values()) {
+            trustedCertificates.addAll(current);
+        }
+        return trustedCertificates;
     }
 
     /**

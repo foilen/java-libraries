@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 import com.foilen.smalltools.event.EventCallback;
 import com.foilen.smalltools.event.EventList;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.net.commander.CommanderClient;
+import com.foilen.smalltools.net.commander.CommanderServer;
 import com.foilen.smalltools.net.communication.CommunicationCommand;
 import com.foilen.smalltools.net.communication.CommunicationCommandExecutor;
 import com.foilen.smalltools.net.communication.CommunicationSystem;
@@ -77,7 +79,9 @@ import com.foilen.smalltools.net.services.TCPServerService;
  * sender.sendObject(&quot;Thanks&quot;);
  * </pre>
  * 
+ * Deprecated: Use {@link CommanderServer} and {@link CommanderClient} instead
  */
+@Deprecated
 public class SimpleCommunicationSystem implements CommunicationSystem {
 
     private final static Logger log = LoggerFactory.getLogger(SimpleCommunicationSystem.class);
