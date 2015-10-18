@@ -11,12 +11,12 @@ package com.foilen.smalltools.net.commander.command;
 import com.foilen.smalltools.net.commander.connectionpool.GlobalCommanderResponseManager;
 
 /**
- * A response for {@link AbstractCommandWithResponse}.
+ * A response for {@link AbstractCommandRequestWithResponse}.
  * 
  * @param <R>
  *            the response type
  */
-public class CommandResponse<R> implements Runnable {
+public class CommandResponse<R> implements CommandRequest, CommandImplementation {
 
     private String requestId;
     private R response;
@@ -27,6 +27,11 @@ public class CommandResponse<R> implements Runnable {
     public CommandResponse(String requestId, R response) {
         this.requestId = requestId;
         this.response = response;
+    }
+
+    @Override
+    public String commandImplementationClass() {
+        return CommandResponse.class.getName();
     }
 
     public String getRequestId() {

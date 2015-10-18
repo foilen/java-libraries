@@ -16,7 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.commander.CommanderClient;
-import com.foilen.smalltools.net.commander.command.AbstractCommandWithResponse;
+import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
+import com.foilen.smalltools.net.commander.command.CommandRequest;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -95,7 +96,7 @@ public class SimpleConnectionPool implements ConnectionPool, GenericFutureListen
     }
 
     @Override
-    public void sendCommand(CommanderClient commanderClient, String host, int port, Runnable command) {
+    public void sendCommand(CommanderClient commanderClient, String host, int port, CommandRequest command) {
 
         ChannelMessagingQueue channelMessagingQueue = getChannel(commanderClient, host, port);
 
@@ -106,7 +107,7 @@ public class SimpleConnectionPool implements ConnectionPool, GenericFutureListen
 
     @SuppressWarnings("unchecked")
     @Override
-    public <R> R sendCommandAndWaitResponse(CommanderClient commanderClient, String host, int port, AbstractCommandWithResponse<R> commandWithReply) {
+    public <R> R sendCommandAndWaitResponse(CommanderClient commanderClient, String host, int port, AbstractCommandRequestWithResponse<R> commandWithReply) {
 
         ChannelMessagingQueue channelMessagingQueue = getChannel(commanderClient, host, port);
 

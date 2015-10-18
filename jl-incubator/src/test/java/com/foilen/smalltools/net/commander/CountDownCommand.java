@@ -8,7 +8,16 @@
  */
 package com.foilen.smalltools.net.commander;
 
-class CountDownCommand implements Runnable {
+import com.foilen.smalltools.net.commander.command.CommandImplementation;
+import com.foilen.smalltools.net.commander.command.CommandRequest;
+
+class CountDownCommand implements CommandRequest, CommandImplementation {
+
+    @Override
+    public String commandImplementationClass() {
+        return CountDownCommand.class.getName();
+    }
+
     @Override
     public void run() {
         CommanderTest.countDownLatch.countDown();

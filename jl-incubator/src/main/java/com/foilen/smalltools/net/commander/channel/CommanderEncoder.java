@@ -11,6 +11,7 @@ package com.foilen.smalltools.net.commander.channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foilen.smalltools.net.commander.command.CommandRequest;
 import com.foilen.smalltools.tools.JsonTools;
 
 import io.netty.buffer.ByteBuf;
@@ -22,7 +23,7 @@ import io.netty.util.CharsetUtil;
  * <pre>
  * Encodes this protocol:
  * - classNameSize:int
- * - className:String (must be a {@link Runnable})
+ * - className:String (must be a {@link CommandRequest})
  * - jsonContentSize:int
  * - jsonContent:String
  * </pre>
@@ -33,16 +34,17 @@ import io.netty.util.CharsetUtil;
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
  * </pre>
  */
-public class CommanderEncoder extends MessageToByteEncoder<Runnable> {
+public class CommanderEncoder extends MessageToByteEncoder<CommandRequest> {
 
     private static final Logger logger = LoggerFactory.getLogger(CommanderEncoder.class);
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, Runnable msg, ByteBuf out) throws Exception {
+    protected void encode(ChannelHandlerContext ctx, CommandRequest msg, ByteBuf out) throws Exception {
 
-        logger.debug("Encoding message of type {}", msg.getClass().getName());
+        String className = msg.commandImplementationClass();
 
-        String className = msg.getClass().getName();
+        logger.debug("Encoding message of type {} to call the implementation {}", msg.getClass().getName(), className);
+
         byte[] classNameBytes = className.getBytes(CharsetUtil.UTF_8);
         String jsonContent = JsonTools.writeToString(msg);
         byte[] jsonContentBytes = jsonContent.getBytes(CharsetUtil.UTF_8);

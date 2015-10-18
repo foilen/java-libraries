@@ -8,21 +8,20 @@
  */
 package com.foilen.smalltools.net.commander;
 
-import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
+import com.foilen.smalltools.net.commander.command.AbstractCommandImplementationWithResponse;
 
-public class CountDownCommandWithResponse extends AbstractCommandRequestWithResponse<String> {
+public class CountDownCommandWithResponseImpl extends AbstractCommandImplementationWithResponse<String> {
 
     private String msg;
 
-    public CountDownCommandWithResponse() {
-    }
-
-    public CountDownCommandWithResponse(String msg) {
-        this.msg = msg;
-    }
-
     public String getMsg() {
         return msg;
+    }
+
+    @Override
+    protected String runWithResponse() {
+        CommanderTest.countDownLatch.countDown();
+        return msg + msg;
     }
 
     public void setMsg(String msg) {

@@ -9,7 +9,8 @@
 package com.foilen.smalltools.net.commander.connectionpool;
 
 import com.foilen.smalltools.net.commander.CommanderClient;
-import com.foilen.smalltools.net.commander.command.AbstractCommandWithResponse;
+import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
+import com.foilen.smalltools.net.commander.command.CommandRequest;
 
 /**
  * Manages the connections that can be reused.
@@ -50,7 +51,7 @@ public interface ConnectionPool {
      * @param command
      *            the command to run
      */
-    void sendCommand(CommanderClient commanderClient, String host, int port, Runnable command);
+    void sendCommand(CommanderClient commanderClient, String host, int port, CommandRequest command);
 
     /**
      * Send a command to a server or connected client and wait for the response.
@@ -67,6 +68,6 @@ public interface ConnectionPool {
      *            the response type
      * @return the response
      */
-    <R> R sendCommandAndWaitResponse(CommanderClient commanderClient, String host, int port, AbstractCommandWithResponse<R> commandWithReply);
+    <R> R sendCommandAndWaitResponse(CommanderClient commanderClient, String host, int port, AbstractCommandRequestWithResponse<R> commandWithReply);
 
 }

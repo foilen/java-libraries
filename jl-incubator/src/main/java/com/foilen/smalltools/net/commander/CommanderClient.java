@@ -20,7 +20,8 @@ import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
 import com.foilen.smalltools.net.commander.channel.CommanderDecoder;
 import com.foilen.smalltools.net.commander.channel.CommanderEncoder;
 import com.foilen.smalltools.net.commander.channel.CommanderExecutionChannel;
-import com.foilen.smalltools.net.commander.command.AbstractCommandWithResponse;
+import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
+import com.foilen.smalltools.net.commander.command.CommandRequest;
 import com.foilen.smalltools.net.commander.connectionpool.ConnectionPool;
 import com.foilen.smalltools.net.commander.connectionpool.SimpleConnectionPool;
 
@@ -174,7 +175,7 @@ public class CommanderClient {
      * @param command
      *            the command to run
      */
-    public void sendCommand(String host, int port, Runnable command) {
+    public void sendCommand(String host, int port, CommandRequest command) {
         connectionPool.sendCommand(this, host, port, command);
     }
 
@@ -191,7 +192,7 @@ public class CommanderClient {
      *            the response type
      * @return the response
      */
-    public <R> R sendCommandAndWaitResponse(String host, int port, AbstractCommandWithResponse<R> commandWithReply) {
+    public <R> R sendCommandAndWaitResponse(String host, int port, AbstractCommandRequestWithResponse<R> commandWithReply) {
         return connectionPool.sendCommandAndWaitResponse(this, host, port, commandWithReply);
     }
 

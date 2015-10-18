@@ -25,7 +25,10 @@ import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
 import com.foilen.smalltools.net.commander.channel.CommanderDecoder;
 import com.foilen.smalltools.net.commander.channel.CommanderEncoder;
 import com.foilen.smalltools.net.commander.channel.CommanderExecutionChannel;
-import com.foilen.smalltools.net.commander.command.AbstractCommandWithResponse;
+import com.foilen.smalltools.net.commander.command.AbstractCommandRequest;
+import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
+import com.foilen.smalltools.net.commander.command.CommandImplementation;
+import com.foilen.smalltools.net.commander.command.CommandRequest;
 import com.foilen.smalltools.tools.AssertTools;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -43,8 +46,8 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 
 /**
- * This is a server/client system using Netty to easily create a TCP service that can be encrypted and authenticated (both ways) using TSL/SSL. Once connected, it is possible to send {@link Runnable}
- * or {@link AbstractCommandWithResponse} to send one-way commands or a request that needs a response.
+ * This is a server/client system using Netty to easily create a TCP service that can be encrypted and authenticated (both ways) using TSL/SSL. Once connected, it is possible to send
+ * {@link CommandRequest}, {@link AbstractCommandRequest} or {@link AbstractCommandRequestWithResponse} to send one-way commands or a request that needs a response.
  * 
  * <pre>
  * Details:
@@ -55,7 +58,7 @@ import io.netty.handler.ssl.SslProvider;
  * - On the other side, it is:
  * - - Creating the object from the Class name
  * - - Fill the object values by deserializing the JSON
- * - - Executes the {@link Runnable}
+ * - - Executes the {@link CommandImplementation}
  * </pre>
  * 
  * Usage without encryption:

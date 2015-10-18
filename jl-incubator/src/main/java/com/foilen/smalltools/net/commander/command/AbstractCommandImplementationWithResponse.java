@@ -25,7 +25,7 @@ import io.netty.channel.ChannelHandlerContext;
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
  *            </pre>
  */
-public abstract class AbstractCommandWithResponse<R> implements Runnable {
+public abstract class AbstractCommandImplementationWithResponse<R> implements CommandImplementation {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 

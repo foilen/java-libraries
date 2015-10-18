@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.net.commander.command.AbstractCommandWithResponse;
+import com.foilen.smalltools.net.commander.command.AbstractCommandImplementationWithResponse;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -40,9 +40,9 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
         logger.debug("Got one {}", msg.getClass().getSimpleName());
         Runnable runnable = (Runnable) msg;
 
-        // Configure the AbstractCommandWithResponse
-        if (runnable instanceof AbstractCommandWithResponse) {
-            AbstractCommandWithResponse commandWithResponse = (AbstractCommandWithResponse) runnable;
+        // Configure the AbstractCommandImplementationWithResponse
+        if (runnable instanceof AbstractCommandImplementationWithResponse) {
+            AbstractCommandImplementationWithResponse commandWithResponse = (AbstractCommandImplementationWithResponse) runnable;
             commandWithResponse.setChannelHandlerContext(ctx);
         }
 
