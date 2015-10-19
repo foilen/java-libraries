@@ -144,6 +144,7 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
                     RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pemObject.getContent());
                     keyDetails.setModulus(rsaPrivateKey.getModulus());
                     keyDetails.setPrivateExponent(rsaPrivateKey.getPrivateExponent());
+                    keyDetails.setPublicExponent(rsaPrivateKey.getPublicExponent());
 
                     if (CollectionsTools.isAnyItemNotNull(rsaPrivateKey.getPrime1(), rsaPrivateKey.getPrime2(), rsaPrivateKey.getExponent1(), rsaPrivateKey.getExponent2(),
                             rsaPrivateKey.getCoefficient())) {
