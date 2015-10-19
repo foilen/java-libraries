@@ -52,6 +52,7 @@ import io.netty.handler.ssl.SslProvider;
  * <pre>
  * Details:
  * - Can use SSL to encrypt and optionally authenticate the server and/or the client
+ * - Can configure (@Autowired) the deserialized objects with Spring ({@link #setConfigureSpring(boolean)}) 
  * - The exchange protocol is:
  * - - Sends the Class name of the object sent
  * - - Sends the JSON representation of the object (to send the parameters)
@@ -112,6 +113,7 @@ import io.netty.handler.ssl.SslProvider;
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
+ * compile 'org.springframework:spring-beans:4.1.6.RELEASE' (optional)
  * </pre>
  */
 public class CommanderServer {
@@ -120,6 +122,8 @@ public class CommanderServer {
 
     private RSATrustedCertificates clientTrustedCertificates;
     private RSACertificate serverCertificate;
+
+    private boolean configureSpring;
 
     private Thread thread;
 
@@ -153,6 +157,15 @@ public class CommanderServer {
     }
 
     /**
+     * Get if you want all the deserialized objects to be filled by Spring.
+     * 
+     * @return true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
+     */
+    public boolean isConfigureSpring() {
+        return configureSpring;
+    }
+
+    /**
      * Waits for this thread to die.
      * 
      * @throws InterruptedException
@@ -172,6 +185,18 @@ public class CommanderServer {
      */
     public CommanderServer setClientTrustedCertificates(RSATrustedCertificates clientTrustedCertificates) {
         this.clientTrustedCertificates = clientTrustedCertificates;
+        return this;
+    }
+
+    /**
+     * Set if you want all the deserialized objects to be filled by Spring.
+     * 
+     * @param configureSpring
+     *            true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
+     * @return this
+     */
+    public CommanderServer setConfigureSpring(boolean configureSpring) {
+        this.configureSpring = configureSpring;
         return this;
     }
 
@@ -220,6 +245,7 @@ public class CommanderServer {
                             .group(incomingEventLoopGroup, requestsEventLoopGroup)//
                             .channel(NioServerSocketChannel.class)//
                             .childHandler(new ChannelInitializer<SocketChannel>() {
+
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
 
@@ -248,7 +274,7 @@ public class CommanderServer {
 
                             // Add the commander encoder and decoder
                             socketChannel.pipeline().addLast(new CommanderDecoder());
-                            socketChannel.pipeline().addLast(new CommanderExecutionChannel());
+                            socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring));
                             socketChannel.pipeline().addLast(new CommanderEncoder());
                         }
                     }) //

@@ -21,6 +21,7 @@ import com.foilen.smalltools.net.commander.channel.CommanderDecoder;
 import com.foilen.smalltools.net.commander.channel.CommanderEncoder;
 import com.foilen.smalltools.net.commander.channel.CommanderExecutionChannel;
 import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
+import com.foilen.smalltools.net.commander.command.CommandImplementation;
 import com.foilen.smalltools.net.commander.command.CommandRequest;
 import com.foilen.smalltools.net.commander.connectionpool.ConnectionPool;
 import com.foilen.smalltools.net.commander.connectionpool.SimpleConnectionPool;
@@ -44,6 +45,7 @@ import io.netty.handler.ssl.SslProvider;
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
+ * compile 'org.springframework:spring-beans:4.1.6.RELEASE' (optional)
  * </pre>
  */
 public class CommanderClient {
@@ -52,6 +54,8 @@ public class CommanderClient {
 
     private RSATrustedCertificates serverTrustedCertificates;
     private RSACertificate clientCertificate;
+
+    private boolean configureSpring;
 
     private ConnectionPool connectionPool = new SimpleConnectionPool();
 
@@ -107,7 +111,7 @@ public class CommanderClient {
 
                     // Add the commander encoder and decoder
                     socketChannel.pipeline().addLast(new CommanderDecoder());
-                    socketChannel.pipeline().addLast(new CommanderExecutionChannel());
+                    socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring));
                     socketChannel.pipeline().addLast(new CommanderEncoder());
                 }
             });
@@ -166,6 +170,15 @@ public class CommanderClient {
     }
 
     /**
+     * Get if you want all the deserialized objects to be filled by Spring.
+     * 
+     * @return true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
+     */
+    public boolean isConfigureSpring() {
+        return configureSpring;
+    }
+
+    /**
      * Send a command to a server or connected client.
      * 
      * @param host
@@ -205,6 +218,18 @@ public class CommanderClient {
      */
     public CommanderClient setClientCertificate(RSACertificate clientCertificate) {
         this.clientCertificate = clientCertificate;
+        return this;
+    }
+
+    /**
+     * Set if you want all the deserialized objects to be filled by Spring.
+     * 
+     * @param configureSpring
+     *            true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
+     * @return this
+     */
+    public CommanderClient setConfigureSpring(boolean configureSpring) {
+        this.configureSpring = configureSpring;
         return this;
     }
 
