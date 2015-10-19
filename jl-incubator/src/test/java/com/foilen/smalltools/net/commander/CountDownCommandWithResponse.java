@@ -10,7 +10,7 @@ package com.foilen.smalltools.net.commander;
 
 import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
 
-public class CountDownCommandWithResponse extends AbstractCommandRequestWithResponse<String> {
+public class CountDownCommandWithResponse extends AbstractCommandRequestWithResponse<CustomResponse> {
 
     private String msg;
 

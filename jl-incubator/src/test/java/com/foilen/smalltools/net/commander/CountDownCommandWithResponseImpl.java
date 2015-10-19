@@ -10,7 +10,7 @@ package com.foilen.smalltools.net.commander;
 
 import com.foilen.smalltools.net.commander.command.AbstractCommandImplementationWithResponse;
 
-public class CountDownCommandWithResponseImpl extends AbstractCommandImplementationWithResponse<String> {
+public class CountDownCommandWithResponseImpl extends AbstractCommandImplementationWithResponse<CustomResponse> {
 
     private String msg;
 
@@ -19,9 +19,9 @@ public class CountDownCommandWithResponseImpl extends AbstractCommandImplementat
     }
 
     @Override
-    protected String runWithResponse() {
+    protected CustomResponse runWithResponse() {
         CommanderTest.countDownLatch.countDown();
-        return msg + msg;
+        return new CustomResponse(msg + msg);
     }
 
     public void setMsg(String msg) {

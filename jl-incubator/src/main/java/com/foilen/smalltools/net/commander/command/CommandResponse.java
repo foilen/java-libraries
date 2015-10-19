@@ -8,7 +8,10 @@
  */
 package com.foilen.smalltools.net.commander.command;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.commander.connectionpool.GlobalCommanderResponseManager;
+import com.foilen.smalltools.tools.JsonTools;
 
 /**
  * A response for {@link AbstractCommandRequestWithResponse}.
@@ -19,7 +22,14 @@ import com.foilen.smalltools.net.commander.connectionpool.GlobalCommanderRespons
 public class CommandResponse<R> implements CommandRequest, CommandImplementation {
 
     private String requestId;
+
+    // To serialize
+    @JsonIgnore
     private R response;
+
+    // To deserialize
+    private String responseJson;
+    private Class<R> responseType;
 
     public CommandResponse() {
     }
@@ -39,7 +49,23 @@ public class CommandResponse<R> implements CommandRequest, CommandImplementation
     }
 
     public R getResponse() {
+        if (response == null) {
+            if (responseType != null && responseJson != null) {
+                response = JsonTools.readFromString(responseJson, responseType);
+            }
+        }
         return response;
+    }
+
+    public String getResponseJson() {
+        return JsonTools.writeToString(response);
+    }
+
+    public String getResponseType() {
+        if (response == null) {
+            return null;
+        }
+        return response.getClass().getName();
     }
 
     @Override
@@ -53,6 +79,19 @@ public class CommandResponse<R> implements CommandRequest, CommandImplementation
 
     public void setResponse(R response) {
         this.response = response;
+    }
+
+    public void setResponseJson(String responseJson) {
+        this.responseJson = responseJson;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setResponseType(String responseType) {
+        try {
+            this.responseType = (Class<R>) Class.forName(responseType);
+        } catch (Exception e) {
+            throw new SmallToolsException("Cannot set the class", e);
+        }
     }
 
 }

@@ -103,10 +103,10 @@ public class CommanderSslTest {
         commanderClient.setServerTrustedCertificates(clientTrustCertificate == null ? null : new RSATrustedCertificates().addTrustedRsaCertificate(clientTrustCertificate));
 
         // Send one command
-        String response = commanderClient.sendCommandAndWaitResponse("127.0.0.1", port, new CountDownCommandWithResponse("A"));
+        CustomResponse response = commanderClient.sendCommandAndWaitResponse("127.0.0.1", port, new CountDownCommandWithResponse("A"));
         CommanderTest.countDownLatch.await();
         Assert.assertEquals(1, commanderClient.getConnectionsCount());
-        Assert.assertEquals("AA", response);
+        Assert.assertEquals("AA", response.getMsg());
 
         // Close
         commanderClient.closeConnection("127.0.0.1", port);
