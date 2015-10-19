@@ -37,6 +37,7 @@ import org.spongycastle.util.io.pem.PemWriter;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.CloseableTools;
+import com.foilen.smalltools.tools.CollectionsTools;
 
 /**
  * RSA cryptography.
@@ -94,7 +95,14 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
             }
 
             if (privateExponent != null) {
-                RSAKeyParameters privateKeyParameters = new RSAKeyParameters(true, modulus, privateExponent);
+                RSAKeyParameters privateKeyParameters;
+                if (keyDetails.isCrt()) {
+                    privateKeyParameters = new RSAPrivateCrtKeyParameters(modulus, publicExponent, privateExponent, keyDetails.getPrimeP(), keyDetails.getPrimeQ(),
+                            keyDetails.getPrimeExponentP(), keyDetails.getPrimeExponentQ(), keyDetails.getCrtCoefficient());
+                } else {
+                    privateKeyParameters = new RSAKeyParameters(true, modulus, privateExponent);
+                }
+
                 asymmetricKeys.setPrivateKey(privateKeyParameters);
             }
 
@@ -136,6 +144,16 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
                     RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pemObject.getContent());
                     keyDetails.setModulus(rsaPrivateKey.getModulus());
                     keyDetails.setPrivateExponent(rsaPrivateKey.getPrivateExponent());
+
+                    if (CollectionsTools.isAnyItemNotNull(rsaPrivateKey.getPrime1(), rsaPrivateKey.getPrime2(), rsaPrivateKey.getExponent1(), rsaPrivateKey.getExponent2(),
+                            rsaPrivateKey.getCoefficient())) {
+                        keyDetails.setCrt(true);
+                        keyDetails.setPrimeP(rsaPrivateKey.getPrime1());
+                        keyDetails.setPrimeQ(rsaPrivateKey.getPrime2());
+                        keyDetails.setPrimeExponentP(rsaPrivateKey.getExponent1());
+                        keyDetails.setPrimeExponentQ(rsaPrivateKey.getExponent2());
+                        keyDetails.setCrtCoefficient(rsaPrivateKey.getCoefficient());
+                    }
                     break;
                 case "PUBLIC KEY":
                     KeyFactory kf = KeyFactory.getInstance("RSA");
