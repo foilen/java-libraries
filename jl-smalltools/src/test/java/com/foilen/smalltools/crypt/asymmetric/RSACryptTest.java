@@ -112,7 +112,7 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
         Assert.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
         Assert.assertEquals(keyDetails.getPrivateExponent(), loadedKeyDetails.getPrivateExponent());
-        Assert.assertNull(loadedKeyDetails.getPublicExponent());
+        Assert.assertNotNull(loadedKeyDetails.getPublicExponent());
 
         // Make sure the private key is CRT
         Assert.assertEquals(keyDetails.getCrtCoefficient(), loadedKeyDetails.getCrtCoefficient());
