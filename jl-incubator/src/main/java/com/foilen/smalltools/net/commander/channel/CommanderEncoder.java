@@ -45,15 +45,19 @@ public class CommanderEncoder extends MessageToByteEncoder<CommandRequest> {
 
         logger.debug("Encoding message of type {} to call the implementation {}", msg.getClass().getName(), className);
 
-        byte[] classNameBytes = className.getBytes(CharsetUtil.UTF_8);
-        String jsonContent = JsonTools.writeToString(msg);
-        byte[] jsonContentBytes = jsonContent.getBytes(CharsetUtil.UTF_8);
+        try {
+            byte[] classNameBytes = className.getBytes(CharsetUtil.UTF_8);
+            String jsonContent = JsonTools.writeToString(msg);
+            byte[] jsonContentBytes = jsonContent.getBytes(CharsetUtil.UTF_8);
 
-        out.writeInt(classNameBytes.length);
-        out.writeBytes(classNameBytes);
+            out.writeInt(classNameBytes.length);
+            out.writeBytes(classNameBytes);
 
-        out.writeInt(jsonContentBytes.length);
-        out.writeBytes(jsonContentBytes);
+            out.writeInt(jsonContentBytes.length);
+            out.writeBytes(jsonContentBytes);
+        } catch (Exception e) {
+            logger.warn("Problem encoding the message", e);
+        }
 
     }
 
