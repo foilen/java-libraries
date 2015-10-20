@@ -271,6 +271,7 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
 
     @Override
     public void savePublicKeyPem(AsymmetricKeys keyPair, Writer writer) {
+        AssertTools.assertNotNull(keyPair, "The public keys need to be set to save it");
         AssertTools.assertNotNull(keyPair.getPublicKey(), "The public key needs to be set to save it");
         PemWriter pemWriter = null;
         try {

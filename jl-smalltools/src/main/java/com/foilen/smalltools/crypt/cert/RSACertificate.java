@@ -20,6 +20,7 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,6 +35,7 @@ import org.spongycastle.cert.X509CertificateHolder;
 import org.spongycastle.cert.X509v3CertificateBuilder;
 import org.spongycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.spongycastle.crypto.params.AsymmetricKeyParameter;
+import org.spongycastle.crypto.params.RSAKeyParameters;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.openssl.MiscPEMGenerator;
 import org.spongycastle.operator.ContentSigner;
@@ -250,6 +252,21 @@ public class RSACertificate {
     }
 
     public AsymmetricKeys getKeysForSigning() {
+        // Fill the public key if missing
+        if (certificateHolder != null) {
+
+            // Create missing keys
+            if (keysForSigning == null) {
+                keysForSigning = new AsymmetricKeys();
+            }
+
+            // Create missing public key
+            if (keysForSigning.getPublicKey() == null) {
+                X509Certificate cert = getCertificate();
+                RSAPublicKey publicKey = (RSAPublicKey) cert.getPublicKey();
+                keysForSigning.setPublicKey(new RSAKeyParameters(false, publicKey.getModulus(), publicKey.getPublicExponent()));
+            }
+        }
         return keysForSigning;
     }
 
