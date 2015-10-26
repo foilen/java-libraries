@@ -14,8 +14,8 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.net.commander.command.AbstractCommandImplementationWithResponse;
 import com.foilen.smalltools.net.commander.command.CommandImplementation;
+import com.foilen.smalltools.net.commander.command.CommandImplementationChannelAware;
 import com.foilen.smalltools.tools.SpringTools;
 
 import io.netty.channel.ChannelHandlerAdapter;
@@ -48,17 +48,16 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
         this.setConfigureSpring(configureSpring);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         logger.debug("Got one {}", msg.getClass().getSimpleName());
         CommandImplementation commandImplementation = (CommandImplementation) msg;
 
-        // Configure the AbstractCommandImplementationWithResponse
-        if (commandImplementation instanceof AbstractCommandImplementationWithResponse) {
-            AbstractCommandImplementationWithResponse commandWithResponse = (AbstractCommandImplementationWithResponse) commandImplementation;
-            commandWithResponse.setChannelHandlerContext(ctx);
+        // Configure the CommandImplementationChannelAware
+        if (commandImplementation instanceof CommandImplementationChannelAware) {
+            CommandImplementationChannelAware commandImplementationChannelAware = (CommandImplementationChannelAware) commandImplementation;
+            commandImplementationChannelAware.setChannelHandlerContext(ctx);
         }
 
         // Configure Spring if needed
