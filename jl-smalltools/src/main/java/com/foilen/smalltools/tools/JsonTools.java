@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.foilen.smalltools.exception.SmallToolsException;
@@ -29,11 +30,17 @@ import com.foilen.smalltools.reflection.ReflectionUtils;
 public final class JsonTools {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper NON_FAIL_OBJECT_MAPPER = new ObjectMapper();
 
     static {
         OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
+        NON_FAIL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+        NON_FAIL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+        NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+        NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     }
 
     /**
@@ -108,6 +115,50 @@ public final class JsonTools {
      */
     public static void readFromFile(String fileName, Object target) {
         readFromFile(new File(fileName), target);
+    }
+
+    /**
+     * Read the JSON file ignoring some failures.
+     * 
+     * @param file
+     *            the file
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the object
+     */
+    public static <T> T readFromFileIgnoreFail(File file, Class<T> clazz) {
+        try {
+            return NON_FAIL_OBJECT_MAPPER.readValue(file, clazz);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem deserializing from JSON", e);
+        }
+    }
+
+    /**
+     * Read the JSON file, ignoring some failures, inside an already existing object.
+     * 
+     * @param file
+     *            the file
+     * @param target
+     *            the already existing object
+     */
+    public static void readFromFileIgnoreFail(File file, Object target) {
+        Object readObject = readFromFileIgnoreFail(file, target.getClass());
+        ReflectionUtils.copyAllProperties(readObject, target);
+    }
+
+    /**
+     * Read the JSON file, ignoring some failures, inside an already existing object.
+     * 
+     * @param fileName
+     *            the full path to the file
+     * @param target
+     *            the already existing object
+     */
+    public static void readFromFileIgnoreFail(String fileName, Object target) {
+        readFromFileIgnoreFail(new File(fileName), target);
     }
 
     /**
