@@ -57,7 +57,7 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
         // Configure the CommandImplementationChannelAware
         if (commandImplementation instanceof CommandImplementationChannelAware) {
             CommandImplementationChannelAware commandImplementationChannelAware = (CommandImplementationChannelAware) commandImplementation;
-            commandImplementationChannelAware.setChannelHandlerContext(ctx);
+            commandImplementationChannelAware.setChannel(ctx.channel());
         }
 
         // Configure Spring if needed
