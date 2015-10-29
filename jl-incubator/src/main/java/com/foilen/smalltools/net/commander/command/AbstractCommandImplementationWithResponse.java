@@ -11,7 +11,7 @@ package com.foilen.smalltools.net.commander.command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.netty.channel.Channel;
+import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
 
 /**
  * Extend this class to create a command that sends back a result.
@@ -25,11 +25,11 @@ import io.netty.channel.Channel;
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
  *            </pre>
  */
-public abstract class AbstractCommandImplementationWithResponse<R> implements CommandImplementation, CommandImplementationChannelAware {
+public abstract class AbstractCommandImplementationWithResponse<R> implements CommandImplementation, CommandImplementationConnectionAware {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private Channel channel;
+    private CommanderConnection commanderConnection;
 
     private String requestId;
 
@@ -44,7 +44,7 @@ public abstract class AbstractCommandImplementationWithResponse<R> implements Co
 
         R response = runWithResponse();
         CommandResponse<R> msg = new CommandResponse<>(requestId, response);
-        channel.writeAndFlush(msg);
+        commanderConnection.sendCommand(msg);
 
         logger.debug("Giving back the response of requestId {}", requestId);
     }
@@ -57,9 +57,10 @@ public abstract class AbstractCommandImplementationWithResponse<R> implements Co
     protected abstract R runWithResponse();
 
     @Override
-    public void setChannel(Channel channel) {
-        this.channel = channel;
+    public void setCommanderConnection(CommanderConnection commanderConnection) {
+        this.commanderConnection = commanderConnection;
     }
+
 
     public void setRequestId(String requestId) {
         this.requestId = requestId;

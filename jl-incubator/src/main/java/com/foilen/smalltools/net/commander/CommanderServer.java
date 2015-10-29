@@ -90,20 +90,27 @@ import io.netty.handler.ssl.SslProvider;
  * RSACertificate clientCert = caCert.signPublicKey(rsaCrypt.generateKeyPair(2048), new CertificateDetails().setCommonName("The client"));
  * 
  * // Server and client
- * CommanderServer commanderServer = new CommanderServer().setPort(9999);
- * commanderServer.setServerCertificate(serverCert);
- * commanderServer.setClientTrustedCertificates(new RSATrustedCertificates().addTrustedRsaCertificate(caCert)); // Don't set if you do not want to authenticate the clients
- * commanderServer.start();
- * 
  * CommanderClient commanderClient = new CommanderClient();
  * commanderClient.setClientCertificate(clientCert); // Don't set if you do not want to authenticate the client
  * commanderClient.setServerTrustedCertificates(new RSATrustedCertificates().addTrustedRsaCertificate(caCert));
  * 
+ * CommanderServer commanderServer = new CommanderServer().setPort(9999);
+ * commanderServer.setServerCertificate(serverCert);
+ * commanderServer.setClientTrustedCertificates(new RSATrustedCertificates().addTrustedRsaCertificate(caCert)); // Don't set if you do not want to authenticate the clients
+ * 
+ * // (optional) If you want to consider the client and server as a peer to peer that can connects to each other, you can set the following.
+ * commanderServer.setCommanderClient(commanderClient);
+ * commanderClient.setCommanderServer(commanderServer);
+ * 
+ * // Start the server
+ * commanderServer.start();
+ * 
  * // One-way message (sent async)
- * commanderClient.sendCommand("localhost", 9999, new EchoCommand("Hello World"));
+ * CommanderConnection commanderConnection = commanderClient.getCommanderConnection("localhost", 9999);
+ * commanderConnection.sendCommand(new EchoCommand("Hello World"));
  * 
  * // Request waiting for the response (will throw an exception if the connection is closed while waiting)
- * String hello = commanderClient.sendCommandAndWaitResponse("localhost", 9999, new HelloCommand("Bob"));
+ * String hello = commanderConnection.sendCommandAndWaitResponse(new HelloCommand("Bob"));
  * System.out.println("Got this hello response: " + hello);
  * 
  * // Close the connection when done with it
@@ -124,6 +131,7 @@ public class CommanderServer {
     private RSACertificate serverCertificate;
 
     private boolean configureSpring;
+    private CommanderClient commanderClient;
 
     private Thread thread;
 
@@ -136,6 +144,15 @@ public class CommanderServer {
      */
     public RSATrustedCertificates getClientTrustedCertificates() {
         return clientTrustedCertificates;
+    }
+
+    /**
+     * Get the local client that could connect to this server.
+     * 
+     * @return the commander client
+     */
+    public CommanderClient getCommanderClient() {
+        return commanderClient;
     }
 
     /**
@@ -186,6 +203,17 @@ public class CommanderServer {
     public CommanderServer setClientTrustedCertificates(RSATrustedCertificates clientTrustedCertificates) {
         this.clientTrustedCertificates = clientTrustedCertificates;
         return this;
+    }
+
+    /**
+     * Set the commander client that could connect to this server. This is useful if you want incoming commands to respond back to the client even if the connection is broken. (By trying to reconnect
+     * to the client's server with this CommanderClient. This is only when the client also has a server. Kind of a Peer to peer)
+     * 
+     * @param commanderClient
+     *            the commander client to reconnect to closed incoming connections
+     */
+    public void setCommanderClient(CommanderClient commanderClient) {
+        this.commanderClient = commanderClient;
     }
 
     /**
@@ -241,10 +269,14 @@ public class CommanderServer {
                 EventLoopGroup requestsEventLoopGroup = new NioEventLoopGroup();
                 try {
                     ServerBootstrap serverBootstrap = new ServerBootstrap();
-                    serverBootstrap //
-                            .group(incomingEventLoopGroup, requestsEventLoopGroup)//
-                            .channel(NioServerSocketChannel.class)//
-                            .childHandler(new ChannelInitializer<SocketChannel>() {
+                    serverBootstrap.group(incomingEventLoopGroup, requestsEventLoopGroup);
+                    serverBootstrap.channel(NioServerSocketChannel.class);
+
+                    final CommanderDecoder commanderDecoder = new CommanderDecoder();
+                    final CommanderExecutionChannel commanderExecutionChannel = new CommanderExecutionChannel(configureSpring, commanderClient);
+                    final CommanderEncoder commanderEncoder = new CommanderEncoder();
+
+                    serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
@@ -273,9 +305,9 @@ public class CommanderServer {
                             }
 
                             // Add the commander encoder and decoder
-                            socketChannel.pipeline().addLast(new CommanderDecoder());
-                            socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring));
-                            socketChannel.pipeline().addLast(new CommanderEncoder());
+                            socketChannel.pipeline().addLast(commanderDecoder);
+                            socketChannel.pipeline().addLast(commanderExecutionChannel);
+                            socketChannel.pipeline().addLast(commanderEncoder);
                         }
                     }) //
                             .option(ChannelOption.SO_BACKLOG, 128) //

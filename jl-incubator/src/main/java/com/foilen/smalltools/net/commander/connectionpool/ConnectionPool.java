@@ -9,8 +9,6 @@
 package com.foilen.smalltools.net.commander.connectionpool;
 
 import com.foilen.smalltools.net.commander.CommanderClient;
-import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
-import com.foilen.smalltools.net.commander.command.CommandRequest;
 
 /**
  * Manages the connections that can be reused.
@@ -33,41 +31,23 @@ public interface ConnectionPool {
     void closeConnection(String host, int port);
 
     /**
+     * Call this to get a connection where to send messages.
+     * 
+     * @param commanderClient
+     *            your {@link CommanderClient} that will create the connections to the server
+     * @param host
+     *            the host name
+     * @param port
+     *            the port
+     * @return the connection
+     */
+    CommanderConnection getConnection(CommanderClient commanderClient, String host, int port);
+
+    /**
      * If the connection pool keeps the connections open, tells how many are opened.
      * 
      * @return the number of connections
      */
     int getConnectionsCount();
-
-    /**
-     * Send a command to a server or connected client.
-     * 
-     * @param commanderClient
-     *            your {@link CommanderClient} that will create the connections to the server
-     * @param host
-     *            the host name
-     * @param port
-     *            the port
-     * @param command
-     *            the command to run
-     */
-    void sendCommand(CommanderClient commanderClient, String host, int port, CommandRequest command);
-
-    /**
-     * Send a command to a server or connected client and wait for the response.
-     * 
-     * @param commanderClient
-     *            your {@link CommanderClient} that will create the connections to the server
-     * @param host
-     *            the host name
-     * @param port
-     *            the port
-     * @param commandWithReply
-     *            the command to run
-     * @param <R>
-     *            the response type
-     * @return the response
-     */
-    <R> R sendCommandAndWaitResponse(CommanderClient commanderClient, String host, int port, AbstractCommandRequestWithResponse<R> commandWithReply);
 
 }

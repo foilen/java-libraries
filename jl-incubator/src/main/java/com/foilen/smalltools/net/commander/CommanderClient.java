@@ -20,9 +20,9 @@ import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
 import com.foilen.smalltools.net.commander.channel.CommanderDecoder;
 import com.foilen.smalltools.net.commander.channel.CommanderEncoder;
 import com.foilen.smalltools.net.commander.channel.CommanderExecutionChannel;
-import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
 import com.foilen.smalltools.net.commander.command.CommandImplementation;
-import com.foilen.smalltools.net.commander.command.CommandRequest;
+import com.foilen.smalltools.net.commander.command.internal.LocalServerPortCommand;
+import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
 import com.foilen.smalltools.net.commander.connectionpool.ConnectionPool;
 import com.foilen.smalltools.net.commander.connectionpool.SimpleConnectionPool;
 
@@ -56,6 +56,7 @@ public class CommanderClient {
     private RSACertificate clientCertificate;
 
     private boolean configureSpring;
+    private CommanderServer commanderServer;
 
     private ConnectionPool connectionPool = new SimpleConnectionPool();
 
@@ -79,7 +80,7 @@ public class CommanderClient {
     }
 
     /**
-     * INTERNAL: This is used by the {@link ConnectionPool}. Use the send* methods instead.
+     * INTERNAL: This is used by the {@link ConnectionPool}. Use the send*() methods instead.
      * 
      * @param host
      *            the host to connect to
@@ -95,6 +96,11 @@ public class CommanderClient {
             bootstrap.group(workerGroup);
             bootstrap.channel(NioSocketChannel.class);
             bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+
+            final CommanderDecoder commanderDecoder = new CommanderDecoder();
+            final CommanderExecutionChannel commanderExecutionChannel = new CommanderExecutionChannel(configureSpring, this);
+            final CommanderEncoder commanderEncoder = new CommanderEncoder();
+
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel socketChannel) throws Exception {
@@ -110,14 +116,21 @@ public class CommanderClient {
                     }
 
                     // Add the commander encoder and decoder
-                    socketChannel.pipeline().addLast(new CommanderDecoder());
-                    socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring));
-                    socketChannel.pipeline().addLast(new CommanderEncoder());
+                    socketChannel.pipeline().addLast(commanderDecoder);
+                    socketChannel.pipeline().addLast(commanderExecutionChannel);
+                    socketChannel.pipeline().addLast(commanderEncoder);
+
                 }
             });
 
             logger.info("Connecting to {}:{}", host, port);
             final ChannelFuture result = bootstrap.connect(host, port).sync();
+
+            // Send the local server's port
+            if (commanderServer != null) {
+                result.channel().writeAndFlush(new LocalServerPortCommand(commanderServer.getPort()));
+            }
+
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -152,6 +165,41 @@ public class CommanderClient {
     }
 
     /**
+     * Call this to get a connection where to send messages.
+     * 
+     * @param host
+     *            the host name
+     * @param port
+     *            the port
+     * @return the connection
+     */
+    public CommanderConnection getCommanderConnection(String host, int port) {
+        return connectionPool.getConnection(this, host, port);
+    }
+
+    /**
+     * Get the local server that could receive connections from this client.
+     * 
+     * @return the commander server
+     */
+    public CommanderServer getCommanderServer() {
+        return commanderServer;
+    }
+
+    /**
+     * Call this to get a connection where to send messages.
+     * 
+     * @param host
+     *            the host name
+     * @param port
+     *            the port
+     * @return the connection
+     */
+    public CommanderConnection getConnection(String host, int port) {
+        return connectionPool.getConnection(this, host, port);
+    }
+
+    /**
      * Tells how many connections are opened.
      * 
      * @return the number of connections
@@ -179,37 +227,6 @@ public class CommanderClient {
     }
 
     /**
-     * Send a command to a server or connected client.
-     * 
-     * @param host
-     *            the host name
-     * @param port
-     *            the port
-     * @param command
-     *            the command to run
-     */
-    public void sendCommand(String host, int port, CommandRequest command) {
-        connectionPool.sendCommand(this, host, port, command);
-    }
-
-    /**
-     * Send a command to a server or connected client and wait for the response.
-     * 
-     * @param host
-     *            the host name
-     * @param port
-     *            the port
-     * @param commandWithReply
-     *            the command to run
-     * @param <R>
-     *            the response type
-     * @return the response
-     */
-    public <R> R sendCommandAndWaitResponse(String host, int port, AbstractCommandRequestWithResponse<R> commandWithReply) {
-        return connectionPool.sendCommandAndWaitResponse(this, host, port, commandWithReply);
-    }
-
-    /**
      * Set the client certificate.
      * 
      * @param clientCertificate
@@ -219,6 +236,17 @@ public class CommanderClient {
     public CommanderClient setClientCertificate(RSACertificate clientCertificate) {
         this.clientCertificate = clientCertificate;
         return this;
+    }
+
+    /**
+     * Set the commander server that could receive connections from this client. This is useful if you want to tell the server how to connect back to this machine if the connection is broken. (When
+     * the client connects, it will send its server port to configure the remote connection. This is only when the client also has a server. Kind of a Peer to peer)
+     * 
+     * @param commanderServer
+     *            the commander server to let the remote machine reconnect to closed outgoing connections
+     */
+    public void setCommanderServer(CommanderServer commanderServer) {
+        this.commanderServer = commanderServer;
     }
 
     /**

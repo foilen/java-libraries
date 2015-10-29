@@ -20,6 +20,7 @@ import com.foilen.smalltools.crypt.cert.CertificateDetails;
 import com.foilen.smalltools.crypt.cert.RSACertificate;
 import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
 
 public class CommanderSslTest {
 
@@ -44,6 +45,14 @@ public class CommanderSslTest {
         firstAlice = nodeSign(firstRoot, "firstAlice");
         secondMurray = nodeSign(secondRoot, "secondMurray");
         secondPaul = nodeSign(secondRoot, "secondPaul");
+    }
+
+    private CommanderConnection grabRemoteConnection(CommanderConnection commanderConnection) throws InterruptedException {
+        GrabRemoteConnectionCommand.reset();
+        GrabRemoteConnectionCommand grab = new GrabRemoteConnectionCommand();
+        commanderConnection.sendCommand(grab);
+        GrabRemoteConnectionCommand.waitForRun();
+        return GrabRemoteConnectionCommand.getCommanderConnection();
     }
 
     private RSACertificate nodeSign(RSACertificate root, String commonName) {
@@ -75,7 +84,8 @@ public class CommanderSslTest {
         // Send one command
         boolean hadException = false;
         try {
-            commanderClient.sendCommandAndWaitResponse("127.0.0.1", port, new CountDownCommandWithResponse("A"));
+            CommanderConnection commanderConnection = commanderClient.getCommanderConnection("127.0.0.1", port);
+            commanderConnection.sendCommandAndWaitResponse(new CountDownCommandWithResponse("A"));
         } catch (SmallToolsException e) {
             hadException = true;
         }
@@ -86,8 +96,7 @@ public class CommanderSslTest {
         commanderServer.stop();
     }
 
-    private void testCommandSuccess(RSACertificate serverCertificate, RSACertificate serverTrustCertificate, RSACertificate clientCertificate, RSACertificate clientTrustCertificate)
-            throws InterruptedException {
+    private void testCommandSuccess(RSACertificate serverCertificate, RSACertificate serverTrustCertificate, RSACertificate clientCertificate, RSACertificate clientTrustCertificate) throws Exception {
         // Server
         CommanderServer commanderServer = new CommanderServer();
         commanderServer.setServerCertificate(serverCertificate);
@@ -103,15 +112,72 @@ public class CommanderSslTest {
         commanderClient.setServerTrustedCertificates(clientTrustCertificate == null ? null : new RSATrustedCertificates().addTrustedRsaCertificate(clientTrustCertificate));
 
         // Send one command
-        CustomResponse response = commanderClient.sendCommandAndWaitResponse("127.0.0.1", port, new CountDownCommandWithResponse("A"));
+        CommanderConnection commanderConnection = commanderClient.getCommanderConnection("127.0.0.1", port);
+        CustomResponse response = commanderConnection.sendCommandAndWaitResponse(new CountDownCommandWithResponse("A"));
         CommanderTest.countDownLatch.await();
         Assert.assertEquals(1, commanderClient.getConnectionsCount());
         Assert.assertEquals("AA", response.getMsg());
+
+        // Check that the remote connection does not have the server's port to call back
+        CommanderConnection remoteConnection = grabRemoteConnection(commanderConnection);
+        Assert.assertNotEquals((Integer) port, remoteConnection.getPort());
 
         // Close
         commanderClient.closeConnection("127.0.0.1", port);
         commanderServer.stop();
         Assert.assertEquals(0, commanderClient.getConnectionsCount());
+    }
+
+    @Test(timeout = 10000)
+    public void testPeer2Peer() throws Throwable {
+
+        // Clients
+        CommanderClient commanderClientA = new CommanderClient();
+        commanderClientA.setClientCertificate(secondMurray);
+        commanderClientA.setServerTrustedCertificates(new RSATrustedCertificates().addTrustedRsaCertificate(secondRoot));
+
+        CommanderClient commanderClientB = new CommanderClient();
+        commanderClientB.setClientCertificate(secondPaul);
+        commanderClientB.setServerTrustedCertificates(new RSATrustedCertificates().addTrustedRsaCertificate(secondRoot));
+
+        // Servers
+        CommanderServer commanderServerA = new CommanderServer();
+        commanderServerA.setServerCertificate(secondMurray);
+        commanderServerA.setClientTrustedCertificates(new RSATrustedCertificates().addTrustedRsaCertificate(secondRoot));
+        commanderServerA.setCommanderClient(commanderClientA);
+        commanderClientA.setCommanderServer(commanderServerA);
+        commanderServerA.start();
+        int portA = commanderServerA.getPort();
+        Assert.assertNotEquals(0, portA);
+
+        CommanderServer commanderServerB = new CommanderServer();
+        commanderServerB.setServerCertificate(secondPaul);
+        commanderServerB.setClientTrustedCertificates(new RSATrustedCertificates().addTrustedRsaCertificate(secondRoot));
+        commanderServerB.setCommanderClient(commanderClientB);
+        commanderClientB.setCommanderServer(commanderServerB);
+        commanderServerB.start();
+        int portB = commanderServerB.getPort();
+        Assert.assertNotEquals(0, portB);
+
+        // Connect from A to B
+        CommanderConnection commanderConnectionCaSb = commanderClientA.getCommanderConnection("127.0.0.1", portB);
+        Assert.assertEquals("127.0.0.1", commanderConnectionCaSb.getHost());
+        Assert.assertEquals((Integer) portB, commanderConnectionCaSb.getPort());
+        Assert.assertTrue(commanderConnectionCaSb.isConnected());
+
+        // Check that the remote connection has the server's port to call back
+        CommanderConnection remoteConnection = grabRemoteConnection(commanderConnectionCaSb);
+        Assert.assertEquals((Integer) portA, remoteConnection.getPort());
+
+
+        // Send a command (connection aware), close the connection, send the response (will connect to the server)
+        CloseChannelThenReconnectCommand.reset();
+        CloseChannelThenReconnectCommand grab = new CloseChannelThenReconnectCommand();
+        commanderConnectionCaSb.sendCommand(grab);
+        Throwable throwable = CloseChannelThenReconnectCommand.waitForRun();
+        if (throwable != null) {
+            throw throwable;
+        }
     }
 
     @Test(timeout = 10000)
@@ -138,4 +204,5 @@ public class CommanderSslTest {
     public void testSendACommandWithResponse_SuccessTrustOnlyServer() throws Exception {
         testCommandSuccess(firstAlice, null, secondMurray, firstRoot);
     }
+
 }

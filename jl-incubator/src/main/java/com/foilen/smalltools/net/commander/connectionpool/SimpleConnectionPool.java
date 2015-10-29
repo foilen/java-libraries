@@ -9,19 +9,15 @@
 package com.foilen.smalltools.net.commander.connectionpool;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.commander.CommanderClient;
-import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
-import com.foilen.smalltools.net.commander.command.CommandRequest;
-
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.GenericFutureListener;
+import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * Simply keeps 1 connection open per host and sends all the messages in order.
@@ -31,17 +27,47 @@ import io.netty.util.concurrent.GenericFutureListener;
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
  * </pre>
  */
-public class SimpleConnectionPool implements ConnectionPool, GenericFutureListener<ChannelFuture> {
+public class SimpleConnectionPool implements ConnectionPool {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleConnectionPool.class);
 
-    private Map<String, ChannelMessagingQueue> cachedConnections = new HashMap<>();
+    private Map<String, CommanderConnection> cachedConnections = new HashMap<>();
+    private Thread cleanupThread;
+
+    public SimpleConnectionPool() {
+        cleanupThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        ThreadTools.sleep(2 * 60000);
+                        logger.debug("Cleaning up the cached connections");
+                        synchronized (cachedConnections) {
+                            Iterator<Entry<String, CommanderConnection>> it = cachedConnections.entrySet().iterator();
+                            while (it.hasNext()) {
+                                Entry<String, CommanderConnection> next = it.next();
+                                if (!next.getValue().isConnected()) {
+                                    logger.debug("Removing connection {}", next.getKey());
+                                    it.remove();
+                                }
+                            }
+                        }
+                    } catch(Exception e) {
+                        logger.error("Got an exception in the cleanup thread", e);
+                    }
+                }
+            }
+        });
+        cleanupThread.setName("SimpleConnectionPool - Cleanup");
+        cleanupThread.setDaemon(true);
+        cleanupThread.start();
+    }
 
     @Override
     public void closeAllConnections() {
         synchronized (cachedConnections) {
-            for (ChannelMessagingQueue channelMessagingQueue : cachedConnections.values()) {
-                channelMessagingQueue.close();
+            for (CommanderConnection commanderConnection : cachedConnections.values()) {
+                commanderConnection.close();
             }
 
             cachedConnections.clear();
@@ -53,30 +79,31 @@ public class SimpleConnectionPool implements ConnectionPool, GenericFutureListen
         logger.debug("Closing connection to {}:{}...", host, port);
         String key = host + ":" + port;
         synchronized (cachedConnections) {
-            ChannelMessagingQueue channelMessagingQueue = cachedConnections.remove(key);
-            channelMessagingQueue.close();
+            CommanderConnection commanderConnection = cachedConnections.remove(key);
+            commanderConnection.close();
         }
     }
 
-    private ChannelMessagingQueue getChannel(CommanderClient commanderClient, String host, int port) {
-
+    @Override
+    public CommanderConnection getConnection(CommanderClient commanderClient, String host, int port) {
         String key = host + ":" + port;
 
         synchronized (cachedConnections) {
-            ChannelMessagingQueue channelMessagingQueue = cachedConnections.get(key);
-            if (channelMessagingQueue == null) {
-                ChannelFuture channelFuture = commanderClient.createChannelFuture(host, port);
-                if (channelFuture == null) {
-                    throw new SmallToolsException("Could not connect to " + host + ":" + port);
-                }
-                Channel channel = channelFuture.channel();
-                channel.closeFuture().addListener(this);
-                channelMessagingQueue = new ChannelMessagingQueue(channel);
-                cachedConnections.put(key, channelMessagingQueue);
+            CommanderConnection commanderConnection = cachedConnections.get(key);
+
+            if (commanderConnection == null) {
+                commanderConnection = new CommanderConnection();
+                commanderConnection.setHost(host);
+                commanderConnection.setPort(port);
+                commanderConnection.setCommanderClient(commanderClient);
+                commanderConnection.connect();
+
+                cachedConnections.put(key, commanderConnection);
             }
 
-            return channelMessagingQueue;
+            return commanderConnection;
         }
+
     }
 
     @Override
@@ -86,41 +113,4 @@ public class SimpleConnectionPool implements ConnectionPool, GenericFutureListen
         }
     }
 
-    @Override
-    public void operationComplete(ChannelFuture future) throws Exception {
-        // Remove from the cache
-        synchronized (cachedConnections) {
-            Channel channel = future.channel();
-            cachedConnections.values().remove(channel);
-        }
-    }
-
-    @Override
-    public void sendCommand(CommanderClient commanderClient, String host, int port, CommandRequest command) {
-
-        ChannelMessagingQueue channelMessagingQueue = getChannel(commanderClient, host, port);
-
-        // Send
-        logger.debug("Sending command {} to {}:{}", command.getClass().getName(), host, port);
-        channelMessagingQueue.send(command);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <R> R sendCommandAndWaitResponse(CommanderClient commanderClient, String host, int port, AbstractCommandRequestWithResponse<R> commandWithReply) {
-
-        ChannelMessagingQueue channelMessagingQueue = getChannel(commanderClient, host, port);
-
-        // Fill the request
-        String requestId = GlobalCommanderResponseManager.createRequest(channelMessagingQueue.getChannel());
-        commandWithReply.setRequestId(requestId);
-
-        // Send
-        logger.debug("Sending command with reply {} to {}:{} . Request id is {}", commandWithReply.getClass().getName(), host, port, requestId);
-        channelMessagingQueue.send(commandWithReply);
-
-        // Wait for the result
-        return (R) GlobalCommanderResponseManager.waitAndGetResponse(requestId);
-
-    }
 }

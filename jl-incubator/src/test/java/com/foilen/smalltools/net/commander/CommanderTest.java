@@ -13,6 +13,8 @@ import java.util.concurrent.CountDownLatch;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
+
 public class CommanderTest {
 
     static CountDownLatch countDownLatch;
@@ -30,7 +32,8 @@ public class CommanderTest {
         CommanderClient commanderClient = new CommanderClient();
 
         // Send one command
-        commanderClient.sendCommand("127.0.0.1", port, new CountDownCommand());
+        CommanderConnection connection = commanderClient.getCommanderConnection("127.0.0.1", port);
+        connection.sendCommand(new CountDownCommand());
         countDownLatch.await();
         Assert.assertEquals(1, commanderClient.getConnectionsCount());
 
@@ -53,7 +56,8 @@ public class CommanderTest {
         CommanderClient commanderClient = new CommanderClient();
 
         // Send one command
-        CustomResponse response = commanderClient.sendCommandAndWaitResponse("127.0.0.1", port, new CountDownCommandWithResponse("A"));
+        CommanderConnection connection = commanderClient.getCommanderConnection("127.0.0.1", port);
+        CustomResponse response = connection.sendCommandAndWaitResponse(new CountDownCommandWithResponse("A"));
         countDownLatch.await();
         Assert.assertEquals(1, commanderClient.getConnectionsCount());
         Assert.assertEquals("AA", response.getMsg());
@@ -74,10 +78,11 @@ public class CommanderTest {
 
         // Client
         countDownLatch = new CountDownLatch(1);
-        final CommanderClient commanderClient = new CommanderClient();
+        CommanderClient commanderClient = new CommanderClient();
 
         // Send one command
-        CustomResponse response = commanderClient.sendCommandAndWaitResponse("127.0.0.1", port, new CountDownCommandWithResponse("A"));
+        final CommanderConnection connection = commanderClient.getCommanderConnection("127.0.0.1", port);
+        CustomResponse response = connection.sendCommandAndWaitResponse(new CountDownCommandWithResponse("A"));
         countDownLatch.await();
         Assert.assertEquals("AA", response.getMsg());
 
@@ -99,7 +104,7 @@ public class CommanderTest {
                         e.printStackTrace();
                     }
 
-                    CustomResponse response = commanderClient.sendCommandAndWaitResponse("127.0.0.1", port, new CountDownCommandWithResponse("A"));
+                    CustomResponse response = connection.sendCommandAndWaitResponse(new CountDownCommandWithResponse("A"));
                     Assert.assertEquals("AA", response.getMsg());
                     gotResponse[id] = true;
                     endCountDownLatch.countDown();
