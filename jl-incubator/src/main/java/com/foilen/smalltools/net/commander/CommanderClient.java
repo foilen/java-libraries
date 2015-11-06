@@ -97,10 +97,7 @@ public class CommanderClient {
             bootstrap.channel(NioSocketChannel.class);
             bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
 
-            final CommanderDecoder commanderDecoder = new CommanderDecoder();
-            final CommanderExecutionChannel commanderExecutionChannel = new CommanderExecutionChannel(configureSpring, this);
-            final CommanderEncoder commanderEncoder = new CommanderEncoder();
-
+            final CommanderClient thisCC = this;
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel socketChannel) throws Exception {
@@ -116,9 +113,9 @@ public class CommanderClient {
                     }
 
                     // Add the commander encoder and decoder
-                    socketChannel.pipeline().addLast(commanderDecoder);
-                    socketChannel.pipeline().addLast(commanderExecutionChannel);
-                    socketChannel.pipeline().addLast(commanderEncoder);
+                    socketChannel.pipeline().addLast(new CommanderDecoder());
+                    socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, thisCC));
+                    socketChannel.pipeline().addLast(new CommanderEncoder());
 
                 }
             });

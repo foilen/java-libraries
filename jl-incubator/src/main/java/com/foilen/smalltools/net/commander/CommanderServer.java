@@ -272,10 +272,6 @@ public class CommanderServer {
                     serverBootstrap.group(incomingEventLoopGroup, requestsEventLoopGroup);
                     serverBootstrap.channel(NioServerSocketChannel.class);
 
-                    final CommanderDecoder commanderDecoder = new CommanderDecoder();
-                    final CommanderExecutionChannel commanderExecutionChannel = new CommanderExecutionChannel(configureSpring, commanderClient);
-                    final CommanderEncoder commanderEncoder = new CommanderEncoder();
-
                     serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 
                         @Override
@@ -305,9 +301,9 @@ public class CommanderServer {
                             }
 
                             // Add the commander encoder and decoder
-                            socketChannel.pipeline().addLast(commanderDecoder);
-                            socketChannel.pipeline().addLast(commanderExecutionChannel);
-                            socketChannel.pipeline().addLast(commanderEncoder);
+                            socketChannel.pipeline().addLast(new CommanderDecoder());
+                            socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, commanderClient));
+                            socketChannel.pipeline().addLast(new CommanderEncoder());
                         }
                     }) //
                             .option(ChannelOption.SO_BACKLOG, 128) //
