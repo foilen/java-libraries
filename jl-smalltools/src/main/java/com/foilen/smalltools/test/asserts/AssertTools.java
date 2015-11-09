@@ -18,12 +18,15 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.JsonTools;
+import com.foilen.smalltools.tools.ResourceTools;
 
 /**
  * Assertions.
  * 
  * <pre>
  * Dependencies:
+ * testCompile 'com.fasterxml.jackson.core:jackson-databind:2.4.5'
  * testCompile 'org.yaml:snakeyaml:1.15'
  * testCompile 'junit:junit:4.12'
  * </pre>
@@ -54,6 +57,38 @@ public final class AssertTools {
 
     public static void assertIgnoreLineFeed(String expected, String actual) {
         Assert.assertEquals(expected.replaceAll("\r", ""), actual.replaceAll("\r", ""));
+    }
+
+    /**
+     * Compare the expected object to the actual object (by their JSON dump).
+     * 
+     * @param expected
+     *            the expected object to compare
+     * @param actual
+     *            the actual object to compare to
+     */
+    public static void assertJsonComparison(Object expected, Object actual) {
+        String expectedJson = JsonTools.prettyPrint(expected);
+        String actualJson = JsonTools.prettyPrint(actual);
+
+        Assert.assertEquals(expectedJson, actualJson);
+    }
+
+    /**
+     * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump).
+     * 
+     * @param expectedResource
+     *            the filename of the resource
+     * @param expectedContext
+     *            the class in which the resource file is
+     * @param actual
+     *            the actual object to compare to
+     */
+    public static void assertJsonComparison(String expectedResource, Class<?> expectedContext, Object actual) {
+        String expectedJson = ResourceTools.getResourceAsString(expectedResource, expectedContext);
+        String actualJson = JsonTools.prettyPrint(actual);
+
+        Assert.assertEquals(expectedJson, actualJson);
     }
 
     public static void assertStreamContent(InputStream expectedStream, InputStream actualStream) {
