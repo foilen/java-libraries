@@ -71,7 +71,7 @@ public final class AssertTools {
         String expectedJson = JsonTools.prettyPrint(expected);
         String actualJson = JsonTools.prettyPrint(actual);
 
-        Assert.assertEquals(expectedJson, actualJson);
+        assertIgnoreLineFeed(expectedJson, actualJson);
     }
 
     /**
@@ -88,7 +88,7 @@ public final class AssertTools {
         String expectedJson = ResourceTools.getResourceAsString(expectedResource, expectedContext);
         String actualJson = JsonTools.prettyPrint(actual);
 
-        Assert.assertEquals(expectedJson, actualJson);
+        assertIgnoreLineFeed(expectedJson, actualJson);
     }
 
     public static void assertStreamContent(InputStream expectedStream, InputStream actualStream) {
@@ -142,7 +142,7 @@ public final class AssertTools {
         String expectedYaml = yaml.dump(expected);
         String actualYaml = yaml.dump(actual);
 
-        Assert.assertEquals(expectedYaml, actualYaml);
+        assertIgnoreLineFeed(expectedYaml, actualYaml);
     }
 
     /**
