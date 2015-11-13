@@ -265,6 +265,7 @@ public final class JsonTools {
      * 
      * @param object
      *            the object to serialize
+     * @return the JSON string
      */
     public static String writeToString(Object object) {
         try {
