@@ -13,7 +13,38 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+
 public final class CollectionsTools {
+
+    /**
+     * Get a value from a map or insert an empty object for that value.
+     * 
+     * @param map
+     *            the map
+     * @param key
+     *            the key
+     * @param clazz
+     *            the class to instantiate to create an empty object
+     * @param <K>
+     *            type of the key
+     * @param <V>
+     *            type of the value
+     * @return the value or the new empty value
+     */
+    public static <K, V> V getOrCreateEmpty(Map<K, V> map, K key, Class<V> clazz) {
+        V value = map.get(key);
+        if (value == null) {
+            try {
+                value = clazz.newInstance();
+            } catch (Exception e) {
+                throw new SmallToolsException("Could not create the empty object", e);
+            }
+            map.put(key, value);
+        }
+
+        return value;
+    }
 
     /**
      * Is true if any of the items is not null.
