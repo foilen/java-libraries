@@ -23,6 +23,66 @@ public final class ListsComparator {
      *            ordered list
      * @param rights
      *            ordered list
+     * @param itemsComparator
+     *            the way to compare both items
+     * @param listComparatorHandler
+     *            the change handler
+     * @param <L>
+     *            the type of the left items
+     * @param <R>
+     *            the type of the right items
+     */
+    public static <L, R> void compareLists(List<L> lefts, List<R> rights, ItemsComparator<L, R> itemsComparator, ListComparatorHandler<L, R> listComparatorHandler) {
+        int posLeft = 0;
+        int posRight = 0;
+
+        while (posLeft < lefts.size() || posRight < rights.size()) {
+            L left = null;
+            if (posLeft < lefts.size()) {
+                left = lefts.get(posLeft);
+            }
+            R right = null;
+            if (posRight < rights.size()) {
+                right = rights.get(posRight);
+            }
+
+            // If one is null
+            if (left == null) {
+                ++posRight;
+                listComparatorHandler.rightOnly(right);
+                continue;
+            }
+
+            if (right == null) {
+                ++posLeft;
+                listComparatorHandler.leftOnly(left);
+                continue;
+            }
+
+            // Compare both
+            int comparison = itemsComparator.compareTo(left, right);
+            if (comparison < 0) {
+                ++posLeft;
+                listComparatorHandler.leftOnly(left);
+            } else if (comparison > 0) {
+                ++posRight;
+                listComparatorHandler.rightOnly(right);
+            } else {
+                listComparatorHandler.both(left, right);
+                ++posLeft;
+                ++posRight;
+            }
+        }
+
+    }
+
+    /**
+     * Compare two ordered lists for differences.
+     * 
+     * @param lefts
+     *            ordered list
+     * @param rights
+     *            ordered list
      * @param <T>
      *            the type of the items
      * @return the comparison
@@ -62,47 +122,12 @@ public final class ListsComparator {
      *            the type of the items
      */
     public static <T extends Comparable<T>> void compareLists(List<T> lefts, List<T> rights, ListComparatorHandler<T, T> listComparatorHandler) {
-        int posLeft = 0;
-        int posRight = 0;
-
-        while (posLeft < lefts.size() || posRight < rights.size()) {
-            T left = null;
-            if (posLeft < lefts.size()) {
-                left = lefts.get(posLeft);
+        compareLists(lefts, rights, new ItemsComparator<T, T>() {
+            @Override
+            public int compareTo(T left, T right) {
+                return left.compareTo(right);
             }
-            T right = null;
-            if (posRight < rights.size()) {
-                right = rights.get(posRight);
-            }
-
-            // If one is null
-            if (left == null) {
-                ++posRight;
-                listComparatorHandler.rightOnly(right);
-                continue;
-            }
-
-            if (right == null) {
-                ++posLeft;
-                listComparatorHandler.leftOnly(left);
-                continue;
-            }
-
-            // Compare both
-            int comparison = left.compareTo(right);
-            if (comparison < 0) {
-                ++posLeft;
-                listComparatorHandler.leftOnly(left);
-            } else if (comparison > 0) {
-                ++posRight;
-                listComparatorHandler.rightOnly(right);
-            } else {
-                listComparatorHandler.both(left, right);
-                ++posLeft;
-                ++posRight;
-            }
-        }
-
+        }, listComparatorHandler);
     }
 
     private ListsComparator() {
