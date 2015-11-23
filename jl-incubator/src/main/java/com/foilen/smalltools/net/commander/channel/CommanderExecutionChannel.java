@@ -9,7 +9,6 @@
 package com.foilen.smalltools.net.commander.channel;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(CommanderExecutionChannel.class);
 
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private ExecutorService executorService;
 
     private boolean configureSpring;
 
@@ -51,10 +50,13 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
      *            true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
      * @param commanderClient
      *            (optional) the commander client to be able to reconnect
+     * @param executorService
+     *            an executor service
      */
-    public CommanderExecutionChannel(boolean configureSpring, CommanderClient commanderClient) {
+    public CommanderExecutionChannel(boolean configureSpring, CommanderClient commanderClient, ExecutorService executorService) {
         this.setConfigureSpring(configureSpring);
         this.setCommanderClient(commanderClient);
+        this.setExecutorService(executorService);
     }
 
     @Override

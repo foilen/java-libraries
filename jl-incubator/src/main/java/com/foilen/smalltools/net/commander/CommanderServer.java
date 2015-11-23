@@ -11,6 +11,8 @@ package com.foilen.smalltools.net.commander;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLEngine;
@@ -137,6 +139,8 @@ public class CommanderServer {
 
     private int port;
 
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+
     /**
      * Get the certificates that are trusted to receive connections from.
      * 
@@ -153,6 +157,10 @@ public class CommanderServer {
      */
     public CommanderClient getCommanderClient() {
         return commanderClient;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 
     /**
@@ -226,6 +234,10 @@ public class CommanderServer {
     public CommanderServer setConfigureSpring(boolean configureSpring) {
         this.configureSpring = configureSpring;
         return this;
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     /**
@@ -302,7 +314,7 @@ public class CommanderServer {
 
                             // Add the commander encoder and decoder
                             socketChannel.pipeline().addLast(new CommanderDecoder());
-                            socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, commanderClient));
+                            socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, commanderClient, executorService));
                             socketChannel.pipeline().addLast(new CommanderEncoder());
                         }
                     }) //

@@ -8,6 +8,9 @@
  */
 package com.foilen.smalltools.net.commander;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -59,6 +62,8 @@ public class CommanderClient {
     private CommanderServer commanderServer;
 
     private ConnectionPool connectionPool = new SimpleConnectionPool();
+
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     /**
      * Close all the connections.
@@ -114,7 +119,7 @@ public class CommanderClient {
 
                     // Add the commander encoder and decoder
                     socketChannel.pipeline().addLast(new CommanderDecoder());
-                    socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, thisCC));
+                    socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, thisCC, executorService));
                     socketChannel.pipeline().addLast(new CommanderEncoder());
 
                 }
@@ -205,6 +210,10 @@ public class CommanderClient {
         return connectionPool.getConnectionsCount();
     }
 
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
+
     /**
      * Get the certificates that are trusted to connect to.
      * 
@@ -256,6 +265,10 @@ public class CommanderClient {
     public CommanderClient setConfigureSpring(boolean configureSpring) {
         this.configureSpring = configureSpring;
         return this;
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     /**
