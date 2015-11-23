@@ -169,7 +169,6 @@ public class CommanderSslTest {
         CommanderConnection remoteConnection = grabRemoteConnection(commanderConnectionCaSb);
         Assert.assertEquals((Integer) portA, remoteConnection.getPort());
 
-
         // Send a command (connection aware), close the connection, send the response (will connect to the server)
         CloseChannelThenReconnectCommand.reset();
         CloseChannelThenReconnectCommand grab = new CloseChannelThenReconnectCommand();

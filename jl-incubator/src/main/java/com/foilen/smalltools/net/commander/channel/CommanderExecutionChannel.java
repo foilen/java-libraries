@@ -8,10 +8,6 @@
  */
 package com.foilen.smalltools.net.commander.channel;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,7 +19,6 @@ import com.foilen.smalltools.net.commander.command.CommandImplementation;
 import com.foilen.smalltools.net.commander.command.CommandImplementationConnectionAware;
 import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
 import com.foilen.smalltools.tools.SpringTools;
-import com.foilen.smalltools.tools.ThreadTools;
 
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -41,15 +36,13 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(CommanderExecutionChannel.class);
 
-    private Map<ChannelHandlerContext, CommanderConnection> cachedConnections = new HashMap<>();
-
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
     private boolean configureSpring;
 
     private CommanderClient commanderClient;
 
-    private Thread cleanupThread;
+    private CommanderConnection cachedCommanderConnection;
 
     /**
      * Create the channel handler that executes a {@link CommandImplementation}.
@@ -62,33 +55,6 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
     public CommanderExecutionChannel(boolean configureSpring, CommanderClient commanderClient) {
         this.setConfigureSpring(configureSpring);
         this.setCommanderClient(commanderClient);
-
-        cleanupThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        ThreadTools.sleep(2 * 60000);
-                        logger.debug("Cleaning up the cached connections");
-                        synchronized (cachedConnections) {
-                            Iterator<Entry<ChannelHandlerContext, CommanderConnection>> it = cachedConnections.entrySet().iterator();
-                            while (it.hasNext()) {
-                                Entry<ChannelHandlerContext, CommanderConnection> next = it.next();
-                                if (!next.getValue().isConnected()) {
-                                    logger.debug("Removing connection {}:{}", next.getValue().getHost(), next.getValue().getPort());
-                                    it.remove();
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        logger.error("Got an exception in the cleanup thread", e);
-                    }
-                }
-            }
-        });
-        cleanupThread.setName("SimpleConnectionPool - Cleanup");
-        cleanupThread.setDaemon(true);
-        cleanupThread.start();
     }
 
     @Override
@@ -117,19 +83,11 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
     }
 
     private CommanderConnection getCommanderConnection(ChannelHandlerContext channelHandlerContext) {
-
-        CommanderConnection commanderConnection;
-
-        synchronized (cachedConnections) {
-            commanderConnection = cachedConnections.get(channelHandlerContext);
-            if (commanderConnection == null) {
-                commanderConnection = new CommanderConnection(channelHandlerContext.channel());
-                commanderConnection.setCommanderClient(commanderClient);
-                cachedConnections.put(channelHandlerContext, commanderConnection);
-            }
+        if (cachedCommanderConnection == null) {
+            cachedCommanderConnection = new CommanderConnection(channelHandlerContext.channel());
+            cachedCommanderConnection.setCommanderClient(commanderClient);
         }
-
-        return commanderConnection;
+        return cachedCommanderConnection;
     }
 
     public ExecutorService getExecutorService() {
