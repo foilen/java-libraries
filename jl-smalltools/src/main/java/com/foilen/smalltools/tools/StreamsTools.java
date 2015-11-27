@@ -71,7 +71,7 @@ public final class StreamsTools {
         AssertTools.assertNotNull(input, "The input cannot be null");
 
         try {
-            Reader reader = new InputStreamReader(input);
+            Reader reader = new InputStreamReader(input, "UTF-8");
             StringBuilder sb = new StringBuilder();
 
             char[] chars = new char[BUFFER_SIZE];

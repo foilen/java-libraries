@@ -75,7 +75,11 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
      *            the stream to read
      */
     public void openStream(InputStream inputStream) {
-        bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new SmallToolsException(e);
+        }
         readNextLine();
     }
 
