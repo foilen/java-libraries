@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.consolerunner;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
     private int statusCode;
     private RuntimeException exceptionThrown;
 
+
     public ConsoleTimeoutHandlerRunnable(ConsoleRunner consoleUtils) {
         this.consoleRunner = consoleUtils;
     }
@@ -42,6 +44,7 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
 
         // Retrieve all the parameters
         String command = consoleRunner.getCommand();
+        String workingDirectory = consoleRunner.getWorkingDirectory();
         List<String> arguments = consoleRunner.getArguments();
         InputStream consoleInput = consoleRunner.getConsoleInput();
         OutputStream consoleOutput = consoleRunner.getConsoleOutput();
@@ -70,6 +73,11 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
                 // Run the command
                 logger.debug("Command to run: {}", fullCommand);
                 ProcessBuilder processBuilder = new ProcessBuilder(fullCommand);
+
+                // Working directory
+                if (!Strings.isNullOrEmpty(workingDirectory)) {
+                    processBuilder.directory(new File(workingDirectory));
+                }
 
                 // Environment
                 Map<String, String> subProcEnv = processBuilder.environment();

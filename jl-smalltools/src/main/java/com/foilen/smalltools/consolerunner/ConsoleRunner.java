@@ -60,6 +60,7 @@ public class ConsoleRunner {
 
     private String command;
 
+    private String workingDirectory;
     private List<String> arguments = new ArrayList<>();
     private Map<String, String> environments = new HashMap<>();
     private boolean overrideEnvironment = false;
@@ -202,6 +203,10 @@ public class ConsoleRunner {
         return timeoutInMilliseconds;
     }
 
+    public String getWorkingDirectory() {
+        return workingDirectory;
+    }
+
     public boolean isCloseConsoleError() {
         return closeConsoleError;
     }
@@ -331,6 +336,18 @@ public class ConsoleRunner {
      */
     public ConsoleRunner setTimeoutInMilliseconds(Long timeoutInMilliseconds) {
         this.timeoutInMilliseconds = timeoutInMilliseconds;
+        return this;
+    }
+
+    /**
+     * Set the working directory.
+     * 
+     * @param workingDirectory
+     *            the working directory
+     * @return this
+     */
+    public ConsoleRunner setWorkingDirectory(String workingDirectory) {
+        this.workingDirectory = workingDirectory;
         return this;
     }
 
