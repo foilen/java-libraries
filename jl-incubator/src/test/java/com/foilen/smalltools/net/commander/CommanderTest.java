@@ -19,7 +19,7 @@ public class CommanderTest {
 
     static CountDownLatch countDownLatch;
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendACommand() throws Exception {
         // Server
         CommanderServer commanderServer = new CommanderServer();
@@ -43,7 +43,7 @@ public class CommanderTest {
         Assert.assertEquals(0, commanderClient.getConnectionsCount());
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendACommandWithResponse() throws Exception {
         // Server
         CommanderServer commanderServer = new CommanderServer();
@@ -68,7 +68,7 @@ public class CommanderTest {
         Assert.assertEquals(0, commanderClient.getConnectionsCount());
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendALotOfCommandsWithResponses() throws Exception {
         // Server
         CommanderServer commanderServer = new CommanderServer();

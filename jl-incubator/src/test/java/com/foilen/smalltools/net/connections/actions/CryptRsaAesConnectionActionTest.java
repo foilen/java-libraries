@@ -30,7 +30,7 @@ public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionAc
         return action;
     }
 
-    @Test(timeout = 30000)
+    @Test(timeout = 60000)
     public void testExecuteActionNoTimeout() throws InterruptedException, ExecutionException, IOException {
         CryptRsaAesConnectionAction clientAction = createAction(-1);
         CryptRsaAesConnectionAction serverAction = createAction(-1);
@@ -76,7 +76,7 @@ public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionAc
         Assert.assertNotEquals(serverToClient, serverToClientActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionNoTimeoutDifferentKeySize() throws InterruptedException, ExecutionException {
         CryptRsaAesConnectionAction clientAction = createAction(-1);
         clientAction.setAesKeySize(128);
@@ -93,7 +93,7 @@ public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionAc
         Assert.assertNotNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeout() throws InterruptedException, ExecutionException {
         CryptRsaAesConnectionAction clientAction = createAction(10);
         CryptRsaAesConnectionAction serverAction = createAction(10);
@@ -109,7 +109,7 @@ public class CryptRsaAesConnectionActionTest extends AbstractTimeoutConnectionAc
         Assert.assertNotNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeoutThatTimedout() throws InterruptedException, ExecutionException {
         CryptRsaAesConnectionAction clientAction = createAction(1);
 

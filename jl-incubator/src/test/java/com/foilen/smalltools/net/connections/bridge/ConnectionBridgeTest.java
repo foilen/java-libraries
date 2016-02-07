@@ -59,7 +59,7 @@ public class ConnectionBridgeTest {
         bridgePort = entryServer.getPort();
     }
 
-    @Test(timeout = 5000)
+    @Test(timeout = 60000)
     public void testCryptProxyBridge() throws Exception {
 
         // Protect
@@ -77,7 +77,7 @@ public class ConnectionBridgeTest {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test(timeout = 5000)
+    @Test(timeout = 60000)
     public void testDirectProxyBridge() throws Exception {
 
         // Call the bridge
@@ -86,7 +86,7 @@ public class ConnectionBridgeTest {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test(timeout = 5000)
+    @Test(timeout = 60000)
     public void testPasswordAndCryptProxyBridge() throws Exception {
 
         // Protect
@@ -112,7 +112,7 @@ public class ConnectionBridgeTest {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test(timeout = 5000)
+    @Test(timeout = 60000)
     public void testPasswordProxyBridge() throws Exception {
 
         // Protect

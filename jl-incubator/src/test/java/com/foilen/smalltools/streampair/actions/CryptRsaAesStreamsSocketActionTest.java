@@ -30,7 +30,7 @@ public class CryptRsaAesStreamsSocketActionTest extends AbstractTimeoutStreamPai
         return action;
     }
 
-    @Test(timeout = 30000)
+    @Test(timeout = 60000)
     public void testExecuteActionNoTimeout() throws InterruptedException, ExecutionException, IOException {
         CryptRsaAesStreamsSocketAction clientAction = createAction(-1);
         CryptRsaAesStreamsSocketAction serverAction = createAction(-1);
@@ -76,7 +76,7 @@ public class CryptRsaAesStreamsSocketActionTest extends AbstractTimeoutStreamPai
         Assert.assertNotEquals(serverToClient, serverToClientActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionNoTimeoutDifferentKeySize() throws InterruptedException, ExecutionException {
         CryptRsaAesStreamsSocketAction clientAction = createAction(-1);
         clientAction.setAesKeySize(128);
@@ -93,7 +93,7 @@ public class CryptRsaAesStreamsSocketActionTest extends AbstractTimeoutStreamPai
         Assert.assertNotNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeout() throws InterruptedException, ExecutionException {
         CryptRsaAesStreamsSocketAction clientAction = createAction(10);
         CryptRsaAesStreamsSocketAction serverAction = createAction(10);
@@ -109,7 +109,7 @@ public class CryptRsaAesStreamsSocketActionTest extends AbstractTimeoutStreamPai
         Assert.assertNotNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeoutThatTimedout() throws InterruptedException, ExecutionException {
         CryptRsaAesStreamsSocketAction clientAction = createAction(1);
 

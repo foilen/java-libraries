@@ -34,7 +34,7 @@ public class TlsConnectionActionTest extends AbstractTimeoutConnectionActionTest
         return action;
     }
 
-    @Test(timeout = 30000)
+    @Test(timeout = 60000)
     public void testExecuteActionNoTimeout() throws InterruptedException, ExecutionException, IOException {
         TlsClientConnectionAction clientAction = createClientAction(-1);
         TlsServerConnectionAction serverAction = createServerAction(-1);
@@ -83,7 +83,7 @@ public class TlsConnectionActionTest extends AbstractTimeoutConnectionActionTest
         Assert.assertNotEquals(serverToClient, serverToClientActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeout() throws InterruptedException, ExecutionException {
         TlsClientConnectionAction clientAction = createClientAction(10);
         TlsServerConnectionAction serverAction = createServerAction(10);
@@ -102,7 +102,7 @@ public class TlsConnectionActionTest extends AbstractTimeoutConnectionActionTest
         Assert.assertNotNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeoutThatTimedout() throws InterruptedException, ExecutionException {
         TlsClientConnectionAction clientAction = createClientAction(1);
 

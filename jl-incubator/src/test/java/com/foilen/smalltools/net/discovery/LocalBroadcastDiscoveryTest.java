@@ -37,7 +37,7 @@ public class LocalBroadcastDiscoveryTest implements SocketCallback {
         gotConnection = new AtomicBoolean();
     }
 
-    @Test(timeout = 30000)
+    @Test(timeout = 60000)
     public void testDiscovery() {
 
         // Create a service

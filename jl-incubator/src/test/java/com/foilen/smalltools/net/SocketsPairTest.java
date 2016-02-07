@@ -54,7 +54,7 @@ public class SocketsPairTest {
 
     }
 
-    @Test(timeout = 5000)
+    @Test(timeout = 60000)
     public void test() throws IOException {
         SocketsPair socketsPair = new SocketsPair();
 

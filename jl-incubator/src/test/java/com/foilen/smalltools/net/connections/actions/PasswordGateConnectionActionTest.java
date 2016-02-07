@@ -29,7 +29,7 @@ public class PasswordGateConnectionActionTest extends AbstractTimeoutConnectionA
         return action;
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionNoTimeout() throws InterruptedException, ExecutionException {
         PasswordGateConnectionAction clientAction = createAction(PASSWORD, -1);
         PasswordGateConnectionAction serverAction = createAction(PASSWORD, -1);
@@ -45,7 +45,7 @@ public class PasswordGateConnectionActionTest extends AbstractTimeoutConnectionA
         Assert.assertNotNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionNoTimeoutDifferentPassword() throws InterruptedException, ExecutionException {
         PasswordGateConnectionAction clientAction = createAction(PASSWORD, -1);
         PasswordGateConnectionAction serverAction = createAction(PASSWORD + "NOT", -1);
@@ -61,7 +61,7 @@ public class PasswordGateConnectionActionTest extends AbstractTimeoutConnectionA
         Assert.assertNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeout() throws InterruptedException, ExecutionException {
         PasswordGateConnectionAction clientAction = createAction(PASSWORD, 10);
         PasswordGateConnectionAction serverAction = createAction(PASSWORD, 10);
@@ -77,7 +77,7 @@ public class PasswordGateConnectionActionTest extends AbstractTimeoutConnectionA
         Assert.assertNotNull(serverActual);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testExecuteActionWithTimeoutThatTimedout() throws InterruptedException, ExecutionException {
         PasswordGateConnectionAction clientAction = createAction(PASSWORD, 1);
 

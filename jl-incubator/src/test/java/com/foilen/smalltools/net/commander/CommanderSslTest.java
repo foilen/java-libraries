@@ -128,7 +128,7 @@ public class CommanderSslTest {
         Assert.assertEquals(0, commanderClient.getConnectionsCount());
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testPeer2Peer() throws Throwable {
 
         // Clients
@@ -179,27 +179,27 @@ public class CommanderSslTest {
         }
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendACommandWithResponse_FailClientDoesntTrust() throws Exception {
         testCommandFail(firstAlice, secondRoot, secondMurray, secondRoot);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendACommandWithResponse_FailServerDoesntTrust() throws Exception {
         testCommandFail(firstAlice, firstRoot, secondMurray, firstRoot);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendACommandWithResponse_Success_TrustServerCert() throws Exception {
         testCommandSuccess(selfTom, secondRoot, secondPaul, selfTom);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendACommandWithResponse_SuccessTrustCA() throws Exception {
         testCommandSuccess(firstAlice, secondRoot, secondMurray, firstRoot);
     }
 
-    @Test(timeout = 10000)
+    @Test(timeout = 60000)
     public void testSendACommandWithResponse_SuccessTrustOnlyServer() throws Exception {
         testCommandSuccess(firstAlice, null, secondMurray, firstRoot);
     }
