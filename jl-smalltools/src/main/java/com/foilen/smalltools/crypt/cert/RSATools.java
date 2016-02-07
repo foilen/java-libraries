@@ -10,7 +10,10 @@ package com.foilen.smalltools.crypt.cert;
 
 import java.security.Key;
 import java.security.KeyFactory;
+import java.security.KeyPair;
 import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
@@ -67,6 +70,19 @@ public class RSATools {
         } catch (Exception e) {
             throw new SmallToolsException("Problem creating the key manager factory", e);
         }
+    }
+
+    /**
+     * Create a {@link KeyPair} from the {@link AsymmetricKeys}.
+     * 
+     * @param asymmetricKeys
+     *            the asymmetric keys
+     * @return the Java keyPair
+     */
+    public static KeyPair createKeyPair(AsymmetricKeys asymmetricKeys) {
+        PublicKey publicKey = createPublicKey(asymmetricKeys);
+        PrivateKey privateKey = createPrivateKey(asymmetricKeys);
+        return new KeyPair(publicKey, privateKey);
     }
 
     /**
@@ -142,7 +158,7 @@ public class RSATools {
      *            the asymmetric keys
      * @return the Java key
      */
-    public static Key createPrivateKey(AsymmetricKeys asymmetricKeys) {
+    public static PrivateKey createPrivateKey(AsymmetricKeys asymmetricKeys) {
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             RSAPrivateCrtKeyParameters privateKeyParameters = (RSAPrivateCrtKeyParameters) asymmetricKeys.getPrivateKey();
@@ -161,12 +177,12 @@ public class RSATools {
      *            the asymmetric keys
      * @return the Java key
      */
-    public static Key createPublicKey(AsymmetricKeys asymmetricKeys) {
+    public static PublicKey createPublicKey(AsymmetricKeys asymmetricKeys) {
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             RSAKeyParameters publicKeyParameters = (RSAKeyParameters) asymmetricKeys.getPublicKey();
             RSAPublicKeySpec keySpec = new RSAPublicKeySpec(publicKeyParameters.getModulus(), publicKeyParameters.getExponent());
-            return keyFactory.generatePrivate(keySpec);
+            return keyFactory.generatePublic(keySpec);
         } catch (Exception e) {
             throw new SmallToolsException("Problem generating the key", e);
         }
