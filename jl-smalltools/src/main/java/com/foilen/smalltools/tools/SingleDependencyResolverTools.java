@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.google.common.base.Strings;
 
 /**
  * To get an execution path that works with the provided dependencies. Supports only one dependency per item and will throw an exception if more than one dependency are specified and if it is
@@ -62,14 +63,7 @@ public class SingleDependencyResolverTools {
         }
         hasDependency.add(item);
 
-        // Get the item it depends on
-        Item depended = itemByName.get(dependsOnItem);
-        if (depended == null) {
-            depended = new Item();
-            depended.name = dependsOnItem;
-            itemByName.put(dependsOnItem, depended);
-            roots.add(depended);
-        }
+        boolean isDepending = !Strings.isNullOrEmpty(dependsOnItem);
 
         // Get the item
         Item currentItem = itemByName.get(item);
@@ -77,12 +71,28 @@ public class SingleDependencyResolverTools {
             currentItem = new Item();
             currentItem.name = item;
             itemByName.put(item, currentItem);
+            if (!isDepending) {
+                roots.add(currentItem);
+            }
         } else {
-            roots.remove(currentItem);
+            if (isDepending) {
+                roots.remove(currentItem);
+            }
         }
 
-        // Add it
-        depended.dependedBy.add(currentItem);
+        if (isDepending) {
+            // Get the item it depends on
+            Item depended = itemByName.get(dependsOnItem);
+            if (depended == null) {
+                depended = new Item();
+                depended.name = dependsOnItem;
+                itemByName.put(dependsOnItem, depended);
+                roots.add(depended);
+            }
+
+            // Add it
+            depended.dependedBy.add(currentItem);
+        }
 
         return this;
     }

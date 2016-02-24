@@ -70,6 +70,66 @@ public class SingleDependencyResolverToolsTest {
     }
 
     /**
+     * <pre>
+     * A -> B -> C
+     *   -> D -> E
+     * </pre>
+     */
+    @Test
+    public void testSuccessWithEmpty() {
+        SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
+        resolver.addDependency("E", "D");
+        resolver.addDependency("B", "A");
+        resolver.addDependency("C", "B");
+        resolver.addDependency("A", "");
+        resolver.addDependency("D", "A");
+
+        List<String> executionPlan = resolver.getExecution();
+
+        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+    }
+
+    /**
+     * <pre>
+     * A -> B -> C
+     *   -> D -> E
+     * </pre>
+     */
+    @Test
+    public void testSuccessWithNull() {
+        SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
+        resolver.addDependency("E", "D");
+        resolver.addDependency("B", "A");
+        resolver.addDependency("C", "B");
+        resolver.addDependency("A", null);
+        resolver.addDependency("D", "A");
+
+        List<String> executionPlan = resolver.getExecution();
+
+        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+    }
+
+    /**
+     * <pre>
+     * A -> B -> C
+     *   -> D -> E
+     * </pre>
+     */
+    @Test
+    public void testSuccessWithNullAsFirst() {
+        SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
+        resolver.addDependency("A", null);
+        resolver.addDependency("E", "D");
+        resolver.addDependency("B", "A");
+        resolver.addDependency("C", "B");
+        resolver.addDependency("D", "A");
+
+        List<String> executionPlan = resolver.getExecution();
+
+        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+    }
+
+    /**
      * A,B -> C
      */
     @Test(expected = SmallToolsException.class)
