@@ -204,6 +204,34 @@ public final class ReflectionUtils {
     }
 
     /**
+     * Find the annotation set on the class and the field.
+     * 
+     * @param clazz
+     *            the class to get the field
+     * @param fieldName
+     *            the name of the field
+     * @param annotationClass
+     *            the desired annotation on the field
+     * @return the annotation or null
+     */
+    public static <T extends Annotation> T findAnnotationByFieldNameAndAnnotation(Class<?> clazz, String fieldName, Class<T> annotationClass) {
+        for (Class<?> oneClass : allTypes(clazz)) {
+            Field field;
+            try {
+                field = oneClass.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException | SecurityException e) {
+                continue;
+            }
+
+            T annotation = field.getAnnotation(annotationClass);
+            if (annotation != null) {
+                return annotation;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Create an instance of the specified class or throw an exception if there is an issue.
      * 
      * @param clazz
