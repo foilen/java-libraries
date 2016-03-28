@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.net.commander.connectionpool;
 
+import java.io.Closeable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
@@ -27,7 +28,7 @@ import io.netty.channel.ChannelFuture;
 /**
  * A connection provided by {@link CommanderClient} or {@link CommanderServer}. When trying to send a message, if the channel is closed, it will be reopened automatically if possible.
  */
-public class CommanderConnection {
+public class CommanderConnection implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(CommanderConnection.class);
 
@@ -41,6 +42,7 @@ public class CommanderConnection {
     /**
      * Close the connection and clear the sending queue.
      */
+    @Override
     public void close() {
         if (channelMessagingQueue != null) {
             channelMessagingQueue.close();
@@ -100,7 +102,6 @@ public class CommanderConnection {
     public CommanderClient getCommanderClient() {
         return commanderClient;
     }
-
 
     public String getHost() {
         return host;
@@ -169,7 +170,6 @@ public class CommanderConnection {
         this.commanderClient = commanderClient;
     }
 
-
     public void setHost(String host) {
         this.host = host;
     }
@@ -177,6 +177,5 @@ public class CommanderConnection {
     public void setPort(Integer port) {
         this.port = port;
     }
-
 
 }

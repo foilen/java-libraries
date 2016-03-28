@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.net.commander.CommanderClient;
+import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.ThreadTools;
 
 /**
@@ -38,7 +39,7 @@ public class SimpleConnectionPool implements ConnectionPool {
         cleanupThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true) {
+                while (true) {
                     try {
                         ThreadTools.sleep(2 * 60000);
                         logger.debug("Cleaning up the cached connections");
@@ -52,7 +53,7 @@ public class SimpleConnectionPool implements ConnectionPool {
                                 }
                             }
                         }
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         logger.error("Got an exception in the cleanup thread", e);
                     }
                 }
@@ -80,7 +81,7 @@ public class SimpleConnectionPool implements ConnectionPool {
         String key = host + ":" + port;
         synchronized (cachedConnections) {
             CommanderConnection commanderConnection = cachedConnections.remove(key);
-            commanderConnection.close();
+            CloseableTools.close(commanderConnection);
         }
     }
 
