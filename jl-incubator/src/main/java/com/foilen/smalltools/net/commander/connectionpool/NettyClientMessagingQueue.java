@@ -14,9 +14,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foilen.smalltools.net.netty.NettyClient;
+import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.ThreadTools;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
 
 /**
@@ -27,18 +28,18 @@ import io.netty.channel.ChannelException;
 * compile 'io.netty:netty-all:5.0.0.Alpha2'
  * </pre>
  */
-public class ChannelMessagingQueue extends Thread {
+public class NettyClientMessagingQueue extends Thread {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChannelMessagingQueue.class);
+    private static final Logger logger = LoggerFactory.getLogger(NettyClientMessagingQueue.class);
 
-    private Channel channel;
+    private NettyClient nettyClient;
     private LinkedBlockingDeque<Object> msgQueue = new LinkedBlockingDeque<>(1000);
     private AtomicBoolean closeRequested = new AtomicBoolean();
 
-    public ChannelMessagingQueue(Channel channel) {
+    public NettyClientMessagingQueue(NettyClient nettyClient) {
         super("Messaging-Queue");
         setDaemon(true);
-        this.channel = channel;
+        this.nettyClient = nettyClient;
         start();
     }
 
@@ -50,13 +51,17 @@ public class ChannelMessagingQueue extends Thread {
         this.interrupt();
     }
 
+    public NettyClient getNettyClient() {
+        return nettyClient;
+    }
+
     /**
-     * Get the channel.
+     * Tells if it is currently connected.
      * 
-     * @return the channel
+     * @return true if connected
      */
-    public Channel getChannel() {
-        return channel;
+    public boolean isConnected() {
+        return nettyClient.isConnected();
     }
 
     @Override
@@ -65,7 +70,7 @@ public class ChannelMessagingQueue extends Thread {
             Object msg = null;
             try {
                 msg = msgQueue.take();
-                channel.writeAndFlush(msg).sync();
+                nettyClient.writeFlushWait(msg);
             } catch (InterruptedException e) {
                 logger.debug("Interrupted");
                 break;
@@ -81,7 +86,7 @@ public class ChannelMessagingQueue extends Thread {
         }
 
         if (closeRequested.get()) {
-            channel.close();
+            CloseableTools.close(nettyClient);
         }
     }
 
@@ -99,8 +104,8 @@ public class ChannelMessagingQueue extends Thread {
         }
     }
 
-    public void setChannel(Channel channel) {
-        this.channel = channel;
+    public void setNettyClient(NettyClient nettyClient) {
+        this.nettyClient = nettyClient;
     }
 
 }

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.commander.command.CommandResponse;
+import com.foilen.smalltools.net.netty.NettyClient;
 import com.foilen.smalltools.tools.SecureRandomTools;
 
 import io.netty.channel.Channel;
@@ -35,23 +36,23 @@ public class GlobalCommanderResponseManager {
     static private Map<String, Object> responseNotificationByRequestId = new ConcurrentHashMap<>();
     @SuppressWarnings("rawtypes")
     static private Map<String, CommandResponse> responseByRequestId = new ConcurrentHashMap<>();
-    static private Map<String, Channel> channelByRequestId = new ConcurrentHashMap<>();
+    static private Map<String, NettyClient> nettyClientByRequestId = new ConcurrentHashMap<>();
 
     /**
      * Create a request.
      * 
-     * @param channel
-     *            the channel to check if it is being closed
+     * @param nettyClient
+     *            the Netty Client
      * @return the requestId
      */
-    public static String createRequest(Channel channel) {
+    public static String createRequest(NettyClient nettyClient) {
 
         // Create
         String requestId = SecureRandomTools.randomHexString(20);
         Object notification = new Object();
 
         // Store
-        channelByRequestId.put(requestId, channel);
+        nettyClientByRequestId.put(requestId, nettyClient);
         responseNotificationByRequestId.put(requestId, notification);
 
         return requestId;
@@ -109,8 +110,7 @@ public class GlobalCommanderResponseManager {
                     }
 
                     // Check if closed
-                    Channel channel = channelByRequestId.get(requestId);
-                    if (channel.closeFuture().isDone()) {
+                    if (!nettyClientByRequestId.get(requestId).isConnected()) {
                         throw new SmallToolsException("The connection was closed while waiting for the response");
                     }
                 }
@@ -119,7 +119,7 @@ public class GlobalCommanderResponseManager {
                 return null;
             } finally {
                 responseByRequestId.remove(requestId);
-                channelByRequestId.remove(requestId);
+                nettyClientByRequestId.remove(requestId);
             }
         }
     }

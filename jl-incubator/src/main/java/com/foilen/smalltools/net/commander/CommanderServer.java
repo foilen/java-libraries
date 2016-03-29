@@ -8,21 +8,10 @@
  */
 package com.foilen.smalltools.net.commander;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.TrustManagerFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.foilen.smalltools.crypt.cert.RSACertificate;
-import com.foilen.smalltools.crypt.cert.RSATools;
 import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
 import com.foilen.smalltools.net.commander.channel.CommanderDecoder;
 import com.foilen.smalltools.net.commander.channel.CommanderEncoder;
@@ -31,21 +20,10 @@ import com.foilen.smalltools.net.commander.command.AbstractCommandRequest;
 import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
 import com.foilen.smalltools.net.commander.command.CommandImplementation;
 import com.foilen.smalltools.net.commander.command.CommandRequest;
+import com.foilen.smalltools.net.netty.NettyBuilder;
+import com.foilen.smalltools.net.netty.NettyServer;
 import com.foilen.smalltools.tools.AssertTools;
-
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.ssl.CipherSuiteFilter;
-import io.netty.handler.ssl.IdentityCipherSuiteFilter;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.ssl.SslProvider;
+import com.foilen.smalltools.tools.CloseableTools;
 
 /**
  * This is a server/client system using Netty to easily create a TCP service that can be encrypted and authenticated (both ways) using TSL/SSL. Once connected, it is possible to send
@@ -127,15 +105,13 @@ import io.netty.handler.ssl.SslProvider;
  */
 public class CommanderServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommanderServer.class);
-
     private RSATrustedCertificates clientTrustedCertificates;
     private RSACertificate serverCertificate;
 
     private boolean configureSpring;
     private CommanderClient commanderClient;
 
-    private Thread thread;
+    private NettyServer nettyServer;
 
     private int port;
 
@@ -191,14 +167,14 @@ public class CommanderServer {
     }
 
     /**
-     * Waits for this thread to die.
+     * Waits for this server to die.
      * 
      * @throws InterruptedException
      *             if interrupted while waiting
      */
     public void join() throws InterruptedException {
-        AssertTools.assertNotNull(thread, "Server is not started");
-        thread.join();
+        AssertTools.assertNotNull(nettyServer, "Server is not started");
+        nettyServer.join();
     }
 
     /**
@@ -271,83 +247,17 @@ public class CommanderServer {
      */
     public CommanderServer start() {
 
-        AssertTools.assertNull(thread, "Server already started");
+        AssertTools.assertNull(nettyServer, "Server already started");
 
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                EventLoopGroup incomingEventLoopGroup = new NioEventLoopGroup();
-                EventLoopGroup requestsEventLoopGroup = new NioEventLoopGroup();
-                try {
-                    ServerBootstrap serverBootstrap = new ServerBootstrap();
-                    serverBootstrap.group(incomingEventLoopGroup, requestsEventLoopGroup);
-                    serverBootstrap.channel(NioServerSocketChannel.class);
+        NettyBuilder nettyBuilder = new NettyBuilder();
+        nettyBuilder.setCertificate(serverCertificate);
+        nettyBuilder.setTrustedCertificates(clientTrustedCertificates);
+        nettyBuilder.addChannelHandler(CommanderDecoder.class);
+        nettyBuilder.addChannelHandler(CommanderExecutionChannel.class, configureSpring, commanderClient, executorService);
+        nettyBuilder.addChannelHandler(CommanderEncoder.class);
 
-                    serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-
-                            InetSocketAddress remoteAddress = socketChannel.remoteAddress();
-                            logger.info("Got a connection from {}:{}", remoteAddress.getHostName(), remoteAddress.getPort());
-
-                            // Add sslCtx if needed
-                            if (clientTrustedCertificates != null || serverCertificate != null) {
-                                TrustManagerFactory trustManagerFactory = clientTrustedCertificates == null ? null : RSATools.createTrustManagerFactory(clientTrustedCertificates);
-                                KeyManagerFactory keyManagerFactory = serverCertificate == null ? null : RSATools.createKeyManagerFactory(serverCertificate);
-
-                                CipherSuiteFilter cipherFilter = IdentityCipherSuiteFilter.INSTANCE;
-                                SslContext sslCtx = SslContext.newServerContext(SslProvider.JDK, null, trustManagerFactory, null, null, null, keyManagerFactory, null, cipherFilter, null, 0, 0);
-                                SslHandler sslHandler = sslCtx.newHandler(socketChannel.alloc());
-
-                                if (trustManagerFactory == null) {
-                                    logger.debug("Will not verify client's identity");
-                                } else {
-                                    logger.debug("Will verify client's identity");
-                                    SSLEngine sslEngine = sslHandler.engine();
-                                    sslEngine.setNeedClientAuth(true);
-                                }
-
-                                socketChannel.pipeline().addLast(sslHandler);
-                            }
-
-                            // Add the commander encoder and decoder
-                            socketChannel.pipeline().addLast(new CommanderDecoder());
-                            socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, commanderClient, executorService));
-                            socketChannel.pipeline().addLast(new CommanderEncoder());
-                        }
-                    }) //
-                            .option(ChannelOption.SO_BACKLOG, 128) //
-                            .childOption(ChannelOption.SO_KEEPALIVE, true);
-
-                    logger.info("Server on port {} is starting...", port);
-                    ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
-                    SocketAddress socketAddress = channelFuture.channel().localAddress();
-                    if (socketAddress instanceof InetSocketAddress) {
-                        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
-                        port = inetSocketAddress.getPort();
-                    }
-                    logger.info("Server on port {} is started", port);
-                    countDownLatch.countDown();
-                    channelFuture.channel().closeFuture().sync();
-                } catch (InterruptedException e) {
-                    logger.info("Server on port {} is interrupted", port);
-                } finally {
-                    requestsEventLoopGroup.shutdownGracefully();
-                    incomingEventLoopGroup.shutdownGracefully();
-                    countDownLatch.countDown();
-                }
-                logger.info("Server on port {} is stopped", port);
-            }
-        }, "Commander Server");
-        thread.start();
-
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            logger.error("Interrupted while waiting for the server to start");
-        }
+        nettyServer = nettyBuilder.buildServer(port);
+        port = nettyServer.getPort();
 
         return this;
     }
@@ -356,9 +266,6 @@ public class CommanderServer {
      * Request the server to stop.
      */
     public void stop() {
-        if (thread != null) {
-            thread.interrupt();
-        }
-        thread = null;
+        CloseableTools.close(nettyServer);
     }
 }

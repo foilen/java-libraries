@@ -20,10 +20,8 @@ import com.foilen.smalltools.net.commander.CommanderClient;
 import com.foilen.smalltools.net.commander.CommanderServer;
 import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
 import com.foilen.smalltools.net.commander.command.CommandRequest;
+import com.foilen.smalltools.net.netty.NettyClient;
 import com.foilen.smalltools.tools.AssertTools;
-
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 
 /**
  * A connection provided by {@link CommanderClient} or {@link CommanderServer}. When trying to send a message, if the channel is closed, it will be reopened automatically if possible.
@@ -37,16 +35,16 @@ public class CommanderConnection implements Closeable {
     private CommanderClient commanderClient;
 
     // Internals
-    private ChannelMessagingQueue channelMessagingQueue;
+    private NettyClientMessagingQueue nettyClientMessagingQueue;
 
     /**
      * Close the connection and clear the sending queue.
      */
     @Override
     public void close() {
-        if (channelMessagingQueue != null) {
-            channelMessagingQueue.close();
-            channelMessagingQueue = null;
+        if (nettyClientMessagingQueue != null) {
+            nettyClientMessagingQueue.close();
+            nettyClientMessagingQueue = null;
         }
     }
 
@@ -54,20 +52,20 @@ public class CommanderConnection implements Closeable {
     }
 
     /**
-     * Create a commander connection using an existing channel.
+     * Create a commander connection using an existing Netty Client.
      * 
-     * @param channel
-     *            the channel
+     * @param nettyClient
+     *            the Netty Client
      */
-    public CommanderConnection(Channel channel) {
-        SocketAddress socketAddress = channel.remoteAddress();
+    public CommanderConnection(NettyClient nettyClient) {
+        SocketAddress socketAddress = nettyClient.getRemoteAddress();
         if (socketAddress instanceof InetSocketAddress) {
             InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
             setHost(inetSocketAddress.getHostString());
             setPort(inetSocketAddress.getPort());
         }
 
-        channelMessagingQueue = new ChannelMessagingQueue(channel);
+        nettyClientMessagingQueue = new NettyClientMessagingQueue(nettyClient);
     }
 
     /**
@@ -86,16 +84,11 @@ public class CommanderConnection implements Closeable {
         AssertTools.assertNotNull(host, "The connection is not connected and there is no host set");
         AssertTools.assertNotNull(port, "The connection is not connected and there is no port set");
 
-        ChannelFuture channelFuture = commanderClient.createChannelFuture(host, port);
-        if (channelFuture == null) {
-            throw new SmallToolsException("Could not connect to " + host + ":" + port);
-        }
-        Channel channel = channelFuture.channel();
-
-        if (channelMessagingQueue == null) {
-            channelMessagingQueue = new ChannelMessagingQueue(channel);
+        NettyClient nettyClient = commanderClient.createNettyClient(host, port);
+        if (nettyClientMessagingQueue == null) {
+            nettyClientMessagingQueue = new NettyClientMessagingQueue(nettyClient);
         } else {
-            channelMessagingQueue.setChannel(channel);
+            nettyClientMessagingQueue.setNettyClient(nettyClient);
         }
     }
 
@@ -117,11 +110,11 @@ public class CommanderConnection implements Closeable {
      * @return true if connected
      */
     public synchronized boolean isConnected() {
-        if (channelMessagingQueue == null) {
+        if (nettyClientMessagingQueue == null) {
             return false;
         }
 
-        return channelMessagingQueue.getChannel().isOpen();
+        return nettyClientMessagingQueue.isConnected();
     }
 
     /**
@@ -136,7 +129,7 @@ public class CommanderConnection implements Closeable {
 
         // Send
         logger.debug("Sending command {} to {}:{}", command.getClass().getName(), host, port);
-        channelMessagingQueue.send(command);
+        nettyClientMessagingQueue.send(command);
     }
 
     /**
@@ -154,12 +147,12 @@ public class CommanderConnection implements Closeable {
         connect();
 
         // Fill the request
-        String requestId = GlobalCommanderResponseManager.createRequest(channelMessagingQueue.getChannel());
+        String requestId = GlobalCommanderResponseManager.createRequest(nettyClientMessagingQueue.getNettyClient());
         commandWithReply.setRequestId(requestId);
 
         // Send
         logger.debug("Sending command with reply {} to {}:{} . Request id is {}", commandWithReply.getClass().getName(), host, port, requestId);
-        channelMessagingQueue.send(commandWithReply);
+        nettyClientMessagingQueue.send(commandWithReply);
 
         // Wait for the result
         return (R) GlobalCommanderResponseManager.waitAndGetResponse(requestId);

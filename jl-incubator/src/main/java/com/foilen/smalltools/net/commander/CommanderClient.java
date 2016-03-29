@@ -11,14 +11,7 @@ package com.foilen.smalltools.net.commander;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.foilen.smalltools.crypt.cert.RSACertificate;
-import com.foilen.smalltools.crypt.cert.RSATools;
 import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
 import com.foilen.smalltools.net.commander.channel.CommanderDecoder;
 import com.foilen.smalltools.net.commander.channel.CommanderEncoder;
@@ -28,19 +21,8 @@ import com.foilen.smalltools.net.commander.command.internal.LocalServerPortComma
 import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
 import com.foilen.smalltools.net.commander.connectionpool.ConnectionPool;
 import com.foilen.smalltools.net.commander.connectionpool.SimpleConnectionPool;
-
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.ssl.CipherSuiteFilter;
-import io.netty.handler.ssl.IdentityCipherSuiteFilter;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslProvider;
+import com.foilen.smalltools.net.netty.NettyBuilder;
+import com.foilen.smalltools.net.netty.NettyClient;
 
 /**
  * The client side of the commander system. See {@link CommanderServer} for all the details and sample usage.
@@ -52,8 +34,6 @@ import io.netty.handler.ssl.SslProvider;
  * </pre>
  */
 public class CommanderClient {
-
-    private static final Logger logger = LoggerFactory.getLogger(CommanderClient.class);
 
     private RSATrustedCertificates serverTrustedCertificates;
     private RSACertificate clientCertificate;
@@ -91,70 +71,25 @@ public class CommanderClient {
      *            the host to connect to
      * @param port
      *            the port to connect to
-     * @return the {@link ChannelFuture}
+     * @return the {@link NettyClient}
      */
-    public ChannelFuture createChannelFuture(final String host, final int port) {
-        final EventLoopGroup workerGroup = new NioEventLoopGroup();
+    public NettyClient createNettyClient(final String host, final int port) {
 
-        try {
-            Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(workerGroup);
-            bootstrap.channel(NioSocketChannel.class);
-            bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+        NettyBuilder nettyBuilder = new NettyBuilder();
+        nettyBuilder.setCertificate(clientCertificate);
+        nettyBuilder.setTrustedCertificates(serverTrustedCertificates);
+        nettyBuilder.addChannelHandler(CommanderDecoder.class);
+        nettyBuilder.addChannelHandler(CommanderExecutionChannel.class, configureSpring, this, executorService);
+        nettyBuilder.addChannelHandler(CommanderEncoder.class);
 
-            final CommanderClient thisCC = this;
-            bootstrap.handler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel socketChannel) throws Exception {
+        NettyClient nettyClient = nettyBuilder.buildClient(host, port);
 
-                    // Add sslCtx if needed
-                    if (serverTrustedCertificates != null || clientCertificate != null) {
-                        TrustManagerFactory trustManagerFactory = serverTrustedCertificates == null ? null : RSATools.createTrustManagerFactory(serverTrustedCertificates);
-                        KeyManagerFactory keyManagerFactory = clientCertificate == null ? null : RSATools.createKeyManagerFactory(clientCertificate);
-
-                        CipherSuiteFilter cipherFilter = IdentityCipherSuiteFilter.INSTANCE;
-                        SslContext sslCtx = SslContext.newClientContext(SslProvider.JDK, null, trustManagerFactory, null, null, null, keyManagerFactory, null, cipherFilter, null, 0, 0);
-                        socketChannel.pipeline().addLast(sslCtx.newHandler(socketChannel.alloc()));
-                    }
-
-                    // Add the commander encoder and decoder
-                    socketChannel.pipeline().addLast(new CommanderDecoder());
-                    socketChannel.pipeline().addLast(new CommanderExecutionChannel(configureSpring, thisCC, executorService));
-                    socketChannel.pipeline().addLast(new CommanderEncoder());
-
-                }
-            });
-
-            logger.info("Connecting to {}:{}", host, port);
-            final ChannelFuture result = bootstrap.connect(host, port).sync();
-
-            // Send the local server's port
-            if (commanderServer != null) {
-                result.channel().writeAndFlush(new LocalServerPortCommand(commanderServer.getPort()));
-            }
-
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        result.channel().closeFuture().sync();
-                    } catch (InterruptedException e) {
-                        logger.info("Client {}:{} is interrupted", host, port);
-                    } finally {
-                        workerGroup.shutdownGracefully();
-                    }
-                    logger.info("Client {}:{} is stopped", host, port);
-                }
-            });
-            thread.setDaemon(true);
-            thread.start();
-
-            return result;
-        } catch (InterruptedException e) {
-            logger.info("Connection to {}:{} was interrupted while being created", host, port);
+        // Send the local server's port
+        if (commanderServer != null) {
+            nettyClient.writeFlush(new LocalServerPortCommand(commanderServer.getPort()));
         }
 
-        return null;
+        return nettyClient;
     }
 
     /**

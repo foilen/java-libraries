@@ -17,6 +17,7 @@ import com.foilen.smalltools.net.commander.CommanderClient;
 import com.foilen.smalltools.net.commander.command.CommandImplementation;
 import com.foilen.smalltools.net.commander.command.CommandImplementationConnectionAware;
 import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
+import com.foilen.smalltools.net.netty.NettyClient;
 import com.foilen.smalltools.tools.SpringTools;
 
 import io.netty.channel.ChannelHandlerAdapter;
@@ -86,7 +87,7 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
 
     private CommanderConnection getCommanderConnection(ChannelHandlerContext channelHandlerContext) {
         if (cachedCommanderConnection == null) {
-            cachedCommanderConnection = new CommanderConnection(channelHandlerContext.channel());
+            cachedCommanderConnection = new CommanderConnection(new NettyClient(channelHandlerContext.channel()));
             cachedCommanderConnection.setCommanderClient(commanderClient);
         }
         return cachedCommanderConnection;
