@@ -12,7 +12,9 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -236,17 +238,70 @@ public final class ReflectionUtils {
      * 
      * @param clazz
      *            the type
+     * @param contructorParams
+     *            the parameters of the constructor
      * @param <T>
      *            the type of the object
      * @return the object
      */
-    public static <T> T instantiate(Class<T> clazz) {
-        try {
-            T object = clazz.newInstance();
-            return object;
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new SmallToolsException("Could not instanciate the class " + clazz.getName(), e);
+    @SuppressWarnings("unchecked")
+    public static <T> T instantiate(Class<T> clazz, Object... contructorParams) {
+        // Find the contructor param types
+        List<Class<?>> contructorParamTypes = new ArrayList<>(contructorParams.length);
+        for (Object contructorParam : contructorParams) {
+            if (contructorParam == null) {
+                contructorParamTypes.add(null);
+            } else {
+                contructorParamTypes.add(contructorParam.getClass());
+            }
         }
+
+        // If only one constructor, use it
+        Constructor<?>[] constructors = clazz.getConstructors();
+        if (constructors.length == 1) {
+            try {
+                return (T) constructors[0].newInstance(contructorParams);
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new SmallToolsException("Could not instanciate the class " + clazz.getName(), e);
+            }
+        }
+
+        // Find the first constructor that support the specified types
+        for (Constructor<?> constructor : constructors) {
+
+            // Not the same amount of parameters
+            Class<?>[] currentTypes = constructor.getParameterTypes();
+            if (currentTypes.length != contructorParamTypes.size()) {
+                continue;
+            }
+
+            // Not the right type
+            boolean allRightTypes = true;
+            for (int i = 0; i < currentTypes.length; ++i) {
+                Class<?> contructorParamType = contructorParamTypes.get(i);
+                if (contructorParamType == null) {
+                    continue;
+                }
+                if (!currentTypes.equals(contructorParamType) && !currentTypes[i].isAssignableFrom(contructorParamType)) {
+                    allRightTypes = false;
+                    break;
+                }
+            }
+
+            if (!allRightTypes) {
+                continue;
+            }
+
+            // Good one
+            try {
+                return (T) constructor.newInstance(contructorParams);
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new SmallToolsException("Could not instanciate the class " + clazz.getName(), e);
+            }
+        }
+
+        // Fail since could not find a constructor
+        throw new SmallToolsException("Could not instanciate the class " + clazz.getName() + " since couldn't find the right constructor");
     }
 
     /**

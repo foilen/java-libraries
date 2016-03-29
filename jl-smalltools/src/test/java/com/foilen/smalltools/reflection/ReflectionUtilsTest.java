@@ -17,6 +17,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.crypt.cert.CertificateDetails;
+import com.foilen.smalltools.inputstream.ZerosInputStream;
+
 public class ReflectionUtilsTest {
 
     private static interface Animal {
@@ -216,6 +219,18 @@ public class ReflectionUtilsTest {
         Assert.assertEquals(0, anything.getAge());
         Assert.assertNull(anything.getName());
         Assert.assertNull(anything.getAnimal());
+    }
+
+    @Test
+    public void testInstantiateEmptyContructor() {
+        CertificateDetails actual = ReflectionUtils.instantiate(CertificateDetails.class);
+        Assert.assertNotNull(actual);
+    }
+
+    @Test
+    public void testInstantiateNonEmptyContructor() {
+        ZerosInputStream actual = ReflectionUtils.instantiate(ZerosInputStream.class, 10L);
+        Assert.assertNotNull(actual);
     }
 
 }
