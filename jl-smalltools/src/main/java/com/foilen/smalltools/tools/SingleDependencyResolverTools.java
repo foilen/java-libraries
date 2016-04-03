@@ -22,8 +22,8 @@ import com.google.common.base.Strings;
  * 
  * <pre>
  * Sample usage:
- * A -> B -> C
- *   -> D -> E
+ * A -&gt; B -&gt; C
+ *   -&gt; D -&gt; E
  *   
  * SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
  * resolver.addDependency("E", "D");

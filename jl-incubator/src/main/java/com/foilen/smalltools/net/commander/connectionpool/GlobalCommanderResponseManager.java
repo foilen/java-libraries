@@ -19,8 +19,6 @@ import com.foilen.smalltools.net.commander.command.CommandResponse;
 import com.foilen.smalltools.net.netty.NettyClient;
 import com.foilen.smalltools.tools.SecureRandomTools;
 
-import io.netty.channel.Channel;
-
 /**
  * This manager knows where each replies must go through across all the {@link ConnectionPool}.
  * 
@@ -86,7 +84,7 @@ public class GlobalCommanderResponseManager {
      * Wait for the request to be completed and get the result.
      * 
      * @param requestId
-     *            the request id given by {@link #createRequest(Channel)}
+     *            the request id given by {@link #createRequest(NettyClient)}
      * @return the result
      */
     @SuppressWarnings("rawtypes")
