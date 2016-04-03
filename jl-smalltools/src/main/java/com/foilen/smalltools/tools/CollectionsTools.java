@@ -47,6 +47,86 @@ public final class CollectionsTools {
     }
 
     /**
+     * Is true if all of the items are not null.
+     * 
+     * @param items
+     *            the items
+     * @return true if all are not null
+     */
+    public static boolean isAllItemNotNull(Collection<?> items) {
+        for (Object item : items) {
+            if (item == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Is true if all of the items are not null.
+     * 
+     * @param items
+     *            the items
+     * @return true if all are not null
+     */
+    public static boolean isAllItemNotNull(Object... items) {
+        for (Object item : items) {
+            if (item == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Is true if all of the items are not null and not empty.
+     * 
+     * @param items
+     *            the items
+     * @return true if all are not null and not empty
+     */
+    public static boolean isAllItemNotNullOrEmpty(Collection<String> items) {
+        for (Object item : items) {
+            if (item == null || items.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Is true if all of the items are not null and not empty.
+     * 
+     * @param items
+     *            the items
+     * @return true if all are not null and not empty
+     */
+    public static boolean isAllItemNotNullOrEmpty(String... items) {
+        for (Object item : items) {
+            if (item == null || items.length == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Is true if any of the items is not null.
+     * 
+     * @param items
+     *            the items
+     * @return true if any is not null
+     */
+    public static boolean isAnyItemNotNull(Collection<?> items) {
+        for (Object item : items) {
+            if (item != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Is true if any of the items is not null.
      * 
      * @param items
@@ -56,6 +136,38 @@ public final class CollectionsTools {
     public static boolean isAnyItemNotNull(Object... items) {
         for (Object item : items) {
             if (item != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Is true if any of the items is not null and not empty.
+     * 
+     * @param items
+     *            the items
+     * @return true if any is not null and not empty
+     */
+    public static boolean isAnyItemNotNullOrEmpty(Collection<String> items) {
+        for (Object item : items) {
+            if (item != null && !items.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Is true if any of the items is not null and not empty.
+     * 
+     * @param items
+     *            the items
+     * @return true if any is not null and not empty
+     */
+    public static boolean isAnyItemNotNullOrEmpty(String... items) {
+        for (Object item : items) {
+            if (item != null && items.length != 0) {
                 return true;
             }
         }
