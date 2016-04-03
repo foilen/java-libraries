@@ -20,7 +20,7 @@ import org.junit.Test;
 import com.foilen.smalltools.crypt.cert.CertificateDetails;
 import com.foilen.smalltools.inputstream.ZerosInputStream;
 
-public class ReflectionUtilsTest {
+public class ReflectionToolsTest {
 
     private static interface Animal {
         public int getAge();
@@ -153,7 +153,7 @@ public class ReflectionUtilsTest {
 
     @Test
     public void testAllFields() {
-        List<Field> fields = ReflectionUtils.allFields(Anything2.class);
+        List<Field> fields = ReflectionTools.allFields(Anything2.class);
         int expectedSize = 5;
         if (fields.size() == expectedSize + 2) {
             // Coverage test
@@ -170,7 +170,7 @@ public class ReflectionUtilsTest {
 
     @Test
     public void testAllFieldsWithAnnotation() {
-        List<Field> fields = ReflectionUtils.allFieldsWithAnnotation(Anything2.class, MyAnnotation.class);
+        List<Field> fields = ReflectionTools.allFieldsWithAnnotation(Anything2.class, MyAnnotation.class);
         Assert.assertEquals(2, fields.size());
         assertContainField(fields, "animal");
         assertContainField(fields, "something");
@@ -178,7 +178,7 @@ public class ReflectionUtilsTest {
 
     @Test
     public void testAllMethodsWithAnnotations() {
-        List<Method> methods = ReflectionUtils.allMethodsWithAnnotation(Anything2.class, MyAnnotation.class);
+        List<Method> methods = ReflectionTools.allMethodsWithAnnotation(Anything2.class, MyAnnotation.class);
         Assert.assertEquals(2, methods.size());
         assertContainMethod(methods, "getName");
         assertContainMethod(methods, "init");
@@ -192,7 +192,7 @@ public class ReflectionUtilsTest {
         Anything anything = new Anything();
         dog.setAge(10);
         dog.setName("Fido");
-        ReflectionUtils.copyAllProperties(dog, anything);
+        ReflectionTools.copyAllProperties(dog, anything);
         Assert.assertEquals(10, anything.getAge());
         Assert.assertEquals("Fido", anything.getName());
         Assert.assertNull(anything.getAnimal());
@@ -203,19 +203,19 @@ public class ReflectionUtilsTest {
         anything.setAge(20);
         anything.setName("Rick");
         anything.setAnimal(setDog);
-        ReflectionUtils.copyAllProperties(anything, dog);
+        ReflectionTools.copyAllProperties(anything, dog);
         Assert.assertEquals(20, dog.getAge());
         Assert.assertEquals("Rick", dog.getName());
 
         // With sub-class
         AnimalContainer animalContainer = new AnimalContainer();
-        ReflectionUtils.copyAllProperties(anything, animalContainer);
+        ReflectionTools.copyAllProperties(anything, animalContainer);
         Assert.assertEquals(setDog, animalContainer.getAnimal());
 
         // With sub-class (wrong way)
         anything = new Anything();
         animalContainer.setAnimal(new Cat());
-        ReflectionUtils.copyAllProperties(animalContainer, anything);
+        ReflectionTools.copyAllProperties(animalContainer, anything);
         Assert.assertEquals(0, anything.getAge());
         Assert.assertNull(anything.getName());
         Assert.assertNull(anything.getAnimal());
@@ -223,13 +223,13 @@ public class ReflectionUtilsTest {
 
     @Test
     public void testInstantiateEmptyContructor() {
-        CertificateDetails actual = ReflectionUtils.instantiate(CertificateDetails.class);
+        CertificateDetails actual = ReflectionTools.instantiate(CertificateDetails.class);
         Assert.assertNotNull(actual);
     }
 
     @Test
     public void testInstantiateNonEmptyContructor() {
-        ZerosInputStream actual = ReflectionUtils.instantiate(ZerosInputStream.class, 10L);
+        ZerosInputStream actual = ReflectionTools.instantiate(ZerosInputStream.class, 10L);
         Assert.assertNotNull(actual);
     }
 

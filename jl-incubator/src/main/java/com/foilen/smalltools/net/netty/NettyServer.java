@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.foilen.smalltools.crypt.cert.RSACertificate;
 import com.foilen.smalltools.crypt.cert.RSATools;
 import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
-import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.tools.AssertTools;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -138,7 +138,7 @@ public class NettyServer implements Closeable {
 
                             // Add the channel handlers
                             for (ChannelHandlerContainer channelHandlerContainer : channelHandlerContainers) {
-                                socketChannel.pipeline().addLast(ReflectionUtils.instantiate(channelHandlerContainer.getChannelHandlerClass(), channelHandlerContainer.getConstructorParams()));
+                                socketChannel.pipeline().addLast(ReflectionTools.instantiate(channelHandlerContainer.getChannelHandlerClass(), channelHandlerContainer.getConstructorParams()));
                             }
                         }
                     }) //

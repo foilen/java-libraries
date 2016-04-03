@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.bean.annotation.BeanConfigure;
 import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.tools.AssertTools;
 
 /**
@@ -77,7 +77,7 @@ public class HierarchicalBeanRepository implements BeanRepository {
     @Override
     public <T> T config(Class<T> clazz) {
         AssertTools.assertNotNull(clazz, "You cannot configure a null class");
-        T object = ReflectionUtils.instantiate(clazz);
+        T object = ReflectionTools.instantiate(clazz);
         config(object);
         return object;
     }
@@ -91,7 +91,7 @@ public class HierarchicalBeanRepository implements BeanRepository {
         LOG.debug("Configuring an object of class {}", object.getClass().getName());
 
         // Fill all the fields
-        for (Field field : ReflectionUtils.allFieldsWithAnnotation(object.getClass(), BeanConfigure.class)) {
+        for (Field field : ReflectionTools.allFieldsWithAnnotation(object.getClass(), BeanConfigure.class)) {
             // Details
             Class<?> valueType = field.getType();
             String fieldName = field.getName();

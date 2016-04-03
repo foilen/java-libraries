@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import com.foilen.smalltools.bean.annotation.BeanConfigure;
 import com.foilen.smalltools.comparator.ClassNameComparator;
 import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.tools.AssertTools;
 
 /**
@@ -50,7 +50,7 @@ public class SimpleBeanRepository implements BeanRepository {
     public <T> T add(Class<T> clazz) {
         AssertTools.assertNotNull(clazz, "You cannot add a null class");
         LOG.debug("Adding the class {}", clazz.getName());
-        T bean = ReflectionUtils.instantiate(clazz);
+        T bean = ReflectionTools.instantiate(clazz);
         addBeanInListAndMap(bean);
         return bean;
     }
@@ -67,7 +67,7 @@ public class SimpleBeanRepository implements BeanRepository {
     public <T> T addAndConfig(Class<T> clazz) {
         AssertTools.assertNotNull(clazz, "You cannot add a null class");
         LOG.debug("Adding the class {}", clazz.getName());
-        T bean = ReflectionUtils.instantiate(clazz);
+        T bean = ReflectionTools.instantiate(clazz);
         addBeanInListAndMap(bean);
         config(bean);
         return bean;
@@ -103,7 +103,7 @@ public class SimpleBeanRepository implements BeanRepository {
      */
     protected void addBeanInMap(Class<?> clazz, Object bean) {
 
-        for (Class<?> currentType : ReflectionUtils.allTypes(clazz)) {
+        for (Class<?> currentType : ReflectionTools.allTypes(clazz)) {
 
             // Get or create the list for the current type
             Set<Object> beansOfCurrentType = beansByType.get(currentType);
@@ -120,7 +120,7 @@ public class SimpleBeanRepository implements BeanRepository {
     @Override
     public <T> T config(Class<T> clazz) {
         AssertTools.assertNotNull(clazz, "You cannot configure a null class");
-        T object = ReflectionUtils.instantiate(clazz);
+        T object = ReflectionTools.instantiate(clazz);
         config(object);
         return object;
     }
@@ -131,7 +131,7 @@ public class SimpleBeanRepository implements BeanRepository {
         LOG.debug("Configuring an object of class {}", object.getClass().getName());
 
         // Fill all the fields
-        for (Field field : ReflectionUtils.allFieldsWithAnnotation(object.getClass(), BeanConfigure.class)) {
+        for (Field field : ReflectionTools.allFieldsWithAnnotation(object.getClass(), BeanConfigure.class)) {
             // Details
             Class<?> valueType = field.getType();
             String fieldName = field.getName();
@@ -209,7 +209,7 @@ public class SimpleBeanRepository implements BeanRepository {
     @Override
     public Object postConfig(Object object) {
         String className = object.getClass().getName();
-        for (Method method : ReflectionUtils.allMethodsWithAnnotation(object.getClass(), PostConstruct.class)) {
+        for (Method method : ReflectionTools.allMethodsWithAnnotation(object.getClass(), PostConstruct.class)) {
             String methodName = method.getName();
 
             LOG.debug("Calling the method {}.{}", className, methodName);

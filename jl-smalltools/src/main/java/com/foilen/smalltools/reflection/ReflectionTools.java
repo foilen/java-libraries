@@ -26,11 +26,8 @@ import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * Some helpers for reflection.
- * 
- * @deprecated Renamed to {@link ReflectionTools}.
  */
-@Deprecated
-public final class ReflectionUtils {
+public final class ReflectionTools {
 
     /**
      * Find all the fields on the type and super-types.
@@ -338,7 +335,7 @@ public final class ReflectionUtils {
         AssertTools.assertNotNull(object, "You must set an object");
         AssertTools.assertNotNull(visitField, "You must have a visitor");
 
-        for (Field field : ReflectionUtils.allFields(object.getClass())) {
+        for (Field field : ReflectionTools.allFields(object.getClass())) {
             visitField.visitField(field, object);
         }
     }
@@ -360,6 +357,6 @@ public final class ReflectionUtils {
         }
     }
 
-    private ReflectionUtils() {
+    private ReflectionTools() {
     }
 }

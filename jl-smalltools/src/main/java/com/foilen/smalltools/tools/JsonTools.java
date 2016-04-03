@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.reflection.ReflectionTools;
 
 /**
  * A quick tool to serialize/deserialize to JSON.
@@ -87,7 +87,7 @@ public final class JsonTools {
      */
     public static void readFromFile(File file, Object target) {
         Object readObject = readFromFile(file, target.getClass());
-        ReflectionUtils.copyAllProperties(readObject, target);
+        ReflectionTools.copyAllProperties(readObject, target);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class JsonTools {
      */
     public static void readFromFileIgnoreFail(File file, Object target) {
         Object readObject = readFromFileIgnoreFail(file, target.getClass());
-        ReflectionUtils.copyAllProperties(readObject, target);
+        ReflectionTools.copyAllProperties(readObject, target);
     }
 
     /**

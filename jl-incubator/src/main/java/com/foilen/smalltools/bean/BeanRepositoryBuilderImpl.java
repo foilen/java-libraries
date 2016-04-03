@@ -14,7 +14,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.reflection.ReflectionUtils;
+import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.tools.AssertTools;
 
 /**
@@ -126,7 +126,7 @@ public class BeanRepositoryBuilderImpl implements BeanRepositoryBuilder {
     @Override
     public BeanRepositoryBuilder useProvider(Class<? extends BeansProvider> beanProviderClass) {
         AssertTools.assertNotNull(beanProviderClass, "You cannot queue a null provider");
-        BeansProvider beanProvider = ReflectionUtils.instantiate(beanProviderClass);
+        BeansProvider beanProvider = ReflectionTools.instantiate(beanProviderClass);
         beanProvider.provide(this);
         return this;
     }
