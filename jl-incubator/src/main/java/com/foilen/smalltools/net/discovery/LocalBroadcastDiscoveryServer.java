@@ -137,7 +137,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
         }
 
         // Start the thread
-        thread = new Thread(this);
+        thread = new Thread(this, "LocalBroadcastDiscoveryServer-" + port);
         thread.start();
     }
 

@@ -128,6 +128,7 @@ public class TCPServerService implements Runnable {
         // Start the thread
         thread = new Thread(this);
         thread.start();
+        thread.setName("TCPServerService-" + getPort());
         logger.info("TCP Server listening on port {}", getPort());
     }
 

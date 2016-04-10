@@ -57,7 +57,7 @@ public class TimeoutHandler<T> {
      */
     public T call() throws InterruptedException {
 
-        Thread callThread = new Thread(runnable);
+        Thread callThread = new Thread(runnable, "TimeoutHandler");
         callThread.start();
 
         callThread.join(timeoutInMilliseconds);

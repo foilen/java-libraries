@@ -163,7 +163,8 @@ public class NettyServer implements Closeable {
                 }
                 logger.info("Server on port {} is stopped", bindedPort);
             }
-        }, "Commander Server");
+        });
+        thread.setName("Netty Server-" + bindedPort);
         thread.start();
 
         try {
