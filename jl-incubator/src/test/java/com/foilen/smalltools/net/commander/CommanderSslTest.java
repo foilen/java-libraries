@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.net.commander;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
@@ -119,8 +120,18 @@ public class CommanderSslTest {
         Assert.assertEquals("AA", response.getMsg());
 
         // Check that the remote connection does not have the server's port to call back
-        CommanderConnection remoteConnection = grabRemoteConnection(commanderConnection);
-        Assert.assertNotEquals((Integer) port, remoteConnection.getPort());
+        CommanderConnection remoteConnectionOnServerSide = grabRemoteConnection(commanderConnection);
+        Assert.assertNotEquals((Integer) port, remoteConnectionOnServerSide.getPort());
+
+        // Get the remote certificate
+        List<RSACertificate> remoteCertificatesOnServerSide = remoteConnectionOnServerSide.getPeerSslCertificate();
+        if (clientCertificate == null || serverTrustCertificate == null) {
+            Assert.assertNull(remoteCertificatesOnServerSide);
+        } else {
+            Assert.assertNotNull(remoteCertificatesOnServerSide);
+            Assert.assertEquals(1, remoteCertificatesOnServerSide.size());
+            Assert.assertEquals(clientCertificate.getCommonName(), remoteCertificatesOnServerSide.get(0).getCommonName());
+        }
 
         // Close
         commanderClient.closeConnection("127.0.0.1", port);

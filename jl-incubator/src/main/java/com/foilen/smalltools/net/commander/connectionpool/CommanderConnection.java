@@ -11,10 +11,12 @@ package com.foilen.smalltools.net.commander.connectionpool;
 import java.io.Closeable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foilen.smalltools.crypt.cert.RSACertificate;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.commander.CommanderClient;
 import com.foilen.smalltools.net.commander.CommanderServer;
@@ -37,17 +39,6 @@ public class CommanderConnection implements Closeable {
     // Internals
     private NettyClientMessagingQueue nettyClientMessagingQueue;
 
-    /**
-     * Close the connection and clear the sending queue.
-     */
-    @Override
-    public void close() {
-        if (nettyClientMessagingQueue != null) {
-            nettyClientMessagingQueue.close();
-            nettyClientMessagingQueue = null;
-        }
-    }
-
     public CommanderConnection() {
     }
 
@@ -66,6 +57,17 @@ public class CommanderConnection implements Closeable {
         }
 
         nettyClientMessagingQueue = new NettyClientMessagingQueue(nettyClient);
+    }
+
+    /**
+     * Close the connection and clear the sending queue.
+     */
+    @Override
+    public void close() {
+        if (nettyClientMessagingQueue != null) {
+            nettyClientMessagingQueue.close();
+            nettyClientMessagingQueue = null;
+        }
     }
 
     /**
@@ -98,6 +100,22 @@ public class CommanderConnection implements Closeable {
 
     public String getHost() {
         return host;
+    }
+
+    /**
+     * Get the SSL certificate if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
+     * 
+     * @return the certificate or null if it is not ready or available
+     */
+    public List<RSACertificate> getPeerSslCertificate() {
+        if (nettyClientMessagingQueue != null) {
+            NettyClient nettyClient = nettyClientMessagingQueue.getNettyClient();
+            if (nettyClient != null) {
+                return nettyClient.getPeerSslCertificate();
+            }
+        }
+
+        return null;
     }
 
     public Integer getPort() {

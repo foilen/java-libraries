@@ -29,7 +29,7 @@ public abstract class AbstractCommandImplementationWithResponse<R> implements Co
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private CommanderConnection commanderConnection;
+    protected CommanderConnection commanderConnection;
 
     private String requestId;
 
@@ -60,7 +60,6 @@ public abstract class AbstractCommandImplementationWithResponse<R> implements Co
     public void setCommanderConnection(CommanderConnection commanderConnection) {
         this.commanderConnection = commanderConnection;
     }
-
 
     public void setRequestId(String requestId) {
         this.requestId = requestId;

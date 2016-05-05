@@ -165,6 +165,14 @@ public class RSACertificate {
         this.keysForSigning = keysForSigning;
     }
 
+    public RSACertificate(javax.security.cert.X509Certificate certificate) {
+        try {
+            this.certificateHolder = new X509CertificateHolder(certificate.getEncoded());
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem setting the certificate", e);
+        }
+    }
+
     public RSACertificate(X509Certificate certificate) {
         try {
             this.certificateHolder = new X509CertificateHolder(certificate.getEncoded());
@@ -201,7 +209,7 @@ public class RSACertificate {
     }
 
     /**
-     * Get the certificate's common name.
+     * Get the first certificate's common name.
      * 
      * @return the common name
      */

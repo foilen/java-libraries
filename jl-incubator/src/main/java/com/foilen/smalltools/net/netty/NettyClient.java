@@ -10,10 +10,12 @@ package com.foilen.smalltools.net.netty;
 
 import java.io.Closeable;
 import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
+import javax.security.cert.X509Certificate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.CipherSuiteFilter;
 import io.netty.handler.ssl.IdentityCipherSuiteFilter;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 
 /**
@@ -103,6 +106,27 @@ public class NettyClient implements Closeable {
             throw new SmallToolsException("Connection was interrupted");
         }
 
+    }
+
+    /**
+     * Get the SSL certificate if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
+     * 
+     * @return the certificate or null if it is not ready or available
+     */
+    public List<RSACertificate> getPeerSslCertificate() {
+        try {
+            X509Certificate[] certificates = channel.pipeline().get(SslHandler.class).engine().getSession().getPeerCertificateChain();
+
+            List<RSACertificate> rsaCertificates = new ArrayList<>();
+            for (X509Certificate certificate : certificates) {
+                rsaCertificates.add(new RSACertificate(certificate));
+            }
+            return rsaCertificates;
+        } catch (Exception e) {
+            logger.error("Requesting the peer's certificate, but it is not present", e);
+        }
+
+        return null;
     }
 
     /**
