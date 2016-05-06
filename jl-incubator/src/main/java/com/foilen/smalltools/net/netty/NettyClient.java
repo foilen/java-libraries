@@ -9,6 +9,7 @@
 package com.foilen.smalltools.net.netty;
 
 import java.io.Closeable;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,21 @@ public class NettyClient implements Closeable {
             throw new SmallToolsException("Connection was interrupted");
         }
 
+    }
+
+    /**
+     * Get the ip of the remote connection when connected.
+     * 
+     * @return the ip or null if not available
+     */
+    public String getPeerIp() {
+        try {
+            return ((InetSocketAddress) channel.remoteAddress()).getAddress().getHostAddress();
+        } catch (Exception e) {
+            logger.error("Requesting the peer's IP, but it is not available", e);
+        }
+
+        return null;
     }
 
     /**

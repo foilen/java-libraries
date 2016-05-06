@@ -103,11 +103,41 @@ public class CommanderConnection implements Closeable {
     }
 
     /**
-     * Get the SSL certificate if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
+     * Get the ip of the remote connection when connected.
+     * 
+     * @return the ip or null if not available
+     */
+    public String getPeerIp() {
+        if (nettyClientMessagingQueue != null) {
+            NettyClient nettyClient = nettyClientMessagingQueue.getNettyClient();
+            if (nettyClient != null) {
+                return nettyClient.getPeerIp();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the first SSL certificate if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
      * 
      * @return the certificate or null if it is not ready or available
      */
-    public List<RSACertificate> getPeerSslCertificate() {
+    public RSACertificate getPeerSslCertificate() {
+        List<RSACertificate> peerSslCertificates = getPeerSslCertificates();
+        if (peerSslCertificates == null || peerSslCertificates.isEmpty()) {
+            return null;
+        }
+
+        return peerSslCertificates.get(0);
+    }
+
+    /**
+     * Get the SSL certificates if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
+     * 
+     * @return the certificates or null if it is not ready or available
+     */
+    public List<RSACertificate> getPeerSslCertificates() {
         if (nettyClientMessagingQueue != null) {
             NettyClient nettyClient = nettyClientMessagingQueue.getNettyClient();
             if (nettyClient != null) {

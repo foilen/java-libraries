@@ -124,7 +124,7 @@ public class CommanderSslTest {
         Assert.assertNotEquals((Integer) port, remoteConnectionOnServerSide.getPort());
 
         // Get the remote certificate
-        List<RSACertificate> remoteCertificatesOnServerSide = remoteConnectionOnServerSide.getPeerSslCertificate();
+        List<RSACertificate> remoteCertificatesOnServerSide = remoteConnectionOnServerSide.getPeerSslCertificates();
         if (clientCertificate == null || serverTrustCertificate == null) {
             Assert.assertNull(remoteCertificatesOnServerSide);
         } else {
