@@ -66,19 +66,23 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
         logger.debug("Got one {}", msg.getClass().getSimpleName());
         CommandImplementation commandImplementation = (CommandImplementation) msg;
 
-        // Configure the CommandImplementationChannelAware
-        if (commandImplementation instanceof CommandImplementationConnectionAware) {
-            CommandImplementationConnectionAware commandImplementationChannelAware = (CommandImplementationConnectionAware) commandImplementation;
-            commandImplementationChannelAware.setCommanderConnection(getCommanderConnection(ctx));
-        }
+        try {
+            // Configure the CommandImplementationChannelAware
+            if (commandImplementation instanceof CommandImplementationConnectionAware) {
+                CommandImplementationConnectionAware commandImplementationChannelAware = (CommandImplementationConnectionAware) commandImplementation;
+                commandImplementationChannelAware.setCommanderConnection(getCommanderConnection(ctx));
+            }
 
-        // Configure Spring if needed
-        if (configureSpring) {
-            SpringTools.configure(commandImplementation);
-        }
+            // Configure Spring if needed
+            if (configureSpring) {
+                SpringTools.configure(commandImplementation);
+            }
 
-        // Execute
-        executorService.execute(commandImplementation);
+            // Execute
+            executorService.execute(commandImplementation);
+        } catch (Exception e) {
+            logger.error("Problem configuring the command", e);
+        }
     }
 
     public CommanderClient getCommanderClient() {
