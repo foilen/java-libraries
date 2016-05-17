@@ -107,8 +107,36 @@ public class MemoryUsage {
         return (Long) result;
     }
 
+    /**
+     * The used memory of the system.
+     * 
+     * @return the used memory of the system or null if cannot get it
+     */
+    public static Long getSystemUsedMemory() {
+        Long free = getSystemFreeMemory();
+        Long total = getSystemTotalMemory();
+        if (free == null || total == null) {
+            return null;
+        }
+        return total - free;
+    }
+
+    /**
+     * The used memory of the system in percent.
+     * 
+     * @return the used memory of the system in percent or null if cannot get it
+     */
+    public static Double getSystemUsedMemoryPercent() {
+        Double freePercent = getSystemFreeMemoryPercent();
+        if (freePercent == null) {
+            return null;
+        }
+        return 100.0 - freePercent;
+    }
+
     public static void main(String[] args) {
         System.out.println("getSystemFreeMemory: " + getSystemFreeMemory() + " " + getSystemFreeMemoryPercent() + "%");
+        System.out.println("getSystemUsedMemory: " + getSystemUsedMemory() + " " + getSystemUsedMemoryPercent() + "%");
         System.out.println("getSystemTotalMemory: " + getSystemTotalMemory());
     }
 
