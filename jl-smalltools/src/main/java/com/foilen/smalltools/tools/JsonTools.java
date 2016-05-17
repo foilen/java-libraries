@@ -29,18 +29,36 @@ import com.foilen.smalltools.reflection.ReflectionTools;
  */
 public final class JsonTools {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper COMPACT_OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper PRETTY_OBJECT_MAPPER = new ObjectMapper();
     private static final ObjectMapper NON_FAIL_OBJECT_MAPPER = new ObjectMapper();
 
     static {
-        OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-        OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        PRETTY_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+        PRETTY_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+        COMPACT_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
         NON_FAIL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         NON_FAIL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
         NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
         NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
+
+    /**
+     * Return a compact print JSON String.
+     * 
+     * @param object
+     *            the object to serialize
+     * @return the JSON String
+     */
+    public static String compactPrint(Object object) {
+        try {
+            return COMPACT_OBJECT_MAPPER.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new SmallToolsException("Problem serializing in JSON", e);
+        }
     }
 
     /**
@@ -52,7 +70,7 @@ public final class JsonTools {
      */
     public static String prettyPrint(Object object) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(object);
+            return PRETTY_OBJECT_MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
@@ -71,7 +89,7 @@ public final class JsonTools {
      */
     public static <T> T readFromFile(File file, Class<T> clazz) {
         try {
-            return OBJECT_MAPPER.readValue(file, clazz);
+            return PRETTY_OBJECT_MAPPER.readValue(file, clazz);
         } catch (Exception e) {
             throw new SmallToolsException("Problem deserializing from JSON", e);
         }
@@ -191,7 +209,7 @@ public final class JsonTools {
      */
     public static <T> T readFromResource(String resource, Class<T> clazz, Class<?> context) {
         try {
-            return OBJECT_MAPPER.readValue(context.getResourceAsStream(resource), clazz);
+            return PRETTY_OBJECT_MAPPER.readValue(context.getResourceAsStream(resource), clazz);
         } catch (Exception e) {
             throw new SmallToolsException("Problem deserializing from JSON", e);
         }
@@ -210,7 +228,7 @@ public final class JsonTools {
      */
     public static <T> T readFromString(String text, Class<T> clazz) {
         try {
-            return OBJECT_MAPPER.readValue(text, clazz);
+            return PRETTY_OBJECT_MAPPER.readValue(text, clazz);
         } catch (Exception e) {
             throw new SmallToolsException("Problem deserializing from JSON", e);
         }
@@ -226,7 +244,7 @@ public final class JsonTools {
      */
     public static void writeToFile(File file, Object object) {
         try {
-            OBJECT_MAPPER.writeValue(file, object);
+            PRETTY_OBJECT_MAPPER.writeValue(file, object);
         } catch (IOException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
@@ -254,7 +272,7 @@ public final class JsonTools {
      */
     public static void writeToStream(OutputStream stream, Object object) {
         try {
-            OBJECT_MAPPER.writeValue(stream, object);
+            PRETTY_OBJECT_MAPPER.writeValue(stream, object);
         } catch (IOException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
@@ -269,7 +287,7 @@ public final class JsonTools {
      */
     public static String writeToString(Object object) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(object);
+            return PRETTY_OBJECT_MAPPER.writeValueAsString(object);
         } catch (Exception e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }

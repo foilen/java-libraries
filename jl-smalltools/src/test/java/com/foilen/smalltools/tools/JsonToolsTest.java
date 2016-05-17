@@ -47,6 +47,28 @@ public class JsonToolsTest {
     }
 
     @Test
+    public void testCompactPrint() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-compactPrint-expected", this.getClass());
+        expected = expected.replaceAll("\r", "");
+        Type type = new Type();
+        type.setA("hello");
+        type.setB(10);
+        String actual = JsonTools.compactPrint(type).replaceAll("\r", "");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPrettyPrint() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
+        expected = expected.replaceAll("\r", "");
+        Type type = new Type();
+        type.setA("hello");
+        type.setB(10);
+        String actual = JsonTools.prettyPrint(type).replaceAll("\r", "");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void testReadFromFileFileClassOfT() {
         String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
         FileTools.writeFile(content, tmpFile);
@@ -92,17 +114,6 @@ public class JsonToolsTest {
 
         Assert.assertEquals("hello", type.getA());
         Assert.assertEquals(10, type.getB());
-    }
-
-    @Test
-    public void testPrettyPrint() {
-        String expected = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
-        expected = expected.replaceAll("\r", "");
-        Type type = new Type();
-        type.setA("hello");
-        type.setB(10);
-        String actual = JsonTools.prettyPrint(type).replaceAll("\r", "");
-        Assert.assertEquals(expected, actual);
     }
 
 }
