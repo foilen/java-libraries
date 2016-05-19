@@ -10,6 +10,7 @@ package com.foilen.smalltools.tools;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,6 +23,16 @@ public class DateToolsTest {
     public void testAddDate() throws Exception {
         Assert.assertEquals(SDF.parse("2000-01-10 01:00:00"), DateTools.addDate(SDF.parse("2000-01-01 01:00:00"), Calendar.DAY_OF_MONTH, 9));
         Assert.assertEquals(SDF.parse("2000-02-10 01:00:00"), DateTools.addDate(SDF.parse("2000-01-10 01:00:00"), Calendar.MONTH, 1));
+    }
+
+    @Test
+    public void testFullParseAndFormat() {
+        String text = "2015-05-04 04:55:23";
+        Date date = DateTools.parseFull(text);
+        Assert.assertNotNull(date);
+
+        String actual = DateTools.formatFull(date);
+        Assert.assertEquals(text, actual);
     }
 
     @Test

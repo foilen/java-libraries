@@ -8,13 +8,23 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * Some common methods to manage dates.
  */
 public final class DateTools {
+
+    private static final ThreadLocal<SimpleDateFormat> sdfFull = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }
+    };
 
     /**
      * Add some delta to the date.
@@ -32,6 +42,21 @@ public final class DateTools {
         calendar.setTime(date);
         calendar.add(calendarUnit, delta);
         return calendar.getTime();
+    }
+
+    /**
+     * Format a date to "yyyy-MM-dd HH:mm:ss" format.
+     * 
+     * @param date
+     *            the date
+     * @return the text date
+     */
+    public static String formatFull(Date date) {
+        try {
+            return sdfFull.get().format(date);
+        } catch (Exception e) {
+            throw new SmallToolsException("Could not format [" + date + "] with full format", e);
+        }
     }
 
     /**
@@ -91,6 +116,21 @@ public final class DateTools {
      */
     public static boolean isExpired(Date dateToCheck, int calendarUnit, int delta) {
         return isExpired(dateToCheck, new Date(), calendarUnit, delta);
+    }
+
+    /**
+     * Parse a date with "yyyy-MM-dd HH:mm:ss" format.
+     * 
+     * @param date
+     *            the date in text
+     * @return the date
+     */
+    public static Date parseFull(String date) {
+        try {
+            return sdfFull.get().parse(date);
+        } catch (Exception e) {
+            throw new SmallToolsException("Could not parse [" + date + "] with full format", e);
+        }
     }
 
     private DateTools() {
