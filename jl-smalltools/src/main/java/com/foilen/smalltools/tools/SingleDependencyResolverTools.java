@@ -31,7 +31,7 @@ import com.google.common.base.Strings;
  * resolver.addDependency("C", "B");
  * resolver.addDependency("D", "A");
  *
- * Lresolver.getExecution(); // "A", "B", "C", "D", "E"
+ * resolver.getExecution(); // "A", "B", "C", "D", "E"
  * 
  * </pre>
  */
