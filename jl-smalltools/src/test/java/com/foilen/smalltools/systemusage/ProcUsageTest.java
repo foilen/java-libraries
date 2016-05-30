@@ -64,10 +64,10 @@ public class ProcUsageTest {
         // Execute
         MemoryInfo memoryInfo = ProcUsage.getMemoryInfo(procMemPath);
 
-        Assert.assertEquals(877460, memoryInfo.getPhysicalUsed());
-        Assert.assertEquals(1016940, memoryInfo.getPhysicalTotal());
-        Assert.assertEquals(179516, memoryInfo.getSwapUsed());
-        Assert.assertEquals(4999996, memoryInfo.getSwapTotal());
+        Assert.assertEquals(877460000l, memoryInfo.getPhysicalUsed());
+        Assert.assertEquals(1016940000l, memoryInfo.getPhysicalTotal());
+        Assert.assertEquals(179516000l, memoryInfo.getSwapUsed());
+        Assert.assertEquals(4999996000l, memoryInfo.getSwapTotal());
     }
 
     @Test

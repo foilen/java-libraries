@@ -94,17 +94,17 @@ public final class ProcUsage {
                 String size = parts[1];
                 switch (name) {
                 case "MemTotal:":
-                    memTotal = Long.valueOf(size);
+                    memTotal = Long.valueOf(size) * 1000;
                     memoryInfo.setPhysicalTotal(memTotal);
                     break;
                 case "MemFree:":
-                    memFree = Long.valueOf(size);
+                    memFree = Long.valueOf(size) * 1000;
                     break;
                 case "SwapTotal:":
-                    swapTotal = Long.valueOf(size);
+                    swapTotal = Long.valueOf(size) * 1000;
                     memoryInfo.setSwapTotal(swapTotal);
                 case "SwapFree:":
-                    swapFree = Long.valueOf(size);
+                    swapFree = Long.valueOf(size) * 1000;
                     break;
                 }
             } catch (Exception e) {
