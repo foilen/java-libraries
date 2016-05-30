@@ -15,7 +15,9 @@ import java.util.List;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.systemusage.results.CpuInfo;
+import com.foilen.smalltools.systemusage.results.MemoryInfo;
 import com.foilen.smalltools.systemusage.results.NetworkInfo;
+import com.foilen.smalltools.tools.FileTools;
 
 /**
  * To retrieve the usage by using the files in /proc. (Of course, your system must have this filesystem mounted)
@@ -64,6 +66,58 @@ public final class ProcUsage {
         }
 
         return cpuInfo;
+    }
+
+    /**
+     * Get the memory informations.
+     * 
+     * @param procMemPath
+     *            the path to the memory file. (E.g /proc/meminfo)
+     * @return the memory infos
+     */
+    public static MemoryInfo getMemoryInfo(String procMemPath) {
+        MemoryInfo memoryInfo = new MemoryInfo();
+
+        long memTotal = 0;
+        long memFree = 0;
+        long swapTotal = 0;
+        long swapFree = 0;
+
+        for (String line : FileTools.readFileLinesIteration(procMemPath)) {
+            String[] parts = line.split("[ ]+");
+            if (parts.length != 3) {
+                continue;
+            }
+
+            try {
+                String name = parts[0];
+                String size = parts[1];
+                switch (name) {
+                case "MemTotal:":
+                    memTotal = Long.valueOf(size);
+                    memoryInfo.setPhysicalTotal(memTotal);
+                    break;
+                case "MemFree:":
+                    memFree = Long.valueOf(size);
+                    break;
+                case "SwapTotal:":
+                    swapTotal = Long.valueOf(size);
+                    memoryInfo.setSwapTotal(swapTotal);
+                case "SwapFree:":
+                    swapFree = Long.valueOf(size);
+                    break;
+                }
+            } catch (Exception e) {
+                throw new SmallToolsException("Problem reading the proc meminfo file", e);
+            }
+
+        }
+
+        memoryInfo.setPhysicalUsed(memTotal - memFree);
+        memoryInfo.setSwapUsed(swapTotal - swapFree);
+
+        return memoryInfo;
+
     }
 
     /**

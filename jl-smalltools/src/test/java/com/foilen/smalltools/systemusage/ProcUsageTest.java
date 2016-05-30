@@ -15,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.foilen.smalltools.systemusage.results.CpuInfo;
+import com.foilen.smalltools.systemusage.results.MemoryInfo;
 import com.foilen.smalltools.systemusage.results.NetworkInfo;
 import com.foilen.smalltools.tools.ResourceTools;
 import com.google.common.io.Files;
@@ -51,6 +52,22 @@ public class ProcUsageTest {
         Assert.assertEquals(336216913, cpuInfo.calculateTotal());
         Assert.assertEquals(35815158, cpuInfo.calculateBusy());
         Assert.assertEquals(11, cpuInfo.calculateBusyPercent());
+    }
+
+    @Test
+    public void testGetMemoryInfo() {
+        // Copy file
+        File tmpFolder = Files.createTempDir();
+        String procMemPath = tmpFolder.getAbsolutePath() + File.separatorChar + "proc-meminfo";
+        ResourceTools.copyToFile("proc-meminfo", this.getClass(), new File(procMemPath));
+
+        // Execute
+        MemoryInfo memoryInfo = ProcUsage.getMemoryInfo(procMemPath);
+
+        Assert.assertEquals(877460, memoryInfo.getPhysicalUsed());
+        Assert.assertEquals(1016940, memoryInfo.getPhysicalTotal());
+        Assert.assertEquals(179516, memoryInfo.getSwapUsed());
+        Assert.assertEquals(4999996, memoryInfo.getSwapTotal());
     }
 
     @Test
