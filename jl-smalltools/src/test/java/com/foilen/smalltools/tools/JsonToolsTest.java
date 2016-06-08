@@ -10,6 +10,7 @@ package com.foilen.smalltools.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -114,6 +115,33 @@ public class JsonToolsTest {
 
         Assert.assertEquals("hello", type.getA());
         Assert.assertEquals(10, type.getB());
+    }
+
+    @Test
+    public void testReadFromResourceAsList() {
+        List<Type> actual = JsonTools.readFromResourceAsList("JsonToolsTest-testReadFromResourceAsList.json", Type.class, this.getClass());
+
+        Assert.assertEquals(2, actual.size());
+
+        Assert.assertEquals("aa", actual.get(0).getA());
+        Assert.assertEquals(12, actual.get(0).getB());
+
+        Assert.assertEquals("bb", actual.get(1).getA());
+        Assert.assertEquals(34, actual.get(1).getB());
+    }
+
+    @Test
+    public void testReadFromStringAsList() {
+        String json = ResourceTools.getResourceAsString("JsonToolsTest-testReadFromResourceAsList.json", this.getClass());
+        List<Type> actual = JsonTools.readFromStringAsList(json, Type.class);
+
+        Assert.assertEquals(2, actual.size());
+
+        Assert.assertEquals("aa", actual.get(0).getA());
+        Assert.assertEquals(12, actual.get(0).getB());
+
+        Assert.assertEquals("bb", actual.get(1).getA());
+        Assert.assertEquals(34, actual.get(1).getB());
     }
 
 }

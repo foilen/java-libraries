@@ -11,11 +11,13 @@ package com.foilen.smalltools.tools;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.reflection.ReflectionTools;
 
@@ -136,6 +138,41 @@ public final class JsonTools {
     }
 
     /**
+     * Read the JSON file.
+     * 
+     * @param file
+     *            the file
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the list of objects
+     */
+    public static <T> List<T> readFromFileAsList(File file, Class<T> clazz) {
+        try {
+            CollectionType listType = PRETTY_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz);
+            return PRETTY_OBJECT_MAPPER.readValue(file, listType);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem deserializing from JSON", e);
+        }
+    }
+
+    /**
+     * Read the JSON file.
+     * 
+     * @param fileName
+     *            the full path to the file
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the list of objects
+     */
+    public static <T> List<T> readFromFileAsList(String fileName, Class<T> clazz) {
+        return readFromFileAsList(new File(fileName), clazz);
+    }
+
+    /**
      * Read the JSON file ignoring some failures.
      * 
      * @param file
@@ -216,6 +253,43 @@ public final class JsonTools {
     }
 
     /**
+     * Read the JSON resource.
+     * 
+     * @param resource
+     *            the resource to open
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the list of objects
+     */
+    public static <T> List<T> readFromResourceAsList(String resource, Class<T> clazz) {
+        return readFromResourceAsList(resource, clazz, JsonTools.class);
+    }
+
+    /**
+     * Read the JSON resource.
+     * 
+     * @param resource
+     *            the resource to open
+     * @param clazz
+     *            the type of the final object
+     * @param context
+     *            the context class to use relative path
+     * @param <T>
+     *            the type of the final object
+     * @return the list of objects
+     */
+    public static <T> List<T> readFromResourceAsList(String resource, Class<T> clazz, Class<?> context) {
+        try {
+            CollectionType listType = PRETTY_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz);
+            return PRETTY_OBJECT_MAPPER.readValue(context.getResourceAsStream(resource), listType);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem deserializing from JSON", e);
+        }
+    }
+
+    /**
      * Read the JSON String.
      * 
      * @param text
@@ -229,6 +303,26 @@ public final class JsonTools {
     public static <T> T readFromString(String text, Class<T> clazz) {
         try {
             return PRETTY_OBJECT_MAPPER.readValue(text, clazz);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem deserializing from JSON", e);
+        }
+    }
+
+    /**
+     * Read the JSON String.
+     * 
+     * @param text
+     *            the json content
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the list of objects
+     */
+    public static <T> List<T> readFromStringAsList(String text, Class<T> clazz) {
+        try {
+            CollectionType listType = PRETTY_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz);
+            return PRETTY_OBJECT_MAPPER.readValue(text, listType);
         } catch (Exception e) {
             throw new SmallToolsException("Problem deserializing from JSON", e);
         }
