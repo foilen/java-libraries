@@ -537,6 +537,9 @@ public final class FileTools {
         // Scan the directory
         List<String> result = new ArrayList<>();
         for (File file : directory.listFiles()) {
+            if (!file.isFile()) {
+                continue;
+            }
             try (InputStream inputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[startBytes.length];
                 inputStream.read(buffer);
