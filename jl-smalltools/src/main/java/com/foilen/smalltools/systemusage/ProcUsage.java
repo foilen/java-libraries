@@ -18,6 +18,7 @@ import com.foilen.smalltools.systemusage.results.CpuInfo;
 import com.foilen.smalltools.systemusage.results.MemoryInfo;
 import com.foilen.smalltools.systemusage.results.NetworkInfo;
 import com.foilen.smalltools.tools.FileTools;
+import com.foilen.smalltools.tools.SpaceConverterTool;
 
 /**
  * To retrieve the usage by using the files in /proc. (Of course, your system must have this filesystem mounted)
@@ -84,8 +85,8 @@ public final class ProcUsage {
         long swapFree = 0;
 
         for (String line : FileTools.readFileLinesIteration(procMemPath)) {
-            String[] parts = line.split("[ ]+");
-            if (parts.length != 3) {
+            String[] parts = line.split("[ ]+", 2);
+            if (parts.length != 2) {
                 continue;
             }
 
@@ -94,17 +95,17 @@ public final class ProcUsage {
                 String size = parts[1];
                 switch (name) {
                 case "MemTotal:":
-                    memTotal = Long.valueOf(size) * 1000;
+                    memTotal = SpaceConverterTool.convertToBytes(size);
                     memoryInfo.setPhysicalTotal(memTotal);
                     break;
                 case "MemFree:":
-                    memFree = Long.valueOf(size) * 1000;
+                    memFree = SpaceConverterTool.convertToBytes(size);
                     break;
                 case "SwapTotal:":
-                    swapTotal = Long.valueOf(size) * 1000;
+                    swapTotal = SpaceConverterTool.convertToBytes(size);
                     memoryInfo.setSwapTotal(swapTotal);
                 case "SwapFree:":
-                    swapFree = Long.valueOf(size) * 1000;
+                    swapFree = SpaceConverterTool.convertToBytes(size);
                     break;
                 }
             } catch (Exception e) {
