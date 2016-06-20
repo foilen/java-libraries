@@ -11,7 +11,7 @@ package com.foilen.smalltools.filesystemupdatewatcher;
 import java.io.File;
 
 /**
- * This is the handler that will get the notifications.
+ * This is the handler that will get the notifications. If you want to have a summary of the changes during a certain delay (without duplicates), wrap it with {@link FileSystemUpdateBufferedHandler}.
  */
 public interface FileSystemUpdateHandler {
 
