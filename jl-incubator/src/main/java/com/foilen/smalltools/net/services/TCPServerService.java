@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.net.services;
 
+import java.io.Closeable;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -47,7 +48,7 @@ import com.foilen.smalltools.tools.CloseableTools;
  * 
  * </pre>
  */
-public class TCPServerService implements Runnable {
+public class TCPServerService implements Closeable, Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(TCPServerService.class);
 
@@ -100,6 +101,14 @@ public class TCPServerService implements Runnable {
         initThread();
     }
 
+    @Override
+    public void close() {
+        ServerSocket old = serverSocket;
+        serverSocket = null;
+        CloseableTools.close(old);
+
+    }
+
     /**
      * Get the listening port.
      * 
@@ -134,7 +143,7 @@ public class TCPServerService implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (serverSocket != null) {
             Socket socket = null;
             try {
                 socket = serverSocket.accept();
