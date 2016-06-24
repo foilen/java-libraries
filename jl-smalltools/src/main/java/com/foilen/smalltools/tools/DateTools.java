@@ -60,7 +60,7 @@ public final class DateTools {
     }
 
     /**
-     * Check that the date before is really after.
+     * Check that the date after is really after.
      * 
      * @param dateAfter
      *            the date that should be after

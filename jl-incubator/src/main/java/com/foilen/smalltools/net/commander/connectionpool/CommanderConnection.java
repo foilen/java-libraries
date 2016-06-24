@@ -23,6 +23,7 @@ import com.foilen.smalltools.net.commander.CommanderServer;
 import com.foilen.smalltools.net.commander.command.AbstractCommandRequestWithResponse;
 import com.foilen.smalltools.net.commander.command.CommandRequest;
 import com.foilen.smalltools.net.netty.NettyClient;
+import com.foilen.smalltools.net.netty.NettyClientMessagingQueue;
 import com.foilen.smalltools.tools.AssertTools;
 
 /**
@@ -56,7 +57,7 @@ public class CommanderConnection implements Closeable {
             setPort(inetSocketAddress.getPort());
         }
 
-        nettyClientMessagingQueue = new NettyClientMessagingQueue(nettyClient);
+        nettyClientMessagingQueue = NettyClientMessagingQueue.getInstance(nettyClient);
     }
 
     /**
@@ -88,7 +89,7 @@ public class CommanderConnection implements Closeable {
 
         NettyClient nettyClient = commanderClient.createNettyClient(host, port);
         if (nettyClientMessagingQueue == null) {
-            nettyClientMessagingQueue = new NettyClientMessagingQueue(nettyClient);
+            nettyClientMessagingQueue = NettyClientMessagingQueue.getInstance(nettyClient);
         } else {
             nettyClientMessagingQueue.setNettyClient(nettyClient);
         }

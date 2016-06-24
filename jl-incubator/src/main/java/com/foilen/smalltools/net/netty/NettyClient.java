@@ -47,7 +47,7 @@ public class NettyClient implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
 
-    private Channel channel;
+    protected Channel channel;
 
     public NettyClient() {
     }
