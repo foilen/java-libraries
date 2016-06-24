@@ -116,6 +116,9 @@ public class FileSystemUpdateWatcher extends Thread {
      *            the path
      */
     protected void register(Path path) {
+        File directory = path.toFile();
+        AssertTools.assertTrue(directory.exists(), "The directory must exists prior to watching. Path: " + path);
+        AssertTools.assertTrue(directory.isDirectory(), "The path must be a directory. Path: " + path);
         try {
             WatchKey key = path.register(fsWatchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
             pathByKey.put(key, path);
