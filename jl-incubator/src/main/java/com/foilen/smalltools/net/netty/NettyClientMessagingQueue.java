@@ -95,7 +95,6 @@ public class NettyClientMessagingQueue extends Thread {
                                 NettyClientMessagingQueue next = it.next();
                                 if (!next.isConnected()) {
                                     next.close();
-                                    logger.info("[{}] Removing stopped messaging queue", next.nettyClient.getPeerIp());
                                     it.remove();
                                 }
                             }
