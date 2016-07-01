@@ -9,11 +9,19 @@
 package com.foilen.smalltools.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foilen.smalltools.exception.SmallToolsException;
 import com.google.common.base.Joiner;
 
 /**
@@ -167,6 +175,63 @@ public final class DirectoryTools {
         // Create the path
         String directoryPath = filePath.substring(0, endOfDirectoryPos);
         return createPath(new File(directoryPath));
+    }
+
+    /**
+     * List the names of the files that the content starts with the specified text.
+     * 
+     * @param path
+     *            the full path to the directory
+     * @param startText
+     *            the text that the files must start with
+     * @return the names of the files (sorted)
+     */
+    public static List<String> listFilesStartingWith(String path, String startText) {
+        // Check if directory
+        File directory = new File(path);
+        if (!directory.isDirectory()) {
+            throw new SmallToolsException(path + " is not a directory");
+        }
+
+        // Get the bytes
+        byte[] startBytes = startText.getBytes();
+
+        // Scan the directory
+        List<String> result = new ArrayList<>();
+        for (File file : directory.listFiles()) {
+            if (!file.isFile()) {
+                continue;
+            }
+            try (InputStream inputStream = new FileInputStream(file)) {
+                byte[] buffer = new byte[startBytes.length];
+                inputStream.read(buffer);
+                if (Arrays.equals(startBytes, buffer)) {
+                    result.add(file.getName());
+                }
+            } catch (Exception e) {
+                throw new SmallToolsException("Could not read file " + file.getAbsolutePath(), e);
+            }
+        }
+
+        // Sort
+        Collections.sort(result);
+
+        return result;
+    }
+
+    /**
+     * List only the files that are in a directory (not anything else like directories).
+     * 
+     * @param directory
+     *            the full path to the directory
+     * @return the sorted list of file names
+     */
+    public static List<String> listOnlyFileNames(String directory) {
+        return Arrays.asList(new File(directory).listFiles()).stream() //
+                .filter(File::isFile) //
+                .map(File::getName) //
+                .sorted() //
+                .collect(Collectors.toList());
     }
 
     /**

@@ -24,12 +24,13 @@ import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -270,6 +271,30 @@ public final class FileTools {
         }
 
         changePermissions(file, recursive, permissionsSet);
+    }
+
+    /**
+     * Create an empty file or empty an existing one.
+     * 
+     * @param file
+     *            the file to clear
+     */
+    public static void clearFile(File file) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.close();
+        } catch (IOException e) {
+        }
+    }
+
+    /**
+     * Create an empty file or empty an existing one.
+     * 
+     * @param path
+     *            the path to the file
+     */
+    public static void clearFile(String path) {
+        clearFile(new File(path));
     }
 
     protected static String concatPath(String... pathParts) {
@@ -522,39 +547,11 @@ public final class FileTools {
      * @param startText
      *            the text that the files must start with
      * @return the names of the files (sorted)
+     * @deprecated use that method in {@link DirectoryTools}
      */
+    @Deprecated
     public static List<String> listFilesStartingWith(String path, String startText) {
-
-        // Check if directory
-        File directory = new File(path);
-        if (!directory.isDirectory()) {
-            throw new SmallToolsException(path + " is not a directory");
-        }
-
-        // Get the bytes
-        byte[] startBytes = startText.getBytes();
-
-        // Scan the directory
-        List<String> result = new ArrayList<>();
-        for (File file : directory.listFiles()) {
-            if (!file.isFile()) {
-                continue;
-            }
-            try (InputStream inputStream = new FileInputStream(file)) {
-                byte[] buffer = new byte[startBytes.length];
-                inputStream.read(buffer);
-                if (Arrays.equals(startBytes, buffer)) {
-                    result.add(file.getName());
-                }
-            } catch (Exception e) {
-                throw new SmallToolsException("Could not read file " + file.getAbsolutePath(), e);
-            }
-        }
-
-        // Sort
-        Collections.sort(result);
-
-        return result;
+        return DirectoryTools.listFilesStartingWith(path, startText);
     }
 
     /**
@@ -585,6 +582,32 @@ public final class FileTools {
         } catch (FileNotFoundException e) {
             throw new SmallToolsException("Problem reading the file", e);
         }
+    }
+
+    /**
+     * Opens a file and iterates over all the lines using a stream.
+     * 
+     * @param file
+     *            the file
+     * @return a stream of all the lines
+     */
+    public static Stream<String> readFileLinesStream(File file) {
+        try {
+            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(readFileLinesIteration(file), Spliterator.ORDERED), false);
+        } catch (FileNotFoundException e) {
+            throw new SmallToolsException("Could not open the file", e);
+        }
+    }
+
+    /**
+     * Opens a file and iterates over all the lines using a stream.
+     * 
+     * @param filePath
+     *            the absolute file path
+     * @return a stream of all the lines
+     */
+    public static Stream<String> readFileLinesStream(String filePath) {
+        return readFileLinesStream(new File(filePath));
     }
 
     /**
