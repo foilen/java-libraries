@@ -58,6 +58,38 @@ public final class FileTools {
     private static final UserPrincipalLookupService USER_PRINCIPAL_LOOKUP_SERVICE = FileSystems.getDefault().getUserPrincipalLookupService();
 
     /**
+     * Append a line to a file. Create it if missing.
+     * 
+     * @param file
+     *            the file
+     * @param line
+     *            the line to add
+     */
+    public static void appendLine(File file, String line) {
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file, true);
+            out.write((line + "\n").getBytes());
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem writing to file", e);
+        } finally {
+            CloseableTools.close(out);
+        }
+    }
+
+    /**
+     * Append a line to a file. Create it if missing.
+     * 
+     * @param path
+     *            the path to the file
+     * @param line
+     *            the line to add
+     */
+    public static void appendLine(String path, String line) {
+        appendLine(new File(path), line);
+    }
+
+    /**
      * Check if the file does not contain the line and append it if missing.
      * 
      * @param path
