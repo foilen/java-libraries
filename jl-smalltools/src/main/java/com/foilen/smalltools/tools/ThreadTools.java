@@ -16,6 +16,27 @@ import com.foilen.smalltools.exception.SmallToolsException;
 public final class ThreadTools {
 
     /**
+     * To help change the name of a thread and revert back later.
+     * 
+     * <pre>
+     * ThreadNameStateTool threadNameStateTool = ThreadTools.nameThread() //
+     *         .clear() //
+     *         .appendText(threadName) //
+     *         .appendText("-") //
+     *         .appendObjectText(executionCount) //
+     *         .change();
+     * 
+     * threadNameStateTool.revert();
+     * </pre>
+     * 
+     * 
+     * @return the thread changer
+     */
+    public static ThreadNameStateTool nameThread() {
+        return new ThreadNameStateTool();
+    }
+
+    /**
      * Write the stack trace of the requested thread to STDOUT.
      * 
      * @param thread
