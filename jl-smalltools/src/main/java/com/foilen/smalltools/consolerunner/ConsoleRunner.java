@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.TimeoutHandler;
+import com.foilen.smalltools.tuple.Tuple2;
 
 /**
  * An helper to run any applications.
@@ -67,6 +68,7 @@ public class ConsoleRunner {
     private InputStream consoleInput;
     private OutputStream consoleOutput = System.out;
     private OutputStream consoleError = System.err;
+    private boolean redirectErrorStream = false;
     private boolean closeConsoleOutput = false;
     private boolean closeConsoleError = false;
 
@@ -171,6 +173,28 @@ public class ConsoleRunner {
         return byteArrayOutputStream.toString();
     }
 
+    /**
+     * Execute the command using all the configured console input and returns the console output and console error as separate Strings.
+     * 
+     * @return the console output and error
+     */
+    public Tuple2<String, String> executeForStrings() {
+        // Configure the console output and error
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        consoleOutput = byteArrayOutputStream;
+
+        ByteArrayOutputStream byteArrayErrorStream = new ByteArrayOutputStream();
+        consoleError = byteArrayErrorStream;
+
+        redirectErrorStream = false;
+
+        // Execute
+        execute();
+
+        // Return String
+        return new Tuple2<>(byteArrayOutputStream.toString(), byteArrayErrorStream.toString());
+    }
+
     public List<String> getArguments() {
         return arguments;
     }
@@ -217,6 +241,10 @@ public class ConsoleRunner {
 
     public boolean isOverrideEnvironment() {
         return overrideEnvironment;
+    }
+
+    public boolean isRedirectErrorStream() {
+        return redirectErrorStream;
     }
 
     /**
@@ -324,6 +352,18 @@ public class ConsoleRunner {
      */
     public ConsoleRunner setOverrideEnvironment(boolean overrideEnvironment) {
         this.overrideEnvironment = overrideEnvironment;
+        return this;
+    }
+
+    /**
+     * Merge the STD error stream to STD output stream.
+     * 
+     * @param redirectErrorStream
+     *            true to redirect
+     * @return this
+     */
+    public ConsoleRunner setRedirectErrorStream(boolean redirectErrorStream) {
+        this.redirectErrorStream = redirectErrorStream;
         return this;
     }
 

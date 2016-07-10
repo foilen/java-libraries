@@ -34,7 +34,6 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
     private int statusCode;
     private RuntimeException exceptionThrown;
 
-
     public ConsoleTimeoutHandlerRunnable(ConsoleRunner consoleUtils) {
         this.consoleRunner = consoleUtils;
     }
@@ -53,6 +52,7 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
         boolean closeConsoleError = consoleRunner.isCloseConsoleError();
         Map<String, String> environments = consoleRunner.getEnvironments();
         boolean overrideEnvironment = consoleRunner.isOverrideEnvironment();
+        boolean redirectErrorStream = consoleRunner.isRedirectErrorStream();
 
         // Check the parameters
         if (Strings.isNullOrEmpty(command)) {
@@ -89,6 +89,7 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
                 process = processBuilder.start();
 
                 // Setup the streams
+                processBuilder.redirectErrorStream(redirectErrorStream);
                 if (consoleInput == null) {
                     CloseableTools.close(process.getOutputStream());
                 } else {
@@ -101,7 +102,7 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
                     StreamsTools.flowStreamNonBlocking(process.getInputStream(), consoleOutput);
                 }
 
-                if (consoleError == null) {
+                if (consoleError == null || redirectErrorStream) {
                     CloseableTools.close(process.getErrorStream());
                 } else {
                     StreamsTools.flowStreamNonBlocking(process.getErrorStream(), consoleError);
