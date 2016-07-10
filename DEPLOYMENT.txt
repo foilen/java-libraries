@@ -5,7 +5,7 @@ Instructions
 ------------
 
 To easily use the following steps, replace all the following occurrences:
-- _VERSION_ : The version to deploy. E.g *2015.01.01*
+- _VERSION_ : The version to deploy. E.g *0.1.0*
 - _BRANCH_ : The branch to deploy. E.g *develop*
 
 Steps
@@ -13,19 +13,15 @@ Steps
 
 - Go in the right branch:
   git checkout _BRANCH_
-  
+
 - Run the automated script
   ./create-release.sh _VERSION_
- 
-- Upload to jcenter
-  Go on https://bintray.com/foilen/maven/com.foilen%3Ajl-incubator/edit?tab=general and add a new version for jl-incubator.zip
-  Go on https://bintray.com/foilen/maven/com.foilen%3Ajl-smalltools/edit?tab=general and add a new version for jl-smalltools.zip
 
 - Merge to master and create tag
   git checkout master
   git merge _BRANCH_
   # Any other command to complete the merging
-  
+
   git tag -a -m "_VERSION_" "_VERSION_"
   git push
   git push --tags

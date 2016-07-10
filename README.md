@@ -22,22 +22,16 @@ Process
 -------
 
 Versioning:
-- The version number is the date of the release (e.g 2015.01.20).
-- Any stable API will be there for the next year so it is always safe to update 6 months in the future. (see "Upgrading the library in your project")
+- The version number is in the format MAJOR.MINOR.BUGFIX (e.g 0.1.0).
+- The API in a MAJOR release is stable (when not in incubator). Everything that will be removed in the next MAJOR release are marked as deprecated.
 
 For new things:
 - New ideas and API should start in "jl-incubator" unless it is very small and that it is sure that nothing will be changed in it.
 - When an API is stable, it can go in one of the other stable projects.
 
 For changes/removal in the stable API:
-- When something is in the stable API, it must be present for a year. Like that, upgrading is made easy by 6 months interval.
-- The first step is to add a @deprecated annotation on anything that will be removed. Specify the first release date and the path to upgrade (like using a different method/class/library).
-- Only one year later, the @deprecated API can be removed.
-
-Upgrading the library in your project:
-- It is normal to not always upgrade all your libraries every day.
-- Since an API will stick for a year, it is safe to take any release that is up to one year later in the time. This is clearly visible by the release name since it is the date.
-- You should get a new version that is about 6 months later than yours, fix any deprecation warnings with the suggestion and repeat until you are at the latest version.
+- When something is in the stable API, it will be there for all the releases in the same MAJOR version.
+- Everything that will be removed in the next MAJOR version is marked as @deprecated and the Javadoc will explain what to use instead if there is a workaround.
 
 
 Design choices
@@ -51,3 +45,7 @@ Deployment instructions
 -----------------------
 
 See *DEPLOYMENT.txt* for the instructions.
+
+You can see releases available:
+- https://bintray.com/foilen/maven/com.foilen%3Ajl-smalltools
+- https://bintray.com/foilen/maven/com.foilen%3Ajl-incubator

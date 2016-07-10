@@ -22,6 +22,14 @@
     </license>
   </licenses>
 
+  <distributionManagement>
+    <repository>
+      <id>bintray-foilen-maven</id>
+      <name>foilen-maven</name>
+      <url>https://api.bintray.com/maven/foilen/maven/com.foilen:jl-smalltools/;publish=1</url>
+    </repository>
+  </distributionManagement>
+
   <dependencies>
     <dependency>
       <groupId>ch.qos.logback</groupId>

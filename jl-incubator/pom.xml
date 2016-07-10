@@ -22,8 +22,15 @@
     </license>
   </licenses>
 
-  <dependencies>
+  <distributionManagement>
+    <repository>
+      <id>bintray-foilen-maven</id>
+      <name>foilen-maven</name>
+      <url>https://api.bintray.com/maven/foilen/maven/com.foilen:jl-incubator/;publish=1</url>
+    </repository>
+  </distributionManagement>
 
+  <dependencies>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
