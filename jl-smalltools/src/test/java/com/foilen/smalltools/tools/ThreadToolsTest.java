@@ -57,4 +57,26 @@ public class ThreadToolsTest {
         assertThreadName("1969-12-31 19:00:00");
     }
 
+    @Test
+    public void testNameThread_pop() {
+
+        ThreadNameStateTool state = ThreadTools.nameThread().setSeparator("-");
+        state.clear().appendText("SomeText").appendText("First Time").change();
+        assertThreadName("SomeText-First Time");
+
+        state.appendText("Yay").change();
+        assertThreadName("SomeText-First Time-Yay");
+
+        state.pop().appendText("Yo").change();
+        assertThreadName("SomeText-First Time-Yo");
+
+        state.revert();
+        assertThreadName("SomeText-First Time-Yay");
+        state.pop().pop().appendText("Cool").change();
+        assertThreadName("SomeText-Cool");
+
+        state.pop().pop().pop().pop().appendText("Cool").change();
+        assertThreadName("Cool");
+    }
+
 }

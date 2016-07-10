@@ -8,16 +8,26 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import com.google.common.base.Joiner;
 
 public class ThreadNameStateTool {
 
-    private String previousName;
-    private StringBuilder nextName;
+    private List<String> previousName;
+    private List<String> currentName;
+    private List<String> nextName;
+    private String separator = "";
 
     public ThreadNameStateTool() {
-        previousName = Thread.currentThread().getName();
-        nextName = new StringBuilder(previousName);
+        previousName = new ArrayList<>();
+        previousName.add(Thread.currentThread().getName());
+        currentName = new ArrayList<>();
+        currentName.add(Thread.currentThread().getName());
+        nextName = new ArrayList<>();
+        nextName.add(Thread.currentThread().getName());
     }
 
     /**
@@ -39,9 +49,9 @@ public class ThreadNameStateTool {
      */
     public ThreadNameStateTool appendDate(Date date) {
         if (date == null) {
-            nextName.append("null");
+            nextName.add("null");
         } else {
-            nextName.append(DateTools.formatFull(date));
+            nextName.add(DateTools.formatFull(date));
         }
         return this;
     }
@@ -55,9 +65,9 @@ public class ThreadNameStateTool {
      */
     public ThreadNameStateTool appendJson(Object object) {
         if (object == null) {
-            nextName.append("null");
+            nextName.add("null");
         } else {
-            nextName.append(JsonTools.compactPrint(object));
+            nextName.add(JsonTools.compactPrint(object));
         }
         return this;
     }
@@ -71,9 +81,9 @@ public class ThreadNameStateTool {
      */
     public ThreadNameStateTool appendObjectClass(Object object) {
         if (object == null) {
-            nextName.append("null");
+            nextName.add("null");
         } else {
-            nextName.append(object.getClass().getName());
+            nextName.add(object.getClass().getName());
         }
         return this;
     }
@@ -87,9 +97,9 @@ public class ThreadNameStateTool {
      */
     public ThreadNameStateTool appendObjectText(Object object) {
         if (object == null) {
-            nextName.append("null");
+            nextName.add("null");
         } else {
-            nextName.append(object.toString());
+            nextName.add(object.toString());
         }
         return this;
     }
@@ -102,7 +112,7 @@ public class ThreadNameStateTool {
      * @return this
      */
     public ThreadNameStateTool appendText(String text) {
-        nextName.append(text);
+        nextName.add(text);
         return this;
     }
 
@@ -112,8 +122,11 @@ public class ThreadNameStateTool {
      * @return this
      */
     public ThreadNameStateTool change() {
-        previousName = Thread.currentThread().getName();
-        Thread.currentThread().setName(nextName.toString());
+        previousName.clear();
+        previousName.addAll(currentName);
+        currentName.clear();
+        currentName.addAll(nextName);
+        Thread.currentThread().setName(Joiner.on(separator).join(nextName));
         return this;
     }
 
@@ -123,7 +136,7 @@ public class ThreadNameStateTool {
      * @return this
      */
     public ThreadNameStateTool clear() {
-        nextName = new StringBuilder();
+        nextName = new ArrayList<>();
         return this;
     }
 
@@ -133,9 +146,26 @@ public class ThreadNameStateTool {
      * @return this
      */
     public ThreadNameStateTool revert() {
-        String tmp = previousName;
-        previousName = Thread.currentThread().getName();
-        Thread.currentThread().setName(tmp);
+        nextName.clear();
+        nextName.addAll(previousName);
+        change();
+        return this;
+    }
+
+    public ThreadNameStateTool setSeparator(String separator) {
+        this.separator = separator;
+        return this;
+    }
+
+    /**
+     * Remove the last part.
+     * 
+     * @return this
+     */
+    public ThreadNameStateTool pop() {
+        if (!nextName.isEmpty()) {
+            nextName.remove(nextName.size() - 1);
+        }
         return this;
     }
 
