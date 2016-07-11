@@ -8,6 +8,8 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.util.Map.Entry;
+
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
@@ -37,16 +39,36 @@ public final class ThreadTools {
     }
 
     /**
+     * Write the stack trace of all threads to STDOUT.
+     */
+    public static void printAllStackTraces() {
+        for (Entry<Thread, StackTraceElement[]> entry : Thread.getAllStackTraces().entrySet()) {
+            System.out.println(entry.getKey().getName());
+            printStackTrace(entry.getValue());
+            System.out.println();
+        }
+    }
+
+    /**
+     * Write the stack trace to STDOUT.
+     * 
+     * @param stackTraceElements
+     *            the stach
+     */
+    public static void printStackTrace(StackTraceElement[] stackTraceElements) {
+        for (StackTraceElement stackTraceElement : stackTraceElements) {
+            System.out.println(stackTraceElement);
+        }
+    }
+
+    /**
      * Write the stack trace of the requested thread to STDOUT.
      * 
      * @param thread
      *            the thread to dump
      */
     public static void printStackTrace(Thread thread) {
-        StackTraceElement[] stackTraceElements = thread.getStackTrace();
-        for (StackTraceElement stackTraceElement : stackTraceElements) {
-            System.out.println(stackTraceElement);
-        }
+        printStackTrace(thread);
     }
 
     /**
