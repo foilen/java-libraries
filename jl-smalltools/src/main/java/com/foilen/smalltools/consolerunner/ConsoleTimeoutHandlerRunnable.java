@@ -102,10 +102,12 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
                     StreamsTools.flowStreamNonBlocking(process.getInputStream(), consoleOutput);
                 }
 
-                if (consoleError == null || redirectErrorStream) {
+                if (consoleError == null) {
                     CloseableTools.close(process.getErrorStream());
                 } else {
-                    StreamsTools.flowStreamNonBlocking(process.getErrorStream(), consoleError);
+                    if (!redirectErrorStream) {
+                        StreamsTools.flowStreamNonBlocking(process.getErrorStream(), consoleError);
+                    }
                 }
 
                 // Wait for the completion

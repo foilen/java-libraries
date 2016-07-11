@@ -8,9 +8,14 @@
  */
 package com.foilen.smalltools.consolerunner;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +23,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.TimeoutHandler;
+import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tuple.Tuple2;
 
 /**
@@ -50,7 +57,7 @@ import com.foilen.smalltools.tuple.Tuple2;
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
- * compile 'org.slf4j:slf4j-api:1.7.12'
+ * compile 'org.slf4j:slf4j-api:1.7.21'
  * </pre>
  */
 public class ConsoleRunner {
@@ -193,6 +200,56 @@ public class ConsoleRunner {
 
         // Return String
         return new Tuple2<>(byteArrayOutputStream.toString(), byteArrayErrorStream.toString());
+    }
+
+    /**
+     * Execute the command using all the configured console input/error and display the output stream using the logger line by line.
+     * 
+     * @return the console output
+     */
+    public void executeWithLogger(Logger outputLogger, Level level) {
+        // Configure the output
+        PipedInputStream pipedInputStream = new PipedInputStream();
+        PipedOutputStream pipedOutputStream;
+        try {
+            pipedOutputStream = new PipedOutputStream(pipedInputStream);
+        } catch (IOException e) {
+            throw new SmallToolsException("Problem setting the pipe", e);
+        }
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pipedInputStream));
+        consoleOutput = pipedOutputStream;
+        closeConsoleOutput = true;
+
+        new Thread(() -> {
+            String line;
+            try {
+                while ((line = bufferedReader.readLine()) != null) {
+                    switch (level) {
+                    case DEBUG:
+                        outputLogger.debug("{}", line);
+                        break;
+                    case ERROR:
+                        outputLogger.error("{}", line);
+                        break;
+                    case INFO:
+                        outputLogger.info("{}", line);
+                        break;
+                    case TRACE:
+                        outputLogger.trace("{}", line);
+                        break;
+                    case WARN:
+                        outputLogger.warn("{}", line);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                logger.error("Error while reading the output stream", e);
+            }
+
+        } , "STD OUT").start();
+
+        // Execute
+        execute();
     }
 
     public List<String> getArguments() {
