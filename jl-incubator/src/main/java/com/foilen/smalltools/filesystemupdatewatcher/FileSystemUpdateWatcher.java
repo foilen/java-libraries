@@ -8,8 +8,10 @@
  */
 package com.foilen.smalltools.filesystemupdatewatcher;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -26,6 +28,8 @@ import java.util.Map;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.CloseableTools;
+import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * This class is looking at any changes made to any file in the directory and their sub-directory if needed.
@@ -36,16 +40,56 @@ import com.foilen.smalltools.tools.AssertTools;
  * <ul>
  * <li>recursive = false</li>
  * </ul>
+ * 
+ * Usage:
+ * 
+ * <pre>
+ * // Start
+ * FileSystemUpdateWatcher watcher = new FileSystemUpdateWatcher("/");
+ * watcher.addHandler(new SystemOutFileSystemUpdateHandler());
+ * watcher.init();
+ * 
+ * ThreadTools.sleep(2000);
+ * 
+ * // Stop
+ * watcher.close();
+ * ThreadTools.sleep(2000);
+ * 
+ * // Start and again
+ * watcher.init();
+ * ThreadTools.sleep(2000);
+ * watcher.close();
+ * </pre>
  */
-public class FileSystemUpdateWatcher extends Thread {
+public class FileSystemUpdateWatcher implements Closeable {
+
+    public static void main(String[] args) {
+
+        // Start
+        FileSystemUpdateWatcher watcher = new FileSystemUpdateWatcher("/");
+        watcher.addHandler(new SystemOutFileSystemUpdateHandler());
+        watcher.init();
+
+        ThreadTools.sleep(2000);
+
+        // Stop
+        watcher.close();
+        ThreadTools.sleep(2000);
+
+        // Start and again
+        watcher.init();
+        ThreadTools.sleep(2000);
+        watcher.close();
+    }
 
     // Options
     private Path basePath;
-    private boolean recursive = false;
 
+    private boolean recursive = false;
     // Internals
-    private boolean initialized = false;
+    private Thread thread;
     private WatchService fsWatchService;
+
     private List<FileSystemUpdateHandler> fileSystemUpdateHandlers = new ArrayList<>();
 
     private Map<WatchKey, Path> pathByKey = new HashMap<WatchKey, Path>();
@@ -74,14 +118,20 @@ public class FileSystemUpdateWatcher extends Thread {
         return this;
     }
 
+    @Override
+    public void close() {
+        thread = null;
+        CloseableTools.close(fsWatchService);
+    }
+
     /**
-     * Call after setting this object to make it work.
+     * Call after setting this object to make it work. Stop it with {@link #close()}.
      * 
      * @return this
      */
     public FileSystemUpdateWatcher init() {
 
-        AssertTools.assertFalse(initialized, "Already initialized");
+        AssertTools.assertNull(thread, "Already initialized");
         AssertTools.assertFalse(fileSystemUpdateHandlers.isEmpty(), "There are no handlers");
 
         // Register the directories
@@ -93,9 +143,69 @@ public class FileSystemUpdateWatcher extends Thread {
         }
 
         // Start the watch thread
-        start();
+        thread = new Thread(() -> {
+            ThreadTools.nameThread().setSeparator("-").clear() //
+                    .appendObjectClassSimple(this) //
+                    .appendText("Started at") //
+                    .appendDate() //
+                    .appendObjectText("Folder") //
+                    .appendObjectText(basePath).change();
 
-        initialized = true;
+            for (;;) {
+
+                // Wait for the next event
+                WatchKey key;
+                try {
+                    key = fsWatchService.take();
+                } catch (ClosedWatchServiceException e) {
+                    break;
+                } catch (InterruptedException e) {
+                    throw new SmallToolsException(e);
+                }
+
+                // Go through all the events
+                for (WatchEvent<?> event : key.pollEvents()) {
+                    @SuppressWarnings("unchecked")
+                    WatchEvent<Path> pathEvent = (WatchEvent<Path>) event;
+
+                    // Check the path
+                    Path completePath = pathByKey.get(key).resolve(pathEvent.context());
+                    File completeFile = completePath.toFile();
+
+                    // Check the event
+                    WatchEvent.Kind<Path> kind = pathEvent.kind();
+                    if (StandardWatchEventKinds.OVERFLOW.equals(kind)) {
+                        continue;
+                    } else if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)) {
+                        // Check if is a directory and we want to register it
+                        if (recursive && Files.isDirectory(completePath, LinkOption.NOFOLLOW_LINKS)) {
+                            registerRecursively(completePath);
+                        }
+
+                        for (FileSystemUpdateHandler handler : fileSystemUpdateHandlers) {
+                            handler.created(completeFile);
+                        }
+                    } else if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)) {
+                        for (FileSystemUpdateHandler handler : fileSystemUpdateHandlers) {
+                            handler.modified(completeFile);
+                        }
+                    } else if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)) {
+                        for (FileSystemUpdateHandler handler : fileSystemUpdateHandlers) {
+                            handler.deleted(completeFile);
+                        }
+                    }
+
+                }
+
+                // Reset
+                if (!key.reset()) {
+                    pathByKey.remove(key);
+                }
+
+            }
+
+        });
+        thread.start();
 
         return this;
     }
@@ -149,60 +259,6 @@ public class FileSystemUpdateWatcher extends Thread {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void run() {
-        for (;;) {
-
-            // Wait for the next event
-            WatchKey key;
-            try {
-                key = fsWatchService.take();
-            } catch (InterruptedException e) {
-                throw new SmallToolsException(e);
-            }
-
-            // Go through all the events
-            for (WatchEvent<?> event : key.pollEvents()) {
-                WatchEvent<Path> pathEvent = (WatchEvent<Path>) event;
-
-                // Check the path
-                Path completePath = pathByKey.get(key).resolve(pathEvent.context());
-                File completeFile = completePath.toFile();
-
-                // Check the event
-                WatchEvent.Kind<Path> kind = pathEvent.kind();
-                if (StandardWatchEventKinds.OVERFLOW.equals(kind)) {
-                    continue;
-                } else if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)) {
-                    // Check if is a directory and we want to register it
-                    if (recursive && Files.isDirectory(completePath, LinkOption.NOFOLLOW_LINKS)) {
-                        registerRecursively(completePath);
-                    }
-
-                    for (FileSystemUpdateHandler handler : fileSystemUpdateHandlers) {
-                        handler.created(completeFile);
-                    }
-                } else if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)) {
-                    for (FileSystemUpdateHandler handler : fileSystemUpdateHandlers) {
-                        handler.modified(completeFile);
-                    }
-                } else if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)) {
-                    for (FileSystemUpdateHandler handler : fileSystemUpdateHandlers) {
-                        handler.deleted(completeFile);
-                    }
-                }
-
-            }
-
-            // Reset
-            if (!key.reset()) {
-                pathByKey.remove(key);
-            }
-
-        }
-    }
-
     /**
      * Change the recursive parameter.
      * 
@@ -211,11 +267,7 @@ public class FileSystemUpdateWatcher extends Thread {
      * @return this
      */
     public FileSystemUpdateWatcher setRecursive(boolean recursive) {
-
-        AssertTools.assertFalse(initialized, "Cannot set recursive when already initialized");
-
         this.recursive = recursive;
-
         return this;
     }
 
