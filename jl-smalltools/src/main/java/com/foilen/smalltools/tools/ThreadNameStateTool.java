@@ -89,6 +89,23 @@ public class ThreadNameStateTool {
     }
 
     /**
+     * Append the simple class name.
+     * 
+     * @param object
+     *            the object
+     * @return this
+     */
+    public ThreadNameStateTool appendObjectClassSimple(Object object) {
+        if (object == null) {
+            nextName.add("null");
+        } else {
+            nextName.add(object.getClass().getSimpleName());
+        }
+        return this;
+
+    }
+
+    /**
      * Append an object {@link #toString()}.
      * 
      * @param object
@@ -141,6 +158,18 @@ public class ThreadNameStateTool {
     }
 
     /**
+     * Remove the last part.
+     * 
+     * @return this
+     */
+    public ThreadNameStateTool pop() {
+        if (!nextName.isEmpty()) {
+            nextName.remove(nextName.size() - 1);
+        }
+        return this;
+    }
+
+    /**
      * Change the current thread name back to what it was before the last {@link #change()}. Calling a second time switch back to the name before the last {@link #revert()}.
      * 
      * @return this
@@ -154,18 +183,6 @@ public class ThreadNameStateTool {
 
     public ThreadNameStateTool setSeparator(String separator) {
         this.separator = separator;
-        return this;
-    }
-
-    /**
-     * Remove the last part.
-     * 
-     * @return this
-     */
-    public ThreadNameStateTool pop() {
-        if (!nextName.isEmpty()) {
-            nextName.remove(nextName.size() - 1);
-        }
         return this;
     }
 
