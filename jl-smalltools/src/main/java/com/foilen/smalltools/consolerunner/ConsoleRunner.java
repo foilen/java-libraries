@@ -204,6 +204,11 @@ public class ConsoleRunner {
 
     /**
      * Execute the command using all the configured console input/error and display the output stream using the logger line by line.
+     * 
+     * @param outputLogger
+     *            the logger to use
+     * @param level
+     *            the level to use on the logger
      */
     public void executeWithLogger(Logger outputLogger, Level level) {
         // Configure the output
