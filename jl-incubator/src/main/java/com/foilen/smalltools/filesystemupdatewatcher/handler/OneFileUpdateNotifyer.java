@@ -8,11 +8,13 @@
  */
 package com.foilen.smalltools.filesystemupdatewatcher.handler;
 
+import java.io.Closeable;
 import java.io.File;
 
 import com.foilen.smalltools.filesystemupdatewatcher.FileSystemUpdateBufferedHandler;
 import com.foilen.smalltools.filesystemupdatewatcher.FileSystemUpdateHandler;
 import com.foilen.smalltools.filesystemupdatewatcher.FileSystemUpdateWatcher;
+import com.foilen.smalltools.tools.CloseableTools;
 
 /**
  * Use this class to track a file modification (e.g a config file that you want to reload when changed). If the file changes multiple times quickly, you will get a notification 2 seconds after the
@@ -20,11 +22,12 @@ import com.foilen.smalltools.filesystemupdatewatcher.FileSystemUpdateWatcher;
  * 
  * Don't forget to call {@link #initAutoUpdateSystem()} when you are ready to get the notifications
  */
-public class OneFileUpdateNotifyer implements FileSystemUpdateHandler {
+public class OneFileUpdateNotifyer implements Closeable, FileSystemUpdateHandler {
 
     private String fileToWatch;
     private File fileToWatchFile;
     private OneFileUpdateNotifyerHandler handler;
+    private FileSystemUpdateWatcher fileSystemUpdateWatcher;
 
     public OneFileUpdateNotifyer(String fileToWatch, OneFileUpdateNotifyerHandler handler) {
         this.fileToWatch = fileToWatch;
@@ -51,7 +54,7 @@ public class OneFileUpdateNotifyer implements FileSystemUpdateHandler {
      */
     public void initAutoUpdateSystem() {
         handler.fileUpdated(fileToWatch);
-        FileSystemUpdateWatcher fileSystemUpdateWatcher = new FileSystemUpdateWatcher(fileToWatchFile.getParentFile().getAbsolutePath());
+        fileSystemUpdateWatcher = new FileSystemUpdateWatcher(fileToWatchFile.getParentFile().getAbsolutePath());
         fileSystemUpdateWatcher.addHandler(new FileSystemUpdateBufferedHandler(this, 2000, 10000));
         fileSystemUpdateWatcher.init();
     }
@@ -61,6 +64,11 @@ public class OneFileUpdateNotifyer implements FileSystemUpdateHandler {
         if (file.equals(fileToWatchFile)) {
             handler.fileUpdated(fileToWatch);
         }
+    }
+
+    @Override
+    public void close() {
+        CloseableTools.close(fileSystemUpdateWatcher);
     }
 
 }
