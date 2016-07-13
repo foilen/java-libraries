@@ -547,6 +547,17 @@ public final class FileTools {
         }
     }
 
+    /**
+     * Retrieve the owner of the file or directory.
+     * 
+     * @param file
+     *            the file or directory to get the owner
+     * @return the owner
+     */
+    public static String getOwner(String file) {
+        return getOwner(new File(file));
+    }
+
     private static boolean isPermExecute(int perm) {
         return perm == 1 || perm == 3 || perm == 5 || perm == 7;
     }
