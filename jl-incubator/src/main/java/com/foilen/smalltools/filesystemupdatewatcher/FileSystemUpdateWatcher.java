@@ -205,6 +205,7 @@ public class FileSystemUpdateWatcher implements Closeable {
             }
 
         });
+        thread.setDaemon(true);
         thread.start();
 
         return this;

@@ -145,6 +145,7 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
         this.maxDelayMs = maxDelayMs;
 
         // Prepare the thread
+        thread.setDaemon(true);
         thread.start();
     }
 
