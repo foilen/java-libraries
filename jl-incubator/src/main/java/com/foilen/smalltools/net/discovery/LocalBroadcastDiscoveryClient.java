@@ -95,6 +95,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
         // Start the thread
         thread = new Thread(this, "LocalBroadcastDiscoveryClient-" + port);
+        thread.setDaemon(true);
         thread.start();
         logger.info("Starting listening to broadcast on port {}", port);
     }
