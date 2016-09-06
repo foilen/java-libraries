@@ -10,12 +10,18 @@ package com.foilen.smalltools.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.foilen.smalltools.tuple.Tuple2;
 
 public class FileToolsTest {
 
@@ -26,13 +32,17 @@ public class FileToolsTest {
     }
 
     @Test
-    public void testAppendLine() throws Exception {
+    public void testAppendLineAndReadFileLinesStream() throws Exception {
         File tmpFile = File.createTempFile("junit", null);
         FileTools.appendLine(tmpFile, "hello world");
         FileTools.appendLine(tmpFile, "aligator");
+        FileTools.appendLine(tmpFile.getAbsolutePath(), "yep");
 
         List<String> lines = FileTools.readFileLinesStream(tmpFile).collect(Collectors.toList());
-        Assert.assertEquals(Arrays.asList("hello world", "aligator"), lines);
+        Assert.assertEquals(Arrays.asList("hello world", "aligator", "yep"), lines);
+
+        lines = FileTools.readFileLinesStream(tmpFile.getAbsolutePath()).collect(Collectors.toList());
+        Assert.assertEquals(Arrays.asList("hello world", "aligator", "yep"), lines);
     }
 
     @Test
@@ -98,6 +108,59 @@ public class FileToolsTest {
         FileTools.writeFile("This is a nice project\nthat you are currently doing\nhello world\n", tmpExpected);
         FileTools.appendLineIfMissing(tmpActual.getAbsolutePath(), "hello world");
         assertFileContent(tmpExpected, tmpActual);
+    }
+
+    @Test
+    public void testClearAndDeleteAndGetFileAsBytes() throws Exception {
+        File tmpFile = File.createTempFile("junit", null);
+        tmpFile.delete();
+
+        // Does not exists
+        Assert.assertFalse(FileTools.exists(tmpFile.getAbsolutePath()));
+
+        // Create empty
+        FileTools.clearFile(tmpFile);
+        Assert.assertTrue(FileTools.exists(tmpFile.getAbsolutePath()));
+        Assert.assertEquals(0, FileTools.getFileAsBytes(tmpFile).length);
+
+        // Put some things in it and clear it
+        FileTools.writeFile("hello", tmpFile);
+        Assert.assertTrue(FileTools.exists(tmpFile.getAbsolutePath()));
+        Assert.assertNotEquals(0, FileTools.getFileAsBytes(tmpFile).length);
+
+        FileTools.clearFile(tmpFile.getAbsolutePath());
+        Assert.assertTrue(FileTools.exists(tmpFile.getAbsolutePath()));
+        Assert.assertEquals(0, FileTools.getFileAsBytes(tmpFile).length);
+
+        // Delete
+        FileTools.deleteFile(tmpFile.getAbsolutePath());
+        Assert.assertFalse(FileTools.exists(tmpFile.getAbsolutePath()));
+    }
+
+    @Test
+    public void testCreateStagingFile() throws Exception {
+        // Prepare files
+        File stagingFile = File.createTempFile("junit", null);
+        File finalFile = File.createTempFile("junit", null);
+        stagingFile.delete();
+        finalFile.delete();
+
+        // Create
+        OutputStream outputStream = FileTools.createStagingFile(stagingFile, finalFile);
+        Assert.assertTrue(stagingFile.exists());
+        Assert.assertFalse(finalFile.exists());
+
+        // Put some data
+        outputStream.write("yay".getBytes());
+        Assert.assertTrue(stagingFile.exists());
+        Assert.assertFalse(finalFile.exists());
+
+        // Close and check final
+        outputStream.close();
+        Assert.assertFalse(stagingFile.exists());
+        Assert.assertTrue(finalFile.exists());
+
+        Assert.assertEquals("yay", FileTools.getFileAsString(finalFile));
     }
 
     @Test
@@ -205,6 +268,43 @@ public class FileToolsTest {
         for (String nextLine : FileTools.readFileLinesIteration(tmpFile.getAbsolutePath())) {
             Assert.assertEquals(parts[count++], nextLine);
         }
+    }
+
+    @Test
+    public void testWriteFileInputStream() throws Exception {
+        File tmpFile = File.createTempFile("junit", null);
+        Tuple2<PipedInputStream, PipedOutputStream> pipes = StreamsTools.createPipes();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        new Thread(() -> {
+            FileTools.writeFile(pipes.getA(), tmpFile);
+            countDownLatch.countDown();
+        }).start();
+
+        PipedOutputStream outputStream = pipes.getB();
+        outputStream.write("Test".getBytes());
+        CloseableTools.close(outputStream);
+
+        countDownLatch.await();
+        Assert.assertEquals("Test", FileTools.getFileAsString(tmpFile));
+    }
+
+    @Test
+    public void testWriteFileWithContentCheck() throws Exception {
+        // Write content
+        File tmpFile = File.createTempFile("junit", null);
+        Assert.assertTrue(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), "aaa"));
+        Assert.assertFalse(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), "aaa"));
+        // Change content
+        Assert.assertTrue(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), "bbb"));
+        Assert.assertFalse(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), "bbb"));
+
+        // With a List as content
+        Assert.assertTrue(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), Arrays.asList("aaa")));
+        Assert.assertFalse(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), Arrays.asList("aaa")));
+
+        Assert.assertTrue(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), Arrays.asList("aaa", "bbb")));
+        Assert.assertFalse(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), Arrays.asList("aaa", "bbb")));
+
     }
 
 }

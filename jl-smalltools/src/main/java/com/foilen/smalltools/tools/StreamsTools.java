@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
@@ -22,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.foilen.smalltools.exception.EndOfStreamException;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.internal.FlowStreamThread;
+import com.foilen.smalltools.tuple.Tuple2;
 import com.google.common.primitives.Ints;
 
 /**
@@ -84,6 +87,16 @@ public final class StreamsTools {
             throw new SmallToolsException("Issue reading the stream", e);
         } finally {
             CloseableTools.close(input);
+        }
+    }
+
+    public static Tuple2<PipedInputStream, PipedOutputStream> createPipes() {
+        try {
+            PipedInputStream pipedInputStream = new PipedInputStream();
+            PipedOutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream);
+            return new Tuple2<>(pipedInputStream, pipedOutputStream);
+        } catch (IOException e) {
+            throw new SmallToolsException("Problem creating pipe", e);
         }
     }
 
