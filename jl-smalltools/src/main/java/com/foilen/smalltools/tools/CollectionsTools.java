@@ -8,8 +8,10 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -40,6 +42,31 @@ public final class CollectionsTools {
             } catch (Exception e) {
                 throw new SmallToolsException("Could not create the empty object", e);
             }
+            map.put(key, value);
+        }
+
+        return value;
+    }
+
+    /**
+     * Get a value from a map or insert an empty {@link ArrayList} for that value.
+     * 
+     * @param map
+     *            the map
+     * @param key
+     *            the key
+     * @param clazz
+     *            the class of the values in the list
+     * @param <K>
+     *            type of the key
+     * @param <V>
+     *            type of the value in the list
+     * @return the value or the new empty value
+     */
+    public static <K, V> List<V> getOrCreateEmptyArrayList(Map<K, List<V>> map, K key, Class<V> clazz) {
+        List<V> value = map.get(key);
+        if (value == null) {
+            value = new ArrayList<>();
             map.put(key, value);
         }
 
@@ -86,8 +113,8 @@ public final class CollectionsTools {
      * @return true if all are not null and not empty
      */
     public static boolean isAllItemNotNullOrEmpty(Collection<String> items) {
-        for (Object item : items) {
-            if (item == null || items.isEmpty()) {
+        for (String item : items) {
+            if (item == null || item.isEmpty()) {
                 return false;
             }
         }
@@ -102,8 +129,8 @@ public final class CollectionsTools {
      * @return true if all are not null and not empty
      */
     public static boolean isAllItemNotNullOrEmpty(String... items) {
-        for (Object item : items) {
-            if (item == null || items.length == 0) {
+        for (String item : items) {
+            if (item == null || item.isEmpty()) {
                 return false;
             }
         }
@@ -150,8 +177,8 @@ public final class CollectionsTools {
      * @return true if any is not null and not empty
      */
     public static boolean isAnyItemNotNullOrEmpty(Collection<String> items) {
-        for (Object item : items) {
-            if (item != null && !items.isEmpty()) {
+        for (String item : items) {
+            if (item != null && !item.isEmpty()) {
                 return true;
             }
         }
@@ -166,8 +193,8 @@ public final class CollectionsTools {
      * @return true if any is not null and not empty
      */
     public static boolean isAnyItemNotNullOrEmpty(String... items) {
-        for (Object item : items) {
-            if (item != null && items.length != 0) {
+        for (String item : items) {
+            if (item != null && !item.isEmpty()) {
                 return true;
             }
         }
