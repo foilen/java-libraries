@@ -249,7 +249,7 @@ public class ConsoleRunner {
                 logger.error("Error while reading the output stream", e);
             }
 
-        } , "STD OUT").start();
+        }, "STD OUT").start();
 
         // Execute
         execute();

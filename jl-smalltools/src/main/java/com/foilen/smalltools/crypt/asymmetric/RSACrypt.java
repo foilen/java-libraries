@@ -97,8 +97,8 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
             if (privateExponent != null) {
                 RSAKeyParameters privateKeyParameters;
                 if (keyDetails.isCrt()) {
-                    privateKeyParameters = new RSAPrivateCrtKeyParameters(modulus, publicExponent, privateExponent, keyDetails.getPrimeP(), keyDetails.getPrimeQ(),
-                            keyDetails.getPrimeExponentP(), keyDetails.getPrimeExponentQ(), keyDetails.getCrtCoefficient());
+                    privateKeyParameters = new RSAPrivateCrtKeyParameters(modulus, publicExponent, privateExponent, keyDetails.getPrimeP(), keyDetails.getPrimeQ(), keyDetails.getPrimeExponentP(),
+                            keyDetails.getPrimeExponentQ(), keyDetails.getCrtCoefficient());
                 } else {
                     privateKeyParameters = new RSAKeyParameters(true, modulus, privateExponent);
                 }

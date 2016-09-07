@@ -100,9 +100,6 @@ public class FileSystemUsage {
         return result;
     }
 
-    private FileSystemUsage() {
-    }
-
     public static void main(String[] args) {
         for (FileSystemInfo fsi : getRootFileSystemInfos()) {
             System.out.println("Path: " + fsi.getFile().getAbsolutePath());
@@ -111,6 +108,9 @@ public class FileSystemUsage {
             System.out.println("Total space: " + fsi.getTotalSpace());
             System.out.println();
         }
+    }
+
+    private FileSystemUsage() {
     }
 
 }

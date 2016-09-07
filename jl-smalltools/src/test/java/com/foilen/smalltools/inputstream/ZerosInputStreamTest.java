@@ -31,7 +31,6 @@ public class ZerosInputStreamTest {
         }
     }
 
-
     @Test
     public void testRead() throws Exception {
         long expected = 1024000;

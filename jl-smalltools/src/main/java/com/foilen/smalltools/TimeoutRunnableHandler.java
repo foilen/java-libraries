@@ -41,7 +41,7 @@ public class TimeoutRunnableHandler {
             } catch (RuntimeException e) {
                 thrownException = e;
             }
-        } , "TimeoutHandler");
+        }, "TimeoutHandler");
         callThread.start();
 
         // Wait for the thread to finish or timeout

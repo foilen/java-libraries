@@ -50,27 +50,27 @@ public class AssertToolsTest {
     }
 
     @Test
-    public void testAssertTrueBooleanFail() {
+    public void testAssertNotNullBooleanFail() {
         thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Value must be true");
-        AssertTools.assertTrue(false);
+        thrown.expectMessage("Value must not be null");
+        AssertTools.assertNotNull(null);
     }
 
     @Test
-    public void testAssertTrueBooleanStringFail() {
+    public void testAssertNotNullBooleanStringFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Custom");
-        AssertTools.assertTrue(false, "Custom");
+        AssertTools.assertNotNull(null, "Custom");
     }
 
     @Test
-    public void testAssertTrueBooleanStringSuccess() {
-        AssertTools.assertTrue(true, "Custom");
+    public void testAssertNotNullBooleanStringSuccess() {
+        AssertTools.assertNotNull(new Date(), "Custom");
     }
 
     @Test
-    public void testAssertTrueBooleanSuccess() {
-        AssertTools.assertTrue(true);
+    public void testAssertNotNullBooleanSuccess() {
+        AssertTools.assertNotNull(new Date());
     }
 
     @Test
@@ -98,27 +98,27 @@ public class AssertToolsTest {
     }
 
     @Test
-    public void testAssertNotNullBooleanFail() {
+    public void testAssertTrueBooleanFail() {
         thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Value must not be null");
-        AssertTools.assertNotNull(null);
+        thrown.expectMessage("Value must be true");
+        AssertTools.assertTrue(false);
     }
 
     @Test
-    public void testAssertNotNullBooleanStringFail() {
+    public void testAssertTrueBooleanStringFail() {
         thrown.expect(SmallToolsException.class);
         thrown.expectMessage("Custom");
-        AssertTools.assertNotNull(null, "Custom");
+        AssertTools.assertTrue(false, "Custom");
     }
 
     @Test
-    public void testAssertNotNullBooleanStringSuccess() {
-        AssertTools.assertNotNull(new Date(), "Custom");
+    public void testAssertTrueBooleanStringSuccess() {
+        AssertTools.assertTrue(true, "Custom");
     }
 
     @Test
-    public void testAssertNotNullBooleanSuccess() {
-        AssertTools.assertNotNull(new Date());
+    public void testAssertTrueBooleanSuccess() {
+        AssertTools.assertTrue(true);
     }
 
 }

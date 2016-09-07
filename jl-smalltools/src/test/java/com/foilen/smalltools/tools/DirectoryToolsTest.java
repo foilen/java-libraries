@@ -22,6 +22,23 @@ import com.google.common.io.Files;
 public class DirectoryToolsTest {
 
     @Test
+    public void testCleanupDots() {
+        Assert.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/file"));
+        Assert.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/../file"));
+        Assert.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../file"));
+        Assert.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../../../file"));
+        Assert.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/./file"));
+        Assert.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/.././file"));
+
+        Assert.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/file"));
+        Assert.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/../file"));
+        Assert.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../file"));
+        Assert.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../../../file"));
+        Assert.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/./file"));
+        Assert.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/.././file"));
+    }
+
+    @Test
     public void testDeleteFolder() throws IOException {
 
         File toDelete = Files.createTempDir();
@@ -64,23 +81,6 @@ public class DirectoryToolsTest {
         expected.add("aFile");
         actual = DirectoryTools.list(keepSafe, false);
         AssertTools.assertJsonComparison(expected, actual);
-    }
-
-    @Test
-    public void testCleanupDots() {
-        Assert.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/file"));
-        Assert.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/../file"));
-        Assert.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../file"));
-        Assert.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../../../file"));
-        Assert.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/./file"));
-        Assert.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/.././file"));
-
-        Assert.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/file"));
-        Assert.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/../file"));
-        Assert.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../file"));
-        Assert.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../../../file"));
-        Assert.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/./file"));
-        Assert.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/.././file"));
     }
 
     @Test

@@ -44,7 +44,7 @@ public abstract class AbstractAsymmetricCrypt<K> extends AbstractAsymmetricBlock
         String pem = FileTools.getFileAsString(fileName);
         return loadKeysPemFromString(pem);
     }
-    
+
     @Override
     public void savePrivateKeyPem(AsymmetricKeys keyPair, String fileName) {
         try {
@@ -53,6 +53,7 @@ public abstract class AbstractAsymmetricCrypt<K> extends AbstractAsymmetricBlock
             throw new SmallToolsException("Could not save key", e);
         }
     }
+
     @Override
     public String savePrivateKeyPemAsString(AsymmetricKeys keyPair) {
         ByteArrayOutputStream result = new ByteArrayOutputStream();

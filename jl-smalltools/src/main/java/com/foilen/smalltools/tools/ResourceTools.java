@@ -101,7 +101,6 @@ public final class ResourceTools {
         return context.getResourceAsStream(resource);
     }
 
-
     /**
      * Load a resource as a String.
      * 
@@ -188,6 +187,7 @@ public final class ResourceTools {
         fileLinesIterable.openStream(getResourceAsStream(resource, context));
         return fileLinesIterable;
     }
+
     private ResourceTools() {
     }
 }

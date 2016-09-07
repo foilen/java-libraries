@@ -39,6 +39,14 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
     }
 
     @Override
+    public Integer result() {
+        if (exceptionThrown != null) {
+            throw exceptionThrown;
+        }
+        return statusCode;
+    }
+
+    @Override
     public void run() {
 
         // Retrieve all the parameters
@@ -137,14 +145,6 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
         } catch (RuntimeException e) {
             exceptionThrown = e;
         }
-    }
-
-    @Override
-    public Integer result() {
-        if (exceptionThrown != null) {
-            throw exceptionThrown;
-        }
-        return statusCode;
     }
 
     @Override

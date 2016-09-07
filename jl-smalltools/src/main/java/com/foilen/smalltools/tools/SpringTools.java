@@ -32,12 +32,12 @@ import org.springframework.util.Assert;
  */
 public class SpringTools {
 
+    private static SpringTools instance;
+
     public static void configure(Object object) {
         Assert.notNull(instance, "The SpringConfigurer is not yet inside a Spring container");
         instance.beanConfigurerSupport.configureBean(object);
     }
-
-    private static SpringTools instance;
 
     private BeanConfigurerSupport beanConfigurerSupport;
 
