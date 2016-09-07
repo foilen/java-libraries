@@ -258,6 +258,38 @@ public class FileToolsTest {
     }
 
     @Test
+    public void testPermissions() throws IOException {
+        // TODO +++++++++++
+        File tmpFile = File.createTempFile("junit", null);
+
+        // Test a file
+        FileTools.changePermissions(tmpFile.getAbsolutePath(), false, "755");
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath()));
+
+        FileTools.changePermissions(tmpFile.getAbsolutePath(), false, "644");
+        Assert.assertEquals("644", FileTools.getPermissions(tmpFile.getAbsolutePath()));
+
+        // Test a folder recursive
+        tmpFile.delete();
+        Assert.assertTrue(DirectoryTools.createPath(tmpFile.getAbsolutePath() + "/sub"));
+        FileTools.writeFile("hello", tmpFile.getAbsolutePath() + "/sub/aFile");
+        FileTools.writeFile("hello", tmpFile.getAbsolutePath() + "/aFile");
+        FileTools.changePermissions(tmpFile.getAbsolutePath(), true, "755");
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath()));
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath() + "/aFile"));
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath() + "/sub"));
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath() + "/sub/aFile"));
+
+        // Test a folder non-recursive
+        FileTools.changePermissions(tmpFile.getAbsolutePath(), false, "700");
+        Assert.assertEquals("700", FileTools.getPermissions(tmpFile.getAbsolutePath()));
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath() + "/aFile"));
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath() + "/sub"));
+        Assert.assertEquals("755", FileTools.getPermissions(tmpFile.getAbsolutePath() + "/sub/aFile"));
+
+    }
+
+    @Test
     public void testReadFileLinesIteration() throws IOException {
         File tmpFile = File.createTempFile("junit", null);
         String content = "This is the first line\nAnd the second one\nA last one";

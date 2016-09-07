@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.PosixFileAttributeView;
@@ -556,6 +557,58 @@ public final class FileTools {
      */
     public static String getOwner(String file) {
         return getOwner(new File(file));
+    }
+
+    /**
+     * Get the unix permissions of a file or directory.
+     * 
+     * @param file
+     *            the file or directory
+     * @return the permissions in numeric format. E.g: "750"
+     */
+    public static String getPermissions(String file) {
+        try {
+            int owner = 0;
+            int group = 0;
+            int others = 0;
+            Set<PosixFilePermission> permissions = Files.getPosixFilePermissions(new File(file).toPath(), LinkOption.NOFOLLOW_LINKS);
+
+            for (PosixFilePermission permission : permissions) {
+                switch (permission) {
+                case GROUP_EXECUTE:
+                    group += 1;
+                    break;
+                case GROUP_READ:
+                    group += 4;
+                    break;
+                case GROUP_WRITE:
+                    group += 2;
+                    break;
+                case OTHERS_EXECUTE:
+                    others += 1;
+                    break;
+                case OTHERS_READ:
+                    others += 4;
+                    break;
+                case OTHERS_WRITE:
+                    others += 2;
+                    break;
+                case OWNER_EXECUTE:
+                    owner += 1;
+                    break;
+                case OWNER_READ:
+                    owner += 4;
+                    break;
+                case OWNER_WRITE:
+                    owner += 2;
+                    break;
+                }
+            }
+
+            return String.valueOf(owner) + String.valueOf(group) + String.valueOf(others);
+        } catch (IOException e) {
+            throw new SmallToolsException("Problem getting file permission", e);
+        }
     }
 
     private static boolean isPermExecute(int perm) {
