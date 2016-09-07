@@ -259,7 +259,6 @@ public class FileToolsTest {
 
     @Test
     public void testPermissions() throws IOException {
-        // TODO +++++++++++
         File tmpFile = File.createTempFile("junit", null);
 
         // Test a file

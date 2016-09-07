@@ -37,7 +37,6 @@ For changes/removal in the stable API:
 Design choices
 --------------
 
-- Java 8: To support Android, the libraries needs to be compiled for Java 8 (starting at Android N)
 - No transitive libraries: Since the goal is to provide a lot of diversity while reusing other libraries, it is better for you to include only the libraries you need.
 
 
