@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,7 @@ import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import com.foilen.smalltools.exception.EndOfStreamException;
 import com.foilen.smalltools.exception.SmallToolsException;
@@ -33,6 +35,7 @@ import com.google.common.primitives.Ints;
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
+ * compile 'org.slf4j:slf4j-api:1.7.21'
  * </pre>
  */
 public final class StreamsTools {
@@ -90,7 +93,67 @@ public final class StreamsTools {
         }
     }
 
-    public static Tuple2<PipedInputStream, PipedOutputStream> createPipes() {
+    /**
+     * Create an {@link OutputStream} where everything written to it will go to a logger.
+     * 
+     * @param outputLogger
+     *            the logger where to send each line
+     * @param level
+     *            the level to log the output
+     * @return the {@link OutputStream}
+     */
+    public static OutputStream createLoggerOutputStream(Logger outputLogger, Level level) {
+
+        AssertTools.assertNotNull(outputLogger, "The Logger cannot be null");
+        AssertTools.assertNotNull(level, "The Level cannot be null");
+
+        // Configure the output
+        Tuple2<PipedInputStream, PipedOutputStream> pipe = createPipe();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pipe.getA()));
+
+        new Thread(() -> {
+
+            // Set the thread's name
+            ThreadTools.nameThread() //
+                    .setSeparator(" - ") //
+                    .clear() //
+                    .appendText("OutputStream pipe to Logger") //
+                    .appendDate() //
+                    .change();
+
+            String line;
+            try {
+                while ((line = bufferedReader.readLine()) != null) {
+                    switch (level) {
+                    case DEBUG:
+                        outputLogger.debug(line);
+                        break;
+                    case ERROR:
+                        outputLogger.error(line);
+                        break;
+                    case INFO:
+                        outputLogger.info(line);
+                        break;
+                    case TRACE:
+                        outputLogger.trace(line);
+                        break;
+                    case WARN:
+                        outputLogger.warn(line);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                logger.error("Error while reading the output stream", e);
+            } finally {
+                CloseableTools.close(bufferedReader);
+            }
+
+        }).start();
+
+        return pipe.getB();
+    }
+
+    public static Tuple2<PipedInputStream, PipedOutputStream> createPipe() {
         try {
             PipedInputStream pipedInputStream = new PipedInputStream();
             PipedOutputStream pipedOutputStream = new PipedOutputStream(pipedInputStream);

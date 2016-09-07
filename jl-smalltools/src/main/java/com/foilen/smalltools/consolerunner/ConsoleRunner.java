@@ -8,14 +8,9 @@
  */
 package com.foilen.smalltools.consolerunner;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +22,7 @@ import org.slf4j.event.Level;
 
 import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.TimeoutHandler;
-import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.StreamsTools;
 import com.foilen.smalltools.tuple.Tuple2;
 
 /**
@@ -212,44 +207,8 @@ public class ConsoleRunner {
      */
     public void executeWithLogger(Logger outputLogger, Level level) {
         // Configure the output
-        PipedInputStream pipedInputStream = new PipedInputStream();
-        PipedOutputStream pipedOutputStream;
-        try {
-            pipedOutputStream = new PipedOutputStream(pipedInputStream);
-        } catch (IOException e) {
-            throw new SmallToolsException("Problem setting the pipe", e);
-        }
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pipedInputStream));
-        consoleOutput = pipedOutputStream;
+        consoleOutput = StreamsTools.createLoggerOutputStream(outputLogger, level);
         closeConsoleOutput = true;
-
-        new Thread(() -> {
-            String line;
-            try {
-                while ((line = bufferedReader.readLine()) != null) {
-                    switch (level) {
-                    case DEBUG:
-                        outputLogger.debug("{}", line);
-                        break;
-                    case ERROR:
-                        outputLogger.error("{}", line);
-                        break;
-                    case INFO:
-                        outputLogger.info("{}", line);
-                        break;
-                    case TRACE:
-                        outputLogger.trace("{}", line);
-                        break;
-                    case WARN:
-                        outputLogger.warn("{}", line);
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                logger.error("Error while reading the output stream", e);
-            }
-
-        }, "STD OUT").start();
 
         // Execute
         execute();

@@ -273,7 +273,7 @@ public class FileToolsTest {
     @Test
     public void testWriteFileInputStream() throws Exception {
         File tmpFile = File.createTempFile("junit", null);
-        Tuple2<PipedInputStream, PipedOutputStream> pipes = StreamsTools.createPipes();
+        Tuple2<PipedInputStream, PipedOutputStream> pipes = StreamsTools.createPipe();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         new Thread(() -> {
             FileTools.writeFile(pipes.getA(), tmpFile);
