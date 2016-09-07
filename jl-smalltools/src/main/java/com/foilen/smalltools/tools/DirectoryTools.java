@@ -11,6 +11,7 @@ package com.foilen.smalltools.tools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +36,7 @@ import com.google.common.base.Joiner;
  */
 public final class DirectoryTools {
 
-    private final static Logger log = LoggerFactory.getLogger(DirectoryTools.class);
+    private final static Logger logger = LoggerFactory.getLogger(DirectoryTools.class);
 
     /**
      * Remove the . and .. from a path
@@ -114,7 +115,7 @@ public final class DirectoryTools {
      */
     public static boolean createPath(String directoryPath, String owner, String group, String permissions) {
 
-        log.debug("createPath {} ", directoryPath);
+        logger.debug("createPath {} ", directoryPath);
 
         // Create
         if (!createPath(directoryPath)) {
@@ -175,6 +176,146 @@ public final class DirectoryTools {
         // Create the path
         String directoryPath = filePath.substring(0, endOfDirectoryPos);
         return createPath(new File(directoryPath));
+    }
+
+    /**
+     * Delete the folder and everything inside it. Will not follow symbolic links, but will delete them.
+     * 
+     * WARNING: If you have hard links, it will follow them. (but not symbolic links)
+     * 
+     * @param folder
+     *            the folder
+     */
+    public static void deleteFolder(File folder) {
+        logger.info("Delete folder {}", folder.getAbsolutePath());
+        if (!folder.exists()) {
+            return;
+        }
+
+        if (folder.isDirectory()) {
+            String rootDir = folder.getAbsolutePath() + File.separator;
+            for (File toDelete : folder.listFiles()) {
+                deleteSub(rootDir, toDelete);
+            }
+        }
+
+        if (!folder.delete()) {
+            throw new SmallToolsException("Could not delete " + folder.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Delete the folder and everything inside it. Will not follow symbolic links, but will delete them.
+     * 
+     * WARNING: If you have hard links, it will follow them. (but not symbolic links)
+     * 
+     * @param folderPath
+     *            the folder
+     */
+    public static void deleteFolder(String folderPath) {
+        deleteFolder(new File(folderPath));
+    }
+
+    private static void deleteSub(String rootDir, File folder) {
+
+        String toDelete = folder.getAbsolutePath();
+        if (!toDelete.startsWith(rootDir)) {
+            throw new SmallToolsException("Trying to delete recursively the folder [" + rootDir + "] we got to delete [" + toDelete + "] which is not a direct child");
+        }
+
+        if (!Files.isSymbolicLink(folder.toPath()) && folder.isDirectory()) {
+            for (File toDeleteSub : folder.listFiles()) {
+                deleteSub(rootDir, toDeleteSub);
+            }
+        }
+
+        if (!folder.delete()) {
+            throw new SmallToolsException("Could not delete " + toDelete);
+        }
+    }
+
+    /**
+     * List files and directories recursively. It can list the absolute or relative paths.
+     * 
+     * Directories will end with a trailing slash.
+     * 
+     * 
+     * Ex:
+     * <ul>
+     * <li>foo/bar/aFile</li>
+     * <li>foo/bar/aDirectory/</li>
+     * <ul>
+     *
+     * WARNING: It will follow symbolic links.
+     * 
+     * @param directory
+     *            the directory
+     * @param absolute
+     *            true to get the absolute paths
+     * @return the names of the files (sorted)
+     */
+    public static List<String> list(File directory, boolean absolute) {
+        // Check if directory
+        if (!directory.isDirectory()) {
+            throw new SmallToolsException(directory.getAbsolutePath() + " is not a directory");
+        }
+
+        // Scan the directory
+        int relativeStartPos = directory.getAbsolutePath().length() + 1;
+        List<String> results = list(directory, absolute, relativeStartPos);
+
+        // Sort
+        Collections.sort(results);
+
+        return results;
+    }
+
+    private static List<String> list(File directory, boolean absolute, int relativeStartPos) {
+        List<String> results = new ArrayList<>();
+
+        for (File file : directory.listFiles()) {
+            if (file.isFile()) {
+                if (absolute) {
+                    results.add(file.getAbsolutePath());
+                } else {
+                    results.add(file.getAbsolutePath().substring(relativeStartPos));
+                }
+            }
+
+            if (file.isDirectory()) {
+                if (absolute) {
+                    results.add(file.getAbsolutePath() + "/");
+                } else {
+                    results.add(file.getAbsolutePath().substring(relativeStartPos) + "/");
+                }
+                results.addAll(list(file, absolute, relativeStartPos));
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * List files and directories recursively. It can list the absolute or relative paths.
+     * 
+     * Directories will end with a trailing slash.
+     * 
+     * Ex:
+     * <ul>
+     * <li>foo/bar/aFile</li>
+     * <li>foo/bar/aDirectory/</li>
+     * <ul>
+     * 
+     * WARNING: It will follow symbolic links.
+     * 
+     * @param path
+     *            the full path to the directory
+     * @param absolute
+     *            true to get the absolute paths
+     * @return the names of the files (sorted)
+     */
+    public static List<String> list(String path, boolean absolute) {
+        return list(new File(path), absolute);
     }
 
     /**

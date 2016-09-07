@@ -9,14 +9,62 @@
 package com.foilen.smalltools.tools;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.test.asserts.AssertTools;
 import com.google.common.io.Files;
 
 public class DirectoryToolsTest {
+
+    @Test
+    public void testDeleteFolder() throws IOException {
+
+        File toDelete = Files.createTempDir();
+        String toDeletePath = toDelete.getAbsolutePath();
+        File keepSafe = Files.createTempDir();
+        String keepSafePath = keepSafe.getAbsolutePath();
+
+        // Create the directories, the files and the symlink
+        Assert.assertTrue((DirectoryTools.createPath(toDeletePath + "/subOne/subTwo/subThree")));
+        FileTools.writeFile("a", keepSafePath + "/aFile");
+        java.nio.file.Files.createSymbolicLink( //
+                new File(toDeletePath + "/subOne/NotFollow").toPath(), //
+                keepSafe.toPath());
+        FileTools.writeFile("a", toDeletePath + "/subOne/subTwo/hello");
+
+        // Assert all is in place
+        List<String> expected = new ArrayList<>();
+        expected.add("subOne/");
+        expected.add("subOne/NotFollow/");
+        expected.add("subOne/NotFollow/aFile");
+        expected.add("subOne/subTwo/");
+        expected.add("subOne/subTwo/hello");
+        expected.add("subOne/subTwo/subThree/");
+        List<String> actual = DirectoryTools.list(toDelete, false);
+        AssertTools.assertJsonComparison(expected, actual);
+
+        expected = new ArrayList<>();
+        expected.add("aFile");
+        actual = DirectoryTools.list(keepSafe, false);
+        AssertTools.assertJsonComparison(expected, actual);
+
+        // Delete
+        DirectoryTools.deleteFolder(toDelete);
+
+        // Assert all deleted, but the keepSafe
+        Assert.assertFalse(toDelete.exists());
+        AssertTools.assertJsonComparison(expected, actual);
+
+        expected = new ArrayList<>();
+        expected.add("aFile");
+        actual = DirectoryTools.list(keepSafe, false);
+        AssertTools.assertJsonComparison(expected, actual);
+    }
 
     @Test
     public void testCleanupDots() {
