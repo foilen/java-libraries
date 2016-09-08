@@ -15,12 +15,20 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
+
+import com.foilen.smalltools.tuple.Tuple2;
+import com.google.common.base.Charsets;
+import com.google.common.primitives.Ints;
 
 /**
  * Tests for {@link StreamsTools}.
@@ -42,9 +50,45 @@ public class StreamsToolsTest {
         out.write(" world\n".getBytes());
         out.write("yay\n".getBytes());
 
+        ThreadTools.sleep(3000);
+
         verify(outputLogger).info("hello world");
         verify(outputLogger).info("yay");
         verifyNoMoreInteractions(outputLogger);
+    }
+
+    @Test(timeout = 30000)
+    public void testFillBuffer() throws Throwable {
+        Tuple2<PipedInputStream, PipedOutputStream> pipe = StreamsTools.createPipe();
+        InputStream in = pipe.getA();
+        OutputStream out = pipe.getB();
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        Tuple2<Throwable, Void> exception = new Tuple2<>();
+        new Thread(() -> {
+            try {
+                Assert.assertEquals("Hello World", StreamsTools.readString(in));
+            } catch (Exception e) {
+                exception.setA(e);
+            }
+            countDownLatch.countDown();
+        }).start();
+
+        // Send slowly
+        out.write(Ints.toByteArray(11));
+        out.write("Hello ".getBytes(Charsets.UTF_8));
+        out.flush();
+
+        ThreadTools.sleep(2000);
+
+        out.write("World".getBytes(Charsets.UTF_8));
+        out.flush();
+
+        countDownLatch.await();
+        if (exception.getA() != null) {
+            throw exception.getA();
+        }
+
     }
 
     @Test
@@ -66,6 +110,21 @@ public class StreamsToolsTest {
         // Wait one second and retry
         ThreadTools.sleep(1000);
         Assert.assertEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
+    }
+
+    @Test(timeout = 30000)
+    public void testWriteAndRead() {
+        Tuple2<PipedInputStream, PipedOutputStream> pipe = StreamsTools.createPipe();
+        InputStream in = pipe.getA();
+        OutputStream out = pipe.getB();
+
+        StreamsTools.write(out, 10);
+        StreamsTools.write(out, "Hello World");
+        StreamsTools.write(out, "Hello World");
+
+        Assert.assertEquals(10, StreamsTools.readInt(in));
+        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+        Assert.assertEquals("Hello World", StreamsTools.readString(in, 15));
     }
 
 }

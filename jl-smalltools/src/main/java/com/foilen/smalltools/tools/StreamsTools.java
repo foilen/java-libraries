@@ -185,6 +185,7 @@ public final class StreamsTools {
                     throw new EndOfStreamException("End of Stream");
                 }
                 len = source.read(buffer, totalRead, needed - totalRead);
+                totalRead += len;
             }
             logger.debug("Completly read {} bytes.", totalRead);
         } catch (IOException e) {
@@ -371,7 +372,7 @@ public final class StreamsTools {
      * @param source
      *            the input stream
      * @param maxLength
-     *            the max length (in bytes)that we consider as valid
+     *            the max length (in bytes) that we consider as valid
      * @return the content
      */
     public static String readString(InputStream source, int maxLength) {
