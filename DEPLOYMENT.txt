@@ -22,6 +22,5 @@ Steps
   git merge _BRANCH_
   # Any other command to complete the merging
 
-  git tag -a -m "_VERSION_" "_VERSION_"
   git push
   git push --tags
