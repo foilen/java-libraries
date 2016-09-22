@@ -204,14 +204,15 @@ public class ConsoleRunner {
      *            the logger to use
      * @param level
      *            the level to use on the logger
+     * @return the status code
      */
-    public void executeWithLogger(Logger outputLogger, Level level) {
+    public int executeWithLogger(Logger outputLogger, Level level) {
         // Configure the output
         consoleOutput = StreamsTools.createLoggerOutputStream(outputLogger, level);
         closeConsoleOutput = true;
 
         // Execute
-        execute();
+        return execute();
     }
 
     public List<String> getArguments() {
