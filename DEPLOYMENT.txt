@@ -24,3 +24,5 @@ Steps
 
   git push
   git push --tags
+
+- Publish the jars: https://bintray.com/foilen/maven

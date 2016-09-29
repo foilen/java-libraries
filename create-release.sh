@@ -14,46 +14,20 @@ fi
 VERSION=$1
 RUN_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Update copyrights
 echo ----==[ Update copyrights ]==----
 cd $RUN_PATH/scripts
 ./javaheaderchanger.sh > /dev/null
 
+echo ----==[ Update version ]==----
 cd $RUN_PATH
-for i in `cat projects-order.txt`
-do
-  cd $RUN_PATH
-  if [ -f $i/pom.xml ]; then
+cp gradle.properties gradle.properties.old
+sed "s/master-SNAPSHOT/$VERSION/g" gradle.properties.old > gradle.properties
 
-    cd $RUN_PATH/$i
+echo ----==[ Compile and deploy to jcenter ]==----
+./gradlew bintrayUpload
 
-    echo ----==[ Update version ]==----
-    cp pom.xml pom.xml.old
-    sed "s/master-SNAPSHOT/$VERSION/g" pom.xml.old > pom.xml
-
-    echo ----==[ Compile $i ]==----
-    mvn clean install
-
-  fi
-done
-
-cd $RUN_PATH
-for i in `cat projects-order.txt`
-do
-  cd $RUN_PATH
-  if [ -f $i/pom.xml ]; then
-
-    cd $RUN_PATH/$i
-
-    echo ----==[ Deploy to jcenter $i ]==----
-    mvn deploy
-
-    echo ----==[ Replace version ]==----
-    cd $RUN_PATH/$i
-    mv pom.xml.old pom.xml
-
-  fi
-done
+echo ----==[ Replace version ]==----
+mv gradle.properties.old gradle.properties
 
 echo ----==[ Create git tag ]==----
 git tag -a -m $VERSION $VERSION
@@ -63,3 +37,6 @@ echo ----==[ Operation completed successfully ]==----
 echo You can execute
 echo git push --tags
 echo to push the tag
+
+echo
+echo You can publish https://bintray.com/foilen/maven

@@ -1,8 +1,10 @@
+# Gradle
 .gradle/
-.settings/
 build/
 bin/
-target/
+
+# Eclipse
 .classpath
 .project
-/*.zip
+.settings/
+.springBeans
