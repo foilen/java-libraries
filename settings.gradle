@@ -1,2 +1,4 @@
 include 'jl-smalltools'
+include 'jl-smalltools:jl-smalltools-main'
+include 'jl-smalltools:jl-smalltools-hibernate5'
 include 'jl-incubator'

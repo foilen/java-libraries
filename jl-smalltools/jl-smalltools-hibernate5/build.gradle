@@ -1,0 +1,18 @@
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+
+dependencies {
+  compileOnly project(':jl-smalltools:jl-smalltools-main')
+  compileOnly 'org.hibernate:hibernate-core:5.0.11.Final'
+  compileOnly 'org.springframework:spring-orm:4.3.3.RELEASE'
+  compileOnly 'org.springframework.boot:spring-boot:1.4.1.RELEASE'
+  
+  testCompile 'junit:junit:4.12'
+}
