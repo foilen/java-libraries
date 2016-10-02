@@ -11,7 +11,7 @@ allprojects {
     apply plugin: 'eclipse'
 
     group = 'com.foilen'
-    version = "$javaLibrariesVersion"
+    version = System.getenv('VERSION')?:'master-SNAPSHOT'
 
     repositories {
         mavenLocal()

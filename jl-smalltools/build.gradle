@@ -64,7 +64,6 @@ publishing {
       artifact allJavadocJar
       groupId 'com.foilen'
       artifactId 'jl-smalltools'
-      version "$javaLibrariesVersion"
     }
   }
 }

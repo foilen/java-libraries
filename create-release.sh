@@ -11,32 +11,23 @@ if [ $# -ne 1 ]
 		exit 1;
 fi
 
-VERSION=$1
+export VERSION=$1
 RUN_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo ----==[ Update copyrights ]==----
 cd $RUN_PATH/scripts
 ./javaheaderchanger.sh > /dev/null
 
-echo ----==[ Update version ]==----
-cd $RUN_PATH
-cp gradle.properties gradle.properties.old
-sed "s/master-SNAPSHOT/$VERSION/g" gradle.properties.old > gradle.properties
-
 echo ----==[ Compile and deploy to jcenter ]==----
-./gradlew bintrayUpload
-
-echo ----==[ Replace version ]==----
-mv gradle.properties.old gradle.properties
+cd $RUN_PATH
+./gradlew clean bintrayUpload
 
 echo ----==[ Create git tag ]==----
 git tag -a -m $VERSION $VERSION
 
 echo ----==[ Operation completed successfully ]==----
 
-echo You can execute
-echo git push --tags
-echo to push the tag
+git push --tags
 
 echo
-echo You can publish https://bintray.com/foilen/maven
+echo You can see published items on https://bintray.com/foilen/maven
