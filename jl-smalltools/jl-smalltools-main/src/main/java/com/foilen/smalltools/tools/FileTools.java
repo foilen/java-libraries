@@ -487,6 +487,36 @@ public final class FileTools {
     }
 
     /**
+     * Retrieve the extension of the file name.
+     * 
+     * @param fileName
+     *            the file name
+     * @return the extension (e.g: "css") ; null if no extension
+     */
+    public static String getExtension(String fileName) {
+        if (fileName == null) {
+            return null;
+        }
+        int extPos = fileName.lastIndexOf(".");
+        int slashPos = fileName.lastIndexOf("/");
+
+        if (extPos == -1) {
+            return null;
+        }
+
+        String ext = "";
+        if (ext.length() <= extPos) {
+            ext = fileName.substring(extPos + 1);
+        }
+
+        if (slashPos != -1 && slashPos > extPos) {
+            return null;
+        }
+
+        return ext;
+    }
+
+    /**
      * File as an array of bytes.
      * 
      * @param file

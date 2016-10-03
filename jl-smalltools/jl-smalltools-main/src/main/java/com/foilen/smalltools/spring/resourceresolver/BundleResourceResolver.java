@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.GzipResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
@@ -31,6 +32,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.CollectionsTools;
 import com.foilen.smalltools.tools.CompressionTools;
+import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.ResourceTools;
 import com.foilen.smalltools.tools.StreamsTools;
 import com.foilen.smalltools.tools.ThreadTools;
@@ -117,7 +119,11 @@ public class BundleResourceResolver implements ResourceResolver {
             // Create temporary file
             OutputStream out = null;
             try {
-                File tmpFile = File.createTempFile("bundle", "tmp");
+                String extension = FileTools.getExtension(requestPath);
+                if (extension == null) {
+                    extension = "tmp";
+                }
+                File tmpFile = File.createTempFile("bundle", "." + extension);
                 logger.info("Concatenating the bundle {} in tmp file {}", requestPath, tmpFile.getAbsolutePath());
 
                 out = new FileOutputStream(tmpFile);

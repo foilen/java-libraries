@@ -248,6 +248,17 @@ public class FileToolsTest {
     }
 
     @Test
+    public void testGetExtension() {
+        Assert.assertEquals("js", FileTools.getExtension("all.js"));
+        Assert.assertNull(FileTools.getExtension("all-test"));
+        Assert.assertEquals("", FileTools.getExtension("all."));
+
+        Assert.assertEquals("js", FileTools.getExtension("/tmp.test/all.js"));
+        Assert.assertNull(FileTools.getExtension("/tmp.test/all-test"));
+        Assert.assertEquals("", FileTools.getExtension("/tmp.test/all."));
+    }
+
+    @Test
     public void testIsWindowsStartPath() {
         Assert.assertTrue(FileTools.isWindowsStartPath("c:\\windows\\notepad.exe"));
         Assert.assertTrue(FileTools.isWindowsStartPath("C:\\windows\\notepad.exe"));
