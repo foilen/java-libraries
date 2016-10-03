@@ -22,12 +22,12 @@ echo ----==[ Compile and deploy to jcenter ]==----
 cd $RUN_PATH
 ./gradlew clean bintrayUpload
 
-echo ----==[ Create git tag ]==----
+echo ----==[ Git Tag and Push ]==----
 git tag -a -m $VERSION $VERSION
+git push
+git push --tags
 
 echo ----==[ Operation completed successfully ]==----
-
-git push --tags
 
 echo
 echo You can see published items on https://bintray.com/foilen/maven
