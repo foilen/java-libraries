@@ -235,6 +235,22 @@ public final class DirectoryTools {
     }
 
     /**
+     * @deprecated use {@link #listFilesAndFoldersRecursively(File, boolean)}
+     */
+    @Deprecated
+    public static List<String> list(File directory, boolean absolute) {
+        return listFilesAndFoldersRecursively(directory, absolute);
+    }
+
+    /**
+     * @deprecated use {@link #listFilesAndFoldersRecursively(String, boolean)}
+     */
+    @Deprecated
+    public static List<String> list(String path, boolean absolute) {
+        return listFilesAndFoldersRecursively(path, absolute);
+    }
+
+    /**
      * List files and directories recursively. It can list the absolute or relative paths.
      * 
      * Directories will end with a trailing slash.
@@ -254,7 +270,7 @@ public final class DirectoryTools {
      *            true to get the absolute paths
      * @return the names of the files (sorted)
      */
-    public static List<String> list(File directory, boolean absolute) {
+    public static List<String> listFilesAndFoldersRecursively(File directory, boolean absolute) {
         // Check if directory
         if (!directory.isDirectory()) {
             throw new SmallToolsException(directory.getAbsolutePath() + " is not a directory");
@@ -262,7 +278,7 @@ public final class DirectoryTools {
 
         // Scan the directory
         int relativeStartPos = directory.getAbsolutePath().length() + 1;
-        List<String> results = list(directory, absolute, relativeStartPos);
+        List<String> results = listFilesAndFoldersRecursively(directory, absolute, relativeStartPos);
 
         // Sort
         Collections.sort(results);
@@ -270,7 +286,7 @@ public final class DirectoryTools {
         return results;
     }
 
-    private static List<String> list(File directory, boolean absolute, int relativeStartPos) {
+    private static List<String> listFilesAndFoldersRecursively(File directory, boolean absolute, int relativeStartPos) {
         List<String> results = new ArrayList<>();
 
         for (File file : directory.listFiles()) {
@@ -288,7 +304,7 @@ public final class DirectoryTools {
                 } else {
                     results.add(file.getAbsolutePath().substring(relativeStartPos) + "/");
                 }
-                results.addAll(list(file, absolute, relativeStartPos));
+                results.addAll(listFilesAndFoldersRecursively(file, absolute, relativeStartPos));
             }
         }
 
@@ -314,8 +330,8 @@ public final class DirectoryTools {
      *            true to get the absolute paths
      * @return the names of the files (sorted)
      */
-    public static List<String> list(String path, boolean absolute) {
-        return list(new File(path), absolute);
+    public static List<String> listFilesAndFoldersRecursively(String path, boolean absolute) {
+        return listFilesAndFoldersRecursively(new File(path), absolute);
     }
 
     /**

@@ -62,12 +62,12 @@ public class DirectoryToolsTest {
         expected.add("subOne/subTwo/");
         expected.add("subOne/subTwo/hello");
         expected.add("subOne/subTwo/subThree/");
-        List<String> actual = DirectoryTools.list(toDelete, false);
+        List<String> actual = DirectoryTools.listFilesAndFoldersRecursively(toDelete, false);
         AssertTools.assertJsonComparison(expected, actual);
 
         expected = new ArrayList<>();
         expected.add("aFile");
-        actual = DirectoryTools.list(keepSafe, false);
+        actual = DirectoryTools.listFilesAndFoldersRecursively(keepSafe, false);
         AssertTools.assertJsonComparison(expected, actual);
 
         // Delete
@@ -79,7 +79,7 @@ public class DirectoryToolsTest {
 
         expected = new ArrayList<>();
         expected.add("aFile");
-        actual = DirectoryTools.list(keepSafe, false);
+        actual = DirectoryTools.listFilesAndFoldersRecursively(keepSafe, false);
         AssertTools.assertJsonComparison(expected, actual);
     }
 
