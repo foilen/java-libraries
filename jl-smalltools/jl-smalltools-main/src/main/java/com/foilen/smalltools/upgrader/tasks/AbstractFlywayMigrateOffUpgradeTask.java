@@ -48,7 +48,7 @@ public abstract class AbstractFlywayMigrateOffUpgradeTask extends AbstractDataba
         } else {
             executed = new ArrayList<>();
             logger.info("Flyway table does not exists. Creating it");
-            updateFromResource("flyway-schema_version.sql");
+            updateFromResource("flyway-schema_version.sql", AbstractFlywayMigrateOffUpgradeTask.class);
         }
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
