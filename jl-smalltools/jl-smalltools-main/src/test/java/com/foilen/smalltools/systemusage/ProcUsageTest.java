@@ -55,6 +55,30 @@ public class ProcUsageTest {
     }
 
     @Test
+    public void testGetMainCpuInfo_Big() {
+        // Copy file
+        File tmpFolder = Files.createTempDir();
+        String procStatPath = tmpFolder.getAbsolutePath() + File.separatorChar + "proc-stat_big";
+        ResourceTools.copyToFile("proc-stat_big", this.getClass(), new File(procStatPath));
+
+        // Execute
+        CpuInfo cpuInfo = ProcUsage.getMainCpuInfo(procStatPath);
+
+        // Assert
+        Assert.assertEquals(27144761, cpuInfo.getUser());
+        Assert.assertEquals(53247, cpuInfo.getNice());
+        Assert.assertEquals(7825100, cpuInfo.getSystem());
+        Assert.assertEquals(2181659790L, cpuInfo.getIdle());
+        Assert.assertEquals(746107, cpuInfo.getIowait());
+        Assert.assertEquals(82, cpuInfo.getIrq());
+        Assert.assertEquals(45861, cpuInfo.getSoftirq());
+
+        Assert.assertEquals(2217474948L, cpuInfo.calculateTotal());
+        Assert.assertEquals(35815158, cpuInfo.calculateBusy());
+        Assert.assertEquals(2, cpuInfo.calculateBusyPercent());
+    }
+
+    @Test
     public void testGetMemoryInfo() {
         // Copy file
         File tmpFolder = Files.createTempDir();

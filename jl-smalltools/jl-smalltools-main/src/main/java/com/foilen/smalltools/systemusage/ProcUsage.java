@@ -47,13 +47,13 @@ public final class ProcUsage {
                     // Parse the line
                     String[] parts = line.split("[ ]+");
                     int i = 1;
-                    cpuInfo.setUser(Integer.valueOf(parts[i++]));
-                    cpuInfo.setNice(Integer.valueOf(parts[i++]));
-                    cpuInfo.setSystem(Integer.valueOf(parts[i++]));
-                    cpuInfo.setIdle(Integer.valueOf(parts[i++]));
-                    cpuInfo.setIowait(Integer.valueOf(parts[i++]));
-                    cpuInfo.setIrq(Integer.valueOf(parts[i++]));
-                    cpuInfo.setSoftirq(Integer.valueOf(parts[i++]));
+                    cpuInfo.setUser(Long.valueOf(parts[i++]));
+                    cpuInfo.setNice(Long.valueOf(parts[i++]));
+                    cpuInfo.setSystem(Long.valueOf(parts[i++]));
+                    cpuInfo.setIdle(Long.valueOf(parts[i++]));
+                    cpuInfo.setIowait(Long.valueOf(parts[i++]));
+                    cpuInfo.setIrq(Long.valueOf(parts[i++]));
+                    cpuInfo.setSoftirq(Long.valueOf(parts[i++]));
                 }
             }
 
