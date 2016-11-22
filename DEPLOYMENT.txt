@@ -22,7 +22,4 @@ Steps
   git merge _BRANCH_
   # Any other command to complete the merging
 
-  git push
-  git push --tags
-
 - Publish the jars: https://bintray.com/foilen/maven
