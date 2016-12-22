@@ -32,7 +32,7 @@ import com.foilen.smalltools.tools.ThreadTools;
  * Defaults:
  * </pre>
  * <ul>
- * <li>Broadcast delay: 5 seconds between broadcasts</li>
+ * <li>Broadcast delay: 5 seconds between broadcasts per default</li>
  * </ul>
  * 
  * Usage:
@@ -164,6 +164,9 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
             logger.debug("Broadcasting {} messages", messages.size());
             for (byte[] message : messages) {
                 // Broadcast
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Sending message {}", new String(message));
+                }
                 DatagramPacket packet = new DatagramPacket(message, message.length);
                 try {
                     datagramSocket.send(packet);

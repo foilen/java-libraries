@@ -22,7 +22,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 /**
- * A client that can automatically discover servers on a LAN. Upon instantiation, a new thread is started right away. The list of discovered servers is kept in memory for 1 minute.
+ * A client that can automatically discover servers on a LAN. Upon instantiation, a new thread is started right away. The list of discovered servers is kept in memory for 1 minute by default.
  * 
  * Usage:
  * 
@@ -51,7 +51,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
     private static final int CACHE_EXPIRE_IN_SECONDS = 60;
     private static final long CACHE_MAX_SIZE = 1000;
 
-    private Cache<DiscoverableService, Boolean> localDiscoveryServices = CacheBuilder.newBuilder().maximumSize(CACHE_MAX_SIZE).expireAfterWrite(CACHE_EXPIRE_IN_SECONDS, TimeUnit.SECONDS).build();
+    private Cache<DiscoverableService, Boolean> localDiscoveryServices;
 
     private Thread thread;
     private String filteredAppName;
@@ -59,14 +59,33 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
     private DatagramSocket datagramSocket;
 
     /**
+     * Create the client using the default cache.
+     * 
      * @param port
      *            the port to watch for the messages
      */
     public LocalBroadcastDiscoveryClient(int port) {
+        localDiscoveryServices = CacheBuilder.newBuilder().maximumSize(CACHE_MAX_SIZE).expireAfterWrite(CACHE_EXPIRE_IN_SECONDS, TimeUnit.SECONDS).build();
         init(port);
     }
 
     /**
+     * Create the client and specify the cache.
+     * 
+     * @param port
+     *            the port to watch for the messages
+     * @param cacheMaxSize
+     *            the maximum amount of entries to remember
+     * @param cacheExpireInSeconds
+     *            how long to keep an entry that is no more broadcasted
+     */
+    public LocalBroadcastDiscoveryClient(int port, long cacheMaxSize, long cacheExpireInSeconds) {
+        localDiscoveryServices = CacheBuilder.newBuilder().maximumSize(cacheMaxSize).expireAfterWrite(cacheExpireInSeconds, TimeUnit.SECONDS).build();
+        init(port);
+    }
+
+    /**
+     * Create the client using the default cache.
      * 
      * @param port
      *            the port to watch for the messages
@@ -76,6 +95,32 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
      *            the version of the application to monitor
      */
     public LocalBroadcastDiscoveryClient(int port, String filteredAppName, String filteredAppVersion) {
+
+        localDiscoveryServices = CacheBuilder.newBuilder().maximumSize(CACHE_MAX_SIZE).expireAfterWrite(CACHE_EXPIRE_IN_SECONDS, TimeUnit.SECONDS).build();
+
+        this.filteredAppName = filteredAppName;
+        this.filteredAppVersion = filteredAppVersion;
+
+        init(port);
+    }
+
+    /**
+     * Create the client and specify the cache.
+     * 
+     * @param port
+     *            the port to watch for the messages
+     * @param filteredAppName
+     *            the name of the application to monitor
+     * @param filteredAppVersion
+     *            the version of the application to monitor
+     * @param cacheMaxSize
+     *            the maximum amount of entries to remember
+     * @param cacheExpireInSeconds
+     *            how long to keep an entry that is no more broadcasted
+     */
+    public LocalBroadcastDiscoveryClient(int port, String filteredAppName, String filteredAppVersion, long cacheMaxSize, long cacheExpireInSeconds) {
+
+        localDiscoveryServices = CacheBuilder.newBuilder().maximumSize(cacheMaxSize).expireAfterWrite(cacheExpireInSeconds, TimeUnit.SECONDS).build();
 
         this.filteredAppName = filteredAppName;
         this.filteredAppVersion = filteredAppVersion;
@@ -118,7 +163,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
      */
     public List<DiscoverableService> retrieveServicesList(String filteredServiceName) {
 
-        List<DiscoverableService> result = new ArrayList<DiscoverableService>();
+        List<DiscoverableService> result = new ArrayList<>();
 
         for (DiscoverableService service : localDiscoveryServices.asMap().keySet()) {
             if (filteredServiceName == null || service.getServiceName().equals(filteredServiceName)) {
@@ -140,6 +185,9 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
                 // Get a message
                 datagramSocket.receive(packet);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("[{}] Got message: {}", packet.getAddress().getHostName(), new String(buf));
+                }
                 DiscoverableService localDiscoveryService = new DiscoverableService(buf);
                 localDiscoveryService.setServerHost(packet.getAddress().getHostName());
 
