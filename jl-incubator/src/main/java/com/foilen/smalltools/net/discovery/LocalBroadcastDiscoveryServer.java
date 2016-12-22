@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.services.SocketCallback;
 import com.foilen.smalltools.net.services.TCPServerService;
+import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.ThreadTools;
 
 /**
@@ -54,7 +55,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
     // Internals
     private Thread thread;
     private DatagramSocket datagramSocket;
-    private List<byte[]> messages = new CopyOnWriteArrayList<byte[]>();
+    private List<byte[]> messages = new CopyOnWriteArrayList<>();
 
     public LocalBroadcastDiscoveryServer(int port) {
         init(port);
@@ -160,7 +161,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
         // Wait before starting
         ThreadTools.sleep(100);
 
-        while (true) {
+        while (datagramSocket != null) {
             logger.debug("Broadcasting {} messages", messages.size());
             for (byte[] message : messages) {
                 // Broadcast
@@ -171,13 +172,18 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
                 try {
                     datagramSocket.send(packet);
                 } catch (IOException e) {
-                    logger.error("Could not broadcast message " + new String(message), e);
+                    // Show error if should be running
+                    if (datagramSocket != null) {
+                        logger.error("Could not broadcast message " + new String(message), e);
+                    }
                 }
 
                 // Wait
                 ThreadTools.sleep(broadcastDelay);
             }
         }
+
+        logger.info("Stopping broadcasting");
     }
 
     /**
@@ -188,5 +194,14 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
      */
     public void setBroadcastDelay(int broadcastDelay) {
         this.broadcastDelay = broadcastDelay;
+    }
+
+    /**
+     * To stop the service.
+     */
+    public void shutdown() {
+        DatagramSocket tmp = datagramSocket;
+        datagramSocket = null;
+        CloseableTools.close(tmp);
     }
 }

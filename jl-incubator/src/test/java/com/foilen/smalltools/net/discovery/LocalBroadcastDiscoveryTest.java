@@ -9,6 +9,7 @@
 package com.foilen.smalltools.net.discovery;
 
 import java.net.Socket;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -29,8 +30,14 @@ public class LocalBroadcastDiscoveryTest implements SocketCallback {
     private static final String appVersion = "1.0";
     private static final String serviceName = "service name";
     private static final String serviceDescription = "description";
+    private static final String serviceDescription2 = "description_longer";
 
     private AtomicBoolean gotConnection;
+
+    @Override
+    public void newClient(Socket socket) {
+        gotConnection.set(true);
+    }
 
     @Before
     public void setUp() {
@@ -38,7 +45,7 @@ public class LocalBroadcastDiscoveryTest implements SocketCallback {
     }
 
     @Test(timeout = 60000)
-    public void testDiscovery() {
+    public void testDiscoveryAndConnect() {
 
         // Create a service
         LocalBroadcastDiscoveryServer discoveryServer = new LocalBroadcastDiscoveryServer(PORT, 1000);
@@ -69,11 +76,53 @@ public class LocalBroadcastDiscoveryTest implements SocketCallback {
 
         while (!gotConnection.get()) {
         }
+
+        discoveryServer.shutdown();
+        discoveryClient.shutdown();
     }
 
-    @Override
-    public void newClient(Socket socket) {
-        gotConnection.set(true);
+    @Test(timeout = 60000)
+    public void testDiscoveryManyServices() {
+
+        // Create a service
+        LocalBroadcastDiscoveryClient discoveryClient = new LocalBroadcastDiscoveryClient(PORT);
+        LocalBroadcastDiscoveryServer discoveryServer = new LocalBroadcastDiscoveryServer(PORT, 1000);
+        discoveryServer.addTcpBroadcastService(new DiscoverableService(appName, appVersion, serviceName, serviceDescription2), this);
+        discoveryServer.addTcpBroadcastService(new DiscoverableService(appName, appVersion, serviceName, serviceDescription), this);
+
+        // Try to retrieve the services
+        List<DiscoverableService> servicesList = discoveryClient.retrieveServicesList();
+        while (servicesList.size() < 2) {
+            ThreadTools.sleep(100);
+            servicesList = discoveryClient.retrieveServicesList();
+        }
+
+        // Check this is the right services
+        Assert.assertEquals(2, servicesList.size());
+        servicesList.sort(new Comparator<DiscoverableService>() {
+            @Override
+            public int compare(DiscoverableService o1, DiscoverableService o2) {
+                return o1.getServiceDescription().compareTo(o2.getServiceDescription());
+            }
+        });
+        DiscoverableService discoverableServiceRetrieved = servicesList.get(0);
+        Assert.assertEquals(appName, discoverableServiceRetrieved.getAppName());
+        Assert.assertEquals(appVersion, discoverableServiceRetrieved.getAppVersion());
+        Assert.assertEquals(serviceName, discoverableServiceRetrieved.getServiceName());
+        Assert.assertEquals(serviceDescription, discoverableServiceRetrieved.getServiceDescription());
+        Assert.assertEquals(DiscoverableService.TCP, discoverableServiceRetrieved.getServerType());
+        Assert.assertTrue(discoverableServiceRetrieved.getServerPort() > 0);
+
+        discoverableServiceRetrieved = servicesList.get(1);
+        Assert.assertEquals(appName, discoverableServiceRetrieved.getAppName());
+        Assert.assertEquals(appVersion, discoverableServiceRetrieved.getAppVersion());
+        Assert.assertEquals(serviceName, discoverableServiceRetrieved.getServiceName());
+        Assert.assertEquals(serviceDescription2, discoverableServiceRetrieved.getServiceDescription());
+        Assert.assertEquals(DiscoverableService.TCP, discoverableServiceRetrieved.getServerType());
+        Assert.assertTrue(discoverableServiceRetrieved.getServerPort() > 0);
+
+        discoveryServer.shutdown();
+        discoveryClient.shutdown();
     }
 
 }

@@ -50,8 +50,8 @@ public class DiscoverableService {
     public DiscoverableService() {
     }
 
-    public DiscoverableService(byte[] bytes) {
-        fromBytes(bytes);
+    public DiscoverableService(byte[] bytes, int offset, int length) {
+        fromBytes(bytes, offset, length);
     }
 
     public DiscoverableService(String appName, String appVersion, String serviceName, String serviceDescription) {
@@ -131,9 +131,9 @@ public class DiscoverableService {
         return hashCode() == obj.hashCode();
     }
 
-    public void fromBytes(byte[] bytes) {
+    public void fromBytes(byte[] bytes, int offset, int length) {
 
-        String message = new String(bytes);
+        String message = new String(bytes, offset, length);
         String[] parts = message.split("\\" + SEPARATION_CHAR);
 
         // Validate

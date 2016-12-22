@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.CloseableTools;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
@@ -180,15 +181,15 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
         byte[] buf = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
-        while (true) {
+        while (datagramSocket != null) {
             try {
 
                 // Get a message
                 datagramSocket.receive(packet);
                 if (logger.isDebugEnabled()) {
-                    logger.debug("[{}] Got message: {}", packet.getAddress().getHostName(), new String(buf));
+                    logger.debug("[{}] Got message: {}", packet.getAddress().getHostName(), new String(buf, 0, packet.getLength()));
                 }
-                DiscoverableService localDiscoveryService = new DiscoverableService(buf);
+                DiscoverableService localDiscoveryService = new DiscoverableService(buf, 0, packet.getLength());
                 localDiscoveryService.setServerHost(packet.getAddress().getHostName());
 
                 // Filter it if needed
@@ -203,9 +204,21 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
                 logger.debug("Found service {}", localDiscoveryService);
 
             } catch (Exception e) {
-                logger.error("Problem receiving broadcast message", e);
+                // Show error if should be running
+                if (datagramSocket != null) {
+                    logger.error("Problem receiving broadcast message", e);
+                }
             }
         }
+    }
+
+    /**
+     * To stop the service.
+     */
+    public void shutdown() {
+        DatagramSocket tmp = datagramSocket;
+        datagramSocket = null;
+        CloseableTools.close(tmp);
     }
 
 }
