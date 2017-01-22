@@ -8,6 +8,8 @@ if [ $# -ne 1 ]
 		echo Usage: $0 version;
     echo E.g: $0 0.1.0
 		echo Version is MAJOR.MINOR.BUGFIX
+		echo Latest versions:
+		git tag | tail -n 5
 		exit 1;
 fi
 
@@ -22,12 +24,11 @@ echo ----==[ Compile and deploy to jcenter ]==----
 cd $RUN_PATH
 ./gradlew clean bintrayUpload
 
-echo ----==[ Git Tag and Push ]==----
+echo ----==[ Git Tag ]==----
 git tag -a -m $VERSION $VERSION
-git push
-git push --tags
 
 echo ----==[ Operation completed successfully ]==----
 
 echo
 echo You can see published items on https://bintray.com/foilen/maven
+echo You can send the tag: git push --tags

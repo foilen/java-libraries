@@ -73,6 +73,8 @@ import com.foilen.smalltools.tools.CollectionsTools;
  */
 public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
 
+    public static final RSACrypt RSA_CRYPT = new RSACrypt();
+
     @Override
     public AsymmetricKeys createKeyPair(RSAKeyDetails keyDetails) {
 
@@ -132,37 +134,42 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
     }
 
     @Override
-    public AsymmetricKeys loadKeysPemFromString(String pem) {
+    public AsymmetricKeys loadKeysPemFromString(String... pems) {
         RSAKeyDetails keyDetails = new RSAKeyDetails();
         PemReader reader = null;
         try {
-            reader = new PemReader(new StringReader(pem));
-            PemObject pemObject;
-            while ((pemObject = reader.readPemObject()) != null) {
-                switch (pemObject.getType()) {
-                case "RSA PRIVATE KEY":
-                    RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pemObject.getContent());
-                    keyDetails.setModulus(rsaPrivateKey.getModulus());
-                    keyDetails.setPrivateExponent(rsaPrivateKey.getPrivateExponent());
-                    keyDetails.setPublicExponent(rsaPrivateKey.getPublicExponent());
+            for (String pem : pems) {
+                if (pem == null) {
+                    continue;
+                }
+                reader = new PemReader(new StringReader(pem));
+                PemObject pemObject;
+                while ((pemObject = reader.readPemObject()) != null) {
+                    switch (pemObject.getType()) {
+                    case "RSA PRIVATE KEY":
+                        RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pemObject.getContent());
+                        keyDetails.setModulus(rsaPrivateKey.getModulus());
+                        keyDetails.setPrivateExponent(rsaPrivateKey.getPrivateExponent());
+                        keyDetails.setPublicExponent(rsaPrivateKey.getPublicExponent());
 
-                    if (CollectionsTools.isAnyItemNotNull(rsaPrivateKey.getPrime1(), rsaPrivateKey.getPrime2(), rsaPrivateKey.getExponent1(), rsaPrivateKey.getExponent2(),
-                            rsaPrivateKey.getCoefficient())) {
-                        keyDetails.setCrt(true);
-                        keyDetails.setPrimeP(rsaPrivateKey.getPrime1());
-                        keyDetails.setPrimeQ(rsaPrivateKey.getPrime2());
-                        keyDetails.setPrimeExponentP(rsaPrivateKey.getExponent1());
-                        keyDetails.setPrimeExponentQ(rsaPrivateKey.getExponent2());
-                        keyDetails.setCrtCoefficient(rsaPrivateKey.getCoefficient());
+                        if (CollectionsTools.isAnyItemNotNull(rsaPrivateKey.getPrime1(), rsaPrivateKey.getPrime2(), rsaPrivateKey.getExponent1(), rsaPrivateKey.getExponent2(),
+                                rsaPrivateKey.getCoefficient())) {
+                            keyDetails.setCrt(true);
+                            keyDetails.setPrimeP(rsaPrivateKey.getPrime1());
+                            keyDetails.setPrimeQ(rsaPrivateKey.getPrime2());
+                            keyDetails.setPrimeExponentP(rsaPrivateKey.getExponent1());
+                            keyDetails.setPrimeExponentQ(rsaPrivateKey.getExponent2());
+                            keyDetails.setCrtCoefficient(rsaPrivateKey.getCoefficient());
+                        }
+                        break;
+                    case "PUBLIC KEY":
+                        KeyFactory kf = KeyFactory.getInstance("RSA");
+                        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pemObject.getContent());
+                        RSAPublicKey rsaPublicKey = (RSAPublicKey) kf.generatePublic(keySpec);
+                        keyDetails.setModulus(rsaPublicKey.getModulus());
+                        keyDetails.setPublicExponent(rsaPublicKey.getPublicExponent());
+                        break;
                     }
-                    break;
-                case "PUBLIC KEY":
-                    KeyFactory kf = KeyFactory.getInstance("RSA");
-                    X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pemObject.getContent());
-                    RSAPublicKey rsaPublicKey = (RSAPublicKey) kf.generatePublic(keySpec);
-                    keyDetails.setModulus(rsaPublicKey.getModulus());
-                    keyDetails.setPublicExponent(rsaPublicKey.getPublicExponent());
-                    break;
                 }
             }
             return createKeyPair(keyDetails);

@@ -68,13 +68,13 @@ public interface AsymmetricCrypt<K> {
     AsymmetricKeys loadKeysPemFromFile(String fileName);
 
     /**
-     * Load the public and/or private keys from the String.
+     * Load the public and/or private keys from the Strings.
      * 
-     * @param pem
-     *            the pem String
+     * @param pems
+     *            the pems Strings (some can be null)
      * @return the pair of keys
      */
-    AsymmetricKeys loadKeysPemFromString(String pem);
+    AsymmetricKeys loadKeysPemFromString(String... pems);
 
     /**
      * To retrieve the details of a key pair.

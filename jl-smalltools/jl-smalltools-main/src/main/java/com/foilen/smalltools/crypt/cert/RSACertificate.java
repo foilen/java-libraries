@@ -123,25 +123,30 @@ public class RSACertificate {
     }
 
     /**
-     * Load the certificate and keys (if present in the string).
+     * Load the certificate and keys (if present in the strings).
      * 
-     * @param pem
-     *            the pem
+     * @param pems
+     *            the pems (some can be null)
      * @return the certificate
      */
-    public static RSACertificate loadPemFromString(String pem) {
+    public static RSACertificate loadPemFromString(String... pems) {
         RSACertificate certificate = new RSACertificate();
         PemReader pemReader = null;
         try {
             // Keys if present
-            certificate.keysForSigning = rsaCrypt.loadKeysPemFromString(pem);
+            certificate.keysForSigning = rsaCrypt.loadKeysPemFromString(pems);
 
             // Certificate
-            pemReader = new PemReader(new StringReader(pem));
-            PemObject pemObject;
-            while ((pemObject = pemReader.readPemObject()) != null) {
-                if ("CERTIFICATE".equals(pemObject.getType())) {
-                    certificate.certificateHolder = new X509CertificateHolder(pemObject.getContent());
+            for (String pem : pems) {
+                if (pem == null) {
+                    continue;
+                }
+                pemReader = new PemReader(new StringReader(pem));
+                PemObject pemObject;
+                while ((pemObject = pemReader.readPemObject()) != null) {
+                    if ("CERTIFICATE".equals(pemObject.getType())) {
+                        certificate.certificateHolder = new X509CertificateHolder(pemObject.getContent());
+                    }
                 }
             }
 

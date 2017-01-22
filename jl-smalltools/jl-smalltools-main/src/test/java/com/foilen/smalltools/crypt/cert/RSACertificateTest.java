@@ -111,6 +111,32 @@ public class RSACertificateTest {
         // Assert
         assertCerts(rootCertificate, loadedRootCertificate);
         assertCerts(nodeCertificate, loadedNodeCertificate);
+
+        Assert.assertNull(loadedRootCertificate.getKeysForSigning().getPrivateKey());
+        Assert.assertNotNull(loadedRootCertificate.getKeysForSigning().getPublicKey());
+    }
+
+    @Test
+    public void testSaveAndLoadPem_SeparateStrings() throws Exception {
+
+        // Root
+        AsymmetricKeys rootKeys = rsaCrypt.generateKeyPair(2048);
+        RSACertificate rootCertificate = new RSACertificate(rootKeys);
+        rootCertificate.selfSign(new CertificateDetails().setCommonName("CA root"));
+        String certificatePem = rootCertificate.saveCertificatePemAsString();
+        String privateKeyPem = RSACrypt.RSA_CRYPT.savePrivateKeyPemAsString(rootCertificate.getKeysForSigning());
+        String publicKeyPem = RSACrypt.RSA_CRYPT.savePublicKeyPemAsString(rootCertificate.getKeysForSigning());
+
+        Assert.assertFalse(certificatePem.contains("RSA PRIVATE KEY"));
+        Assert.assertFalse(certificatePem.contains("PUBLIC KEY"));
+
+        // Load
+        RSACertificate loadedRootCertificate = RSACertificate.loadPemFromString(certificatePem, privateKeyPem, publicKeyPem, null);
+
+        // Assert
+        assertCerts(rootCertificate, loadedRootCertificate);
+        Assert.assertNotNull(loadedRootCertificate.getKeysForSigning().getPrivateKey());
+        Assert.assertNotNull(loadedRootCertificate.getKeysForSigning().getPublicKey());
     }
 
     @Test
