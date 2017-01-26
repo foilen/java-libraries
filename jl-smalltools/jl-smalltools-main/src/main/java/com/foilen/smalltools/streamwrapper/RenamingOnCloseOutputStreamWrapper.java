@@ -45,7 +45,12 @@ public class RenamingOnCloseOutputStreamWrapper extends AbstractOutputStreamWrap
     public void close() throws IOException {
         super.close();
         try {
-            renameSourceFile.renameTo(renameDestinationFile);
+            renameDestinationFile.delete();
+            if (!renameSourceFile.renameTo(renameDestinationFile)) {
+                throw new SmallToolsException("Could not rename the file [" + renameSourceFile.getAbsolutePath() + "] to [" + renameDestinationFile.getAbsolutePath() + "]");
+            }
+        } catch (SmallToolsException e) {
+            throw e;
         } catch (Exception e) {
             throw new SmallToolsException("Problem renaming the file", e);
         }
