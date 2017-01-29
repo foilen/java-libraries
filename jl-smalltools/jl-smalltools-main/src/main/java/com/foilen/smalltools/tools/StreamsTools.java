@@ -170,6 +170,8 @@ public final class StreamsTools {
      *            the input stream
      * @param buffer
      *            the buffer to fill
+     * @throws EndOfStreamException
+     *             if EOF before completely filling the buffer
      */
     private static void fillBuffer(InputStream source, byte[] buffer) {
 
@@ -299,6 +301,8 @@ public final class StreamsTools {
      * @param source
      *            the input stream
      * @return the content
+     * @throws EndOfStreamException
+     *             if EOF before completely reading the expected bytes
      */
     public static byte[] readBytes(InputStream source) {
         // Length
@@ -320,6 +324,8 @@ public final class StreamsTools {
      * @param maxLength
      *            the max length that we consider as valid
      * @return the content
+     * @throws EndOfStreamException
+     *             if EOF before completely reading the expected bytes
      */
     public static byte[] readBytes(InputStream source, int maxLength) {
 
@@ -342,6 +348,8 @@ public final class StreamsTools {
      * @param source
      *            the input stream
      * @return the value
+     * @throws EndOfStreamException
+     *             if EOF before completely reading an int
      */
     public static int readInt(InputStream source) {
         try {
@@ -360,6 +368,8 @@ public final class StreamsTools {
      * @param source
      *            the input stream
      * @return the content
+     * @throws EndOfStreamException
+     *             if EOF before completely reading the expected text
      */
     public static String readString(InputStream source) {
         byte[] bytes = readBytes(source);
@@ -374,6 +384,8 @@ public final class StreamsTools {
      * @param maxLength
      *            the max length (in bytes) that we consider as valid
      * @return the content
+     * @throws EndOfStreamException
+     *             if EOF before completely reading the expected text
      */
     public static String readString(InputStream source, int maxLength) {
         byte[] bytes = readBytes(source, maxLength);

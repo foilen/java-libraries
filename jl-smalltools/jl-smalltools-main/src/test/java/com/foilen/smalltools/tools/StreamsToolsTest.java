@@ -14,6 +14,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,10 +25,13 @@ import java.io.PipedOutputStream;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
+import com.foilen.smalltools.exception.EndOfStreamException;
 import com.foilen.smalltools.tuple.Tuple2;
 import com.google.common.base.Charsets;
 import com.google.common.primitives.Ints;
@@ -34,6 +40,9 @@ import com.google.common.primitives.Ints;
  * Tests for {@link StreamsTools}.
  */
 public class StreamsToolsTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testConsumeAsString() {
@@ -125,6 +134,51 @@ public class StreamsToolsTest {
         Assert.assertEquals(10, StreamsTools.readInt(in));
         Assert.assertEquals("Hello World", StreamsTools.readString(in));
         Assert.assertEquals("Hello World", StreamsTools.readString(in, 15));
+    }
+
+    @Test(timeout = 30000)
+    public void testWriteAndRead_CorruptedContent() throws IOException {
+
+        File tmpFile = File.createTempFile("junit", null);
+
+        OutputStream out = new FileOutputStream(tmpFile);
+
+        StreamsTools.write(out, 10);
+        StreamsTools.write(out, "Hello World");
+        out.write(Ints.toByteArray(11)); // Len of "Hello World"
+        out.write("Hello".getBytes());
+        out.close();
+
+        InputStream in = new FileInputStream(tmpFile);
+        Assert.assertEquals(10, StreamsTools.readInt(in));
+        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+
+        thrown.expect(EndOfStreamException.class);
+
+        StreamsTools.readString(in, 15);
+
+    }
+
+    @Test(timeout = 30000)
+    public void testWriteAndRead_CorruptedLength() throws IOException {
+
+        File tmpFile = File.createTempFile("junit", null);
+
+        OutputStream out = new FileOutputStream(tmpFile);
+
+        StreamsTools.write(out, 10);
+        StreamsTools.write(out, "Hello World");
+        out.write(13);
+        out.close();
+
+        InputStream in = new FileInputStream(tmpFile);
+        Assert.assertEquals(10, StreamsTools.readInt(in));
+        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+
+        thrown.expect(EndOfStreamException.class);
+
+        StreamsTools.readString(in, 15);
+
     }
 
 }
