@@ -11,6 +11,7 @@ package com.foilen.smalltools.tools;
 import java.util.Map.Entry;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.thread.ThreadList;
 
 /**
  * Some common methods for threads.
@@ -19,7 +20,7 @@ public final class ThreadTools {
 
     /**
      * To help change the name of a thread and revert back later.
-     * 
+     *
      * <pre>
      * ThreadNameStateTool threadNameStateTool = ThreadTools.nameThread() //
      *         .clear() //
@@ -27,11 +28,11 @@ public final class ThreadTools {
      *         .appendText("-") //
      *         .appendObjectText(executionCount) //
      *         .change();
-     * 
+     *
      * threadNameStateTool.revert();
      * </pre>
-     * 
-     * 
+     *
+     *
      * @return the thread changer
      */
     public static ThreadNameStateTool nameThread() {
@@ -51,7 +52,7 @@ public final class ThreadTools {
 
     /**
      * Write the stack trace to STDOUT.
-     * 
+     *
      * @param stackTraceElements
      *            the stach
      */
@@ -63,7 +64,7 @@ public final class ThreadTools {
 
     /**
      * Write the stack trace of the requested thread to STDOUT.
-     * 
+     *
      * @param thread
      *            the thread to dump
      */
@@ -73,7 +74,7 @@ public final class ThreadTools {
 
     /**
      * Wait for the specified amount of time.
-     * 
+     *
      * @param millis
      *            time in milliseconds
      */
@@ -83,6 +84,14 @@ public final class ThreadTools {
         } catch (InterruptedException e) {
             throw new SmallToolsException("Sleeping interupted", e);
         }
+    }
+
+    public static ThreadList startMultipleThreads(boolean isDaemon, Runnable... runnables) {
+        ThreadList threadList = new ThreadList();
+        threadList.addAll(runnables);
+        threadList.setDaemon(isDaemon);
+        threadList.start();
+        return threadList;
     }
 
     private ThreadTools() {
