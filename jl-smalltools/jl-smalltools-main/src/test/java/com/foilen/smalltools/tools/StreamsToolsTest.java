@@ -181,4 +181,26 @@ public class StreamsToolsTest {
 
     }
 
+    @Test(timeout = 30000)
+    public void testWriteAndRead_EOF() throws IOException {
+
+        File tmpFile = File.createTempFile("junit", null);
+
+        OutputStream out = new FileOutputStream(tmpFile);
+
+        StreamsTools.write(out, 10);
+        StreamsTools.write(out, "Hello World");
+        StreamsTools.write(out, "Hello World");
+
+        InputStream in = new FileInputStream(tmpFile);
+        Assert.assertEquals(10, StreamsTools.readInt(in));
+        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+
+        thrown.expect(EndOfStreamException.class);
+
+        StreamsTools.readString(in);
+
+    }
+
 }
