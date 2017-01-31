@@ -8,8 +8,6 @@ if [ $# -ne 1 ]
 		echo Usage: $0 version;
     echo E.g: $0 0.1.0
 		echo Version is MAJOR.MINOR.BUGFIX
-		echo Latest versions:
-		git tag | grep -v 201 | tail -n 5
 		exit 1;
 fi
 
