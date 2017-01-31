@@ -25,9 +25,7 @@ import java.io.PipedOutputStream;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
@@ -40,9 +38,6 @@ import com.google.common.primitives.Ints;
  * Tests for {@link StreamsTools}.
  */
 public class StreamsToolsTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testConsumeAsString() {
@@ -153,9 +148,14 @@ public class StreamsToolsTest {
         Assert.assertEquals(10, StreamsTools.readInt(in));
         Assert.assertEquals("Hello World", StreamsTools.readString(in));
 
-        thrown.expect(EndOfStreamException.class);
-
-        StreamsTools.readString(in, 15);
+        boolean gotException = false;
+        try {
+            StreamsTools.readString(in, 15);
+        } catch (EndOfStreamException e) {
+            gotException = true;
+            Assert.assertTrue(e.isCorrupted());
+        }
+        Assert.assertTrue(gotException);
 
     }
 
@@ -175,9 +175,14 @@ public class StreamsToolsTest {
         Assert.assertEquals(10, StreamsTools.readInt(in));
         Assert.assertEquals("Hello World", StreamsTools.readString(in));
 
-        thrown.expect(EndOfStreamException.class);
-
-        StreamsTools.readString(in, 15);
+        boolean gotException = false;
+        try {
+            StreamsTools.readString(in, 15);
+        } catch (EndOfStreamException e) {
+            gotException = true;
+            Assert.assertTrue(e.isCorrupted());
+        }
+        Assert.assertTrue(gotException);
 
     }
 
@@ -197,9 +202,14 @@ public class StreamsToolsTest {
         Assert.assertEquals("Hello World", StreamsTools.readString(in));
         Assert.assertEquals("Hello World", StreamsTools.readString(in));
 
-        thrown.expect(EndOfStreamException.class);
-
-        StreamsTools.readString(in);
+        boolean gotException = false;
+        try {
+            StreamsTools.readString(in);
+        } catch (EndOfStreamException e) {
+            gotException = true;
+            Assert.assertFalse(e.isCorrupted());
+        }
+        Assert.assertTrue(gotException);
 
     }
 

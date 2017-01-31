@@ -31,7 +31,7 @@ import com.google.common.primitives.Ints;
 
 /**
  * Some simple methods to play with streams.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -47,7 +47,7 @@ public final class StreamsTools {
 
     /**
      * Take a stream and get it as an array of bytes. The stream is closed at the end.
-     * 
+     *
      * @param input
      *            the input
      * @return the bytes
@@ -67,7 +67,7 @@ public final class StreamsTools {
 
     /**
      * Take a stream and get it as a String. The stream is closed at the end.
-     * 
+     *
      * @param input
      *            the input
      * @return the string
@@ -95,7 +95,7 @@ public final class StreamsTools {
 
     /**
      * Create an {@link OutputStream} where everything written to it will go to a logger.
-     * 
+     *
      * @param outputLogger
      *            the logger where to send each line
      * @param level
@@ -165,7 +165,7 @@ public final class StreamsTools {
 
     /**
      * Read the stream until the buffer is full.
-     * 
+     *
      * @param source
      *            the input stream
      * @param buffer
@@ -184,7 +184,7 @@ public final class StreamsTools {
             while (totalRead != needed) {
                 logger.debug("Read {} bytes. Total read {} and need {}", len, totalRead, needed);
                 if (len == -1) {
-                    throw new EndOfStreamException("End of Stream");
+                    throw new EndOfStreamException(totalRead >= 0, "End of Stream");
                 }
                 len = source.read(buffer, totalRead, needed - totalRead);
                 totalRead += len;
@@ -197,7 +197,7 @@ public final class StreamsTools {
 
     /**
      * Creates a separate thread to consume the content of the source, add it to the destination and close the source and the destination.
-     * 
+     *
      * @param source
      *            the stream from where to get the data
      * @param destination
@@ -212,7 +212,7 @@ public final class StreamsTools {
 
     /**
      * Consumes the content of the source, adds it to the destination and closes the source (the destination is still open).
-     * 
+     *
      * @param source
      *            the stream from where to get the data
      * @param destination
@@ -224,7 +224,7 @@ public final class StreamsTools {
 
     /**
      * Consumes the content of the source, adds it to the destination.
-     * 
+     *
      * @param source
      *            the stream from where to get the data
      * @param destination
@@ -265,7 +265,7 @@ public final class StreamsTools {
 
     /**
      * Creates a separate thread to consume the content of the source, add it to the destination and close the source (the destination is still open).
-     * 
+     *
      * @param source
      *            the stream from where to get the data
      * @param destination
@@ -280,7 +280,7 @@ public final class StreamsTools {
 
     /**
      * Creates a separate thread to consume the content of the source, add it to the destination and close the source.
-     * 
+     *
      * @param source
      *            the stream from where to get the data
      * @param destination
@@ -297,7 +297,7 @@ public final class StreamsTools {
 
     /**
      * Read the length and the content. Needs to be written by {@link #write(OutputStream, byte[])}.
-     * 
+     *
      * @param source
      *            the input stream
      * @return the content
@@ -318,7 +318,7 @@ public final class StreamsTools {
 
     /**
      * Read the length and the content. Needs to be written by {@link #write(OutputStream, byte[])}. Also verify that the size is not too big since that could eat up all memory.
-     * 
+     *
      * @param source
      *            the input stream
      * @param maxLength
@@ -338,13 +338,17 @@ public final class StreamsTools {
 
         // Content
         byte[] content = new byte[len];
-        fillBuffer(source, content);
+        try {
+            fillBuffer(source, content);
+        } catch (EndOfStreamException e) {
+            throw new EndOfStreamException(true, e.getMessage());
+        }
         return content;
     }
 
     /**
      * Read the value. Needs to be written by {@link #write(OutputStream, int)}.
-     * 
+     *
      * @param source
      *            the input stream
      * @return the value
@@ -364,7 +368,7 @@ public final class StreamsTools {
 
     /**
      * Read the length and the content. Needs to be written by {@link #write(OutputStream, String)}.
-     * 
+     *
      * @param source
      *            the input stream
      * @return the content
@@ -378,7 +382,7 @@ public final class StreamsTools {
 
     /**
      * Read the length and the content. Needs to be written by {@link #write(OutputStream, String)}.
-     * 
+     *
      * @param source
      *            the input stream
      * @param maxLength
@@ -394,7 +398,7 @@ public final class StreamsTools {
 
     /**
      * Writes the length and the content so that it can be read with {@link #readBytes(InputStream)} without knowing the size.
-     * 
+     *
      * @param destination
      *            the output stream
      * @param content
@@ -412,7 +416,7 @@ public final class StreamsTools {
 
     /**
      * Writes the value so that it can be read with {@link #readInt(InputStream)}.
-     * 
+     *
      * @param destination
      *            the output stream
      * @param value
@@ -429,7 +433,7 @@ public final class StreamsTools {
 
     /**
      * Writes the length and the content so that it can be read with {@link #readString(InputStream)} without knowing the size.
-     * 
+     *
      * @param destination
      *            the output stream
      * @param content
