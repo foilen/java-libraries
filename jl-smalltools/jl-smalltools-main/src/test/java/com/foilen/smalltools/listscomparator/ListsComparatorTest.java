@@ -15,9 +15,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.listscomparator.ListsComparator;
-import com.foilen.smalltools.listscomparator.ListsComparatorDifference;
-
 /**
  * Tests for {@link ListsComparator}.
  */

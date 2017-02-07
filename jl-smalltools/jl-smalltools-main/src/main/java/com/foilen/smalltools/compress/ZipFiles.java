@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.compress;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -47,10 +47,7 @@ import com.foilen.smalltools.tools.StreamsTools;
  * // Close the ZIP
  * zipFiles.close();
  * </pre>
- * 
- * @deprecated use {@link com.foilen.smalltools.compress.ZipFiles}
  */
-@Deprecated
 public class ZipFiles {
 
     private ZipOutputStream zos;

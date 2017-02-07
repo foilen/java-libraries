@@ -11,9 +11,6 @@ package com.foilen.smalltools.streamwrapper;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.foilen.smalltools.streamwrapper.NoneInputStreamWrapper;
-import com.foilen.smalltools.streamwrapper.NoneOutputStreamWrapper;
-
 /**
  * Tests for {@link NoneInputStreamWrapper} and {@link NoneOutputStreamWrapper}.
  */

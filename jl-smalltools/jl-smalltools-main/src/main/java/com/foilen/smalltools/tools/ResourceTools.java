@@ -13,8 +13,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
-import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.iterable.FileLinesIterable;
 
 /**
  * Some common methods to manage resources files.

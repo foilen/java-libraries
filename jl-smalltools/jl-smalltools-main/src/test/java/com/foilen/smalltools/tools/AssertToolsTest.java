@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * Tests for {@link AssertTools}.

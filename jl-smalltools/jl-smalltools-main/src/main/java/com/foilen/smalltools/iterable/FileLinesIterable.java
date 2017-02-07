@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.iterable;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -24,10 +24,7 @@ import com.foilen.smalltools.tools.FileTools;
 
 /**
  * This is an iterable over a file. Each line will be iterated over. The file is automatically closed at the end of the file. Used by {@link FileTools#readFileLinesIteration(String)}
- * 
- * @deprecated Use {@link com.foilen.smalltools.iterable.FileLinesIterable} instead
  */
-@Deprecated
 public class FileLinesIterable implements Iterable<String>, Iterator<String> {
 
     private BufferedReader bufferedReader;

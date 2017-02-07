@@ -10,8 +10,9 @@ package com.foilen.smalltools.net.services;
 
 import java.net.Socket;
 import java.util.concurrent.Executor;
-
-import com.foilen.smalltools.executor.GradualThreadsExecutor;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * When a new socket is accepted in {@link TCPServerService}, it is sent right away to the {@link SocketCallback}. If you want to use different threads for every incoming connections, use this
@@ -36,7 +37,7 @@ public class ExecutorWrappedSocketCallback implements SocketCallback {
 
     }
 
-    private Executor executor = new GradualThreadsExecutor(1000, 20000l);
+    private Executor executor = new ThreadPoolExecutor(0, 1000, 1, TimeUnit.MINUTES, new SynchronousQueue<Runnable>());
     private SocketCallback socketCallback;
 
     public ExecutorWrappedSocketCallback() {

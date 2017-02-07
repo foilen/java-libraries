@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
-import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.TimeoutHandler;
+import com.foilen.smalltools.iterable.FileLinesIterable;
 import com.foilen.smalltools.tools.StreamsTools;
 import com.foilen.smalltools.tuple.Tuple2;
 

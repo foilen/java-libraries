@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.compress.UnzipFiles;
+import com.foilen.smalltools.compress.ZipFiles;
 import com.foilen.smalltools.tools.FileTools;
 import com.google.common.io.Files;
 

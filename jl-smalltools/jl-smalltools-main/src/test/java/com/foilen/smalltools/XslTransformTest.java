@@ -16,7 +16,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.foilen.smalltools.XslTransform;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.ResourceTools;

@@ -10,6 +10,7 @@ package com.foilen.smalltools.executor;
 
 import java.util.concurrent.Semaphore;
 
+@Deprecated
 public class ExpirableTaskThread extends Thread {
 
     private long timeoutThreadMs;

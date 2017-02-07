@@ -13,9 +13,6 @@ import org.hamcrest.core.IsNot;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.crypt.asymmetric.AsymmetricCrypt;
-import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
-
 /**
  * Tests for any {@link AsymmetricCrypt}.
  */

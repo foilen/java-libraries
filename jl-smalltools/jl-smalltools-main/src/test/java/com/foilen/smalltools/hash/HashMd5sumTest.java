@@ -14,7 +14,6 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.hash.HashMd5sum;
 import com.foilen.smalltools.tools.ResourceTools;
 
 /**

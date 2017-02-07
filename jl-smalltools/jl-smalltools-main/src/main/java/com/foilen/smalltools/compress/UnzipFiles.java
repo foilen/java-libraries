@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools;
+package com.foilen.smalltools.compress;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,11 +23,8 @@ import com.foilen.smalltools.tools.DirectoryTools;
 import com.foilen.smalltools.tools.StreamsTools;
 
 /**
- * Take a zip file and extract the content.
- * 
- * @deprecated use {@link com.foilen.smalltools.compress.UnzipFiles}
+ * Take a zip file and extract the content
  */
-@Deprecated
 public class UnzipFiles {
 
     private ZipInputStream zis;

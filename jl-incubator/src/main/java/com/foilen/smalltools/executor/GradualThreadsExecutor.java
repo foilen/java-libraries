@@ -11,13 +11,17 @@ package com.foilen.smalltools.executor;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * When new tasks are submitted, it will reuse free threads or start new ones up to the max. It will throw an exception if the max is reached.
+ * 
+ * @deprecated you can use: new {@link ThreadPoolExecutor}(0, maxThreads, timeoutThreadMs, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>()) instead
  */
+@Deprecated
 public class GradualThreadsExecutor implements Executor {
 
     private AtomicInteger threadCount = new AtomicInteger();

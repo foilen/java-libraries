@@ -36,9 +36,9 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.FileLinesIterable;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.hash.HashMd5sum;
+import com.foilen.smalltools.iterable.FileLinesIterable;
 import com.foilen.smalltools.streamwrapper.RenamingOnCloseOutputStreamWrapper;
 import com.google.common.base.Joiner;
 
