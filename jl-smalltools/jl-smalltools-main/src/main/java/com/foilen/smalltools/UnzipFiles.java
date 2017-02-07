@@ -24,7 +24,7 @@ import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Take a zip file and extract the content.
- * 
+ *
  * @deprecated use {@link com.foilen.smalltools.compress.UnzipFiles}
  */
 @Deprecated
@@ -35,7 +35,7 @@ public class UnzipFiles {
 
     /**
      * Open a zipped file.
-     * 
+     *
      * @param zipFile
      *            the zipped file
      */
@@ -49,7 +49,7 @@ public class UnzipFiles {
 
     /**
      * Open a stream.
-     * 
+     *
      * @param inputStream
      *            the zipped stream
      */
@@ -59,7 +59,7 @@ public class UnzipFiles {
 
     /**
      * Remove the first folder if {@link #isIgnoreFirstSubpath()}.
-     * 
+     *
      * @param name
      *            the path and name of the zip entry
      * @return the name cleaned
@@ -76,7 +76,7 @@ public class UnzipFiles {
 
     /**
      * Extract all the files in the specified existing directory.
-     * 
+     *
      * @param destinationDirectory
      *            the directory
      */
@@ -118,7 +118,7 @@ public class UnzipFiles {
 
     /**
      * Extract all the files in the specified existing directory.
-     * 
+     *
      * @param destinationDirectory
      *            the directory
      */
@@ -132,7 +132,7 @@ public class UnzipFiles {
 
     /**
      * Set to true to skip the first folder in the zip. Good when a zip has a single root folder with the name and version of an application.
-     * 
+     *
      * @param ignoreFirstSubpath
      *            skip the first folder in the zip
      */

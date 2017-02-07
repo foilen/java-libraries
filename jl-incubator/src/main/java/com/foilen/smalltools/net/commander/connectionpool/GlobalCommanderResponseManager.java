@@ -21,7 +21,7 @@ import com.foilen.smalltools.tools.SecureRandomTools;
 
 /**
  * This manager knows where each replies must go through across all the {@link ConnectionPool}.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
@@ -38,7 +38,7 @@ public class GlobalCommanderResponseManager {
 
     /**
      * Create a request.
-     * 
+     *
      * @param nettyClient
      *            the Netty Client
      * @return the requestId
@@ -58,7 +58,7 @@ public class GlobalCommanderResponseManager {
 
     /**
      * The {@link CommandResponse} is storing itself here and notifies the waiting thread.
-     * 
+     *
      * @param commandResponse
      *            the response
      * @param <R>
@@ -82,7 +82,7 @@ public class GlobalCommanderResponseManager {
 
     /**
      * Wait for the request to be completed and get the result.
-     * 
+     *
      * @param requestId
      *            the request id given by {@link #createRequest(NettyClient)}
      * @return the result

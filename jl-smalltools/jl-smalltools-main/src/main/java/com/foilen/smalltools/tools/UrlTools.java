@@ -22,13 +22,13 @@ public final class UrlTools {
 
     /**
      * Save the url if the file does not exists and is of a different size.
-     * 
+     *
      * <pre>
      * Limitations:
      * - If the server does not tell the size, it will always redownload.
      * - It will not resume a download, always restart it.
      * </pre>
-     * 
+     *
      * @param url
      *            the url to read
      * @param outFile
@@ -44,13 +44,13 @@ public final class UrlTools {
 
     /**
      * Save the url if the file does not exists and is of a different size.
-     * 
+     *
      * <pre>
      * Limitations:
      * - If the server does not tell the size, it will always redownload.
      * - It will not resume a download, always restart it.
      * </pre>
-     * 
+     *
      * @param url
      *            the url to read
      * @param outFile

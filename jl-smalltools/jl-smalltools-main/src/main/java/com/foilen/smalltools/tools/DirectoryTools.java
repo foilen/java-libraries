@@ -27,7 +27,7 @@ import com.google.common.base.Joiner;
 
 /**
  * Some common methods to manage directories.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -40,7 +40,7 @@ public final class DirectoryTools {
 
     /**
      * Remove the . and .. from a path
-     * 
+     *
      * @param path
      *            the path
      * @return the path cleaned up
@@ -77,7 +77,7 @@ public final class DirectoryTools {
 
     /**
      * Create the directory and all the parent ones if needed.
-     * 
+     *
      * @param directory
      *            the directory
      * @return true if well created or already exists
@@ -91,7 +91,7 @@ public final class DirectoryTools {
 
     /**
      * Create the directory and all the parent ones if needed.
-     * 
+     *
      * @param directoryPath
      *            the full path
      * @return true if well created or already exists
@@ -102,7 +102,7 @@ public final class DirectoryTools {
 
     /**
      * Create the directory and all the parent ones if needed. Only the final folder will have the owner, group and permissions.
-     * 
+     *
      * @param directoryPath
      *            the path to the directory
      * @param owner
@@ -130,7 +130,7 @@ public final class DirectoryTools {
 
     /**
      * Create the directory and all the parent ones if needed.
-     * 
+     *
      * @param directoryPathParts
      *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
      * @return true if well created or already exists
@@ -141,7 +141,7 @@ public final class DirectoryTools {
 
     /**
      * Create the directory and all the parent ones if needed. Only the final folder will have the owner, group and permissions.
-     * 
+     *
      * @param directoryPathParts
      *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
      * @param owner
@@ -158,7 +158,7 @@ public final class DirectoryTools {
 
     /**
      * Create the directory and all the parent ones if needed to get to that file.
-     * 
+     *
      * @param filePath
      *            the full path
      * @return true if well created or already exists
@@ -180,9 +180,9 @@ public final class DirectoryTools {
 
     /**
      * Delete the folder and everything inside it. Will not follow symbolic links, but will delete them.
-     * 
+     *
      * WARNING: If you have hard links, it will follow them. (but not symbolic links)
-     * 
+     *
      * @param folder
      *            the folder
      */
@@ -206,9 +206,9 @@ public final class DirectoryTools {
 
     /**
      * Delete the folder and everything inside it. Will not follow symbolic links, but will delete them.
-     * 
+     *
      * WARNING: If you have hard links, it will follow them. (but not symbolic links)
-     * 
+     *
      * @param folderPath
      *            the folder
      */
@@ -252,10 +252,10 @@ public final class DirectoryTools {
 
     /**
      * List files and directories recursively. It can list the absolute or relative paths.
-     * 
+     *
      * Directories will end with a trailing slash.
-     * 
-     * 
+     *
+     *
      * Ex:
      * <ul>
      * <li>foo/bar/aFile</li>
@@ -263,7 +263,7 @@ public final class DirectoryTools {
      * <ul>
      *
      * WARNING: It will follow symbolic links.
-     * 
+     *
      * @param directory
      *            the directory
      * @param absolute
@@ -313,17 +313,17 @@ public final class DirectoryTools {
 
     /**
      * List files and directories recursively. It can list the absolute or relative paths.
-     * 
+     *
      * Directories will end with a trailing slash.
-     * 
+     *
      * Ex:
      * <ul>
      * <li>foo/bar/aFile</li>
      * <li>foo/bar/aDirectory/</li>
      * <ul>
-     * 
+     *
      * WARNING: It will follow symbolic links.
-     * 
+     *
      * @param path
      *            the full path to the directory
      * @param absolute
@@ -336,7 +336,7 @@ public final class DirectoryTools {
 
     /**
      * List the names of the files that the content starts with the specified text.
-     * 
+     *
      * @param path
      *            the full path to the directory
      * @param startText
@@ -378,7 +378,7 @@ public final class DirectoryTools {
 
     /**
      * List only the files that are in a directory (not anything else like directories).
-     * 
+     *
      * @param directory
      *            the full path to the directory
      * @return the sorted list of file names
@@ -393,7 +393,7 @@ public final class DirectoryTools {
 
     /**
      * Make sure the path ends with a trailing slash.
-     * 
+     *
      * @param path
      *            the path to check
      * @return the path with a trailing slash

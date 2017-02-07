@@ -56,7 +56,7 @@ public abstract class AbstractStreamWrapperTest {
 
     /**
      * Try with around 10MB.
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -130,7 +130,7 @@ public abstract class AbstractStreamWrapperTest {
 
     /**
      * Create your wrapper around the stream.
-     * 
+     *
      * @param inputStream
      * @return the wrapper
      */
@@ -138,7 +138,7 @@ public abstract class AbstractStreamWrapperTest {
 
     /**
      * Create your wrapper around the stream.
-     * 
+     *
      * @param outputStream
      * @return the wrapper
      */

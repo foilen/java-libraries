@@ -11,7 +11,7 @@ package com.foilen.smalltools;
 /**
  * When you need to execute something and wrap it in a timeout, you can simply put that in a {@link Runnable} and give it to this object. Warning: it won't stop the execution of the thread, so your
  * runnable needs to check handle the stop call.
- * 
+ *
  * @param <T>
  *            the returned type of the call
  */
@@ -19,7 +19,7 @@ public class TimeoutHandler<T> {
 
     /**
      * This is like a runnable, but adds a way to asks for stopping.
-     * 
+     *
      * @param <T>
      *            the returned type of the call
      */
@@ -27,7 +27,7 @@ public class TimeoutHandler<T> {
 
         /**
          * Give the result of the successful call.
-         * 
+         *
          * @return the result
          */
         T result();
@@ -49,9 +49,9 @@ public class TimeoutHandler<T> {
 
     /**
      * Call this method to execute the runnable. This call is waiting for the end of the execution or the timeout to occur.
-     * 
+     *
      * @return the result
-     * 
+     *
      * @throws InterruptedException
      *             if the timeout occurs
      */

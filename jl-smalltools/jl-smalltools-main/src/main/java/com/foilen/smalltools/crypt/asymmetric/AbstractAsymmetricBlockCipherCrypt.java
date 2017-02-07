@@ -20,7 +20,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link BufferedBlockCipher}. This is for symmetric and asymmetric algorithms.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.madgag.spongycastle:prov:1.51.0.0'
@@ -36,7 +36,7 @@ public abstract class AbstractAsymmetricBlockCipherCrypt {
 
     /**
      * Create an array that contains all the contents of the arrays.
-     * 
+     *
      * @param arrays
      *            the arrays to concatenate
      * @return the final array
@@ -65,7 +65,7 @@ public abstract class AbstractAsymmetricBlockCipherCrypt {
 
     /**
      * Decrypt the data with the specified key.
-     * 
+     *
      * @param key
      *            the key
      * @param in
@@ -79,7 +79,7 @@ public abstract class AbstractAsymmetricBlockCipherCrypt {
 
     /**
      * Encrypt the data with the specified key.
-     * 
+     *
      * @param key
      *            the key
      * @param in
@@ -95,7 +95,7 @@ public abstract class AbstractAsymmetricBlockCipherCrypt {
 
     /**
      * Tells the block size.
-     * 
+     *
      * @return the block size
      */
     public int getBlockSize() {
@@ -104,7 +104,7 @@ public abstract class AbstractAsymmetricBlockCipherCrypt {
 
     /**
      * Encrypt/Decrypt the data with the specified key.
-     * 
+     *
      * @param key
      *            the key
      * @param in

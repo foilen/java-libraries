@@ -22,7 +22,7 @@ public interface ConnectionPool {
 
     /**
      * If the connection pool keeps a connection open, it can close it.
-     * 
+     *
      * @param host
      *            the host name
      * @param port
@@ -32,7 +32,7 @@ public interface ConnectionPool {
 
     /**
      * Call this to get a connection where to send messages.
-     * 
+     *
      * @param commanderClient
      *            your {@link CommanderClient} that will create the connections to the server
      * @param host
@@ -45,7 +45,7 @@ public interface ConnectionPool {
 
     /**
      * If the connection pool keeps the connections open, tells how many are opened.
-     * 
+     *
      * @return the number of connections
      */
     int getConnectionsCount();

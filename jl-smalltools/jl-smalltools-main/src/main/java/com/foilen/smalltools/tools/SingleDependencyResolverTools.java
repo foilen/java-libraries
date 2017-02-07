@@ -19,12 +19,12 @@ import com.google.common.base.Strings;
 /**
  * To get an execution path that works with the provided dependencies. Supports only one dependency per item and will throw an exception if more than one dependency are specified and if it is
  * circular.
- * 
+ *
  * <pre>
  * Sample usage:
  * A -&gt; B -&gt; C
  *   -&gt; D -&gt; E
- *   
+ *
  * SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
  * resolver.addDependency("E", "D");
  * resolver.addDependency("B", "A");
@@ -32,7 +32,7 @@ import com.google.common.base.Strings;
  * resolver.addDependency("D", "A");
  *
  * resolver.getExecution(); // "A", "B", "C", "D", "E"
- * 
+ *
  * </pre>
  */
 public class SingleDependencyResolverTools {
@@ -48,7 +48,7 @@ public class SingleDependencyResolverTools {
 
     /**
      * Add a dependency.
-     * 
+     *
      * @param item
      *            the item that depends on another one
      * @param dependsOnItem
@@ -99,7 +99,7 @@ public class SingleDependencyResolverTools {
 
     /**
      * To retrieve the execution plan.
-     * 
+     *
      * @return the excution plan
      * @throws SmallToolsException
      *             if it is a circular dependency

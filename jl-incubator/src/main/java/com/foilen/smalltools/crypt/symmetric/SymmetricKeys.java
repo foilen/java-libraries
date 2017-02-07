@@ -26,7 +26,7 @@ public class SymmetricKeys {
 
     /**
      * Create a key pair and set them.
-     * 
+     *
      * @param publicKey
      *            (optional) the public key
      * @param privateKey

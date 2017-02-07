@@ -31,7 +31,7 @@ public final class ReflectionTools {
 
     /**
      * Find all the fields on the type and super-types.
-     * 
+     *
      * @param clazz
      *            the class to get the fields
      * @return the fields
@@ -51,7 +51,7 @@ public final class ReflectionTools {
 
     /**
      * Find all the fields on the type and super-types that has the specified annotation.
-     * 
+     *
      * @param clazz
      *            the class to get the fields
      * @param annotationClass
@@ -73,7 +73,7 @@ public final class ReflectionTools {
 
     /**
      * Find all the methods on the type and super-types.
-     * 
+     *
      * @param clazz
      *            the class to get the fields
      * @return the methods
@@ -93,7 +93,7 @@ public final class ReflectionTools {
 
     /**
      * Find all the methods on the type and super-types that has the specified annotation.
-     * 
+     *
      * @param clazz
      *            the class to get the fields
      * @param annotationClass
@@ -115,7 +115,7 @@ public final class ReflectionTools {
 
     /**
      * Find all the the type and super-types.
-     * 
+     *
      * @param clazz
      *            the class
      * @return all the types and super-types (including the specified one)
@@ -129,7 +129,7 @@ public final class ReflectionTools {
 
     /**
      * Find all the the type and super-types.
-     * 
+     *
      * @param classes
      *            the list that will be filled with the current class and the super ones
      * @param clazz
@@ -155,7 +155,7 @@ public final class ReflectionTools {
 
     /**
      * Copy all the bean's properties. Useful for Transfer Objects and Forms.
-     * 
+     *
      * @param from
      *            the object to copy from
      * @param to
@@ -207,7 +207,7 @@ public final class ReflectionTools {
 
     /**
      * Find the annotation set on the class and the field.
-     * 
+     *
      * @param <T>
      *            the type of the annotation
      * @param clazz
@@ -237,7 +237,7 @@ public final class ReflectionTools {
 
     /**
      * Create an instance of the specified class or throw an exception if there is an issue.
-     * 
+     *
      * @param clazz
      *            the type
      * @param contructorParams
@@ -308,7 +308,7 @@ public final class ReflectionTools {
 
     /**
      * Get the class of the specified type if it exists or null.
-     * 
+     *
      * @param className
      *            the full package + class name
      * @return the class or null
@@ -327,7 +327,7 @@ public final class ReflectionTools {
 
     /**
      * Visit all the fields of an object.
-     * 
+     *
      * @param object
      *            the object to visit
      * @param visitField
@@ -344,7 +344,7 @@ public final class ReflectionTools {
 
     /**
      * Visit all the fields of all the objects.
-     * 
+     *
      * @param objects
      *            the objects to visit
      * @param visitField

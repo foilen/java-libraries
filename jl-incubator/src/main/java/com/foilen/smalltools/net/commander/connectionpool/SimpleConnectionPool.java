@@ -22,7 +22,7 @@ import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * Simply keeps 1 connection open per host and sends all the messages in order.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
@@ -36,26 +36,23 @@ public class SimpleConnectionPool implements ConnectionPool {
     private Thread cleanupThread;
 
     public SimpleConnectionPool() {
-        cleanupThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        ThreadTools.sleep(2 * 60000);
-                        logger.debug("Cleaning up the cached connections");
-                        synchronized (cachedConnections) {
-                            Iterator<Entry<String, CommanderConnection>> it = cachedConnections.entrySet().iterator();
-                            while (it.hasNext()) {
-                                Entry<String, CommanderConnection> next = it.next();
-                                if (!next.getValue().isConnected()) {
-                                    logger.debug("Removing connection {}", next.getKey());
-                                    it.remove();
-                                }
+        cleanupThread = new Thread(() -> {
+            while (true) {
+                try {
+                    ThreadTools.sleep(2 * 60000);
+                    logger.debug("Cleaning up the cached connections");
+                    synchronized (cachedConnections) {
+                        Iterator<Entry<String, CommanderConnection>> it = cachedConnections.entrySet().iterator();
+                        while (it.hasNext()) {
+                            Entry<String, CommanderConnection> next = it.next();
+                            if (!next.getValue().isConnected()) {
+                                logger.debug("Removing connection {}", next.getKey());
+                                it.remove();
                             }
                         }
-                    } catch (Exception e) {
-                        logger.error("Got an exception in the cleanup thread", e);
                     }
+                } catch (Exception e) {
+                    logger.error("Got an exception in the cleanup thread", e);
                 }
             }
         });

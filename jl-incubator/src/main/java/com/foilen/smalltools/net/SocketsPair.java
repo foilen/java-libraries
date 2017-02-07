@@ -16,15 +16,15 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * This gives a pair of already connected sockets that talks between them. If you use it in a test, do not forget to set a timeout on the test to make sure it is not blocked.
- * 
+ *
  * <pre>
  * &#064;Test(timeout = 5000)
  * public void test() throws IOException {
  *     SocketsPair socketsPair = new SocketsPair();
- * 
+ *
  *     Socket client = socketsPair.getClient();
  *     Socket server = socketsPair.getServer();
- * 
+ *
  *     // Use the sockets ...
  * }
  * </pre>

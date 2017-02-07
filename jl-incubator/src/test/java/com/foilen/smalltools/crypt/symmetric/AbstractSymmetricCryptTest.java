@@ -28,7 +28,7 @@ public abstract class AbstractSymmetricCryptTest<T extends SymmetricCrypt<K>, K>
 
     /**
      * Assert the internal properties of the key.
-     * 
+     *
      * @param key
      *            the key pair
      */

@@ -17,7 +17,7 @@ public interface VisitField {
 
     /**
      * Visit the field
-     * 
+     *
      * @param field
      *            the field
      * @param object

@@ -24,7 +24,7 @@ public final class HashSha256 {
 
     /**
      * Take bytes and get its hash.
-     * 
+     *
      * @param in
      *            the content
      * @return the hash in hex
@@ -35,7 +35,7 @@ public final class HashSha256 {
 
     /**
      * Take a file and get its hash.
-     * 
+     *
      * @param file
      *            the file
      * @return the hash of the file in hex
@@ -50,7 +50,7 @@ public final class HashSha256 {
 
     /**
      * Take a file and get its hash.
-     * 
+     *
      * @param filePath
      *            the path of the file
      * @return the hash of the file in hex
@@ -61,7 +61,7 @@ public final class HashSha256 {
 
     /**
      * Take a {@link String} and get its hash.
-     * 
+     *
      * @param in
      *            the content
      * @return the hash in hex

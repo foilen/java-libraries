@@ -89,10 +89,12 @@ public class ReflectionToolsTest {
         private String name;
         private int age;
 
+        @Override
         public int getAge() {
             return age;
         }
 
+        @Override
         public String getName() {
             return name;
         }
@@ -111,10 +113,12 @@ public class ReflectionToolsTest {
         private String name;
         private int age;
 
+        @Override
         public int getAge() {
             return age;
         }
 
+        @Override
         public String getName() {
             return name;
         }

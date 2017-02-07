@@ -17,7 +17,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is false.
-     * 
+     *
      * @param actual
      *            the value
      */
@@ -27,7 +27,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is false.
-     * 
+     *
      * @param actual
      *            the value
      * @param message
@@ -41,7 +41,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is not null.
-     * 
+     *
      * @param actual
      *            the value
      */
@@ -51,7 +51,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is not null.
-     * 
+     *
      * @param actual
      *            the value
      * @param message
@@ -65,7 +65,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is null.
-     * 
+     *
      * @param actual
      *            the value
      */
@@ -75,7 +75,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is null.
-     * 
+     *
      * @param actual
      *            the value
      * @param message
@@ -89,7 +89,7 @@ public final class AssertTools {
 
     /**
      * Check that one and only one item is not null.
-     * 
+     *
      * @param message
      *            the error message to throw
      * @param items
@@ -113,7 +113,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is true.
-     * 
+     *
      * @param actual
      *            the value
      */
@@ -123,7 +123,7 @@ public final class AssertTools {
 
     /**
      * Check that the value is true.
-     * 
+     *
      * @param actual
      *            the value
      * @param message

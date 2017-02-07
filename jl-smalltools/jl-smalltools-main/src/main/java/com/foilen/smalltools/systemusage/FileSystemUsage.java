@@ -31,7 +31,7 @@ public class FileSystemUsage {
 
         /**
          * The number of unallocated bytes on the partition.
-         * 
+         *
          * @return the number of unallocated bytes on the partition
          */
         public long getFreeSpace() {
@@ -40,7 +40,7 @@ public class FileSystemUsage {
 
         /**
          * The percentage of unallocated bytes on the partition.
-         * 
+         *
          * @return the percentage of unallocated bytes on the partition from 0 to 100
          */
         public double getFreeSpacePercent() {
@@ -53,7 +53,7 @@ public class FileSystemUsage {
 
         /**
          * The size, in bytes, of the partition.
-         * 
+         *
          * @return the size, in bytes, of the partition
          */
         public long getTotalSpace() {
@@ -62,7 +62,7 @@ public class FileSystemUsage {
 
         /**
          * The number of allocated bytes on the partition.
-         * 
+         *
          * @return the number of allocated bytes on the partition
          */
         public long getUsedSpace() {
@@ -71,7 +71,7 @@ public class FileSystemUsage {
 
         /**
          * The percentage of allocated bytes on the partition.
-         * 
+         *
          * @return the percentage of allocated bytes on the partition from 0 to 100
          */
         public double getUsedSpacePercent() {
@@ -86,7 +86,7 @@ public class FileSystemUsage {
 
     /**
      * Get the information of the root directories.
-     * 
+     *
      * @return an array of FileSystemInfo
      */
     public static FileSystemInfo[] getRootFileSystemInfos() {

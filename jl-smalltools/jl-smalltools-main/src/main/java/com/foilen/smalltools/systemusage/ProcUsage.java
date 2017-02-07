@@ -27,7 +27,7 @@ public final class ProcUsage {
 
     /**
      * Check the main CPU. (If multiple CPUs, this is the sum of all of them)
-     * 
+     *
      * @param procStatPath
      *            the path to the stat file. (E.g /proc/stat)
      * @return the cpu infos
@@ -71,7 +71,7 @@ public final class ProcUsage {
 
     /**
      * Get the memory informations.
-     * 
+     *
      * @param procMemPath
      *            the path to the memory file. (E.g /proc/meminfo)
      * @return the memory infos
@@ -123,7 +123,7 @@ public final class ProcUsage {
 
     /**
      * Check the network interfaces.
-     * 
+     *
      * @param procNetDevPath
      *            the path to the netfile. (E.g /proc/net/dev)
      * @return the networks infos

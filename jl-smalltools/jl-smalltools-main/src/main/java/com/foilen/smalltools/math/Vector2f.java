@@ -26,7 +26,7 @@ public class Vector2f {
 
     /**
      * Copy the values of the other vector.
-     * 
+     *
      * @param vector
      *            the other vector
      */
@@ -36,7 +36,7 @@ public class Vector2f {
 
     /**
      * Add the other value to the current one.
-     * 
+     *
      * @param add
      *            the vector to add
      * @return return this object
@@ -50,7 +50,7 @@ public class Vector2f {
 
     /**
      * Multiply the other value with the current one.
-     * 
+     *
      * @param div
      *            the amount to divide with
      * @return return this object
@@ -86,7 +86,7 @@ public class Vector2f {
 
     /**
      * Multiply the other value with the current one.
-     * 
+     *
      * @param mult
      *            the amount to mult
      * @return return this object
@@ -109,7 +109,7 @@ public class Vector2f {
 
     /**
      * Copy the values of the other vector.
-     * 
+     *
      * @param vector
      *            the other vector
      */
@@ -136,7 +136,7 @@ public class Vector2f {
 
     /**
      * Subtract the other value from the current one.
-     * 
+     *
      * @param other
      *            the vector to subtract
      * @return return this object

@@ -19,28 +19,28 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * AESCrypt cryptography. The IV (Initialization Vector) is automatically appended at the beginning of the encrypted data and automatically used by the decrypt method.
- * 
+ *
  * <ul>
  * <li>AES: The cipher</li>
  * <li>CBC: Cipher Block Chaining Mode</li>
  * <li>PKCS5Padding: The padding algorithm</li>
  * </ul>
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * // Prepare the message
  * String message = &quot;Hello World&quot;;
  * byte[] data = message.getBytes();
- * 
+ *
  * // Encrypt
  * SymmetricKey key = crypt.generateKey(128);
  * byte[] cryptedData = crypt.encrypt(key, data);
- * 
+ *
  * // Decrypt
  * byte[] decryptedData = crypt.decrypt(key, cryptedData);
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.madgag.spongycastle:prov:1.51.0.0'

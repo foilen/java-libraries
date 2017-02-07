@@ -31,18 +31,18 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 
 /**
  * To generate the SQL file:
- * 
+ *
  * <pre>
  * Hibernate5Tools.generateSqlSchema(MySQL5InnoDBDialect.class, "sql/mysql.sql", true, "com.foilen.confignui.db.domain");
  * </pre>
- * 
+ *
  * WARNING: Some hibernate naming changed from 4 to 5:
  * <ul>
  * <li>@ElementCollection will generate xxxxx_id instead of only xxxxx</li>
  * <li>@OneToMany table name will have the type name in it</li>
  * <li>Some constraints names will change</li>
  * </ul>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'org.hibernate:hibernate-core:5.0.11.Final'
@@ -54,7 +54,7 @@ public final class Hibernate5Tools {
 
     /**
      * Generate the SQL file. This is based on the code in {@link LocalSessionFactoryBuilder#scanPackages(String...)}
-     * 
+     *
      * @param dialect
      *            the dialect (e.g: org.hibernate.dialect.MySQL5InnoDBDialect )
      * @param outputSqlFile

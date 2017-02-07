@@ -18,10 +18,10 @@ import io.netty.channel.ChannelHandler;
 
 /**
  * To easily create Netty clients and/or servers. Supports TLS (if you set a certificate and/or trusted certificates.
- * 
+ *
  * <pre>
  * Usage:
- * 
+ *
  * // Server side
  * NettyBuilder nettyBuilder = new NettyBuilder();
  * nettyBuilder.setCertificate(serverCertificate);
@@ -31,7 +31,7 @@ import io.netty.channel.ChannelHandler;
  * nettyBuilder.addChannelHandler(CommanderEncoder.class);
  * nettyServer = nettyBuilder.buildServer(port);
  * port = nettyServer.getPort();
- * 
+ *
  * // Client side
  * NettyBuilder nettyBuilder = new NettyBuilder();
  * nettyBuilder.setCertificate(clientCertificate);
@@ -41,7 +41,7 @@ import io.netty.channel.ChannelHandler;
  * nettyBuilder.addChannelHandler(CommanderEncoder.class);
  * NettyClient nettyClient = nettyBuilder.buildClient(host, port);
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
@@ -57,7 +57,7 @@ public class NettyBuilder {
 
     /**
      * Add a channel handler.
-     * 
+     *
      * @param channelHandlerClass
      *            the class type of the channel handler to instantiate
      * @param constructorParams
@@ -77,7 +77,7 @@ public class NettyBuilder {
 
     /**
      * Build and start the server.
-     * 
+     *
      * @param port
      *            the port to listen on
      * @return the {@link NettyServer}
@@ -98,7 +98,7 @@ public class NettyBuilder {
 
     /**
      * Set the certificate of this connection.
-     * 
+     *
      * @param certificate
      *            the certificate
      * @return this
@@ -110,7 +110,7 @@ public class NettyBuilder {
 
     /**
      * Set the certificates that we trust to connect to or to receive connections from.
-     * 
+     *
      * @param trustedCertificates
      *            the certificates
      * @return this

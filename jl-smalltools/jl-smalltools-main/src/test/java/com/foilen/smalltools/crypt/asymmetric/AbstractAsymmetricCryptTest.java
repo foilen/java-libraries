@@ -28,7 +28,7 @@ public abstract class AbstractAsymmetricCryptTest<T extends AsymmetricCrypt<K>, 
 
     /**
      * Assert the internal properties of the key pair.
-     * 
+     *
      * @param keyPair
      *            the key pair
      */

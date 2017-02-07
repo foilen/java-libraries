@@ -19,10 +19,10 @@ import com.foilen.smalltools.exception.SmallToolsException;
 /**
  * A service to help sending all kinds of email. You can quickly send an html or text email or take the time to use the {@link EmailBuilder} that gives you access to all advanced functionnalities
  * (like attachments).
- * 
+ *
  * <pre>
  * Dependencies:
- * compile 'com.sun.mail:javax.mail:1.5.2' 
+ * compile 'com.sun.mail:javax.mail:1.5.2'
  * compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
  * </pre>
  */

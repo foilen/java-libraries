@@ -19,7 +19,7 @@ public final class SocketTools {
 
     /**
      * Tells if the throwable or any cause of it is a disconnection from a socket.
-     * 
+     *
      * @param t
      *            the throwable
      * @return true if is a disconnection from a socket

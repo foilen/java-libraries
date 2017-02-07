@@ -111,7 +111,7 @@ public class NettyClient implements Closeable {
 
     /**
      * Get the ip of the remote connection when connected.
-     * 
+     *
      * @return the ip or null if not available
      */
     public String getPeerIp() {
@@ -126,7 +126,7 @@ public class NettyClient implements Closeable {
 
     /**
      * Get the SSL certificate if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
-     * 
+     *
      * @return the certificate or null if it is not ready or available
      */
     public List<RSACertificate> getPeerSslCertificate() {
@@ -147,7 +147,7 @@ public class NettyClient implements Closeable {
 
     /**
      * Get the remote address where it is connected.
-     * 
+     *
      * @return the remote address
      */
     public SocketAddress getRemoteAddress() {
@@ -157,7 +157,7 @@ public class NettyClient implements Closeable {
 
     /**
      * Tells if the client is currently connected.
-     * 
+     *
      * @return true if connected
      */
     public boolean isConnected() {
@@ -170,7 +170,7 @@ public class NettyClient implements Closeable {
 
     /**
      * Send a message and flush.
-     * 
+     *
      * @param msg
      *            the message
      */
@@ -181,7 +181,7 @@ public class NettyClient implements Closeable {
 
     /**
      * Send a message, flush and wait for it to be sent.
-     * 
+     *
      * @param msg
      *            the message
      */

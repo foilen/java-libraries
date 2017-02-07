@@ -27,23 +27,30 @@ public class Tuple2<A, B> {
     @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Tuple2 other = (Tuple2) obj;
         if (a == null) {
-            if (other.a != null)
+            if (other.a != null) {
                 return false;
-        } else if (!a.equals(other.a))
+            }
+        } else if (!a.equals(other.a)) {
             return false;
+        }
         if (b == null) {
-            if (other.b != null)
+            if (other.b != null) {
                 return false;
-        } else if (!b.equals(other.b))
+            }
+        } else if (!b.equals(other.b)) {
             return false;
+        }
         return true;
     }
 

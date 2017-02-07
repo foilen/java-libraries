@@ -22,7 +22,7 @@ public interface UpgradeTask {
 
     /**
      * Tells the name of the tracker to use. Can be {@link UpgradeTask#DEFAULT_TRACKER}.
-     * 
+     *
      * @return the tracker to use
      */
     String useTracker();

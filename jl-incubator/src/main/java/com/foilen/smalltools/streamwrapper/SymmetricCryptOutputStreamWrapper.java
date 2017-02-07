@@ -18,9 +18,9 @@ import com.foilen.smalltools.streamwrapper.bytesprocessor.SymmetricEncryptBytesP
 
 /**
  * A stream wrapper that encrypts what is sent.
- * 
+ *
  * It buffers around 64 blocks (or until flushed) and then encrypt them all using padding at the end.
- * 
+ *
  * <pre>
  * What is sent over the wire is:
  * - A single byte saying how many blocks (including the padding block) is following

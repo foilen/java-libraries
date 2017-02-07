@@ -61,7 +61,7 @@ public class SymmetricCryptStreamWrapperTest extends AbstractStreamWrapperTest {
 
     /**
      * Test correct use of IV in the stream cipher (compare encrypting in multiple parts with buffer and in full directly).
-     * 
+     *
      * @throws IOException
      */
     @Test

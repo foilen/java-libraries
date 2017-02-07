@@ -15,7 +15,7 @@ public final class EncodingTools {
 
     /**
      * Encode the bytes in hex representation.
-     * 
+     *
      * @param bytes
      *            the bytes to encode
      * @return the hex

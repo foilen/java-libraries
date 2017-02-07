@@ -28,7 +28,7 @@ public final class DateTools {
 
     /**
      * Add some delta to the date.
-     * 
+     *
      * @param date
      *            the date
      * @param calendarUnit
@@ -46,7 +46,7 @@ public final class DateTools {
 
     /**
      * Format a date to "yyyy-MM-dd HH:mm:ss" format.
-     * 
+     *
      * @param date
      *            the date
      * @return the text date
@@ -61,7 +61,7 @@ public final class DateTools {
 
     /**
      * Check that the date after is really after.
-     * 
+     *
      * @param dateAfter
      *            the date that should be after
      * @param dateBefore
@@ -74,7 +74,7 @@ public final class DateTools {
 
     /**
      * Check that the date before is really before.
-     * 
+     *
      * @param dateBefore
      *            the date that should be before
      * @param dateAfter
@@ -87,7 +87,7 @@ public final class DateTools {
 
     /**
      * Tell if the date to check is now expired if we add the delta.
-     * 
+     *
      * @param dateToCheck
      *            the date to check the expiration
      * @param currentTime
@@ -105,7 +105,7 @@ public final class DateTools {
 
     /**
      * Tell if the date to check is now expired if we add the delta.
-     * 
+     *
      * @param dateToCheck
      *            the date to check the expiration
      * @param calendarUnit
@@ -120,7 +120,7 @@ public final class DateTools {
 
     /**
      * Parse a date with "yyyy-MM-dd HH:mm:ss" format.
-     * 
+     *
      * @param date
      *            the date in text
      * @return the date

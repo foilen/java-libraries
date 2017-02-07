@@ -28,7 +28,7 @@ public class TimeoutRunnableHandler {
 
     /**
      * Call this method to execute the runnable. This call is waiting for the end of the execution or the timeout to occur.
-     * 
+     *
      * @throws SmallToolsException
      *             if the timeout occurs
      */

@@ -27,28 +27,28 @@ import com.foilen.smalltools.tuple.Tuple2;
 
 /**
  * An helper to run any applications.
- * 
+ *
  * <pre>
  *  Usage to have the out/err stream piped to the standard out/err.
- *  
+ *
  *     ConsoleRunner runner = new ConsoleRunner();
  *         runner.command = "apt-get";
  *         runner.addArguments("-y", "install");
  *         runner.addArguments(packageNames);
- * 
+ *
  *         int status = runner.execute();
  * </pre>
  *
  * <pre>
  *  Usage to get the output in a string.
- *  
+ *
  *     ConsoleRunner runner = new ConsoleRunner();
  *         runner.command = "dpkg";
  *         runner.addArguments("-s", packageName);
- * 
+ *
  *         String content = runner.executeForString();
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -78,7 +78,7 @@ public class ConsoleRunner {
 
     /**
      * Add arguments to the command.
-     * 
+     *
      * @param arguments
      *            the arguments
      * @return this
@@ -90,7 +90,7 @@ public class ConsoleRunner {
 
     /**
      * Add arguments to the command.
-     * 
+     *
      * @param arguments
      *            the arguments
      * @return this
@@ -104,7 +104,7 @@ public class ConsoleRunner {
 
     /**
      * Add environment to the command.
-     * 
+     *
      * @param name
      *            the environment name
      * @param value
@@ -118,7 +118,7 @@ public class ConsoleRunner {
 
     /**
      * Execute the command using all the configured console input/output/error.
-     * 
+     *
      * @return the status code
      */
     public int execute() {
@@ -145,7 +145,7 @@ public class ConsoleRunner {
 
     /**
      * Execute the command using all the configured console input/error and returns the console output as an iterator of line String (can be used in a foreach loop as well).
-     * 
+     *
      * @return the console output as a line iterator
      */
     public FileLinesIterable executeForLineIterator() {
@@ -160,7 +160,7 @@ public class ConsoleRunner {
 
     /**
      * Execute the command using all the configured console input/error and returns the console output as a String.
-     * 
+     *
      * @return the console output
      */
     public String executeForString() {
@@ -177,7 +177,7 @@ public class ConsoleRunner {
 
     /**
      * Execute the command using all the configured console input and returns the console output and console error as separate Strings.
-     * 
+     *
      * @return the console output and error
      */
     public Tuple2<String, String> executeForStrings() {
@@ -199,7 +199,7 @@ public class ConsoleRunner {
 
     /**
      * Execute the command using all the configured console input/error and display the output stream using the logger line by line.
-     * 
+     *
      * @param outputLogger
      *            the logger to use
      * @param level
@@ -269,7 +269,7 @@ public class ConsoleRunner {
 
     /**
      * Set all the arguments (overriding any previously set).
-     * 
+     *
      * @param arguments
      *            the list
      * @return this
@@ -281,7 +281,7 @@ public class ConsoleRunner {
 
     /**
      * True to close the console error stream set by {@link #setConsoleError(OutputStream)} when the process ends.
-     * 
+     *
      * @param closeConsoleError
      *            true to close
      * @return this
@@ -293,7 +293,7 @@ public class ConsoleRunner {
 
     /**
      * True to close the console output stream set by {@link #setConsoleOutput(OutputStream)} when the process ends.
-     * 
+     *
      * @param closeConsoleOutput
      *            true to close
      * @return this
@@ -305,7 +305,7 @@ public class ConsoleRunner {
 
     /**
      * Set the command to run.
-     * 
+     *
      * @param command
      *            the command
      * @return this
@@ -317,7 +317,7 @@ public class ConsoleRunner {
 
     /**
      * Set where to send the STD error stream. Default {@link System#err}
-     * 
+     *
      * @param consoleError
      *            the stream
      * @return this
@@ -329,7 +329,7 @@ public class ConsoleRunner {
 
     /**
      * Set where to get the STD in from. Default none
-     * 
+     *
      * @param consoleInput
      *            the stream
      * @return this
@@ -341,7 +341,7 @@ public class ConsoleRunner {
 
     /**
      * Set where to send the STD out stream. Default {@link System#out}
-     * 
+     *
      * @param consoleOutput
      *            the stream
      * @return this
@@ -353,7 +353,7 @@ public class ConsoleRunner {
 
     /**
      * Set all the environments (overriding any previously set).
-     * 
+     *
      * @param environments
      *            the new environments
      * @return this
@@ -365,7 +365,7 @@ public class ConsoleRunner {
 
     /**
      * Tells if the environments should be cleared before adding the one configured with {@link #addEnvironment(String, String)}.
-     * 
+     *
      * @param overrideEnvironment
      *            true to override
      * @return this
@@ -377,7 +377,7 @@ public class ConsoleRunner {
 
     /**
      * Merge the STD error stream to STD output stream.
-     * 
+     *
      * @param redirectErrorStream
      *            true to redirect
      * @return this
@@ -389,7 +389,7 @@ public class ConsoleRunner {
 
     /**
      * Set a timeout. Default null (none)
-     * 
+     *
      * @param timeoutInMilliseconds
      *            how many milliseconds or null for none
      * @return this
@@ -401,7 +401,7 @@ public class ConsoleRunner {
 
     /**
      * Set the working directory.
-     * 
+     *
      * @param workingDirectory
      *            the working directory
      * @return this

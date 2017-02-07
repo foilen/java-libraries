@@ -24,7 +24,7 @@ import com.foilen.smalltools.tools.FileTools;
 
 /**
  * This is an iterable over a file. Each line will be iterated over. The file is automatically closed at the end of the file. Used by {@link FileTools#readFileLinesIteration(String)}
- * 
+ *
  * @deprecated Use {@link com.foilen.smalltools.iterable.FileLinesIterable} instead
  */
 @Deprecated
@@ -60,7 +60,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
 
     /**
      * The file to open.
-     * 
+     *
      * @param file
      *            the file
      * @throws FileNotFoundException
@@ -73,7 +73,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
 
     /**
      * The stream to use.
-     * 
+     *
      * @param inputStream
      *            the stream to read
      */
@@ -88,7 +88,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
 
     /**
      * The String to use.
-     * 
+     *
      * @param text
      *            the text to read
      */

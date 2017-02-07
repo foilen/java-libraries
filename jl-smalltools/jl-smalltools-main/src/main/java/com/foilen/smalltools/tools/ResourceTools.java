@@ -23,7 +23,7 @@ public final class ResourceTools {
 
     /**
      * Copy a resource to a file.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param context
@@ -43,7 +43,7 @@ public final class ResourceTools {
 
     /**
      * Copy a resource to a file.
-     * 
+     *
      * @param resource
      *            the absolute resource to open
      * @param destinationFile
@@ -55,7 +55,7 @@ public final class ResourceTools {
 
     /**
      * Load a resource as bytes.
-     * 
+     *
      * @param resource
      *            the resource to open as an absolute path
      * @return the bytes
@@ -66,7 +66,7 @@ public final class ResourceTools {
 
     /**
      * Load a resource as a bytes.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param context
@@ -79,7 +79,7 @@ public final class ResourceTools {
 
     /**
      * Load a resource as a stream.
-     * 
+     *
      * @param resource
      *            the resource to open as an absolute path
      * @return the stream
@@ -90,7 +90,7 @@ public final class ResourceTools {
 
     /**
      * Load a resource as a stream.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param context
@@ -103,7 +103,7 @@ public final class ResourceTools {
 
     /**
      * Load a resource as a String.
-     * 
+     *
      * @param resource
      *            the resource to open as an absolute path
      * @return the string
@@ -114,7 +114,7 @@ public final class ResourceTools {
 
     /**
      * Load a resource as a String.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param context
@@ -127,7 +127,7 @@ public final class ResourceTools {
 
     /**
      * Get the full path of the containing folder of the resource on the disk.
-     * 
+     *
      * @param classType
      *            the class to get the full path to
      * @return the absolute path to the parent folder
@@ -139,7 +139,7 @@ public final class ResourceTools {
 
     /**
      * Get the full path of the containing folder of the resource on the disk.
-     * 
+     *
      * @param resource
      *            the resource name
      * @param context
@@ -164,7 +164,7 @@ public final class ResourceTools {
 
     /**
      * Opens a resource and iterates over all the lines.
-     * 
+     *
      * @param resource
      *            the resource to open as an absolute path
      * @return the lines iterable
@@ -175,7 +175,7 @@ public final class ResourceTools {
 
     /**
      * Opens a resource and iterates over all the lines.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param context

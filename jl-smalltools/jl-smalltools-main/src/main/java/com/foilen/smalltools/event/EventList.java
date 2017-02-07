@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This is to easily register callbacks for event and to manage them.
- * 
+ *
  * @param <T>
  *            the type of the parameter passed
  */
@@ -23,7 +23,7 @@ public class EventList<T> {
 
     /**
      * Register the callback in the list.
-     * 
+     *
      * @param callback
      *            the callback when the event is thrown
      */
@@ -40,7 +40,7 @@ public class EventList<T> {
 
     /**
      * Call all the callbacks with the specified parameter.
-     * 
+     *
      * @param param
      *            the param to send
      */
@@ -52,7 +52,7 @@ public class EventList<T> {
 
     /**
      * Remove the callback from the list.
-     * 
+     *
      * @param callback
      *            the callback when the event is thrown
      */
@@ -62,7 +62,7 @@ public class EventList<T> {
 
     /**
      * Set the list of callbacks. Useful when using a bean container.
-     * 
+     *
      * @param callbacks
      *            the event callbacks
      */

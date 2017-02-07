@@ -15,7 +15,7 @@ public interface BeansProvider {
 
     /**
      * All the beans you want to add to the repository will be added in this method.
-     * 
+     *
      * @param beanRepositoryBuilder
      *            the builder to fill
      */

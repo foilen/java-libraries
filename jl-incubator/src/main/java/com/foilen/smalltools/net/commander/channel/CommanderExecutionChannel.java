@@ -25,7 +25,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 /**
  * A channel that takes a {@link CommandImplementation} and executes it in an executor.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
@@ -46,7 +46,7 @@ public class CommanderExecutionChannel extends ChannelHandlerAdapter {
 
     /**
      * Create the channel handler that executes a {@link CommandImplementation}.
-     * 
+     *
      * @param configureSpring
      *            true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
      * @param commanderClient

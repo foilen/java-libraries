@@ -18,7 +18,7 @@ import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * This is the handler that will get the notifications.
- * 
+ *
  * The buffering:
  * <ul>
  * <li>When an event is received, 2 timers start: the total and the one from last event.</li>
@@ -26,9 +26,9 @@ import com.foilen.smalltools.tools.ThreadTools;
  * <li>When the timer from last event reached delayAfterLastEventMs, the summary is fired.</li>
  * <li>If there are continuously new events, when the total timer reaches maxDelayMs, the summary is fired.</li>
  * </ul>
- * 
+ *
  * To be more efficient, the summaries are not necessarily fired in the same order for different files.
- * 
+ *
  * The summary about the same file:
  * <ul>
  * <li>Many times the same event = once that event</li>
@@ -37,7 +37,7 @@ import com.foilen.smalltools.tools.ThreadTools;
  * <li>X Modified + 1 Deleted = 1 Deleted</li>
  * <li>1 Deleted + 1 Created = 1 Modified</li>
  * </ul>
- * 
+ *
  */
 public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler {
 
@@ -56,10 +56,10 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
 
     }
 
-    private FileSystemUpdateHandler wrappedHandler;
-
     private static FileState[] matrixExisted = { FileState.MODIFIED, FileState.MODIFIED, FileState.DELETED };
+
     private static FileState[] matrixNotExisted = { FileState.CREATED, FileState.CREATED, null };
+    private FileSystemUpdateHandler wrappedHandler;
 
     // Parameters
     private long maxDelayMs;
@@ -70,70 +70,67 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
     private Map<File, FileStatus> buffer = new HashMap<>();
     private long firstEventTimeMs = -1;
     private long lastEventTimeMs;
-    private Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
+    private Thread thread = new Thread((Runnable) () -> {
 
-            // Never stop checking
+        // Never stop checking
+        for (;;) {
+
+            // Wait for at least the first event
+            if (firstEventTimeMs == -1) {
+                ThreadTools.sleep(delayAfterLastEventMs);
+                continue;
+            }
+
+            long maxTime = firstEventTimeMs + maxDelayMs;
             for (;;) {
+                // Wait if not reached
+                long now = new Date().getTime();
+                long waitTime = Math.min( //
+                        lastEventTimeMs + delayAfterLastEventMs - now, //
+                        maxTime - now);
 
-                // Wait for at least the first event
-                if (firstEventTimeMs == -1) {
-                    ThreadTools.sleep(delayAfterLastEventMs);
+                if (waitTime <= 0) {
+                    break;
+                }
+
+                ThreadTools.sleep(waitTime);
+            }
+
+            // Process
+            Map<File, FileStatus> toProcess;
+            synchronized (lock) {
+                firstEventTimeMs = -1;
+                toProcess = buffer;
+                buffer = new HashMap<>();
+            }
+
+            for (Entry<File, FileStatus> entry : toProcess.entrySet()) {
+                File file = entry.getKey();
+                FileStatus fileStatus = entry.getValue();
+
+                // Compute the next
+                FileState fileState;
+                if (fileStatus.existed) {
+                    fileState = matrixExisted[fileStatus.lastEvent.ordinal()];
+                } else {
+                    fileState = matrixNotExisted[fileStatus.lastEvent.ordinal()];
+                }
+                if (fileState == null) {
                     continue;
                 }
 
-                long maxTime = firstEventTimeMs + maxDelayMs;
-                for (;;) {
-                    // Wait if not reached
-                    long now = new Date().getTime();
-                    long waitTime = Math.min( //
-                            lastEventTimeMs + delayAfterLastEventMs - now, //
-                            maxTime - now);
-
-                    if (waitTime <= 0) {
-                        break;
-                    }
-
-                    ThreadTools.sleep(waitTime);
-                }
-
-                // Process
-                Map<File, FileStatus> toProcess;
-                synchronized (lock) {
-                    firstEventTimeMs = -1;
-                    toProcess = buffer;
-                    buffer = new HashMap<>();
-                }
-
-                for (Entry<File, FileStatus> entry : toProcess.entrySet()) {
-                    File file = entry.getKey();
-                    FileStatus fileStatus = entry.getValue();
-
-                    // Compute the next
-                    FileState fileState;
-                    if (fileStatus.existed) {
-                        fileState = matrixExisted[fileStatus.lastEvent.ordinal()];
-                    } else {
-                        fileState = matrixNotExisted[fileStatus.lastEvent.ordinal()];
-                    }
-                    if (fileState == null) {
-                        continue;
-                    }
-
-                    switch (fileState) {
-                    case CREATED:
-                        wrappedHandler.created(file);
-                        break;
-                    case DELETED:
-                        wrappedHandler.deleted(file);
-                        break;
-                    case MODIFIED:
-                        wrappedHandler.modified(file);
-                        break;
-                    default:
-                        break;
-                    }
+                switch (fileState) {
+                case CREATED:
+                    wrappedHandler.created(file);
+                    break;
+                case DELETED:
+                    wrappedHandler.deleted(file);
+                    break;
+                case MODIFIED:
+                    wrappedHandler.modified(file);
+                    break;
+                default:
+                    break;
                 }
             }
         }

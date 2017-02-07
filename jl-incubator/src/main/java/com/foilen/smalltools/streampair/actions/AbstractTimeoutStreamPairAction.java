@@ -71,7 +71,7 @@ public abstract class AbstractTimeoutStreamPairAction implements StreamPairActio
 
     /**
      * the number of second to execute the full action before the connection gets dropped.
-     * 
+     *
      * @param negociationTimeoutSeconds
      *            the number of second or -1 for unlimited/disabled
      */
@@ -81,7 +81,7 @@ public abstract class AbstractTimeoutStreamPairAction implements StreamPairActio
 
     /**
      * Instead of implementing {@link #executeAction(StreamPair)}, the child must implement that one to enable the automatic handling of timeout.
-     * 
+     *
      * @param streamPair
      *            the pair to execute on
      * @return the pair or null if it should be dropped out.

@@ -29,7 +29,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * Some tools to help converting from the tools in the library to standard Java.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.madgag.spongycastle:prov:1.51.0.0'
@@ -41,9 +41,9 @@ public class RSATools {
 
     /**
      * Create a {@link KeyManagerFactory} from a {@link RSACertificate}.
-     * 
+     *
      * The key password will be "123".
-     * 
+     *
      * @param rsaCertificate
      *            the certificate
      * @return the key manager factory
@@ -55,7 +55,7 @@ public class RSATools {
 
     /**
      * Create a {@link KeyManagerFactory} from a {@link RSACertificate}.
-     * 
+     *
      * @param rsaCertificate
      *            the certificate
      * @param keyPassword
@@ -74,7 +74,7 @@ public class RSATools {
 
     /**
      * Create a {@link KeyPair} from the {@link AsymmetricKeys}.
-     * 
+     *
      * @param asymmetricKeys
      *            the asymmetric keys
      * @return the Java keyPair
@@ -87,9 +87,9 @@ public class RSATools {
 
     /**
      * Create a {@link KeyStore} from a {@link RSACertificate}. This is for the private key.
-     * 
+     *
      * The key password will be "123".
-     * 
+     *
      * @param rsaCertificate
      *            the certificate
      * @return the keystore
@@ -101,7 +101,7 @@ public class RSATools {
 
     /**
      * Create a {@link KeyStore} from a {@link RSACertificate}. This is for the private key.
-     * 
+     *
      * @param rsaCertificate
      *            the certificate
      * @param keyPassword
@@ -128,7 +128,7 @@ public class RSATools {
 
     /**
      * Create a {@link KeyStore} from a {@link RSATrustedCertificates}. It is taking only the trusted certificates ; not the intermediates ones.
-     * 
+     *
      * @param rsaTrustedCertificates
      *            the certificates that are trusted
      * @return the keystore
@@ -153,7 +153,7 @@ public class RSATools {
 
     /**
      * Create a {@link Key} from the private {@link AsymmetricKeys}.
-     * 
+     *
      * @param asymmetricKeys
      *            the asymmetric keys
      * @return the Java key
@@ -172,7 +172,7 @@ public class RSATools {
 
     /**
      * Create a {@link Key} from the public {@link AsymmetricKeys}.
-     * 
+     *
      * @param asymmetricKeys
      *            the asymmetric keys
      * @return the Java key
@@ -190,7 +190,7 @@ public class RSATools {
 
     /**
      * Create a {@link TrustManagerFactory} from a {@link KeyStore}.
-     * 
+     *
      * @param keyStore
      *            the keyStore
      * @return the trust manager factory
@@ -207,7 +207,7 @@ public class RSATools {
 
     /**
      * Create a {@link TrustManagerFactory} from a {@link RSATrustedCertificates}. It is taking only the trusted certificates ; not the intermediates ones.
-     * 
+     *
      * @param rsaTrustedCertificates
      *            the certificates that are trusted
      * @return the trust manager factory

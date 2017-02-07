@@ -30,45 +30,45 @@ import com.foilen.smalltools.tools.AssertTools;
 /**
  * To generate a CSRF token based on some cookie values. The goal is to be able to generate the same CSRF token on different machines that runs the same application without having to share the
  * generated token (e.g. session propagation or in the database).
- * 
+ *
  * <br>
  * <br>
- * 
+ *
  * To be secure, there must be at least a cookie that the content changes frequently. Must not use a cookie that is machine specific (like a non-shared session id) since each machine would generate a
  * different token (which goes against the goal).
- * 
+ *
  * <pre>
  * Usage:
- * 
+ *
  * import org.springframework.security.config.annotation.web.builders.HttpSecurity;
  * import org.springframework.security.config.annotation.web.builders.WebSecurity;
  * import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
  * import org.springframework.security.core.userdetails.UserDetailsService;
  * import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
  * import org.springframework.security.web.csrf.CsrfTokenRepository;
- * 
+ *
  * import com.foilen.smalltools.spring.security.CookiesGeneratedCsrfTokenRepository;
- * 
+ *
  * public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
- * 
+ *
  *     &#064;Override
  *     protected void configure(HttpSecurity http) throws Exception {
- * 
+ *
  *         http.authorizeRequests().anyRequest().fullyAuthenticated();
- * 
+ *
  *         // Set the CSRF token
  *         CsrfTokenRepository csrfTokenRepository = new CookiesGeneratedCsrfTokenRepository()
  *              .setSalt(csrfSalt)
  *              .addCookieNames(&quot;foilen_user_id&quot;, &quot;foilen_date&quot;, &quot;foilen_signature&quot;);
  *         http.csrf().csrfTokenRepository(csrfTokenRepository);
  *     }
- * 
+ *
  * }
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
- * compile 'javax.servlet:javax.servlet-api:3.1.0' 
+ * compile 'javax.servlet:javax.servlet-api:3.1.0'
  * compile 'org.springframework.security:spring-security-web:3.2.7.RELEASE'
  * </pre>
  */
@@ -84,7 +84,7 @@ public class CookiesGeneratedCsrfTokenRepository implements CsrfTokenRepository 
 
     /**
      * Add the name of the cookie to use its value.
-     * 
+     *
      * @param cookieName
      *            the name of the cookie
      * @return this
@@ -96,7 +96,7 @@ public class CookiesGeneratedCsrfTokenRepository implements CsrfTokenRepository 
 
     /**
      * Add all the name of the cookies to use their values.
-     * 
+     *
      * @param cookieNames
      *            the name of the cookies
      * @return this
@@ -159,7 +159,7 @@ public class CookiesGeneratedCsrfTokenRepository implements CsrfTokenRepository 
 
     /**
      * Set the names of the cookie to use their values.
-     * 
+     *
      * @param cookieNames
      *            the name of the cookies
      * @return this
@@ -171,7 +171,7 @@ public class CookiesGeneratedCsrfTokenRepository implements CsrfTokenRepository 
 
     /**
      * Set a unique salt for your application (to make sure that no one can generate the token by himself).
-     * 
+     *
      * @param salt
      *            the salt
      * @return this

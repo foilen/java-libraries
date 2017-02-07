@@ -84,7 +84,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     /**
      * Add the bean in the list and in the map (with the hierarchies of types.
-     * 
+     *
      * @param bean
      *            the bean
      */
@@ -95,7 +95,7 @@ public class SimpleBeanRepository implements BeanRepository {
 
     /**
      * Add the bean to the current type and all its super-types.
-     * 
+     *
      * @param clazz
      *            the type
      * @param bean
@@ -227,6 +227,7 @@ public class SimpleBeanRepository implements BeanRepository {
         return object;
     }
 
+    @Override
     public void skipPostConfigMethods(boolean skip) {
         skipPostConfigMethods.set(skip);
     }

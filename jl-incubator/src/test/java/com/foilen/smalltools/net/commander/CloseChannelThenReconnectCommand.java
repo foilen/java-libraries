@@ -21,6 +21,7 @@ public class CloseChannelThenReconnectCommand implements CommandRequest, Command
 
     private static Semaphore semaphore = new Semaphore(0);
     private static Throwable throwable;
+
     public static void release() {
         semaphore.release();
     }

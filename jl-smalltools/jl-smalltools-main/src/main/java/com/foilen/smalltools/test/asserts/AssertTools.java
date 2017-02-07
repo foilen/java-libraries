@@ -23,7 +23,7 @@ import com.foilen.smalltools.tools.ResourceTools;
 
 /**
  * Assertions.
- * 
+ *
  * <pre>
  * Dependencies:
  * testCompile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
@@ -61,7 +61,7 @@ public final class AssertTools {
 
     /**
      * Compare the expected object to the actual object (by their JSON dump).
-     * 
+     *
      * @param expected
      *            the expected object to compare
      * @param actual
@@ -76,7 +76,7 @@ public final class AssertTools {
 
     /**
      * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump).
-     * 
+     *
      * @param expectedResource
      *            the filename of the resource
      * @param expectedContext
@@ -129,7 +129,7 @@ public final class AssertTools {
 
     /**
      * Compare the expected object to the actual object (by their Yaml dump).
-     * 
+     *
      * @param expected
      *            the expected object to compare
      * @param actual
@@ -147,7 +147,7 @@ public final class AssertTools {
 
     /**
      * Load an expected object from a Yaml resource file and compare it to the actual object (by their Yaml dump).
-     * 
+     *
      * @param expectedResource
      *            the filename of the resource
      * @param expectedContext

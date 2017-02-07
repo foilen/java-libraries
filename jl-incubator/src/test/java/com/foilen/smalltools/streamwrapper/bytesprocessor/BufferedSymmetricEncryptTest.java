@@ -11,9 +11,6 @@ package com.foilen.smalltools.streamwrapper.bytesprocessor;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.streamwrapper.bytesprocessor.BufferedSymmetricEncrypt;
-import com.foilen.smalltools.streamwrapper.bytesprocessor.BytesProcessor;
-
 /**
  * Tests for {@link BufferedSymmetricEncrypt}.
  */

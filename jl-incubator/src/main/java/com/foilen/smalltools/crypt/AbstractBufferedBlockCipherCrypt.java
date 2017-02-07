@@ -25,7 +25,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link BufferedBlockCipher}. This is for symmetric and asymmetric algorithms.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.madgag.spongycastle:prov:1.51.0.0'
@@ -41,7 +41,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Get the higher size that is a multiple of the block size.
-     * 
+     *
      * @param length
      *            the minimum size
      * @param addOne
@@ -68,7 +68,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Create an array that contains all the contents of the arrays.
-     * 
+     *
      * @param arrays
      *            the arrays to concatenate
      * @return the final array
@@ -97,7 +97,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Encrypt/Decrypt the data with the specified key.
-     * 
+     *
      * @param key
      *            the key
      * @param ivAndIn
@@ -136,7 +136,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Decrypt the data with the specified key.
-     * 
+     *
      * @param key
      *            the key
      * @param iv
@@ -171,7 +171,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Decrypt the data with the specified key.
-     * 
+     *
      * @param key
      *            the key
      * @param iv
@@ -191,7 +191,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Encrypt the data with the specified key. Places the IV (initialization vector) before the encrypted text. The IV is securely random.
-     * 
+     *
      * @param key
      *            the key
      * @param in
@@ -225,7 +225,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Encrypt the data with the specified key. Places the IV (initialization vector) before the encrypted text.
-     * 
+     *
      * @param key
      *            the key
      * @param iv
@@ -260,7 +260,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Encrypt the data with the specified key. Places the IV (initialization vector) before the encrypted text.
-     * 
+     *
      * @param key
      *            the key
      * @param iv
@@ -290,7 +290,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Generate a secure IV that is the size of a block.
-     * 
+     *
      * @return the IV
      */
     public byte[] generateIV() {
@@ -301,7 +301,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Tells the block size.
-     * 
+     *
      * @return the block size
      */
     public int getBlockSize() {
@@ -310,7 +310,7 @@ public abstract class AbstractBufferedBlockCipherCrypt {
 
     /**
      * Encrypt/Decrypt the data with the specified key and IV.
-     * 
+     *
      * @param key
      *            the key
      * @param iv

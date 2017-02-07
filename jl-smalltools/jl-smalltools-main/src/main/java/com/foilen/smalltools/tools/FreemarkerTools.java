@@ -19,7 +19,7 @@ import freemarker.template.TemplateExceptionHandler;
 
 /**
  * Use the Freemarker templates easily.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'org.freemarker:freemarker:2.3.22'
@@ -38,7 +38,7 @@ public final class FreemarkerTools {
 
     /**
      * Take a Freemarker template and get a String from it.
-     * 
+     *
      * @param resource
      *            the path of the resource
      * @param model

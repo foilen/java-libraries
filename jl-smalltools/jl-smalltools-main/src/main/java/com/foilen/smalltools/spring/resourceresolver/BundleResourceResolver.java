@@ -42,27 +42,27 @@ import com.google.common.cache.LoadingCache;
 
 /**
  * A way to automatically bundle multiple files together and even GZIP them.
- * 
- * 
+ *
+ *
  * Use it in a configuration class that extends {@link WebMvcConfigurerAdapter}.
- * 
+ *
  * Ex:
- * 
+ *
  * <pre>
- * 
+ *
  * &#64;Bean
  * public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
  *     ResourceUrlEncodingFilter resourceUrlEncodingFilter = new ResourceUrlEncodingFilter();
  *     return resourceUrlEncodingFilter;
  * }
- * 
+ *
  * &#64;Override
  * public void addResourceHandlers(ResourceHandlerRegistry registry) {
  *     registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/WEB-INF/confignui/resources/");
  *     registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/WEB-INF/confignui/resources/fonts/");
- * 
+ *
  *     boolean isProd = "PROD".equals(System.getProperty("MODE"));
- * 
+ *
  *     ResourceChainRegistration chain = registry.addResourceHandler("/bundles/**") //
  *             .setCachePeriod(365 * 24 * 60 * 60) //
  *             .resourceChain(isProd) //
@@ -86,26 +86,26 @@ import com.google.common.cache.LoadingCache;
  *                     .addBundleResource("all.js", "/WEB-INF/confignui/resources/js/ccloud.js") //
  *                     .addBundleResource("all.js", "/WEB-INF/confignui/resources/js/fields.js") //
  *                     .primeCache() //
- * 
+ *
  *     );
- * 
+ *
  * }
  * </pre>
- * 
- * 
+ *
+ *
  * You can then use these bundles in your html templater. If using Freemarker:
- * 
+ *
  * <pre>
  * &lt;#import "/spring.ftl" as spring /&gt;
- * 
+ *
  * &lt;link href="&lt;@spring.url'/bundles/all.css'/&gt;" rel="stylesheet"&gt;
  * &lt;script src="&lt;@spring.url'/bundles/all.js'/&gt;"&gt;&lt;/script&gt;
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
- * compile 'javax.servlet:javax.servlet-api:3.1.0' 
+ * compile 'javax.servlet:javax.servlet-api:3.1.0'
  * compile 'org.slf4j:slf4j-api:1.7.21'
  * compile 'org.springframework:spring-core:4.1.6.RELEASE'
  * compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
@@ -174,7 +174,7 @@ public class BundleResourceResolver implements ResourceResolver {
 
     /**
      * If you are using cache, a thread will run now to prepare all the bundles that are already defined.
-     * 
+     *
      * @return this
      */
     public BundleResourceResolver primeCache() {
@@ -232,7 +232,7 @@ public class BundleResourceResolver implements ResourceResolver {
 
     /**
      * Activate the cache if you know that the file won't change. (E.g in production)
-     * 
+     *
      * @param cache
      *            true to activate the caching
      * @return this
@@ -248,7 +248,7 @@ public class BundleResourceResolver implements ResourceResolver {
 
     /**
      * After concatenating the files, you can also generate a Gzipped version of it. Useful with {@link GzipResourceResolver}.
-     * 
+     *
      * @param generateGzip
      *            true to generate a gzip file as well
      * @return this

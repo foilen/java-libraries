@@ -57,7 +57,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
 
     /**
      * The file to open.
-     * 
+     *
      * @param file
      *            the file
      * @throws FileNotFoundException
@@ -70,7 +70,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
 
     /**
      * The stream to use.
-     * 
+     *
      * @param inputStream
      *            the stream to read
      */
@@ -85,7 +85,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
 
     /**
      * The String to use.
-     * 
+     *
      * @param text
      *            the text to read
      */

@@ -18,7 +18,7 @@ public class DirectoriesFileFilter implements FilenameFilter {
 
     /**
      * Accept only directories.
-     * 
+     *
      * @param dir
      *            the directory in which the file was found.
      * @param name

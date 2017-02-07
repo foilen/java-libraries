@@ -12,7 +12,7 @@ public class StringTools {
 
     /**
      * Tells if both are equals, not crashing for nulls.
-     * 
+     *
      * @param first
      *            the first string
      * @param second

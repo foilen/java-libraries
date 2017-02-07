@@ -24,7 +24,7 @@ public final class HashUtils {
 
     /**
      * Take an {@link InputStream} and get its hash.
-     * 
+     *
      * @param algorithm
      *            the algorithm to use
      * @param in

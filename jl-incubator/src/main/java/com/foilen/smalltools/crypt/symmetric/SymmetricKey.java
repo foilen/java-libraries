@@ -23,7 +23,7 @@ public class SymmetricKey {
 
     /**
      * Create a key and set it.
-     * 
+     *
      * @param key
      *            (optional) the key
      */
@@ -33,7 +33,7 @@ public class SymmetricKey {
 
     /**
      * Get the key.
-     * 
+     *
      * @return the key
      */
     public SecretKey getKey() {
@@ -42,7 +42,7 @@ public class SymmetricKey {
 
     /**
      * Set the key.
-     * 
+     *
      * @param key
      *            the key to set
      */

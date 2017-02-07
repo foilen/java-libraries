@@ -15,7 +15,7 @@ import com.foilen.smalltools.tools.JsonTools;
 
 /**
  * A response for {@link AbstractCommandRequestWithResponse}.
- * 
+ *
  * @param <R>
  *            the response type
  */

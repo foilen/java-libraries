@@ -20,7 +20,7 @@ public class JavaEnvironmentValues {
 
     /**
      * Get the name of the computer. This is the environment "COMPUTERNAME".
-     * 
+     *
      * @return the name of the computer
      */
     public static String getComputerName() {
@@ -29,7 +29,7 @@ public class JavaEnvironmentValues {
 
     /**
      * Get the home directory of the current user. This is the system property "user.home".
-     * 
+     *
      * @return the home directory of the current user
      */
     public static String getHomeDirectory() {
@@ -38,7 +38,7 @@ public class JavaEnvironmentValues {
 
     /**
      * Get the hostname of this computer.
-     * 
+     *
      * @return the host name of the computer
      */
     public static String getHostName() {
@@ -51,7 +51,7 @@ public class JavaEnvironmentValues {
 
     /**
      * Get the name of the operating system like "Linux", "Windows Vista", "Windows 7", etc. This is the system property "os.name".
-     * 
+     *
      * @return the name of the operating system
      */
     public static String getOperatingSystem() {
@@ -60,7 +60,7 @@ public class JavaEnvironmentValues {
 
     /**
      * Get the temporary directory path. This is the system property "java.io.tmpdir".
-     * 
+     *
      * @return the temporary directory path
      */
     public static String getTemporaryDirectory() {
@@ -69,7 +69,7 @@ public class JavaEnvironmentValues {
 
     /**
      * Get the name of the current user. This is the system property "user.name".
-     * 
+     *
      * @return the name of the current user
      */
     public static String getUserName() {
@@ -78,7 +78,7 @@ public class JavaEnvironmentValues {
 
     /**
      * Get the current working directory. This is the system property "user.dir".
-     * 
+     *
      * @return the current working directory
      */
     public static String getWorkingDirectory() {

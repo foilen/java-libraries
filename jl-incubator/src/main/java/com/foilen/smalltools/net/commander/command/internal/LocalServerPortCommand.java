@@ -57,5 +57,4 @@ public class LocalServerPortCommand implements CommandRequest, CommandImplementa
         this.port = port;
     }
 
-
 }

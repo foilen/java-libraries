@@ -27,10 +27,10 @@ import com.foilen.smalltools.tools.StreamsTools;
 /**
  * Use this builder to create an email with most of the features: list of TO, CC, BCC, attachments, inline attachments, etc. The text or html body can come from a String, a resource, a file or a
  * Freemarker template.
- * 
+ *
  * <pre>
  * Usage:
- * 
+ *
  * EmailBuilder emailBuilder = new EmailBuilder();
  * emailBuilder.setFrom(emailFrom);
  * emailBuilder.addTo(to);
@@ -39,7 +39,7 @@ import com.foilen.smalltools.tools.StreamsTools;
  * emailBuilder.addInlineAttachmentFromResource(&quot;logo&quot;, &quot;/emails/logo.png&quot;);
  * emailService.sendEmail(emailBuilder);
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
@@ -62,7 +62,7 @@ public class EmailBuilder {
 
     /**
      * Include an attachment.
-     * 
+     *
      * @param attachmentFilename
      *            the filename in the email
      * @param fileName
@@ -76,7 +76,7 @@ public class EmailBuilder {
 
     /**
      * Include an attachment.
-     * 
+     *
      * @param attachmentFilename
      *            the filename in the email
      * @param resource
@@ -90,7 +90,7 @@ public class EmailBuilder {
 
     /**
      * Include an attachment. Warning, since JavaMail needs a replayable resource, the content of the input stream is first loaded into memory.
-     * 
+     *
      * @param attachmentFilename
      *            the filename in the email
      * @param inputStream
@@ -104,7 +104,7 @@ public class EmailBuilder {
 
     /**
      * Add an invisible recipient.
-     * 
+     *
      * @param bcc
      *            the recipient
      * @return this
@@ -116,7 +116,7 @@ public class EmailBuilder {
 
     /**
      * Add a recipient in the copy section.
-     * 
+     *
      * @param cc
      *            the recipient
      * @return this
@@ -128,7 +128,7 @@ public class EmailBuilder {
 
     /**
      * Include an inline attachment. Used with images.
-     * 
+     *
      * @param contentId
      *            the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
      * @param fileName
@@ -142,7 +142,7 @@ public class EmailBuilder {
 
     /**
      * Include an inline attachment. Used with images.
-     * 
+     *
      * @param contentId
      *            the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
      * @param resource
@@ -156,7 +156,7 @@ public class EmailBuilder {
 
     /**
      * Include an inline attachment. Used with images. Warning: the content of the input stream is first loaded into memory since JavaMail needs to be able to replay it.
-     * 
+     *
      * @param contentId
      *            the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
      * @param inputStream
@@ -170,7 +170,7 @@ public class EmailBuilder {
 
     /**
      * Add a recipient in the TO section.
-     * 
+     *
      * @param to
      *            the recipient
      * @return this
@@ -182,7 +182,7 @@ public class EmailBuilder {
 
     /**
      * Get the list of attachments.
-     * 
+     *
      * @return the attachments
      */
     public List<EmailAttachment> getAttachments() {
@@ -191,7 +191,7 @@ public class EmailBuilder {
 
     /**
      * Get the list of invisible recipients.
-     * 
+     *
      * @return the recipients
      */
     public List<String> getBccs() {
@@ -200,7 +200,7 @@ public class EmailBuilder {
 
     /**
      * Get the body of the email.
-     * 
+     *
      * @return the body
      */
     public String getBody() {
@@ -209,7 +209,7 @@ public class EmailBuilder {
 
     /**
      * Get the list of copied recipients.
-     * 
+     *
      * @return the recipients
      */
     public List<String> getCcs() {
@@ -218,7 +218,7 @@ public class EmailBuilder {
 
     /**
      * Get the email of the sender.
-     * 
+     *
      * @return the sender
      */
     public String getFrom() {
@@ -227,7 +227,7 @@ public class EmailBuilder {
 
     /**
      * Get the list of inline attachments.
-     * 
+     *
      * @return the attachments
      */
     public List<EmailAttachment> getInlineAttachments() {
@@ -236,7 +236,7 @@ public class EmailBuilder {
 
     /**
      * Get the subject of the email.
-     * 
+     *
      * @return the subject
      */
     public String getSubject() {
@@ -245,7 +245,7 @@ public class EmailBuilder {
 
     /**
      * Get the list of TO recipients.
-     * 
+     *
      * @return the recipients
      */
     public List<String> getTos() {
@@ -254,7 +254,7 @@ public class EmailBuilder {
 
     /**
      * Tells if the email is an html one.
-     * 
+     *
      * @return true if html ; false if text
      */
     public boolean isHtml() {
@@ -263,7 +263,7 @@ public class EmailBuilder {
 
     /**
      * Take an html file and use it as the body of the email.
-     * 
+     *
      * @param filename
      *            the full path of the file
      * @return this
@@ -278,7 +278,7 @@ public class EmailBuilder {
 
     /**
      * Take an html Freemarker template and use it as the body of the email.
-     * 
+     *
      * @param resource
      *            the absolute resource to open
      * @param model
@@ -291,7 +291,7 @@ public class EmailBuilder {
 
     /**
      * Take an html resource file and use it as the body of the email.
-     * 
+     *
      * @param resource
      *            the absolute resource to open
      * @return this
@@ -302,7 +302,7 @@ public class EmailBuilder {
 
     /**
      * Take an html resource file and use it as the body of the email.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param context
@@ -315,7 +315,7 @@ public class EmailBuilder {
 
     /**
      * Take an html String and use it as the body of the email.
-     * 
+     *
      * @param body
      *            the html text
      * @return this
@@ -328,7 +328,7 @@ public class EmailBuilder {
 
     /**
      * Take a text file and use it as the body of the email.
-     * 
+     *
      * @param filename
      *            the full path of the file
      * @return this
@@ -343,7 +343,7 @@ public class EmailBuilder {
 
     /**
      * Take a Freemarker template and use it as the body of the email.
-     * 
+     *
      * @param resource
      *            the path of the resource
      * @param model
@@ -356,7 +356,7 @@ public class EmailBuilder {
 
     /**
      * Take a text resource file and use it as the body of the email.
-     * 
+     *
      * @param resource
      *            the absolute resource to open
      * @return this
@@ -367,7 +367,7 @@ public class EmailBuilder {
 
     /**
      * Take a text resource file and use it as the body of the email.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param context
@@ -380,7 +380,7 @@ public class EmailBuilder {
 
     /**
      * Take a text String and use it as the body of the email.
-     * 
+     *
      * @param body
      *            the text
      * @return this
@@ -393,7 +393,7 @@ public class EmailBuilder {
 
     /**
      * Set the email sender.
-     * 
+     *
      * @param from
      *            the sender
      * @return this
@@ -405,7 +405,7 @@ public class EmailBuilder {
 
     /**
      * Set the subject of the email.
-     * 
+     *
      * @param subject
      *            the subject
      * @return this

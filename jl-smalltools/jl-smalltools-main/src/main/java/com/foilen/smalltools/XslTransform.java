@@ -29,7 +29,7 @@ import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * To transform an XML using XSL.
- * 
+ *
  * <pre>
  * - Create an instance
  * - call a using* to set the XSL
@@ -57,7 +57,7 @@ public class XslTransform {
 
     /**
      * Set the XML to transform.
-     * 
+     *
      * @param xmlFile
      *            the XML file
      * @return this
@@ -73,7 +73,7 @@ public class XslTransform {
 
     /**
      * Set the XML to transform.
-     * 
+     *
      * @param xmlPathName
      *            the XML file path
      * @return this
@@ -88,7 +88,7 @@ public class XslTransform {
 
     /**
      * Set the XML to transform.
-     * 
+     *
      * @param xmlInputStream
      *            the XML as a stream
      * @return this
@@ -100,7 +100,7 @@ public class XslTransform {
 
     /**
      * Set the XML to transform.
-     * 
+     *
      * @param xmlResourcePath
      *            the XML absolute resource path
      * @return this
@@ -111,7 +111,7 @@ public class XslTransform {
 
     /**
      * Set the XML to transform.
-     * 
+     *
      * @param xmlContent
      *            the XML content as a String
      * @return this
@@ -122,7 +122,7 @@ public class XslTransform {
 
     /**
      * Set the XML to transform.
-     * 
+     *
      * @param xmlUrl
      *            the URL to the XML file
      * @return this
@@ -138,7 +138,7 @@ public class XslTransform {
 
     /**
      * Transform and store.
-     * 
+     *
      * @param xmlFile
      *            the destination file
      */
@@ -154,7 +154,7 @@ public class XslTransform {
 
     /**
      * Transform and store.
-     * 
+     *
      * @param xmlPathName
      *            the destination file path
      */
@@ -169,7 +169,7 @@ public class XslTransform {
 
     /**
      * Transform and store.
-     * 
+     *
      * @param xmlOutputStream
      *            the destination as a stream
      */
@@ -185,7 +185,7 @@ public class XslTransform {
 
     /**
      * Transform and store.
-     * 
+     *
      * @return the XML as String
      */
     public String toText() {
@@ -201,7 +201,7 @@ public class XslTransform {
 
     /**
      * Transform and store.
-     * 
+     *
      * @param xmlWriter
      *            the destination as a writer
      */
@@ -217,7 +217,7 @@ public class XslTransform {
 
     /**
      * Set the XSL to use.
-     * 
+     *
      * @param xslFile
      *            the XSL file
      * @return this
@@ -233,7 +233,7 @@ public class XslTransform {
 
     /**
      * Set the XSL to use.
-     * 
+     *
      * @param xslPathName
      *            the XSL file path
      * @return this
@@ -249,7 +249,7 @@ public class XslTransform {
 
     /**
      * Set the XSL to use.
-     * 
+     *
      * @param xslInputStream
      *            the xsl input stream
      * @return this
@@ -265,7 +265,7 @@ public class XslTransform {
 
     /**
      * Set the XSL to use.
-     * 
+     *
      * @param xslReader
      *            the xsl reader
      * @return this
@@ -281,7 +281,7 @@ public class XslTransform {
 
     /**
      * Set the XSL to use.
-     * 
+     *
      * @param xslResourcePath
      *            the XSL absolute resource path
      * @return this
@@ -292,7 +292,7 @@ public class XslTransform {
 
     /**
      * Set the XSL to use.
-     * 
+     *
      * @param xslContent
      *            the XSL full content as a String
      * @return this
@@ -304,7 +304,7 @@ public class XslTransform {
 
     /**
      * Set the XSL to use.
-     * 
+     *
      * @param xslUrl
      *            the URL to the XSL file
      * @return this

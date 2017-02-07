@@ -24,7 +24,7 @@ public class DelayedEvent extends Thread {
 
     /**
      * Create the delayed event. It starts counting right now.
-     * 
+     *
      * @param delayInMilliseconds
      *            the time to wait before executing
      * @param event

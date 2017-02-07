@@ -38,11 +38,11 @@ import org.springframework.util.ClassUtils;
 
 /**
  * To generate the SQL file:
- * 
+ *
  * <pre>
  * Hibernate4Tools.generateSqlSchema(MySQL5InnoDBDialect.class, "sql/mysql.sql", true, "com.foilen.confignui.db.domain");
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'org.hibernate:hibernate-core:4.3.10.Final'
@@ -73,7 +73,7 @@ public final class Hibernate4Tools {
 
     /**
      * Generate the SQL file. This is based on the code in {@link LocalSessionFactoryBuilder#scanPackages(String...)}
-     * 
+     *
      * @param dialect
      *            the dialect (e.g: org.hibernate.dialect.MySQL5InnoDBDialect )
      * @param outputSqlFile

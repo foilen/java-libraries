@@ -10,7 +10,7 @@ package com.foilen.smalltools.crypt.symmetric;
 
 /**
  * An interface to define common methods for an Asymmetric cryptographic algorithm.
- * 
+ *
  * @param <K>
  *            it is the type of the key details
  */
@@ -18,7 +18,7 @@ public interface SymmetricCrypt<K> {
 
     /**
      * Create a key from the key details.
-     * 
+     *
      * @param keyDetails
      *            the key details
      * @return the key
@@ -27,7 +27,7 @@ public interface SymmetricCrypt<K> {
 
     /**
      * Decrypt the data with the given key.
-     * 
+     *
      * @param key
      *            the key
      * @param data
@@ -38,7 +38,7 @@ public interface SymmetricCrypt<K> {
 
     /**
      * Encrypt the data with the given key.
-     * 
+     *
      * @param key
      *            the key
      * @param data
@@ -49,7 +49,7 @@ public interface SymmetricCrypt<K> {
 
     /**
      * Generate a key.
-     * 
+     *
      * @param keysize
      *            the size of the key (e.g 128, 192, 256, ...)
      * @return the symmetric key
@@ -58,7 +58,7 @@ public interface SymmetricCrypt<K> {
 
     /**
      * To retrieve the details of a key.
-     * 
+     *
      * @param key
      *            the key
      * @return the key details

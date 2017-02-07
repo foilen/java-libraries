@@ -18,7 +18,7 @@ public interface UpgraderTracker {
 
     /**
      * Called before each task.
-     * 
+     *
      * @param taskSimpleName
      *            the task simple class name
      */
@@ -26,7 +26,7 @@ public interface UpgraderTracker {
 
     /**
      * Called after each task.
-     * 
+     *
      * @param taskSimpleName
      *            the task simple class name
      * @param isSuccessful
@@ -46,7 +46,7 @@ public interface UpgraderTracker {
 
     /**
      * Tells if a task was already executed successfully.
-     * 
+     *
      * @param taskSimpleName
      *            the task simple class name
      * @return true if was executed

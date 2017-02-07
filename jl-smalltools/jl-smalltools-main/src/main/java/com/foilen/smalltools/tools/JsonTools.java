@@ -23,7 +23,7 @@ import com.foilen.smalltools.reflection.ReflectionTools;
 
 /**
  * A quick tool to serialize/deserialize to JSON.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
@@ -50,7 +50,7 @@ public final class JsonTools {
 
     /**
      * Return a compact print JSON String.
-     * 
+     *
      * @param object
      *            the object to serialize
      * @return the JSON String
@@ -65,7 +65,7 @@ public final class JsonTools {
 
     /**
      * Return a pretty print JSON String.
-     * 
+     *
      * @param object
      *            the object to serialize
      * @return the JSON String
@@ -80,7 +80,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file.
-     * 
+     *
      * @param file
      *            the file
      * @param clazz
@@ -99,7 +99,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file inside an already existing object.
-     * 
+     *
      * @param file
      *            the file
      * @param target
@@ -112,7 +112,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file.
-     * 
+     *
      * @param fileName
      *            the full path to the file
      * @param clazz
@@ -127,7 +127,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file inside an already existing object.
-     * 
+     *
      * @param fileName
      *            the full path to the file
      * @param target
@@ -139,7 +139,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file.
-     * 
+     *
      * @param file
      *            the file
      * @param clazz
@@ -159,7 +159,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file.
-     * 
+     *
      * @param fileName
      *            the full path to the file
      * @param clazz
@@ -174,7 +174,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file ignoring some failures.
-     * 
+     *
      * @param file
      *            the file
      * @param clazz
@@ -193,7 +193,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file, ignoring some failures, inside an already existing object.
-     * 
+     *
      * @param file
      *            the file
      * @param target
@@ -206,7 +206,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON file, ignoring some failures, inside an already existing object.
-     * 
+     *
      * @param fileName
      *            the full path to the file
      * @param target
@@ -218,7 +218,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON resource.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param clazz
@@ -233,7 +233,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON resource.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param clazz
@@ -254,7 +254,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON resource.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param clazz
@@ -269,7 +269,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON resource.
-     * 
+     *
      * @param resource
      *            the resource to open
      * @param clazz
@@ -291,7 +291,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON String.
-     * 
+     *
      * @param text
      *            the json content
      * @param clazz
@@ -310,7 +310,7 @@ public final class JsonTools {
 
     /**
      * Read the JSON String.
-     * 
+     *
      * @param text
      *            the json content
      * @param clazz
@@ -330,7 +330,7 @@ public final class JsonTools {
 
     /**
      * Write the JSON to the file.
-     * 
+     *
      * @param file
      *            the file
      * @param object
@@ -346,7 +346,7 @@ public final class JsonTools {
 
     /**
      * Write the JSON to the file.
-     * 
+     *
      * @param fileName
      *            the full path to the file
      * @param object
@@ -358,7 +358,7 @@ public final class JsonTools {
 
     /**
      * Write the JSON to the stream. The stream will not be closed.
-     * 
+     *
      * @param stream
      *            the stream
      * @param object
@@ -374,7 +374,7 @@ public final class JsonTools {
 
     /**
      * Write the JSON to a String.
-     * 
+     *
      * @param object
      *            the object to serialize
      * @return the JSON string

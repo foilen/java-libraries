@@ -10,7 +10,7 @@ package com.foilen.smalltools.listscomparator;
 
 /**
  * A difference made by {@link ListsComparator}.
- * 
+ *
  * @param <T>
  *            the type of objects being compared
  */
@@ -30,7 +30,7 @@ public class ListsComparatorDifference<T> {
 
     /**
      * The object that is different.
-     * 
+     *
      * @return the object that is different
      */
     public T getObject() {
@@ -39,7 +39,7 @@ public class ListsComparatorDifference<T> {
 
     /**
      * -1 means that this object is only on the left side; 1 means that this object is only on the right side.
-     * 
+     *
      * @return the side that this object is on
      */
     public int getSide() {

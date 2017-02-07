@@ -18,7 +18,7 @@ import com.google.common.primitives.Bytes;
 
 /**
  * This is a buffer for many blocs of data to crypt.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -40,7 +40,7 @@ public class BufferedSymmetricEncrypt {
     private byte[] processedBlocks;
 
     /**
-     * 
+     *
      * @param blockSize
      *            how many bytes in a block
      * @param amountOfBlocks
@@ -52,12 +52,12 @@ public class BufferedSymmetricEncrypt {
     }
 
     /**
-     * 
+     *
      * @param processor
      *            the bytes processor
      * @param moreContent
      *            the moreContent to set
-     * 
+     *
      */
     public void addMoreContent(BytesProcessor processor, byte[] moreContent) {
         this.moreContent = moreContent;
@@ -68,7 +68,7 @@ public class BufferedSymmetricEncrypt {
 
     /**
      * Set partial more content.
-     * 
+     *
      * @param processor
      *            the bytes processor
      * @param moreContent
@@ -87,7 +87,7 @@ public class BufferedSymmetricEncrypt {
 
     /**
      * Add more bytes to the buffer and process it if full.
-     * 
+     *
      * @param processor
      *            the bytes processor
      */
@@ -125,7 +125,7 @@ public class BufferedSymmetricEncrypt {
 
     /**
      * Force the processing of the partially filled (if not empty) buffer.
-     * 
+     *
      * @param processor
      *            the bytes processor
      */
@@ -145,6 +145,15 @@ public class BufferedSymmetricEncrypt {
         processBuffer(processor);
     }
 
+    /**
+     * The parts that were processed.
+     *
+     * @return the parts that were processed
+     */
+    public byte[] getProcessedBlocks() {
+        return processedBlocks;
+    }
+
     protected void processBuffer(BytesProcessor processor) {
         byte[] processed;
         if (bufferPosition == buffer.length) {
@@ -161,14 +170,5 @@ public class BufferedSymmetricEncrypt {
             processedBlocks = Bytes.concat(processedBlocks, blocksInProcessed, processed);
         }
         bufferPosition = 0;
-    }
-
-    /**
-     * The parts that were processed.
-     * 
-     * @return the parts that were processed
-     */
-    public byte[] getProcessedBlocks() {
-        return processedBlocks;
     }
 }

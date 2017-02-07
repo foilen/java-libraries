@@ -60,29 +60,29 @@ import com.foilen.smalltools.tools.FileTools;
 
 /**
  * To create self-signed certificates and to sign other certificates.
- * 
+ *
  * <pre>
  * Usage:
- * 
+ *
  * // Root
  * AsymmetricKeys rootKeys = rsaCrypt.generateKeyPair(2048);
  * RSACertificate rootCertificate = new RSACertificate(rootKeys);
  * rootCertificate.selfSign(new CertificateDetails().setCommonName("CA root"));
- * 
+ *
  * // Node
  * AsymmetricKeys nodeKeys = rsaCrypt.generateKeyPair(2048);
  * RSACertificate nodeCertificate = rootCertificate.signPublicKey(nodeKeys, new CertificateDetails().setCommonName("p001.node.foilen.org"));
- * 
+ *
  * // Fake Root
  * AsymmetricKeys fakeRootKeys = rsaCrypt.generateKeyPair(2048);
  * RSACertificate fakeRootCertificate = new RSACertificate(fakeRootKeys);
  * fakeRootCertificate.selfSign(new CertificateDetails().setCommonName("CA root"));
- * 
+ *
  * // Assert certificates
  * Assert.assertTrue(rootCertificate.isValidSignature(rootCertificate));
  * Assert.assertTrue(nodeCertificate.isValidSignature(rootCertificate));
  * Assert.assertTrue(fakeRootCertificate.isValidSignature(fakeRootCertificate));
- * 
+ *
  * Assert.assertFalse(rootCertificate.isValidSignature(nodeCertificate));
  * Assert.assertFalse(rootCertificate.isValidSignature(fakeRootCertificate));
  * Assert.assertFalse(nodeCertificate.isValidSignature(nodeCertificate));
@@ -90,7 +90,7 @@ import com.foilen.smalltools.tools.FileTools;
  * Assert.assertFalse(fakeRootCertificate.isValidSignature(rootCertificate));
  * Assert.assertFalse(fakeRootCertificate.isValidSignature(nodeCertificate));
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.madgag.spongycastle:prov:1.51.0.0'
@@ -112,7 +112,7 @@ public class RSACertificate {
 
     /**
      * Load the certificate and keys (if present in the file).
-     * 
+     *
      * @param fileName
      *            the full path of the file
      * @return the certificate
@@ -124,7 +124,7 @@ public class RSACertificate {
 
     /**
      * Load the certificate and keys (if present in the strings).
-     * 
+     *
      * @param pems
      *            the pems (some can be null)
      * @return the certificate
@@ -197,7 +197,7 @@ public class RSACertificate {
 
     /**
      * Get the Java certificate.
-     * 
+     *
      * @return the Java certificate
      */
     public X509Certificate getCertificate() {
@@ -215,7 +215,7 @@ public class RSACertificate {
 
     /**
      * Get the first certificate's common name.
-     * 
+     *
      * @return the common name
      */
     public String getCommonName() {
@@ -232,7 +232,7 @@ public class RSACertificate {
 
     /**
      * Get the certificate's common names.
-     * 
+     *
      * @return the common names
      */
     public Set<String> getCommonNames() {
@@ -256,7 +256,7 @@ public class RSACertificate {
 
     /**
      * Get the ending date of this certificate.
-     * 
+     *
      * @return the ending date
      */
     public Date getEndDate() {
@@ -285,7 +285,7 @@ public class RSACertificate {
 
     /**
      * Get the starting date of this certificate.
-     * 
+     *
      * @return the starting date
      */
     public Date getStartDate() {
@@ -295,7 +295,7 @@ public class RSACertificate {
 
     /**
      * Compute the SHA1 thumbprint.
-     * 
+     *
      * @return the SHA1 thumbprint
      */
     public String getThumbprint() {
@@ -309,7 +309,7 @@ public class RSACertificate {
 
     /**
      * Check if the current time is in the certificate dates range.
-     * 
+     *
      * @return true if valid
      */
     public boolean isValidDate() {
@@ -318,7 +318,7 @@ public class RSACertificate {
 
     /**
      * Check if the specified time is in the certificate dates range.
-     * 
+     *
      * @param date
      *            the time to check
      * @return true if valid
@@ -330,7 +330,7 @@ public class RSACertificate {
 
     /**
      * Check if the certificate was signed by the specified public key.
-     * 
+     *
      * @param signerPublicKey
      *            the signer's public key
      * @return true if signed by it
@@ -346,7 +346,7 @@ public class RSACertificate {
 
     /**
      * Check if the certificate was signed by the specified public key.
-     * 
+     *
      * @param signerPublicKey
      *            the signer's pair of keys that contains the public key
      * @return true if signed by it
@@ -362,7 +362,7 @@ public class RSACertificate {
 
     /**
      * Check if the certificate was signed by the specified certificate.
-     * 
+     *
      * @param signerCertificate
      *            the signer's certificate
      * @return true if signed by it
@@ -378,7 +378,7 @@ public class RSACertificate {
 
     /**
      * Save the certificate in a PEM file.
-     * 
+     *
      * @param fileName
      *            the full path to the file
      */
@@ -392,7 +392,7 @@ public class RSACertificate {
 
     /**
      * Save the certificate in a PEM writer.
-     * 
+     *
      * @param writer
      *            the writer. Will be closed at the end
      */
@@ -412,7 +412,7 @@ public class RSACertificate {
 
     /**
      * Save the certificate in a PEM String.
-     * 
+     *
      * @return the pem
      */
     public String saveCertificatePemAsString() {
@@ -423,7 +423,7 @@ public class RSACertificate {
 
     /**
      * Sign the {@link #setKeysForSigning(AsymmetricKeys)} with itself and put it in certificateHolder.
-     * 
+     *
      * @param certificateDetails
      *            some information to store in the certificate
      * @return this
@@ -467,7 +467,7 @@ public class RSACertificate {
 
     /**
      * Sign another public key.
-     * 
+     *
      * @param publicKeyToSign
      *            the public key to sign
      * @param certificateDetails

@@ -17,14 +17,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is a darklaunching feature to tell which features should be disabled. Any feature not listed is enabled by default.
- * 
+ *
  * <pre>
  * Tip: Use constants for features names instead of using Strings. That makes it easier to remove one component when no more needed.
- * 
+ *
  * Set up the dark launching by providing a list of disabled feature or provide a comma separated list:
  * DarkLaunchingDisabledFeatures darkLaunchingDisabledFeatures = new DarkLaunchingDisabledFeatures();
  * darkLaunchingDisabledFeatures.setDisabledFeatures("FEA_DIS_1,FEA_DIS_2");
- * 
+ *
  * Then, you can check if one or many features are enabled or disabled:
  * darkLaunchingDisabledFeatures.isAllFeaturesEnabled("FEA_ENA_1", "FEA_DIS_2");
  * </pre>
@@ -36,7 +36,7 @@ public class DarkLaunchingDisabledFeatures {
 
     /**
      * Tells if the specified features are all currently disabled.
-     * 
+     *
      * @param featureNames
      *            all the needed features names
      * @return true if all the features are disabled
@@ -59,7 +59,7 @@ public class DarkLaunchingDisabledFeatures {
 
     /**
      * Tells if the specified features are all currently enabled.
-     * 
+     *
      * @param featureNames
      *            all the needed features names
      * @return true if all the features are enabled
@@ -82,7 +82,7 @@ public class DarkLaunchingDisabledFeatures {
 
     /**
      * Tells if any of the specified features is currently disabled.
-     * 
+     *
      * @param featureNames
      *            features names
      * @return true if any the features is disabled
@@ -105,7 +105,7 @@ public class DarkLaunchingDisabledFeatures {
 
     /**
      * Tells if any of the specified features is currently enabled.
-     * 
+     *
      * @param featureNames
      *            features names
      * @return true if any the features is enabled
@@ -128,7 +128,7 @@ public class DarkLaunchingDisabledFeatures {
 
     /**
      * Provide all the features names that are disabled.
-     * 
+     *
      * @param disabledFeatures
      *            provide a list
      */
@@ -138,7 +138,7 @@ public class DarkLaunchingDisabledFeatures {
 
     /**
      * Provide all the features names that are disabled.
-     * 
+     *
      * @param disabledFeatures
      *            provide a comma separated String. Eg: CREATE_USER,LOGIN_ADMIN
      */
@@ -159,7 +159,7 @@ public class DarkLaunchingDisabledFeatures {
 
     /**
      * Provide all the features names that are disabled.
-     * 
+     *
      * @param disabledFeatures
      *            provide an array
      */

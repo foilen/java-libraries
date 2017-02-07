@@ -41,29 +41,29 @@ import com.foilen.smalltools.tools.CollectionsTools;
 
 /**
  * RSA cryptography.
- * 
+ *
  * Default:
  * <ul>
  * <li>RSA: The cipher</li>
  * <li>ECB: Electronic Codebook Mode</li>
  * <li>PKCS1Padding: The padding algorithm</li>
  * </ul>
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * // Prepare the message
  * String message = &quot;Hello World&quot;;
  * byte[] data = message.getBytes();
- * 
+ *
  * // Encrypt
  * AsymmetricKeys keyPair = crypt.generateKeyPair(2048);
  * byte[] cryptedData = crypt.encrypt(keyPair, data);
- * 
+ *
  * // Decrypt
  * byte[] decryptedData = crypt.decrypt(keyPair, cryptedData);
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.madgag.spongycastle:prov:1.51.0.0'

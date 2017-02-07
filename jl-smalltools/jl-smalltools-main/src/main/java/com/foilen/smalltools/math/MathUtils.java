@@ -15,7 +15,7 @@ public class MathUtils {
 
     /**
      * Tells if the signs are different.
-     * 
+     *
      * @param a
      *            first item
      * @param b
@@ -28,7 +28,7 @@ public class MathUtils {
 
     /**
      * Give the position where to insert the drawing on a canvas to be centered.
-     * 
+     *
      * @param drawingSize
      *            the size (width or height) of the drawing to put on the canvas
      * @param canvasSize

@@ -19,7 +19,7 @@ import com.foilen.smalltools.tools.CloseableTools;
 /**
  * Use this class to track a file modification (e.g a config file that you want to reload when changed). If the file changes multiple times quickly, you will get a notification 2 seconds after the
  * last change or max 10 seconds after the first change.
- * 
+ *
  * Don't forget to call {@link #initAutoUpdateSystem()} when you are ready to get the notifications
  */
 public class OneFileUpdateNotifyer implements Closeable, FileSystemUpdateHandler {
@@ -33,6 +33,11 @@ public class OneFileUpdateNotifyer implements Closeable, FileSystemUpdateHandler
         this.fileToWatch = fileToWatch;
         fileToWatchFile = new File(fileToWatch);
         this.handler = handler;
+    }
+
+    @Override
+    public void close() {
+        CloseableTools.close(fileSystemUpdateWatcher);
     }
 
     @Override
@@ -64,11 +69,6 @@ public class OneFileUpdateNotifyer implements Closeable, FileSystemUpdateHandler
         if (file.equals(fileToWatchFile)) {
             handler.fileUpdated(fileToWatch);
         }
-    }
-
-    @Override
-    public void close() {
-        CloseableTools.close(fileSystemUpdateWatcher);
     }
 
 }

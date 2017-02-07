@@ -21,7 +21,7 @@ public final class CollectionsTools {
 
     /**
      * Get a value from a map or insert an empty object for that value.
-     * 
+     *
      * @param map
      *            the map
      * @param key
@@ -50,7 +50,7 @@ public final class CollectionsTools {
 
     /**
      * Get a value from a map or insert an empty {@link ArrayList} for that value.
-     * 
+     *
      * @param map
      *            the map
      * @param key
@@ -75,7 +75,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if all of the items are not null.
-     * 
+     *
      * @param items
      *            the items
      * @return true if all are not null
@@ -91,7 +91,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if all of the items are not null.
-     * 
+     *
      * @param items
      *            the items
      * @return true if all are not null
@@ -107,7 +107,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if all of the items are not null and not empty.
-     * 
+     *
      * @param items
      *            the items
      * @return true if all are not null and not empty
@@ -123,7 +123,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if all of the items are not null and not empty.
-     * 
+     *
      * @param items
      *            the items
      * @return true if all are not null and not empty
@@ -139,7 +139,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if any of the items is not null.
-     * 
+     *
      * @param items
      *            the items
      * @return true if any is not null
@@ -155,7 +155,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if any of the items is not null.
-     * 
+     *
      * @param items
      *            the items
      * @return true if any is not null
@@ -171,7 +171,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if any of the items is not null and not empty.
-     * 
+     *
      * @param items
      *            the items
      * @return true if any is not null and not empty
@@ -187,7 +187,7 @@ public final class CollectionsTools {
 
     /**
      * Is true if any of the items is not null and not empty.
-     * 
+     *
      * @param items
      *            the items
      * @return true if any is not null and not empty
@@ -203,7 +203,7 @@ public final class CollectionsTools {
 
     /**
      * Tells if the collection is null or empty.
-     * 
+     *
      * @param collection
      *            the collection to check
      * @return true if is null or empty
@@ -214,7 +214,7 @@ public final class CollectionsTools {
 
     /**
      * Remove the first entry with the specified value in the map.
-     * 
+     *
      * @param map
      *            the map
      * @param valueToRemove
@@ -241,7 +241,7 @@ public final class CollectionsTools {
 
     /**
      * Remove the entries with the specified value in the map.
-     * 
+     *
      * @param map
      *            the map
      * @param valueToRemove

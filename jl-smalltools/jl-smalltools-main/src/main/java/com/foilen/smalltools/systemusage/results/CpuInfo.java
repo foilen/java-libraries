@@ -23,7 +23,7 @@ public class CpuInfo {
 
     /**
      * Get the total busy usage (all, but idle). Warning: this usage is since the start of the machine since it is the cumulative absolute.
-     * 
+     *
      * @return the busy usage
      */
     public long calculateBusy() {
@@ -32,7 +32,7 @@ public class CpuInfo {
 
     /**
      * Get the busy percentage. Warning: this usage is since the start of the machine since it is the cumulative absolute.
-     * 
+     *
      * @return the busy percentage
      */
     public long calculateBusyPercent() {
@@ -41,7 +41,7 @@ public class CpuInfo {
 
     /**
      * Get the total usage (busy + idle). Warning: this usage is since the start of the machine since it is the cumulative absolute.
-     * 
+     *
      * @return the total
      */
     public long calculateTotal() {

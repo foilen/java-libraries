@@ -17,14 +17,14 @@ import org.springframework.util.Assert;
 
 /**
  * Configure beans outside of the container.
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * - Add this as a bean in your Spring application.
  * - Use SpringTools.configure(yourObject) to configure it with your Spring container.
  * </pre>
- * 
+ *
  * <pre>
 * Dependencies:
 * compile 'org.springframework:spring-beans:4.1.6.RELEASE'

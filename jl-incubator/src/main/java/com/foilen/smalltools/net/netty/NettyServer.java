@@ -65,7 +65,7 @@ public class NettyServer implements Closeable {
 
     /**
      * Get the port that it is currently listening on.
-     * 
+     *
      * @return the port
      */
     public int getPort() {
@@ -74,7 +74,7 @@ public class NettyServer implements Closeable {
 
     /**
      * Wait for this server to die.
-     * 
+     *
      * @throws InterruptedException
      *             if interrupted while waiting
      */
@@ -85,7 +85,7 @@ public class NettyServer implements Closeable {
 
     /**
      * Start the server.
-     * 
+     *
      * @param port
      *            the port to listen on (0 for a random port ; get it with {@link #getPort()})
      * @param trustedCertificates
@@ -100,69 +100,66 @@ public class NettyServer implements Closeable {
         AssertTools.assertNull(thread, "Server is already started");
 
         final CountDownLatch countDownLatch = new CountDownLatch(1);
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ServerBootstrap serverBootstrap = new ServerBootstrap();
-                    serverBootstrap.group(NettyCommon.EVENT_LOOP_GROUP, NettyCommon.EVENT_LOOP_GROUP);
-                    serverBootstrap.channel(NioServerSocketChannel.class);
+        thread = new Thread(() -> {
+            try {
+                ServerBootstrap serverBootstrap = new ServerBootstrap();
+                serverBootstrap.group(NettyCommon.EVENT_LOOP_GROUP, NettyCommon.EVENT_LOOP_GROUP);
+                serverBootstrap.channel(NioServerSocketChannel.class);
 
-                    serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
+                serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
 
-                            InetSocketAddress remoteAddress = socketChannel.remoteAddress();
-                            logger.info("Got a connection from {}:{}", remoteAddress.getHostName(), remoteAddress.getPort());
+                        InetSocketAddress remoteAddress = socketChannel.remoteAddress();
+                        logger.info("Got a connection from {}:{}", remoteAddress.getHostName(), remoteAddress.getPort());
 
-                            // Add sslCtx if needed
-                            if (trustedCertificates != null || certificate != null) {
-                                TrustManagerFactory trustManagerFactory = trustedCertificates == null ? null : RSATools.createTrustManagerFactory(trustedCertificates);
-                                KeyManagerFactory keyManagerFactory = certificate == null ? null : RSATools.createKeyManagerFactory(certificate);
+                        // Add sslCtx if needed
+                        if (trustedCertificates != null || certificate != null) {
+                            TrustManagerFactory trustManagerFactory = trustedCertificates == null ? null : RSATools.createTrustManagerFactory(trustedCertificates);
+                            KeyManagerFactory keyManagerFactory = certificate == null ? null : RSATools.createKeyManagerFactory(certificate);
 
-                                CipherSuiteFilter cipherFilter = IdentityCipherSuiteFilter.INSTANCE;
-                                SslContext sslCtx = SslContext.newServerContext(SslProvider.JDK, null, trustManagerFactory, null, null, null, keyManagerFactory, null, cipherFilter, null, 0, 0);
-                                SslHandler sslHandler = sslCtx.newHandler(socketChannel.alloc());
+                            CipherSuiteFilter cipherFilter = IdentityCipherSuiteFilter.INSTANCE;
+                            SslContext sslCtx = SslContext.newServerContext(SslProvider.JDK, null, trustManagerFactory, null, null, null, keyManagerFactory, null, cipherFilter, null, 0, 0);
+                            SslHandler sslHandler = sslCtx.newHandler(socketChannel.alloc());
 
-                                if (trustManagerFactory == null) {
-                                    logger.debug("Will not verify client's identity");
-                                } else {
-                                    logger.debug("Will verify client's identity");
-                                    SSLEngine sslEngine = sslHandler.engine();
-                                    sslEngine.setNeedClientAuth(true);
-                                }
-
-                                socketChannel.pipeline().addLast(sslHandler);
+                            if (trustManagerFactory == null) {
+                                logger.debug("Will not verify client's identity");
+                            } else {
+                                logger.debug("Will verify client's identity");
+                                SSLEngine sslEngine = sslHandler.engine();
+                                sslEngine.setNeedClientAuth(true);
                             }
 
-                            // Add the channel handlers
-                            for (ChannelHandlerContainer channelHandlerContainer : channelHandlerContainers) {
-                                socketChannel.pipeline().addLast(ReflectionTools.instantiate(channelHandlerContainer.getChannelHandlerClass(), channelHandlerContainer.getConstructorParams()));
-                            }
+                            socketChannel.pipeline().addLast(sslHandler);
                         }
-                    }) //
-                            .option(ChannelOption.SO_BACKLOG, 128) //
-                            .childOption(ChannelOption.SO_KEEPALIVE, true);
 
-                    bindedPort = port;
-                    logger.info("Server on port {} is starting...", port);
-                    ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
-                    SocketAddress socketAddress = channelFuture.channel().localAddress();
-                    if (socketAddress instanceof InetSocketAddress) {
-                        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
-                        bindedPort = inetSocketAddress.getPort();
+                        // Add the channel handlers
+                        for (ChannelHandlerContainer channelHandlerContainer : channelHandlerContainers) {
+                            socketChannel.pipeline().addLast(ReflectionTools.instantiate(channelHandlerContainer.getChannelHandlerClass(), channelHandlerContainer.getConstructorParams()));
+                        }
                     }
-                    logger.info("Server on port {} is started", bindedPort);
-                    countDownLatch.countDown();
-                    channelFuture.channel().closeFuture().sync();
-                } catch (InterruptedException e) {
-                    logger.info("Server on port {} is interrupted", bindedPort);
-                } finally {
-                    countDownLatch.countDown();
+                }) //
+                        .option(ChannelOption.SO_BACKLOG, 128) //
+                        .childOption(ChannelOption.SO_KEEPALIVE, true);
+
+                bindedPort = port;
+                logger.info("Server on port {} is starting...", port);
+                ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+                SocketAddress socketAddress = channelFuture.channel().localAddress();
+                if (socketAddress instanceof InetSocketAddress) {
+                    InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
+                    bindedPort = inetSocketAddress.getPort();
                 }
-                logger.info("Server on port {} is stopped", bindedPort);
+                logger.info("Server on port {} is started", bindedPort);
+                countDownLatch.countDown();
+                channelFuture.channel().closeFuture().sync();
+            } catch (InterruptedException e) {
+                logger.info("Server on port {} is interrupted", bindedPort);
+            } finally {
+                countDownLatch.countDown();
             }
+            logger.info("Server on port {} is stopped", bindedPort);
         });
         thread.setName("Netty Server-" + bindedPort);
         thread.start();

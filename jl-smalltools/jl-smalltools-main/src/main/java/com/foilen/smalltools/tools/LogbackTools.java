@@ -16,7 +16,7 @@ import ch.qos.logback.core.joran.spi.JoranException;
 
 /**
  * Some tools for Logback.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'ch.qos.logback:logback-classic:1.1.3'
@@ -26,7 +26,7 @@ public class LogbackTools {
 
     /**
      * Reset the loggers with the new resource config.
-     * 
+     *
      * @param configResourceName
      *            the name of the config file
      */

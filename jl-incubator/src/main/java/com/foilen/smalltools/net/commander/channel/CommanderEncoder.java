@@ -27,7 +27,7 @@ import io.netty.util.CharsetUtil;
  * - jsonContentSize:int
  * - jsonContent:String
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'

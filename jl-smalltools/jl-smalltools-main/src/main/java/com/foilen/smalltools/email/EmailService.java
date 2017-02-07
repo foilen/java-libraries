@@ -15,7 +15,7 @@ public interface EmailService {
 
     /**
      * Send an advanced email defined with the builder.
-     * 
+     *
      * @param emailBuilder
      *            the builder
      */
@@ -23,7 +23,7 @@ public interface EmailService {
 
     /**
      * Send an html email.
-     * 
+     *
      * @param from
      *            the email that sends it
      * @param to
@@ -37,7 +37,7 @@ public interface EmailService {
 
     /**
      * Send a text email.
-     * 
+     *
      * @param from
      *            the email that sends it
      * @param to

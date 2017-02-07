@@ -17,7 +17,7 @@ import com.foilen.smalltools.tools.FileTools;
 
 /**
  * When closing this stream, it will rename the specified file. Mostly used to have a staging file that will get its final name when finished to write to it (e.g. downloading file).
- * 
+ *
  * You can use it via {@link FileTools#createStagingFile(File, File)} and {@link FileTools#createStagingFile(String, String)}.
  */
 public class RenamingOnCloseOutputStreamWrapper extends AbstractOutputStreamWrapper {
@@ -27,7 +27,7 @@ public class RenamingOnCloseOutputStreamWrapper extends AbstractOutputStreamWrap
 
     /**
      * Create the wrapped output stream.
-     * 
+     *
      * @param wrappedOutputStream
      *            the output stream to wait for close
      * @param renameSourceFile

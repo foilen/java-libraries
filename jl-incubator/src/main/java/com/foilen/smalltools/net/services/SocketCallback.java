@@ -17,7 +17,7 @@ public interface SocketCallback {
 
     /**
      * Called when there is a new connection made.
-     * 
+     *
      * @param socket
      *            the socket of the client
      */

@@ -33,7 +33,7 @@ public class MemoryUsage {
 
     /**
      * Call the method and return its value or null.
-     * 
+     *
      * @param method
      *            the method (also support null)
      * @return its value or null
@@ -49,7 +49,7 @@ public class MemoryUsage {
 
     /**
      * Return the method or null.
-     * 
+     *
      * @param type
      *            the class type
      * @param name
@@ -69,7 +69,7 @@ public class MemoryUsage {
 
     /**
      * The free memory of the system.
-     * 
+     *
      * @return the free memory of the system or null if cannot get it
      */
     public static Long getSystemFreeMemory() {
@@ -82,7 +82,7 @@ public class MemoryUsage {
 
     /**
      * The free memory of the system in percent.
-     * 
+     *
      * @return the free memory of the system in percent or null if cannot get it
      */
     public static Double getSystemFreeMemoryPercent() {
@@ -96,7 +96,7 @@ public class MemoryUsage {
 
     /**
      * The total memory of the system.
-     * 
+     *
      * @return the total memory of the system or null if cannot get it
      */
     public static Long getSystemTotalMemory() {
@@ -109,7 +109,7 @@ public class MemoryUsage {
 
     /**
      * The used memory of the system.
-     * 
+     *
      * @return the used memory of the system or null if cannot get it
      */
     public static Long getSystemUsedMemory() {
@@ -123,7 +123,7 @@ public class MemoryUsage {
 
     /**
      * The used memory of the system in percent.
-     * 
+     *
      * @return the used memory of the system in percent or null if cannot get it
      */
     public static Double getSystemUsedMemoryPercent() {

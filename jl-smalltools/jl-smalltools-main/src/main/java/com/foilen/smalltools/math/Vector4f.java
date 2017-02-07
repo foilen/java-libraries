@@ -87,7 +87,7 @@ public class Vector4f {
 
     /**
      * Transform to a 4 items array.
-     * 
+     *
      * @return a float array of ABCD
      */
     public float[] toArray() {

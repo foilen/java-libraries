@@ -10,7 +10,7 @@ package com.foilen.smalltools.net.commander.command;
 
 /**
  * Extend this class to create a command that sends back a result. The corresponding implementation uses {@link AbstractCommandImplementationWithResponse}.
- * 
+ *
  * @param <R>
  *            the response type
  */

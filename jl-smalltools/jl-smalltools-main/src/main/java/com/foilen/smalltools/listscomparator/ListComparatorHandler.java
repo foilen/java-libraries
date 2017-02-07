@@ -10,7 +10,7 @@ package com.foilen.smalltools.listscomparator;
 
 /**
  * Extend with what to do with what is different and what is the same.
- * 
+ *
  * @param <L>
  *            type of the left item
  * @param <R>
@@ -20,7 +20,7 @@ public interface ListComparatorHandler<L, R> {
 
     /**
      * What to do with items present in both lists.
-     * 
+     *
      * @param left
      *            the left item
      * @param right
@@ -30,7 +30,7 @@ public interface ListComparatorHandler<L, R> {
 
     /**
      * What to do with items present only in the left side.
-     * 
+     *
      * @param left
      *            the left item
      */
@@ -38,7 +38,7 @@ public interface ListComparatorHandler<L, R> {
 
     /**
      * What to do with items present only in the right side.
-     * 
+     *
      * @param right
      *            the right item
      */

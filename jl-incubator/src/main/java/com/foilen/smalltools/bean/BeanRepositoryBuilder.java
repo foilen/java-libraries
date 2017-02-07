@@ -17,14 +17,14 @@ public interface BeanRepositoryBuilder {
 
     /**
      * When all the desired beans are queued, call this method to create the repository. Will throw an exception if some dependencies are not fulfilled.
-     * 
+     *
      * @return the {@link BeanRepository}
      */
     BeanRepository create();
 
     /**
      * Will instantiate the class and keep it as is.
-     * 
+     *
      * @param classes
      *            the type(s)
      * @return this - to continue building
@@ -33,7 +33,7 @@ public interface BeanRepositoryBuilder {
 
     /**
      * Keep the objects as is.
-     * 
+     *
      * @param objects
      *            the objects
      * @return this - to continue building
@@ -42,7 +42,7 @@ public interface BeanRepositoryBuilder {
 
     /**
      * Will instantiate the class and wire all the fields that has the {@link BeanConfigure} annotation. All the dependent beans must be already registered.
-     * 
+     *
      * @param classes
      *            the type(s)
      * @return this - to continue building
@@ -51,7 +51,7 @@ public interface BeanRepositoryBuilder {
 
     /**
      * Wire all the fields that has the {@link BeanConfigure} annotation. All the dependent beans must be already registered.
-     * 
+     *
      * @param objects
      *            the objects
      * @return this - to continue building
@@ -60,7 +60,7 @@ public interface BeanRepositoryBuilder {
 
     /**
      * Queue all the beans of a provider in this builder.
-     * 
+     *
      * @param beanProviderClass
      *            the type of the provider
      * @return this - to continue building

@@ -21,19 +21,19 @@ import com.foilen.smalltools.tools.CloseableTools;
 
 /**
  * This is a TCP server. All the logic to handle new connections is taken care of and all you need to have is a {@link SocketCallback}. Upon instantiation, a new thread is started right away.
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * // An example of an Hello Server
  * public class HelloSocketCallback implements SocketCallback {
- * 
+ *
  *     private String text;
- * 
+ *
  *     public HelloSocketCallback(String text) {
  *         this.text = text;
  *     }
- * 
+ *
  *     &#064;Override
  *     public void newClient(Socket socket) {
  *         try {
@@ -42,10 +42,10 @@ import com.foilen.smalltools.tools.CloseableTools;
  *         }
  *     }
  * }
- * 
+ *
  * // Create a TCP server on port 9090
  * TCPServerService tcpServerService = new TCPServerService(9090, new HelloSocketCallback(&quot;Hello World&quot;));
- * 
+ *
  * </pre>
  */
 public class TCPServerService implements Closeable, Runnable {
@@ -59,7 +59,7 @@ public class TCPServerService implements Closeable, Runnable {
 
     /**
      * Create a new TCP server on a specific port.
-     * 
+     *
      * @param port
      *            the desired port
      * @param socketCallback
@@ -74,7 +74,7 @@ public class TCPServerService implements Closeable, Runnable {
 
     /**
      * Create a new TCP server on any available port.
-     * 
+     *
      * @param socketCallback
      *            when someone connects to this new server, this handler will be called
      */
@@ -87,7 +87,7 @@ public class TCPServerService implements Closeable, Runnable {
 
     /**
      * Use an already created TCP server.
-     * 
+     *
      * @param socketCallback
      *            when someone connects to this new server, this handler will be called
      * @param serverSocket
@@ -111,7 +111,7 @@ public class TCPServerService implements Closeable, Runnable {
 
     /**
      * Get the listening port.
-     * 
+     *
      * @return the port
      */
     public int getPort() {

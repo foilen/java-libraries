@@ -32,7 +32,7 @@ public class ThreadNameStateTool {
 
     /**
      * Append the current full date and time.
-     * 
+     *
      * @return this
      */
     public ThreadNameStateTool appendDate() {
@@ -42,7 +42,7 @@ public class ThreadNameStateTool {
 
     /**
      * Append the full date and time.
-     * 
+     *
      * @param date
      *            the date
      * @return this
@@ -58,7 +58,7 @@ public class ThreadNameStateTool {
 
     /**
      * Append an object as a compact JSON.
-     * 
+     *
      * @param object
      *            the object
      * @return this
@@ -74,7 +74,7 @@ public class ThreadNameStateTool {
 
     /**
      * Append the class name.
-     * 
+     *
      * @param object
      *            the object
      * @return this
@@ -90,7 +90,7 @@ public class ThreadNameStateTool {
 
     /**
      * Append the simple class name.
-     * 
+     *
      * @param object
      *            the object
      * @return this
@@ -107,7 +107,7 @@ public class ThreadNameStateTool {
 
     /**
      * Append an object {@link #toString()}.
-     * 
+     *
      * @param object
      *            the object
      * @return this
@@ -123,7 +123,7 @@ public class ThreadNameStateTool {
 
     /**
      * Append some text.
-     * 
+     *
      * @param text
      *            the text
      * @return this
@@ -135,7 +135,7 @@ public class ThreadNameStateTool {
 
     /**
      * Change the current thread name. Can be reverted with {@link #revert()}.
-     * 
+     *
      * @return this
      */
     public ThreadNameStateTool change() {
@@ -149,7 +149,7 @@ public class ThreadNameStateTool {
 
     /**
      * Remove all the text for the next {@link #change()}.
-     * 
+     *
      * @return this
      */
     public ThreadNameStateTool clear() {
@@ -159,7 +159,7 @@ public class ThreadNameStateTool {
 
     /**
      * Remove the last part.
-     * 
+     *
      * @return this
      */
     public ThreadNameStateTool pop() {
@@ -171,7 +171,7 @@ public class ThreadNameStateTool {
 
     /**
      * Change the current thread name back to what it was before the last {@link #change()}. Calling a second time switch back to the name before the last {@link #revert()}.
-     * 
+     *
      * @return this
      */
     public ThreadNameStateTool revert() {

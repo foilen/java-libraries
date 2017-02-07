@@ -18,7 +18,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * When new tasks are submitted, it will reuse free threads or start new ones up to the max. It will throw an exception if the max is reached.
- * 
+ *
  * @deprecated you can use: new {@link ThreadPoolExecutor}(0, maxThreads, timeoutThreadMs, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>()) instead
  */
 @Deprecated
@@ -61,12 +61,12 @@ public class GradualThreadsExecutor implements Executor {
         }
     }
 
-    protected void nowFree(ExpirableTaskThread expirableTaskThread) {
-        freeThreads.add(expirableTaskThread);
-    }
-
     protected void expired(ExpirableTaskThread expirableTaskThread) {
         freeThreads.remove(expirableTaskThread);
         threadCount.decrementAndGet();
+    }
+
+    protected void nowFree(ExpirableTaskThread expirableTaskThread) {
+        freeThreads.add(expirableTaskThread);
     }
 }

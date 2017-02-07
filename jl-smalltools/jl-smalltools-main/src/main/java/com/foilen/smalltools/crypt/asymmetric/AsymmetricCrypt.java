@@ -12,7 +12,7 @@ import java.io.Writer;
 
 /**
  * An interface to define common methods for an Asymmetric cryptographic algorithm.
- * 
+ *
  * @param <K>
  *            it is the type of the keys details
  */
@@ -20,7 +20,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Create a key pair from the key details.
-     * 
+     *
      * @param keyDetails
      *            the key details
      * @return the AsymmetricKeys
@@ -29,7 +29,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Decrypt the data with the given key.
-     * 
+     *
      * @param keyPair
      *            the key pair. The private key must be set
      * @param data
@@ -40,7 +40,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Encrypt the data with the given key.
-     * 
+     *
      * @param keyPair
      *            the key pair. The public key must be set
      * @param data
@@ -51,7 +51,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Generate a public and private key.
-     * 
+     *
      * @param keysize
      *            the size of the key (e.g 1024, 2048, 4096, ...)
      * @return the asymmetric key
@@ -60,7 +60,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Load the public and/or private keys from a PEM file.
-     * 
+     *
      * @param fileName
      *            the file name
      * @return the pair of keys
@@ -69,7 +69,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Load the public and/or private keys from the Strings.
-     * 
+     *
      * @param pems
      *            the pems Strings (some can be null)
      * @return the pair of keys
@@ -78,7 +78,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * To retrieve the details of a key pair.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @return the key details
@@ -87,7 +87,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Save the public and private keys in a PEM file.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @param fileName
@@ -97,7 +97,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Save the private key in a PEM file.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @param fileName
@@ -107,7 +107,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Save the private key in a PEM writer.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @param writer
@@ -117,7 +117,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Save the private key in a PEM String.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @return the pem
@@ -126,7 +126,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Save the public key in a PEM file.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @param fileName
@@ -136,7 +136,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Save the public key in a PEM writer.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @param writer
@@ -146,7 +146,7 @@ public interface AsymmetricCrypt<K> {
 
     /**
      * Save the public key in a PEM String.
-     * 
+     *
      * @param keyPair
      *            the pair of keys
      * @return the pem

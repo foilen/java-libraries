@@ -9,7 +9,6 @@
 package com.foilen.smalltools.net.discovery;
 
 import java.net.Socket;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -99,12 +98,7 @@ public class LocalBroadcastDiscoveryTest implements SocketCallback {
 
         // Check this is the right services
         Assert.assertEquals(2, servicesList.size());
-        servicesList.sort(new Comparator<DiscoverableService>() {
-            @Override
-            public int compare(DiscoverableService o1, DiscoverableService o2) {
-                return o1.getServiceDescription().compareTo(o2.getServiceDescription());
-            }
-        });
+        servicesList.sort((o1, o2) -> o1.getServiceDescription().compareTo(o2.getServiceDescription()));
         DiscoverableService discoverableServiceRetrieved = servicesList.get(0);
         Assert.assertEquals(appName, discoverableServiceRetrieved.getAppName());
         Assert.assertEquals(appVersion, discoverableServiceRetrieved.getAppVersion());

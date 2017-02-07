@@ -17,7 +17,7 @@ public final class ConsoleTools {
 
     /**
      * Execute the command, display the outputs to the screen while waiting for it to complete.
-     * 
+     *
      * @param command
      *            the full command with arguments to run
      * @return the exit value
@@ -39,7 +39,7 @@ public final class ConsoleTools {
 
     /**
      * Execute the command, display the outputs to the screen while waiting for it to complete.
-     * 
+     *
      * @param arguments
      *            the command and then its arguments
      * @return the exit value
@@ -61,7 +61,7 @@ public final class ConsoleTools {
 
     /**
      * Execute the command, display the outputs to the screen while waiting for it to complete.
-     * 
+     *
      * @param arguments
      *            the command and then its arguments
      * @param inputText

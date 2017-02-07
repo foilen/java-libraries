@@ -12,7 +12,7 @@ public class SystemTools {
 
     /**
      * Sets a system property if not already defined.
-     * 
+     *
      * @param key
      *            the property's key
      * @param value

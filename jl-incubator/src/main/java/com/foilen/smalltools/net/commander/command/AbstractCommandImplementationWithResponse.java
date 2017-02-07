@@ -15,11 +15,11 @@ import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
 
 /**
  * Extend this class to create a command that sends back a result.
- * 
+ *
  * @param <R>
  *            the response type
- * 
- * 
+ *
+ *
  *            <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
@@ -51,7 +51,7 @@ public abstract class AbstractCommandImplementationWithResponse<R> implements Co
 
     /**
      * Overwrite with the method that will return a reply.
-     * 
+     *
      * @return the reply
      */
     protected abstract R runWithResponse();

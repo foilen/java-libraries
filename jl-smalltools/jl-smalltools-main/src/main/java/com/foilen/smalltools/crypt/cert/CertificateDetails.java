@@ -16,7 +16,7 @@ import com.foilen.smalltools.tools.DateTools;
 
 /**
  * Some details for generating a certificate. This is used by {@link RSACertificate}.
- * 
+ *
  * <pre>
  * The default values are:
  * commonName: "noname"

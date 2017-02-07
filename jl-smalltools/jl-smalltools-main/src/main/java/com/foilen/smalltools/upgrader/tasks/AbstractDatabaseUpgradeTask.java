@@ -19,9 +19,9 @@ import com.foilen.smalltools.tools.ResourceTools;
 import com.google.common.base.Strings;
 
 /**
- * 
+ *
  * Use this to have some common database helpers for your task.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -53,7 +53,7 @@ public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {
 
     /**
      * Take a resource file and execute all the queries in it.
-     * 
+     *
      * @param resourceName
      *            the name of the resource relative to this class
      */
@@ -63,7 +63,7 @@ public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {
 
     /**
      * Take a resource file and execute all the queries in it.
-     * 
+     *
      * @param resourceName
      *            the name of the resource relative to the context class
      * @param resourceCtx

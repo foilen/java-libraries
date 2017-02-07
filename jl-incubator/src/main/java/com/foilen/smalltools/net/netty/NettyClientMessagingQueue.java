@@ -25,7 +25,7 @@ import io.netty.channel.ChannelException;
 
 /**
  * This is a queue that manages the messages to send to make sure that it is done in a thread-safe way.
- * 
+ *
  * <pre>
 * Dependencies:
 * compile 'io.netty:netty-all:5.0.0.Alpha2'
@@ -40,7 +40,7 @@ public class NettyClientMessagingQueue extends Thread {
 
     /**
      * Get the {@link NettyClientMessagingQueue} for the channel. Will be the same instance for the same channel.
-     * 
+     *
      * @param channel
      *            the channel
      * @return the {@link NettyClientMessagingQueue} or null if the channel is null
@@ -58,7 +58,7 @@ public class NettyClientMessagingQueue extends Thread {
 
     /**
      * Get the {@link NettyClientMessagingQueue} for the channel in the {@link NettyClient}. Will be the same instance for the same channel.
-     * 
+     *
      * @param nettyClient
      *            the netty client
      * @return the {@link NettyClientMessagingQueue} or null if the channel or the nettyClient is null
@@ -81,22 +81,19 @@ public class NettyClientMessagingQueue extends Thread {
             // Start the cleanup task if not yet started
             if (!cleanupTaskStarted) {
                 cleanupTaskStarted = true;
-                Thread cleanupThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (;;) {
-                            // Wait 5 minutes
-                            ThreadTools.sleep(5 * 60000);
-                            logger.debug("Checking for stopped messaging queues");
+                Thread cleanupThread = new Thread((Runnable) () -> {
+                    for (;;) {
+                        // Wait 5 minutes
+                        ThreadTools.sleep(5 * 60000);
+                        logger.debug("Checking for stopped messaging queues");
 
-                            // Check for those closed
-                            Iterator<NettyClientMessagingQueue> it = messagingQueueByChannel.values().iterator();
-                            while (it.hasNext()) {
-                                NettyClientMessagingQueue next = it.next();
-                                if (!next.isConnected()) {
-                                    next.close();
-                                    it.remove();
-                                }
+                        // Check for those closed
+                        Iterator<NettyClientMessagingQueue> it = messagingQueueByChannel.values().iterator();
+                        while (it.hasNext()) {
+                            NettyClientMessagingQueue next = it.next();
+                            if (!next.isConnected()) {
+                                next.close();
+                                it.remove();
                             }
                         }
                     }
@@ -136,7 +133,7 @@ public class NettyClientMessagingQueue extends Thread {
 
     /**
      * Tells if it is currently connected.
-     * 
+     *
      * @return true if connected
      */
     public boolean isConnected() {
@@ -169,7 +166,7 @@ public class NettyClientMessagingQueue extends Thread {
 
     /**
      * Place a message to send on the sending queue.
-     * 
+     *
      * @param msg
      *            the message
      */

@@ -26,7 +26,7 @@ import com.foilen.smalltools.net.netty.NettyClient;
 
 /**
  * The client side of the commander system. See {@link CommanderServer} for all the details and sample usage.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
@@ -54,7 +54,7 @@ public class CommanderClient {
 
     /**
      * If the connection pool keeps a connection open, it can close it.
-     * 
+     *
      * @param host
      *            the host name
      * @param port
@@ -66,7 +66,7 @@ public class CommanderClient {
 
     /**
      * INTERNAL: This is used by the {@link ConnectionPool}. Use the send*() methods instead.
-     * 
+     *
      * @param host
      *            the host to connect to
      * @param port
@@ -94,7 +94,7 @@ public class CommanderClient {
 
     /**
      * Get the client certificate.
-     * 
+     *
      * @return the client certificate
      */
     public RSACertificate getClientCertificate() {
@@ -103,7 +103,7 @@ public class CommanderClient {
 
     /**
      * Call this to get a connection where to send messages.
-     * 
+     *
      * @param host
      *            the host name
      * @param port
@@ -116,7 +116,7 @@ public class CommanderClient {
 
     /**
      * Get the local server that could receive connections from this client.
-     * 
+     *
      * @return the commander server
      */
     public CommanderServer getCommanderServer() {
@@ -125,7 +125,7 @@ public class CommanderClient {
 
     /**
      * Call this to get a connection where to send messages.
-     * 
+     *
      * @param host
      *            the host name
      * @param port
@@ -138,7 +138,7 @@ public class CommanderClient {
 
     /**
      * Tells how many connections are opened.
-     * 
+     *
      * @return the number of connections
      */
     public int getConnectionsCount() {
@@ -151,7 +151,7 @@ public class CommanderClient {
 
     /**
      * Get the certificates that are trusted to connect to.
-     * 
+     *
      * @return the trusted certificates
      */
     public RSATrustedCertificates getServerTrustedCertificates() {
@@ -160,7 +160,7 @@ public class CommanderClient {
 
     /**
      * Get if you want all the deserialized objects to be filled by Spring.
-     * 
+     *
      * @return true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
      */
     public boolean isConfigureSpring() {
@@ -169,7 +169,7 @@ public class CommanderClient {
 
     /**
      * Set the client certificate.
-     * 
+     *
      * @param clientCertificate
      *            the client certificate
      * @return this
@@ -182,7 +182,7 @@ public class CommanderClient {
     /**
      * Set the commander server that could receive connections from this client. This is useful if you want to tell the server how to connect back to this machine if the connection is broken. (When
      * the client connects, it will send its server port to configure the remote connection. This is only when the client also has a server. Kind of a Peer to peer)
-     * 
+     *
      * @param commanderServer
      *            the commander server to let the remote machine reconnect to closed outgoing connections
      */
@@ -192,7 +192,7 @@ public class CommanderClient {
 
     /**
      * Set if you want all the deserialized objects to be filled by Spring.
-     * 
+     *
      * @param configureSpring
      *            true to configure the {@link CommandImplementation} (e.g: fill the @Autowired)
      * @return this
@@ -208,7 +208,7 @@ public class CommanderClient {
 
     /**
      * Set the certificates that are trusted to connect to.
-     * 
+     *
      * @param serverTrustedCertificates
      *            the trusted certificates
      * @return this

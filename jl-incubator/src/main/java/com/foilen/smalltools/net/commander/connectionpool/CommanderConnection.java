@@ -45,7 +45,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * Create a commander connection using an existing Netty Client.
-     * 
+     *
      * @param nettyClient
      *            the Netty Client
      */
@@ -73,7 +73,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * (Optional) Forces to connect if not already connected. You can send messages without calling this function.
-     * 
+     *
      * @throws SmallToolsException
      *             if cannot connect
      */
@@ -105,7 +105,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * Get the ip of the remote connection when connected.
-     * 
+     *
      * @return the ip or null if not available
      */
     public String getPeerIp() {
@@ -121,7 +121,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * Get the first SSL certificate if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
-     * 
+     *
      * @return the certificate or null if it is not ready or available
      */
     public RSACertificate getPeerSslCertificate() {
@@ -135,7 +135,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * Get the SSL certificates if there is a connection using SSL and that the handshake is completed. (This side needs to trust the other side and the other side needs to have a certificate)
-     * 
+     *
      * @return the certificates or null if it is not ready or available
      */
     public List<RSACertificate> getPeerSslCertificates() {
@@ -155,7 +155,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * Tells if it is currently connected.
-     * 
+     *
      * @return true if connected
      */
     public synchronized boolean isConnected() {
@@ -168,7 +168,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * Send a command.
-     * 
+     *
      * @param command
      *            the command to run
      */
@@ -183,7 +183,7 @@ public class CommanderConnection implements Closeable {
 
     /**
      * Send a command and wait for the response.
-     * 
+     *
      * @param commandWithReply
      *            the command to run
      * @param <R>

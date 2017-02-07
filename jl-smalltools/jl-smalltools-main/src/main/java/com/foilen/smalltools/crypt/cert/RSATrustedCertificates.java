@@ -28,22 +28,22 @@ import com.foilen.smalltools.tools.CloseableTools;
 
 /**
  * List multiple certificates from different sources that you trust and use the validation to check a certificate. All the certificates must be valid in time.
- * 
+ *
  * <pre>
  * RSACrypt rsaCrypt = new RSACrypt();
  * RSACertificate certA = new RSACertificate(rsaCrypt.generateKeyPair(4096)).selfSign(new CertificateDetails().setCommonName(&quot;A&quot;));
  * RSACertificate certAB = certA.signPublicKey(rsaCrypt.generateKeyPair(4096), new CertificateDetails().setCommonName(&quot;AB&quot;));
  * RSACertificate certABC = certAB.signPublicKey(rsaCrypt.generateKeyPair(4096), new CertificateDetails().setCommonName(&quot;ABC&quot;));
- * 
+ *
  * RSATrustedCertificates rsaTrustedCertificates = new RSATrustedCertificates();
  * rsaTrustedCertificates.addTrustedRsaCertificate(certA);
  * rsaTrustedCertificates.addIntermediateRsaCertificate(certAB);
- * 
+ *
  * rsaTrustedCertificates.isTrusted(certA); // True
  * rsaTrustedCertificates.isTrusted(certAB); // True
  * rsaTrustedCertificates.isTrusted(certABC); // True
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.madgag.spongycastle:prov:1.51.0.0'
@@ -86,7 +86,7 @@ public class RSATrustedCertificates {
 
     /**
      * Load all the certificates from a pem file.
-     * 
+     *
      * @param filePath
      *            the full path to the file
      * @return this
@@ -177,7 +177,7 @@ public class RSATrustedCertificates {
 
     /**
      * Load all the certificates from a pem file.
-     * 
+     *
      * @param filePath
      *            the full path to the file
      * @return this
@@ -205,7 +205,7 @@ public class RSATrustedCertificates {
 
     /**
      * Find the certificate that signed the certificate.
-     * 
+     *
      * @param signedCertificate
      *            the certificate that should be signed by it
      * @param potentialSigners
@@ -231,7 +231,7 @@ public class RSATrustedCertificates {
 
     /**
      * Get the list of intermediates certificates.
-     * 
+     *
      * @return the intermediates certificates
      */
     public List<RSACertificate> getIntermediatesCertificates() {
@@ -244,7 +244,7 @@ public class RSATrustedCertificates {
 
     /**
      * Get the list of trusted certificates.
-     * 
+     *
      * @return the trusted certificates
      */
     public List<RSACertificate> getTrustedCertificates() {
@@ -257,7 +257,7 @@ public class RSATrustedCertificates {
 
     /**
      * Check that the certificate has a path to any Trusted certificate (using the intermediates certificates if necessary). All the certificates must be in the valid time range.
-     * 
+     *
      * @param rsaCertificate
      *            the certificate to validate
      * @return true if is trusted
@@ -269,7 +269,7 @@ public class RSATrustedCertificates {
 
     /**
      * Check that the certificate has a path to any Trusted certificate (using the intermediates certificates if necessary). All the certificates must be in the valid time range.
-     * 
+     *
      * @param rsaCertificate
      *            the certificate to validate
      * @param moreIntermediateCertificates
@@ -308,7 +308,7 @@ public class RSATrustedCertificates {
 
     /**
      * Check that the certificate has a path to any Trusted certificate (using the intermediates certificates if necessary). All the certificates must be in the valid time range.
-     * 
+     *
      * @param certificate
      *            the certificate to validate
      * @param moreIntermediateCertificates

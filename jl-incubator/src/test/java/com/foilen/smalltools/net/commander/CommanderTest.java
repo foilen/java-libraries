@@ -94,21 +94,18 @@ public class CommanderTest {
         final boolean[] gotResponse = new boolean[threads];
         for (int i = 0; i < threads; ++i) {
             final int id = i;
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    startCountDownLatch.countDown();
-                    try {
-                        startCountDownLatch.await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    CustomResponse response = connection.sendCommandAndWaitResponse(new CountDownCommandWithResponse("A"));
-                    Assert.assertEquals("AA", response.getMsg());
-                    gotResponse[id] = true;
-                    endCountDownLatch.countDown();
+            Thread thread = new Thread((Runnable) () -> {
+                startCountDownLatch.countDown();
+                try {
+                    startCountDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
+                CustomResponse response1 = connection.sendCommandAndWaitResponse(new CountDownCommandWithResponse("A"));
+                Assert.assertEquals("AA", response1.getMsg());
+                gotResponse[id] = true;
+                endCountDownLatch.countDown();
             }, "CommanderClient-Sender");
             thread.start();
         }

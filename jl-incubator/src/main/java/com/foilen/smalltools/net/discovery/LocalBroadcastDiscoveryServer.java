@@ -28,16 +28,16 @@ import com.foilen.smalltools.tools.ThreadTools;
 /**
  * A broadcasting service to use on a LAN. This service is sending an UDP broadcast message on the local network at a certain interval. The message includes the type of service and how to connect to
  * it. There can be multiple services. Upon instantiation, a new thread is started right away.
- * 
+ *
  * <pre>
  * Defaults:
  * </pre>
  * <ul>
  * <li>Broadcast delay: 5 seconds between broadcasts per default</li>
  * </ul>
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * // Create a service
  * LocalBroadcastDiscoveryServer discoveryServer = new LocalBroadcastDiscoveryServer(9999);
@@ -68,7 +68,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
 
     /**
      * Create a new TCP server on any available port and start broadcasting it.
-     * 
+     *
      * @param discoverableService
      *            the details about the service. The server type and port will be set.
      * @param socketCallback
@@ -81,7 +81,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
 
     /**
      * Use an existing TCP server and start broadcasting it.
-     * 
+     *
      * @param discoverableService
      *            the details about the service. The server type and port will be set.
      * @param socketCallback
@@ -96,7 +96,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
 
     /**
      * Use an existing TCP server and start broadcasting it.
-     * 
+     *
      * @param discoverableService
      *            the details about the service. The server type and port will be set.
      * @param tcpServerService
@@ -119,7 +119,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
 
     /**
      * The delay between each broadcast.
-     * 
+     *
      * @return the broadcastDelay
      */
     public int getBroadcastDelay() {
@@ -188,7 +188,7 @@ public class LocalBroadcastDiscoveryServer implements Runnable {
 
     /**
      * The delay between each broadcast.
-     * 
+     *
      * @param broadcastDelay
      *            the broadcastDelay to set
      */

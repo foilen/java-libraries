@@ -26,9 +26,9 @@ import com.foilen.smalltools.upgrader.UpgraderTools;
 
 /**
  * Extend this class to have the right task name. It will take all the files in /db/migration/*.sql and execute those not already successfully passed.
- * 
+ *
  * This is not a replacement for Flyway; just an easy way to migrate off of it to use only the {@link UpgraderTools} after that.
- * 
+ *
  * By default, it will delete the "schema_version" table at the end.
  */
 public abstract class AbstractFlywayMigrateOffUpgradeTask extends AbstractDatabaseUpgradeTask {

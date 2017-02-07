@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * To execute multiple actions on one object.
- * 
+ *
  * @param <T>
  *            the type of action to execute
  * @param <I>
@@ -33,7 +33,7 @@ public class AssemblyLine<T extends AssemblyLineAction<I>, I> {
 
     /**
      * Execute all the actions on the item.
-     * 
+     *
      * @param item
      *            the item to process
      * @return the final item or null if it was dropped

@@ -21,7 +21,7 @@ import com.foilen.smalltools.tools.FileTools;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link Cipher}. This is for asymmetric algorithms.
- * 
+ *
  * @param <K>
  *            it is the type of the keys details
  */

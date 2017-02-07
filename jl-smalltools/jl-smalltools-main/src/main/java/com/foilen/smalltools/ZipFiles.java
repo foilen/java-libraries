@@ -27,27 +27,27 @@ import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Create a zip file with multiple files.
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * // Create a temporary file
  * File file = File.createTempFile(&quot;file&quot;, &quot;.zip&quot;);
  * System.out.println(&quot;Temporary file: &quot; + file.getAbsolutePath());
- * 
+ *
  * // Create the ZIP
  * OutputStream outputStream = new FileOutputStream(file);
  * ZipFiles zipFiles = new ZipFiles(outputStream);
- * 
+ *
  * // Add files
  * zipFiles.addTextFile(&quot;firstFile.txt&quot;, &quot;Hello World 1&quot;);
  * zipFiles.addTextFile(&quot;test/file inside a dir.txt&quot;, &quot;see me inside&quot;);
  * zipFiles.addTextFile(&quot;test/secondInDir.txt&quot;, &quot;see me inside 2&quot;);
- * 
+ *
  * // Close the ZIP
  * zipFiles.close();
  * </pre>
- * 
+ *
  * @deprecated use {@link com.foilen.smalltools.compress.ZipFiles}
  */
 @Deprecated
@@ -57,7 +57,7 @@ public class ZipFiles {
 
     /**
      * Create a ZIP by specifying a file to send it to.
-     * 
+     *
      * @param zipFile
      *            the file to write to
      */
@@ -71,7 +71,7 @@ public class ZipFiles {
 
     /**
      * Create a ZIP by specifying a stream to send it to.
-     * 
+     *
      * @param outputStream
      *            the stream to write to
      */
@@ -81,7 +81,7 @@ public class ZipFiles {
 
     /**
      * Add all the files and subdirectories in the zip.
-     * 
+     *
      * @param directoryName
      *            the directory name inside the ZIP (E.g: "foo/bar/")
      * @param directory
@@ -110,7 +110,7 @@ public class ZipFiles {
 
     /**
      * Create a file.
-     * 
+     *
      * @param filename
      *            the filename inside the ZIP (E.g: "foo/bar.txt")
      * @param file
@@ -126,7 +126,7 @@ public class ZipFiles {
 
     /**
      * Create a file.
-     * 
+     *
      * @param filename
      *            the filename inside the ZIP (E.g: "foo/bar.txt")
      * @param resource
@@ -138,7 +138,7 @@ public class ZipFiles {
 
     /**
      * Create a file.
-     * 
+     *
      * @param filename
      *            the filename inside the ZIP (E.g: "foo/bar.txt")
      * @param inputStream
@@ -163,7 +163,7 @@ public class ZipFiles {
 
     /**
      * Create a file.
-     * 
+     *
      * @param filename
      *            the filename inside the ZIP (E.g: "foo/bar.txt")
      * @param url
@@ -179,7 +179,7 @@ public class ZipFiles {
 
     /**
      * Create a file.
-     * 
+     *
      * @param filename
      *            the filename inside the ZIP (E.g: "foo/bar.txt")
      * @param url
@@ -195,7 +195,7 @@ public class ZipFiles {
 
     /**
      * Create a text file.
-     * 
+     *
      * @param filename
      *            the filename inside the ZIP (E.g: "foo/bar.txt")
      * @param content
@@ -218,7 +218,7 @@ public class ZipFiles {
 
     /**
      * Change the compression level for the following files.
-     * 
+     *
      * @param level
      *            from 0 for none - 9 for best
      */

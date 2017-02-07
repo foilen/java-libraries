@@ -18,7 +18,7 @@ public final class ListsComparator {
 
     /**
      * Compare two ordered lists for differences.
-     * 
+     *
      * @param lefts
      *            ordered list
      * @param rights
@@ -78,7 +78,7 @@ public final class ListsComparator {
 
     /**
      * Compare two ordered lists for differences.
-     * 
+     *
      * @param lefts
      *            ordered list
      * @param rights
@@ -111,7 +111,7 @@ public final class ListsComparator {
 
     /**
      * Compare two ordered lists for differences.
-     * 
+     *
      * @param lefts
      *            ordered list
      * @param rights
@@ -122,12 +122,7 @@ public final class ListsComparator {
      *            the type of the items
      */
     public static <T extends Comparable<T>> void compareLists(List<T> lefts, List<T> rights, ListComparatorHandler<T, T> listComparatorHandler) {
-        compareLists(lefts, rights, new ItemsComparator<T, T>() {
-            @Override
-            public int compareTo(T left, T right) {
-                return left.compareTo(right);
-            }
-        }, listComparatorHandler);
+        compareLists(lefts, rights, (left, right) -> left.compareTo(right), listComparatorHandler);
     }
 
     private ListsComparator() {

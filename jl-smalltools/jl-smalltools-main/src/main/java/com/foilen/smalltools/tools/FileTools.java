@@ -44,7 +44,7 @@ import com.google.common.base.Joiner;
 
 /**
  * Some common methods to manage files.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -60,7 +60,7 @@ public final class FileTools {
 
     /**
      * Append a line to a file. Create it if missing.
-     * 
+     *
      * @param file
      *            the file
      * @param line
@@ -80,7 +80,7 @@ public final class FileTools {
 
     /**
      * Append a line to a file. Create it if missing.
-     * 
+     *
      * @param path
      *            the path to the file
      * @param line
@@ -92,7 +92,7 @@ public final class FileTools {
 
     /**
      * Check if the file does not contain the line and append it if missing.
-     * 
+     *
      * @param path
      *            the path to the file
      * @param line
@@ -149,7 +149,7 @@ public final class FileTools {
 
     /**
      * Change the owner and group of the specified file or directory.
-     * 
+     *
      * @param fileOrDirectory
      *            the file or directory to modify the owners
      * @param recursive
@@ -186,7 +186,7 @@ public final class FileTools {
 
     /**
      * Change the owner and group of the specified file or directory.
-     * 
+     *
      * @param fileOrDirectory
      *            the file or directory to modify the owners
      * @param recursive
@@ -212,7 +212,7 @@ public final class FileTools {
 
     /**
      * Change the POSIX permissions of the specified file or directory.
-     * 
+     *
      * @param fileOrDirectory
      *            the file or directory to modify the permissions
      * @param recursive
@@ -246,7 +246,7 @@ public final class FileTools {
 
     /**
      * Change the POSIX permissions of the specified file or directory.
-     * 
+     *
      * @param fileOrDirectory
      *            the file or directory to modify the permissions
      * @param recursive
@@ -308,7 +308,7 @@ public final class FileTools {
 
     /**
      * Create an empty file or empty an existing one.
-     * 
+     *
      * @param file
      *            the file to clear
      */
@@ -322,7 +322,7 @@ public final class FileTools {
 
     /**
      * Create an empty file or empty an existing one.
-     * 
+     *
      * @param path
      *            the path to the file
      */
@@ -341,7 +341,7 @@ public final class FileTools {
 
     /**
      * Take the parent directory owner and group and copy them to the specified file or directory.
-     * 
+     *
      * @param fileOrDirectory
      *            the file or directory to modify the owners
      * @param recursive
@@ -370,7 +370,7 @@ public final class FileTools {
 
     /**
      * Take the parent directory owner and group and copy them to the specified file or directory.
-     * 
+     *
      * @param fileOrDirectory
      *            the file or directory to modify the owners
      * @param recursive
@@ -382,7 +382,7 @@ public final class FileTools {
 
     /**
      * Create a staging file to write to and when you will close it, it will rename to its final destination.
-     * 
+     *
      * @param stagingFile
      *            the file to write to temporarily
      * @param finalFile
@@ -400,7 +400,7 @@ public final class FileTools {
 
     /**
      * Create a staging file to write to and when you will close it, it will rename to its final destination.
-     * 
+     *
      * @param stagingFileName
      *            the file to write to temporarily
      * @param finalFileName
@@ -413,7 +413,7 @@ public final class FileTools {
 
     /**
      * Delete the file.
-     * 
+     *
      * @param path
      *            the path to the file
      * @return true if the file was removed
@@ -424,7 +424,7 @@ public final class FileTools {
 
     /**
      * Tells if the file exists.
-     * 
+     *
      * @param file
      *            the file path
      * @return true if exists
@@ -435,7 +435,7 @@ public final class FileTools {
 
     /**
      * Gives an absolute path. If the path is relative, the absolute will be composed of the working directory and the file.
-     * 
+     *
      * @param workingDirectory
      *            the working directory if filePath is relative. It can end with the path separator or not.
      * @param filePath
@@ -488,7 +488,7 @@ public final class FileTools {
 
     /**
      * Retrieve the extension of the file name.
-     * 
+     *
      * @param fileName
      *            the file name
      * @return the extension (e.g: "css") ; null if no extension
@@ -518,7 +518,7 @@ public final class FileTools {
 
     /**
      * File as an array of bytes.
-     * 
+     *
      * @param file
      *            the file to open
      * @return the bytes
@@ -533,7 +533,7 @@ public final class FileTools {
 
     /**
      * Load a file as a String.
-     * 
+     *
      * @param file
      *            the file to open
      * @return the string
@@ -548,7 +548,7 @@ public final class FileTools {
 
     /**
      * Load a file as a String.
-     * 
+     *
      * @param fileName
      *            the file path to open
      * @return the string
@@ -563,7 +563,7 @@ public final class FileTools {
 
     /**
      * Retrieve the owner of the file or directory.
-     * 
+     *
      * @param file
      *            the file or directory to get the owner
      * @return the owner
@@ -580,7 +580,7 @@ public final class FileTools {
 
     /**
      * Retrieve the owner of the file or directory.
-     * 
+     *
      * @param file
      *            the file or directory to get the owner
      * @return the owner
@@ -591,7 +591,7 @@ public final class FileTools {
 
     /**
      * Get the unix permissions of a file or directory.
-     * 
+     *
      * @param file
      *            the file or directory
      * @return the permissions in numeric format. E.g: "750"
@@ -655,7 +655,7 @@ public final class FileTools {
 
     /**
      * Tells if the path is an absolute Windows one.
-     * 
+     *
      * @param path
      *            the path
      * @return true if it is an absolute Windows one
@@ -667,7 +667,7 @@ public final class FileTools {
 
     /**
      * List the names of the files that the content starts with the specified text.
-     * 
+     *
      * @param path
      *            the full path to the directory
      * @param startText
@@ -682,7 +682,7 @@ public final class FileTools {
 
     /**
      * Opens a file and iterates over all the lines.
-     * 
+     *
      * @param file
      *            the file
      * @return an iterable
@@ -697,7 +697,7 @@ public final class FileTools {
 
     /**
      * Opens a file and iterates over all the lines.
-     * 
+     *
      * @param filePath
      *            the absolute file path
      * @return an iterable
@@ -712,7 +712,7 @@ public final class FileTools {
 
     /**
      * Opens a file and iterates over all the lines using a stream.
-     * 
+     *
      * @param file
      *            the file
      * @return a stream of all the lines
@@ -727,7 +727,7 @@ public final class FileTools {
 
     /**
      * Opens a file and iterates over all the lines using a stream.
-     * 
+     *
      * @param filePath
      *            the absolute file path
      * @return a stream of all the lines
@@ -738,7 +738,7 @@ public final class FileTools {
 
     /**
      * Save the stream to a file.
-     * 
+     *
      * @param inputStream
      *            the content to write
      * @param file
@@ -758,7 +758,7 @@ public final class FileTools {
 
     /**
      * Save the stream to a file.
-     * 
+     *
      * @param inputStream
      *            the content to write
      * @param file
@@ -790,7 +790,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param content
      *            the content to write
      * @param file
@@ -810,7 +810,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param content
      *            the content to write
      * @param file
@@ -842,7 +842,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param content
      *            the content to write
      * @param path
@@ -854,7 +854,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param path
      *            the path to the file
      * @param contentLines
@@ -867,7 +867,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param path
      *            the path to the file
      * @param contentLines
@@ -893,7 +893,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param path
      *            the path to the file
      * @param content
@@ -933,7 +933,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param path
      *            the path to the file
      * @param content
@@ -958,7 +958,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param pathParts
      *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
      * @param contentLines
@@ -977,7 +977,7 @@ public final class FileTools {
 
     /**
      * Save some texts to a file.
-     * 
+     *
      * @param pathParts
      *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
      * @param content

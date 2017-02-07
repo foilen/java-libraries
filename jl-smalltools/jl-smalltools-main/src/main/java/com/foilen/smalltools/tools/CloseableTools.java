@@ -17,7 +17,7 @@ public final class CloseableTools {
 
     /**
      * Close quietly.
-     * 
+     *
      * @param closeable
      *            the {@link Closeable} to close.
      */

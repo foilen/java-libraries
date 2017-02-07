@@ -24,7 +24,7 @@ public @interface BeanConfigure {
 
     /**
      * When the field is a collection, you must specify the types of beans in that list.
-     * 
+     *
      * @return the type of the collection
      */
     Class<?> collectionType() default void.class;

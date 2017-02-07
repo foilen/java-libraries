@@ -23,7 +23,7 @@ import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * This {@link BeanRepository} has 2 of them:
- * 
+ *
  * <pre>
  * - A {@link SimpleBeanRepository} that contains the beans created with this {@link HierarchicalBeanRepository}
  * - A {@link BeanRepository} to which it will delegate retrieval to if the current level does not contain any requested bean

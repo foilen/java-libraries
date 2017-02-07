@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * When a new socket is accepted in {@link TCPServerService}, it is sent right away to the {@link SocketCallback}. If you want to use different threads for every incoming connections, use this
  * wrapper.
- * 
+ *
  * Usage: new TCPServerService(new ExecutorWrappedSocketCallback(yourCallBack)}
  */
 public class ExecutorWrappedSocketCallback implements SocketCallback {

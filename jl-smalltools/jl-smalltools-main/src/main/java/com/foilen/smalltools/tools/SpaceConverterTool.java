@@ -27,13 +27,13 @@ public class SpaceConverterTool {
 
     /**
      * Convert text like "15k", "15 k", "15 kB", "15 kb" to its {@link Long} representation (always bytes; not bits).
-     * 
+     *
      * <ul>
      * <li>Support "B", "kB", "mB", "gB" and "tB" (powers of 1000)</li>
      * <li>Support "B", "kiB", "miB", "giB" and "tiB" (powers of 1024)</li>
      * <li>It is case insensitive, that's why it will never give bits, but always bytes</li>
      * </ul>
-     * 
+     *
      * @param space
      *            the text space
      * @return the amount of bytes

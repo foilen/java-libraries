@@ -16,7 +16,7 @@ import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link Cipher}. This is for symmetric algorithms.
- * 
+ *
  * @param <K>
  *            it is the type of the key details
  */

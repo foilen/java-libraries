@@ -15,7 +15,7 @@ public interface BytesProcessor {
 
     /**
      * Execute the method to modify the content. Must create a new array.
-     * 
+     *
      * @param content
      *            the content to process
      * @return the modified bytes
@@ -24,7 +24,7 @@ public interface BytesProcessor {
 
     /**
      * Execute the method to modify the content. Must create a new array.
-     * 
+     *
      * @param content
      *            the content to process
      * @param offset

@@ -25,7 +25,7 @@ import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Generates a random RSA and AES keys to crypt the streams.
- * 
+ *
  * <pre>
  * Steps:
  * - Generate a random RSA key
@@ -61,7 +61,7 @@ public class CryptRsaAesStreamsSocketAction extends AbstractTimeoutStreamPairAct
 
     /**
      * Choose the size of the AES key.
-     * 
+     *
      * @param aesKeySize
      *            the size of the key (e.g 128, 192, 256, ...)
      */
@@ -71,7 +71,7 @@ public class CryptRsaAesStreamsSocketAction extends AbstractTimeoutStreamPairAct
 
     /**
      * Choose the size of the RSA key.
-     * 
+     *
      * @param rsaKeySize
      *            the size of the key (e.g 1024, 2048, 4096, ...)
      */

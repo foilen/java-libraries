@@ -33,28 +33,28 @@ import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * This class is looking at any changes made to any file in the directory and their sub-directory if needed.
- * 
+ *
  * On initialization, it creates a separate thread that will call the observers when new events are ready.
- * 
+ *
  * Default:
  * <ul>
  * <li>recursive = false</li>
  * </ul>
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * // Start
  * FileSystemUpdateWatcher watcher = new FileSystemUpdateWatcher("/");
  * watcher.addHandler(new SystemOutFileSystemUpdateHandler());
  * watcher.init();
- * 
+ *
  * ThreadTools.sleep(2000);
- * 
+ *
  * // Stop
  * watcher.close();
  * ThreadTools.sleep(2000);
- * 
+ *
  * // Start and again
  * watcher.init();
  * ThreadTools.sleep(2000);
@@ -108,7 +108,7 @@ public class FileSystemUpdateWatcher implements Closeable {
 
     /**
      * Add an handler.
-     * 
+     *
      * @param fileSystemUpdateHandler
      *            the handler
      * @return this
@@ -126,7 +126,7 @@ public class FileSystemUpdateWatcher implements Closeable {
 
     /**
      * Call after setting this object to make it work. Stop it with {@link #close()}.
-     * 
+     *
      * @return this
      */
     public FileSystemUpdateWatcher init() {
@@ -213,7 +213,7 @@ public class FileSystemUpdateWatcher implements Closeable {
 
     /**
      * Tells if the watch is recursive.
-     * 
+     *
      * @return recursive
      */
     public boolean isRecursive() {
@@ -222,7 +222,7 @@ public class FileSystemUpdateWatcher implements Closeable {
 
     /**
      * Register a new path to check.
-     * 
+     *
      * @param path
      *            the path
      */
@@ -240,7 +240,7 @@ public class FileSystemUpdateWatcher implements Closeable {
 
     /**
      * Register a new path to check and all its children if it is set recursive.
-     * 
+     *
      * @param path
      *            the path
      */
@@ -262,7 +262,7 @@ public class FileSystemUpdateWatcher implements Closeable {
 
     /**
      * Change the recursive parameter.
-     * 
+     *
      * @param recursive
      *            true to watch the subfolders as well
      * @return this

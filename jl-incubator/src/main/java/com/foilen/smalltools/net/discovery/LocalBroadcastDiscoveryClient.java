@@ -24,13 +24,13 @@ import com.google.common.cache.CacheBuilder;
 
 /**
  * A client that can automatically discover servers on a LAN. Upon instantiation, a new thread is started right away. The list of discovered servers is kept in memory for 1 minute by default.
- * 
+ *
  * Usage:
- * 
+ *
  * <pre>
  * // Start the discovery
  * LocalBroadcastDiscoveryClient discoveryClient = new LocalBroadcastDiscoveryClient(9999);
- * 
+ *
  * // Retrieve the services that were seen
  * List&lt;DiscoverableService&gt; services = discoveryClient.retrieveServicesList();
  * for (DiscoverableService service : services) {
@@ -39,7 +39,7 @@ import com.google.common.cache.CacheBuilder;
  *     // ...
  * }
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -61,7 +61,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
     /**
      * Create the client using the default cache.
-     * 
+     *
      * @param port
      *            the port to watch for the messages
      */
@@ -72,7 +72,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
     /**
      * Create the client and specify the cache.
-     * 
+     *
      * @param port
      *            the port to watch for the messages
      * @param cacheMaxSize
@@ -87,7 +87,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
     /**
      * Create the client using the default cache.
-     * 
+     *
      * @param port
      *            the port to watch for the messages
      * @param filteredAppName
@@ -107,7 +107,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
     /**
      * Create the client and specify the cache.
-     * 
+     *
      * @param port
      *            the port to watch for the messages
      * @param filteredAppName
@@ -148,7 +148,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
     /**
      * Get the list of services.
-     * 
+     *
      * @return the list of available services
      */
     public List<DiscoverableService> retrieveServicesList() {
@@ -157,7 +157,7 @@ public class LocalBroadcastDiscoveryClient implements Runnable {
 
     /**
      * Get the list of services.
-     * 
+     *
      * @param filteredServiceName
      *            filter by service type
      * @return the list of available services

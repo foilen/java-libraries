@@ -15,7 +15,7 @@ public interface CommandRequest {
 
     /**
      * Tell what is the full name of the {@link CommandImplementation} that belongs to this request.
-     * 
+     *
      * @return the full name of the implementation class
      */
     String commandImplementationClass();

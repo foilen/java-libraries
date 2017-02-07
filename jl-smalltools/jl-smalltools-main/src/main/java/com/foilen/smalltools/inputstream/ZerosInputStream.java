@@ -23,7 +23,7 @@ public class ZerosInputStream extends InputStream {
 
     /**
      * The constructor.
-     * 
+     *
      * @param totalBytes
      *            the amount of bytes to send before the end of file
      */

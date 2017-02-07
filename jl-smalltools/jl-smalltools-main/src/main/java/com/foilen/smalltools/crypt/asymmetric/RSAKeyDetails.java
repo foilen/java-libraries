@@ -40,7 +40,7 @@ public class RSAKeyDetails {
 
     /**
      * Create the key details with values.
-     * 
+     *
      * @param modulus
      *            the modulus
      * @param publicExponent
@@ -72,7 +72,7 @@ public class RSAKeyDetails {
 
     /**
      * Get the JCA private key.
-     * 
+     *
      * @return the JCA private key
      */
     public PrivateKey getJcaPrivateKey() {
@@ -103,7 +103,7 @@ public class RSAKeyDetails {
 
     /**
      * Get the JCA public key.
-     * 
+     *
      * @return the JCA public key
      */
     public PublicKey getJcaPublicKey() {

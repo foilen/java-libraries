@@ -20,19 +20,22 @@ public class GrabRemoteConnectionCommand implements CommandRequest, CommandImple
     private static CommanderConnection commanderConnection;
     private static Semaphore semaphore = new Semaphore(0);
 
+    public static CommanderConnection getCommanderConnection() {
+        return commanderConnection;
+    }
+
     public static void reset() {
         semaphore = new Semaphore(0);
         commanderConnection = null;
     }
 
+    public static void waitForRun() throws InterruptedException {
+        semaphore.acquire();
+    }
 
     @Override
     public String commandImplementationClass() {
         return GrabRemoteConnectionCommand.class.getName();
-    }
-
-    public static CommanderConnection getCommanderConnection() {
-        return commanderConnection;
     }
 
     @Override
@@ -43,10 +46,6 @@ public class GrabRemoteConnectionCommand implements CommandRequest, CommandImple
     @Override
     public void setCommanderConnection(CommanderConnection commConn) {
         commanderConnection = commConn;
-    }
-
-    public static void waitForRun() throws InterruptedException {
-        semaphore.acquire();
     }
 
 }

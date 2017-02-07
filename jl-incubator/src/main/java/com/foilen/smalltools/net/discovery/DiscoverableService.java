@@ -21,7 +21,7 @@ import com.google.common.base.Objects;
 
 /**
  * An application's service available on the network. This is to use with the automatic discovery services like {@link LocalBroadcastDiscoveryServer}.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.google.guava:guava:18.0'
@@ -84,7 +84,7 @@ public class DiscoverableService {
 
     /**
      * Connect to the remote service.
-     * 
+     *
      * @return the connected socket
      */
     public Socket connecToTcpService() {
@@ -103,7 +103,7 @@ public class DiscoverableService {
 
     /**
      * Connect to the remote service.
-     * 
+     *
      * @return the socket ready to send messages
      */
     public DatagramSocket connecToUdpService() {
@@ -121,8 +121,9 @@ public class DiscoverableService {
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj == this)
+        if (obj == this) {
             return true;
+        }
 
         if (!(obj instanceof DiscoverableService)) {
             return false;
@@ -172,7 +173,7 @@ public class DiscoverableService {
 
     /**
      * Server type is TCP or UDP.
-     * 
+     *
      * @return the server type
      */
     public String getServerType() {
@@ -210,7 +211,7 @@ public class DiscoverableService {
 
     /**
      * Server type is TCP or UDP.
-     * 
+     *
      * @param serverType
      *            TCP or UDP
      */

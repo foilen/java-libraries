@@ -16,8 +16,6 @@ import java.net.Socket;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.net.SocketsPair;
-
 /**
  * Tests for {@link SocketsPair}.
  */
@@ -25,7 +23,7 @@ public class SocketsPairTest {
 
     /**
      * Try to send a packet from one socket to the other.
-     * 
+     *
      * @param source
      * @param destination
      * @throws IOException
