@@ -26,7 +26,7 @@ import com.foilen.smalltools.tools.ResourceTools;
  * 
  * <pre>
  * Dependencies:
- * testCompile 'com.fasterxml.jackson.core:jackson-databind:2.4.5'
+ * testCompile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
  * testCompile 'org.yaml:snakeyaml:1.15'
  * testCompile 'junit:junit:4.12'
  * </pre>

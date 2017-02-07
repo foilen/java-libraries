@@ -26,7 +26,7 @@ import com.foilen.smalltools.reflection.ReflectionTools;
  * 
  * <pre>
  * Dependencies:
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.4.5'
+ * compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
  * </pre>
  */
 public final class JsonTools {
