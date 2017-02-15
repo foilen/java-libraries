@@ -25,6 +25,8 @@ public class RenamingOnCloseOutputStreamWrapper extends AbstractOutputStreamWrap
     private File renameSourceFile;
     private File renameDestinationFile;
 
+    private boolean wasClosed = false;
+
     /**
      * Create the wrapped output stream.
      *
@@ -43,6 +45,10 @@ public class RenamingOnCloseOutputStreamWrapper extends AbstractOutputStreamWrap
 
     @Override
     public void close() throws IOException {
+        if (wasClosed) {
+            return;
+        }
+        wasClosed = true;
         super.close();
         try {
             renameDestinationFile.delete();
