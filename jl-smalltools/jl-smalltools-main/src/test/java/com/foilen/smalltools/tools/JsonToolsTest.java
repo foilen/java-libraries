@@ -9,7 +9,9 @@
 package com.foilen.smalltools.tools;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import org.junit.Assert;
@@ -142,6 +144,18 @@ public class JsonToolsTest {
 
         Assert.assertEquals("bb", actual.get(1).getA());
         Assert.assertEquals(34, actual.get(1).getB());
+    }
+
+    @Test
+    public void testWriteToStream() throws Exception {
+
+        OutputStream stream = new FileOutputStream(tmpFile);
+        JsonTools.writeToStream(stream, "First");
+        JsonTools.writeToStream(stream, "Second");
+        stream.close();
+
+        String actual = FileTools.getFileAsString(tmpFile);
+        Assert.assertEquals("\"First\"\"Second\"", actual);
     }
 
 }
