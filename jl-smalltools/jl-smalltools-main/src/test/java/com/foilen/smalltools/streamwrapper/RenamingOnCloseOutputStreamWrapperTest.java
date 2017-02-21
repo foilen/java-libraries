@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.FileTools;
 
 /**
@@ -36,7 +37,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes());
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the renaming
@@ -63,7 +64,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes());
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
         renamingOnCloseOutputStreamWrapper.close();
 

@@ -76,7 +76,7 @@ public final class ConsoleTools {
             StreamsTools.flowStreamNonBlocking(process.getErrorStream(), System.err);
 
             // Send load
-            process.getOutputStream().write(inputText.getBytes());
+            process.getOutputStream().write(inputText.getBytes(CharsetTools.UTF_8));
             process.getOutputStream().close();
 
             process.waitFor();

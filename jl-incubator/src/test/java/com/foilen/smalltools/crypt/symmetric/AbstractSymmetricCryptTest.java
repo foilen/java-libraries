@@ -13,6 +13,8 @@ import org.hamcrest.core.IsNot;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.tools.CharsetTools;
+
 /**
  * Tests for any {@link SymmetricCrypt}.
  */
@@ -48,7 +50,7 @@ public abstract class AbstractSymmetricCryptTest<T extends SymmetricCrypt<K>, K>
     public void testEncryptAndDecrypt() {
         // Prepare the message
         String message = "Hello World";
-        byte[] data = message.getBytes();
+        byte[] data = message.getBytes(CharsetTools.UTF_8);
 
         // Crypt
         SymmetricKey key = crypt.generateKey(keySize);

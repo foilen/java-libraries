@@ -19,6 +19,7 @@ import org.junit.Test;
 import com.foilen.smalltools.crypt.symmetric.AESCrypt;
 import com.foilen.smalltools.crypt.symmetric.AbstractSymmetricCrypt;
 import com.foilen.smalltools.crypt.symmetric.SymmetricKey;
+import com.foilen.smalltools.tools.CharsetTools;
 
 /**
  * Tests for {@link SymmetricDecryptInputStreamWrapper} and {@link SymmetricCryptOutputStreamWrapper} using AES.
@@ -42,7 +43,7 @@ public class SymmetricCryptStreamWrapperTest extends AbstractStreamWrapperTest {
 
         for (int i = 0; i < 30; ++i) {
             // Write
-            byte[] b = "Hello World".getBytes();
+            byte[] b = "Hello World".getBytes(CharsetTools.UTF_8);
             byte[] actual = new byte[11];
             outputStream.write(b);
             outputStream.flush();
@@ -68,7 +69,7 @@ public class SymmetricCryptStreamWrapperTest extends AbstractStreamWrapperTest {
     public void testValidStreamCipherImplementation() throws IOException {
         // Encrypt in parts
         for (int i = 0; i < 30; ++i) {
-            byte[] b = "Hello World".getBytes();
+            byte[] b = "Hello World".getBytes(CharsetTools.UTF_8);
             outputStream.write(b);
         }
         outputStream.flush();
@@ -90,7 +91,7 @@ public class SymmetricCryptStreamWrapperTest extends AbstractStreamWrapperTest {
         for (int i = 0; i < 30; ++i) {
             sb.append("Hello World");
         }
-        byte[] data = sb.toString().getBytes();
+        byte[] data = sb.toString().getBytes(CharsetTools.UTF_8);
         byte[] expected = crypt.encryptWithIV(key, iv, data);
         expectedBytes = 21 * AES_BLOCK_SIZE;
         Assert.assertEquals(expectedBytes, expected.length);
@@ -101,7 +102,7 @@ public class SymmetricCryptStreamWrapperTest extends AbstractStreamWrapperTest {
 
     @Test
     public void testWriteAndReadFullArrayCrypted() throws IOException {
-        byte[] b = "Hello World".getBytes();
+        byte[] b = "Hello World".getBytes(CharsetTools.UTF_8);
         byte[] actual = new byte[1024];
         outputStream.write(b);
         outputStream.flush();
@@ -114,7 +115,7 @@ public class SymmetricCryptStreamWrapperTest extends AbstractStreamWrapperTest {
 
     @Test
     public void testWriteAndReadPartialCrypted() throws IOException {
-        byte[] b = "Hello World".getBytes();
+        byte[] b = "Hello World".getBytes(CharsetTools.UTF_8);
         byte[] actual = new byte[1024];
         outputStream.write(b, 6, 3);
         outputStream.flush();

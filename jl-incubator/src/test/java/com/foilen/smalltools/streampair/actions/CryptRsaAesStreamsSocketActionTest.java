@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import com.foilen.smalltools.net.SocketsPair;
 import com.foilen.smalltools.streampair.StreamPair;
+import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.StreamsTools;
 
 public class CryptRsaAesStreamsSocketActionTest extends AbstractTimeoutStreamPairActionTest {
@@ -56,9 +57,9 @@ public class CryptRsaAesStreamsSocketActionTest extends AbstractTimeoutStreamPai
         Assert.assertEquals(serverToClient, serverToClientActual);
 
         // Test really crypted
-        clientActual.getOutputStream().write(clientToServer.getBytes());
+        clientActual.getOutputStream().write(clientToServer.getBytes(CharsetTools.UTF_8));
         clientActual.getOutputStream().flush();
-        serverActual.getOutputStream().write(serverToClient.getBytes());
+        serverActual.getOutputStream().write(serverToClient.getBytes(CharsetTools.UTF_8));
         serverActual.getOutputStream().flush();
 
         InputStream serverInitialInputStream = socketsPair.getServer().getInputStream();

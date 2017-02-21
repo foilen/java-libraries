@@ -16,10 +16,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.FileTools;
 
 /**
@@ -75,11 +75,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
      *            the stream to read
      */
     public void openStream(InputStream inputStream) {
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new SmallToolsException(e);
-        }
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream, CharsetTools.UTF_8));
         readNextLine();
     }
 
@@ -90,11 +86,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
      *            the text to read
      */
     public void openString(String text) {
-        try {
-            openStream(new ByteArrayInputStream(text.getBytes("UTF8")));
-        } catch (UnsupportedEncodingException e) {
-            throw new SmallToolsException(e);
-        }
+        openStream(new ByteArrayInputStream(text.getBytes(CharsetTools.UTF_8)));
     }
 
     /**

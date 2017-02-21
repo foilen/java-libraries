@@ -70,7 +70,7 @@ public final class FileTools {
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(file, true);
-            out.write((line + "\n").getBytes());
+            out.write((line + "\n").getBytes(CharsetTools.UTF_8));
         } catch (Exception e) {
             throw new SmallToolsException("Problem writing to file", e);
         } finally {
@@ -136,9 +136,9 @@ public final class FileTools {
         // Write
         try {
             if (endsWithEmptyLine) {
-                out.write((line + "\n").getBytes());
+                out.write((line + "\n").getBytes(CharsetTools.UTF_8));
             } else {
-                out.write(("\n" + line + "\n").getBytes());
+                out.write(("\n" + line + "\n").getBytes(CharsetTools.UTF_8));
             }
         } catch (Exception e) {
             throw new SmallToolsException("Problem writing to file", e);
@@ -800,7 +800,7 @@ public final class FileTools {
     public static boolean writeFile(String content, File file) {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(content.getBytes());
+            fos.write(content.getBytes(CharsetTools.UTF_8));
             fos.close();
             return true;
         } catch (IOException e) {
@@ -826,7 +826,7 @@ public final class FileTools {
     public static boolean writeFile(String content, File file, String owner, String group, String permissions) {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(content.getBytes());
+            fos.write(content.getBytes(CharsetTools.UTF_8));
             fos.close();
 
             // Update owners and permissions

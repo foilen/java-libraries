@@ -23,6 +23,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.StreamsTools;
 
 /**
@@ -199,7 +200,7 @@ public class ZipFiles {
      *            the content of the file text
      */
     public void addTextFile(String filename, String content) {
-        addFileFromStream(filename, new ByteArrayInputStream(content.getBytes()));
+        addFileFromStream(filename, new ByteArrayInputStream(content.getBytes(CharsetTools.UTF_8)));
     }
 
     /**

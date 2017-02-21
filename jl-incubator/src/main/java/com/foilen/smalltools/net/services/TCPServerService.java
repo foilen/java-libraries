@@ -37,7 +37,7 @@ import com.foilen.smalltools.tools.CloseableTools;
  *     &#064;Override
  *     public void newClient(Socket socket) {
  *         try {
- *             socket.getOutputStream().write(text.getBytes());
+ *             socket.getOutputStream().write(text.getBytes(CharsetTools.UTF_8));
  *         } catch (IOException e) {
  *         }
  *     }

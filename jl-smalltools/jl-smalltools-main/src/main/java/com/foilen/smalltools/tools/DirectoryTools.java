@@ -46,7 +46,7 @@ public final class DirectoryTools {
      * @return the path cleaned up
      */
     public static String cleanupDots(String path) {
-        Stack<String> stack = new Stack<String>();
+        Stack<String> stack = new Stack<>();
 
         for (String part : path.split("/")) {
             if (".".equals(part)) {
@@ -351,7 +351,7 @@ public final class DirectoryTools {
         }
 
         // Get the bytes
-        byte[] startBytes = startText.getBytes();
+        byte[] startBytes = startText.getBytes(CharsetTools.UTF_8);
 
         // Scan the directory
         List<String> result = new ArrayList<>();

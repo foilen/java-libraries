@@ -31,7 +31,6 @@ import org.slf4j.event.Level;
 
 import com.foilen.smalltools.exception.EndOfStreamException;
 import com.foilen.smalltools.tuple.Tuple2;
-import com.google.common.base.Charsets;
 import com.google.common.primitives.Ints;
 
 /**
@@ -45,14 +44,19 @@ public class StreamsToolsTest {
     }
 
     @Test
+    public void testConsumeAsString_UTF8() {
+        Assert.assertEquals("L'école de la vie", StreamsTools.consumeAsString(getClass().getResourceAsStream("StStreamsToolsTest-testConsumeAsString_UTF8.txt")));
+    }
+
+    @Test
     public void testCreateLoggerOutputStream() throws IOException {
 
         Logger outputLogger = mock(Logger.class);
 
         OutputStream out = StreamsTools.createLoggerOutputStream(outputLogger, Level.INFO);
-        out.write("hello".getBytes());
-        out.write(" world\n".getBytes());
-        out.write("yay\n".getBytes());
+        out.write("hello".getBytes(CharsetTools.UTF_8));
+        out.write(" world\n".getBytes(CharsetTools.UTF_8));
+        out.write("yay\n".getBytes(CharsetTools.UTF_8));
 
         ThreadTools.sleep(3000);
 
@@ -80,12 +84,12 @@ public class StreamsToolsTest {
 
         // Send slowly
         out.write(Ints.toByteArray(11));
-        out.write("Hello ".getBytes(Charsets.UTF_8));
+        out.write("Hello ".getBytes(CharsetTools.UTF_8));
         out.flush();
 
         ThreadTools.sleep(2000);
 
-        out.write("World".getBytes(Charsets.UTF_8));
+        out.write("World".getBytes(CharsetTools.UTF_8));
         out.flush();
 
         countDownLatch.await();
@@ -141,7 +145,7 @@ public class StreamsToolsTest {
         StreamsTools.write(out, 10);
         StreamsTools.write(out, "Hello World");
         out.write(Ints.toByteArray(11)); // Len of "Hello World"
-        out.write("Hello".getBytes());
+        out.write("Hello".getBytes(CharsetTools.UTF_8));
         out.close();
 
         InputStream in = new FileInputStream(tmpFile);

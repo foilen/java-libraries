@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.net.commander.command.CommandRequest;
+import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.JsonTools;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import io.netty.util.CharsetUtil;
 
 /**
  * <pre>
@@ -46,9 +46,9 @@ public class CommanderEncoder extends MessageToByteEncoder<CommandRequest> {
         logger.debug("Encoding message of type {} to call the implementation {}", msg.getClass().getName(), className);
 
         try {
-            byte[] classNameBytes = className.getBytes(CharsetUtil.UTF_8);
+            byte[] classNameBytes = className.getBytes(CharsetTools.UTF_8);
             String jsonContent = JsonTools.writeToString(msg);
-            byte[] jsonContentBytes = jsonContent.getBytes(CharsetUtil.UTF_8);
+            byte[] jsonContentBytes = jsonContent.getBytes(CharsetTools.UTF_8);
 
             out.writeInt(classNameBytes.length);
             out.writeBytes(classNameBytes);

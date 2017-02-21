@@ -13,12 +13,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.JsonTools;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
-import io.netty.util.CharsetUtil;
 
 /**
  * <pre>
@@ -48,13 +48,13 @@ public class CommanderDecoder extends ReplayingDecoder<Void> {
         int len = in.readInt();
 
         // className:String
-        String className = in.readBytes(len).toString(CharsetUtil.UTF_8);
+        String className = in.readBytes(len).toString(CharsetTools.UTF_8);
 
         // jsonContentSize:int
         len = in.readInt();
 
         // jsonContent:String
-        String jsonContent = in.readBytes(len).toString(CharsetUtil.UTF_8);
+        String jsonContent = in.readBytes(len).toString(CharsetTools.UTF_8);
 
         // Add the JSON runnable to the list
         logger.debug("Decoding class {} with json {}", className, jsonContent);

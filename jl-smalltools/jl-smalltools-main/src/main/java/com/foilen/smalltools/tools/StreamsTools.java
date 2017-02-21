@@ -17,7 +17,6 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
-import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +41,6 @@ public final class StreamsTools {
 
     private static final Logger logger = LoggerFactory.getLogger(StreamsTools.class);
 
-    private static final Charset UTF8 = Charset.forName("UTF-8");
     private static final int BUFFER_SIZE = 1024;
 
     /**
@@ -77,7 +75,7 @@ public final class StreamsTools {
         AssertTools.assertNotNull(input, "The input cannot be null");
 
         try {
-            Reader reader = new InputStreamReader(input, "UTF-8");
+            Reader reader = new InputStreamReader(input, CharsetTools.UTF_8);
             StringBuilder sb = new StringBuilder();
 
             char[] chars = new char[BUFFER_SIZE];
@@ -377,7 +375,7 @@ public final class StreamsTools {
      */
     public static String readString(InputStream source) {
         byte[] bytes = readBytes(source);
-        return new String(bytes, UTF8);
+        return new String(bytes, CharsetTools.UTF_8);
     }
 
     /**
@@ -393,7 +391,7 @@ public final class StreamsTools {
      */
     public static String readString(InputStream source, int maxLength) {
         byte[] bytes = readBytes(source, maxLength);
-        return new String(bytes, UTF8);
+        return new String(bytes, CharsetTools.UTF_8);
     }
 
     /**
@@ -440,7 +438,7 @@ public final class StreamsTools {
      *            what to write
      */
     public static void write(OutputStream destination, String content) {
-        write(destination, content.getBytes(UTF8));
+        write(destination, content.getBytes(CharsetTools.UTF_8));
     }
 
     private StreamsTools() {

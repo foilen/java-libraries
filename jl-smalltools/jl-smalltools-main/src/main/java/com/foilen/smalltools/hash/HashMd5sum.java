@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.CharsetTools;
 
 /**
  * To create hashes with MD5.
@@ -67,7 +68,7 @@ public final class HashMd5sum {
      * @return the hash in hex
      */
     public static String hashString(String in) {
-        return HashUtils.hashInputStream(ALGORITHM, new ByteArrayInputStream(in.getBytes()));
+        return HashUtils.hashInputStream(ALGORITHM, new ByteArrayInputStream(in.getBytes(CharsetTools.UTF_8)));
     }
 
     private HashMd5sum() {

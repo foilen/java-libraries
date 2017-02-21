@@ -54,7 +54,7 @@ import com.foilen.smalltools.tools.CollectionsTools;
  * <pre>
  * // Prepare the message
  * String message = &quot;Hello World&quot;;
- * byte[] data = message.getBytes();
+ * byte[] data = message.getBytes(CharsetTools.UTF_8);
  *
  * // Encrypt
  * AsymmetricKeys keyPair = crypt.generateKeyPair(2048);

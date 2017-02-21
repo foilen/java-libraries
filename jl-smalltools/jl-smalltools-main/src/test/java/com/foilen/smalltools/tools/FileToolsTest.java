@@ -151,7 +151,7 @@ public class FileToolsTest {
         Assert.assertFalse(finalFile.exists());
 
         // Put some data
-        outputStream.write("yay".getBytes());
+        outputStream.write("yay".getBytes(CharsetTools.UTF_8));
         Assert.assertTrue(stagingFile.exists());
         Assert.assertFalse(finalFile.exists());
 
@@ -323,7 +323,7 @@ public class FileToolsTest {
         }).start();
 
         PipedOutputStream outputStream = pipes.getB();
-        outputStream.write("Test".getBytes());
+        outputStream.write("Test".getBytes(CharsetTools.UTF_8));
         CloseableTools.close(outputStream);
 
         countDownLatch.await();
@@ -346,6 +346,18 @@ public class FileToolsTest {
 
         Assert.assertTrue(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), Arrays.asList("aaa", "bbb")));
         Assert.assertFalse(FileTools.writeFileWithContentCheck(tmpFile.getAbsolutePath(), Arrays.asList("aaa", "bbb")));
+
+    }
+
+    @Test
+    public void testWriteRead_UTF8() throws Exception {
+        File tmpFile = File.createTempFile("junit", null);
+        String text = "L'école de la vie";
+
+        Assert.assertTrue(FileTools.writeFile(text, tmpFile));
+        String actual = FileTools.getFileAsString(tmpFile);
+
+        Assert.assertEquals(text, actual);
 
     }
 

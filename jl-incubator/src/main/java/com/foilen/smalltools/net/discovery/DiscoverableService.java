@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
+import com.foilen.smalltools.tools.CharsetTools;
 import com.google.common.base.Objects;
 
 /**
@@ -240,7 +241,7 @@ public class DiscoverableService {
         sb.append(serverType).append(SEPARATION_CHAR);
         sb.append(serverPort);
 
-        return sb.toString().getBytes();
+        return sb.toString().getBytes(CharsetTools.UTF_8);
     }
 
     @Override

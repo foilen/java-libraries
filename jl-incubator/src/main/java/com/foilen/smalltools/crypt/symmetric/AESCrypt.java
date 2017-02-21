@@ -31,7 +31,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
  * <pre>
  * // Prepare the message
  * String message = &quot;Hello World&quot;;
- * byte[] data = message.getBytes();
+ * byte[] data = message.getBytes(CharsetTools.UTF_8);
  *
  * // Encrypt
  * SymmetricKey key = crypt.generateKey(128);
