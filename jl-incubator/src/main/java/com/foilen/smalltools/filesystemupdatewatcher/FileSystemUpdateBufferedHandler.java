@@ -9,7 +9,6 @@
 package com.foilen.smalltools.filesystemupdatewatcher;
 
 import java.io.File;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -84,7 +83,7 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
             long maxTime = firstEventTimeMs + maxDelayMs;
             for (;;) {
                 // Wait if not reached
-                long now = new Date().getTime();
+                long now = System.currentTimeMillis();
                 long waitTime = Math.min( //
                         lastEventTimeMs + delayAfterLastEventMs - now, //
                         maxTime - now);
@@ -161,11 +160,11 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
             fileStatus.lastEvent = lastEvent;
 
             // Reset the lastEventTime
-            lastEventTimeMs = new Date().getTime();
+            lastEventTimeMs = System.currentTimeMillis();
 
             // Set the first event time if not started
             if (firstEventTimeMs == -1) {
-                firstEventTimeMs = new Date().getTime();
+                firstEventTimeMs = System.currentTimeMillis();
             }
         }
 

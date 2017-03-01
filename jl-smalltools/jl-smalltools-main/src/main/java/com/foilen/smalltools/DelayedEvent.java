@@ -8,7 +8,6 @@
  */
 package com.foilen.smalltools;
 
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.foilen.smalltools.tools.ThreadTools;
@@ -46,9 +45,9 @@ public class DelayedEvent extends Thread {
 
     @Override
     public void run() {
-        long endTime = new Date().getTime() + delayInMilliseconds;
+        long endTime = System.currentTimeMillis() + delayInMilliseconds;
         // Wait the delay
-        long delta = endTime - new Date().getTime();
+        long delta = endTime - System.currentTimeMillis();
         while (!canceled.get() && delta > 0) {
 
             // Wait a bit
@@ -56,7 +55,7 @@ public class DelayedEvent extends Thread {
             ThreadTools.sleep(wait);
 
             // Recalculate
-            delta = endTime - new Date().getTime();
+            delta = endTime - System.currentTimeMillis();
         }
 
         // Execute if not cancelled

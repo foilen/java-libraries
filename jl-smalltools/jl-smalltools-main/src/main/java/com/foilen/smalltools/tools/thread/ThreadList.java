@@ -10,7 +10,6 @@ package com.foilen.smalltools.tools.thread;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -138,9 +137,9 @@ public class ThreadList {
      * @exception InterruptedException
      */
     public void join(long millis) throws InterruptedException {
-        long timeoutAt = new Date().getTime() + millis;
+        long timeoutAt = System.currentTimeMillis() + millis;
         for (Thread thread : threads) {
-            long now = new Date().getTime();
+            long now = System.currentTimeMillis();
             if (now >= timeoutAt) {
                 return;
             }

@@ -8,7 +8,6 @@
  */
 package com.foilen.smalltools;
 
-import java.util.Date;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -20,15 +19,32 @@ import com.foilen.smalltools.tools.ThreadTools;
 public class DelayedEventTest {
 
     @Test(timeout = 5000)
+    public void testCancel() throws Exception {
+
+        AtomicLong doneTime = new AtomicLong();
+
+        // Start the event
+        DelayedEvent delayedEvent = new DelayedEvent(500, () -> {
+            doneTime.set(System.currentTimeMillis());
+        });
+        delayedEvent.cancel();
+
+        // Wait
+        ThreadTools.sleep(1000);
+
+        Assert.assertEquals(0, doneTime.get());
+    }
+
+    @Test(timeout = 5000)
     public void testExecute() throws Exception {
 
         AtomicLong doneTime = new AtomicLong();
         Semaphore completed = new Semaphore(0);
 
         // Start the event
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         new DelayedEvent(1000, () -> {
-            doneTime.set(new Date().getTime());
+            doneTime.set(System.currentTimeMillis());
             completed.release();
         });
 
@@ -39,23 +55,6 @@ public class DelayedEventTest {
         long delta = doneTime.get() - startTime;
         long deltaFromExpected = delta - 1000;
         Assert.assertTrue(Math.abs(deltaFromExpected) <= 200);
-    }
-
-    @Test(timeout = 5000)
-    public void testCancel() throws Exception {
-
-        AtomicLong doneTime = new AtomicLong();
-
-        // Start the event
-        DelayedEvent delayedEvent = new DelayedEvent(500, () -> {
-            doneTime.set(new Date().getTime());
-        });
-        delayedEvent.cancel();
-
-        // Wait
-        ThreadTools.sleep(1000);
-
-        Assert.assertEquals(0, doneTime.get());
     }
 
 }
