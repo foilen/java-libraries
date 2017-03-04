@@ -33,6 +33,42 @@ import com.foilen.smalltools.tools.ResourceTools;
  */
 public final class AssertTools {
 
+    /**
+     * Assert expected - delta <= actual <= expected + delta .
+     *
+     * @param expected
+     *            the center of the expected value
+     * @param actual
+     *            the actual value to assert
+     * @param delta
+     *            the delta between the expected value
+     */
+    public static void assertEqualsDelta(int expected, int actual, int delta) {
+        if (Math.abs(expected - actual) > delta) {
+            long expectedLow = expected - delta;
+            long expectedHigh = expected + delta;
+            Assert.fail("Expecting value between " + expectedLow + " and " + expectedHigh + ", but got " + actual);
+        }
+    }
+
+    /**
+     * Assert expected - delta <= actual <= expected + delta .
+     *
+     * @param expected
+     *            the center of the expected value
+     * @param actual
+     *            the actual value to assert
+     * @param delta
+     *            the delta between the expected value
+     */
+    public static void assertEqualsDelta(long expected, long actual, long delta) {
+        if (Math.abs(expected - actual) > delta) {
+            long expectedLow = expected - delta;
+            long expectedHigh = expected + delta;
+            Assert.fail("Expecting value between " + expectedLow + " and " + expectedHigh + ", but got " + actual);
+        }
+    }
+
     public static void assertFileContent(File expectedFile, File actualFile) {
         // Check the file size
         Assert.assertEquals(expectedFile.length(), actualFile.length());

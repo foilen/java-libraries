@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.foilen.smalltools.tools.ThreadTools;
+import com.foilen.smalltools.trigger.SmoothTrigger;
 
 /**
  * This is the handler that will get the notifications.
@@ -56,49 +56,20 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
     }
 
     private static FileState[] matrixExisted = { FileState.MODIFIED, FileState.MODIFIED, FileState.DELETED };
-
     private static FileState[] matrixNotExisted = { FileState.CREATED, FileState.CREATED, null };
-    private FileSystemUpdateHandler wrappedHandler;
-
-    // Parameters
-    private long maxDelayMs;
-    private long delayAfterLastEventMs;
 
     // Running state
+    private SmoothTrigger smoothTrigger;
     private Object lock = new Object();
     private Map<File, FileStatus> buffer = new HashMap<>();
-    private long firstEventTimeMs = -1;
-    private long lastEventTimeMs;
-    private Thread thread = new Thread((Runnable) () -> {
 
-        // Never stop checking
-        for (;;) {
+    public FileSystemUpdateBufferedHandler(FileSystemUpdateHandler wrappedHandler, long delayAfterLastEventMs, long maxDelayMs) {
 
-            // Wait for at least the first event
-            if (firstEventTimeMs == -1) {
-                ThreadTools.sleep(delayAfterLastEventMs);
-                continue;
-            }
-
-            long maxTime = firstEventTimeMs + maxDelayMs;
-            for (;;) {
-                // Wait if not reached
-                long now = System.currentTimeMillis();
-                long waitTime = Math.min( //
-                        lastEventTimeMs + delayAfterLastEventMs - now, //
-                        maxTime - now);
-
-                if (waitTime <= 0) {
-                    break;
-                }
-
-                ThreadTools.sleep(waitTime);
-            }
+        smoothTrigger = new SmoothTrigger(() -> {
 
             // Process
             Map<File, FileStatus> toProcess;
             synchronized (lock) {
-                firstEventTimeMs = -1;
                 toProcess = buffer;
                 buffer = new HashMap<>();
             }
@@ -132,17 +103,12 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
                     break;
                 }
             }
-        }
-    }, "FileSystemUpdateBufferedHandler");
 
-    public FileSystemUpdateBufferedHandler(FileSystemUpdateHandler wrappedHandler, long delayAfterLastEventMs, long maxDelayMs) {
-        this.wrappedHandler = wrappedHandler;
-        this.delayAfterLastEventMs = delayAfterLastEventMs;
-        this.maxDelayMs = maxDelayMs;
+        }) //
+                .setDelayAfterLastTriggerMs(delayAfterLastEventMs) //
+                .setMaxDelayAfterFirstRequestMs(maxDelayMs) //
+                .start();
 
-        // Prepare the thread
-        thread.setDaemon(true);
-        thread.start();
     }
 
     private void bufferEvent(File file, boolean existed, FileState lastEvent) {
@@ -159,13 +125,8 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
             // Set the lastEvent
             fileStatus.lastEvent = lastEvent;
 
-            // Reset the lastEventTime
-            lastEventTimeMs = System.currentTimeMillis();
-
-            // Set the first event time if not started
-            if (firstEventTimeMs == -1) {
-                firstEventTimeMs = System.currentTimeMillis();
-            }
+            // Tell to eventually process
+            smoothTrigger.request();
         }
 
     }
@@ -178,6 +139,7 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
     @Override
     public void deleted(File file) {
         bufferEvent(file, true, FileState.DELETED);
+
     }
 
     @Override
