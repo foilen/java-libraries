@@ -8,21 +8,28 @@
  */
 package com.foilen.smalltools.tools;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DateToolsTest {
+import com.foilen.smalltools.test.asserts.AssertTools;
 
-    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+public class DateToolsTest {
 
     @Test
     public void testAddDate() throws Exception {
-        Assert.assertEquals(SDF.parse("2000-01-10 01:00:00"), DateTools.addDate(SDF.parse("2000-01-01 01:00:00"), Calendar.DAY_OF_MONTH, 9));
-        Assert.assertEquals(SDF.parse("2000-02-10 01:00:00"), DateTools.addDate(SDF.parse("2000-01-10 01:00:00"), Calendar.MONTH, 1));
+        Assert.assertEquals(DateTools.parseFull("2000-01-10 01:00:00"), DateTools.addDate(DateTools.parseFull("2000-01-01 01:00:00"), Calendar.DAY_OF_MONTH, 9));
+        Assert.assertEquals(DateTools.parseFull("2000-02-10 01:00:00"), DateTools.addDate(DateTools.parseFull("2000-01-10 01:00:00"), Calendar.MONTH, 1));
+    }
+
+    @Test
+    public void testAddDate_Now() throws Exception {
+        AssertTools.assertEqualsDelta( //
+                DateTools.addDate(new Date(), Calendar.DAY_OF_MONTH, 9).getTime(), //
+                DateTools.addDate(Calendar.DAY_OF_MONTH, 9).getTime(), //
+                1000L);
     }
 
     @Test
@@ -37,30 +44,30 @@ public class DateToolsTest {
 
     @Test
     public void testIsAfter() throws Exception {
-        Assert.assertTrue(DateTools.isAfter(SDF.parse("2000-01-31 01:00:00"), SDF.parse("2000-01-01 01:00:00")));
-        Assert.assertFalse(DateTools.isAfter(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-31 01:00:00")));
+        Assert.assertTrue(DateTools.isAfter(DateTools.parseFull("2000-01-31 01:00:00"), DateTools.parseFull("2000-01-01 01:00:00")));
+        Assert.assertFalse(DateTools.isAfter(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-31 01:00:00")));
     }
 
     @Test
     public void testIsBefore() throws Exception {
-        Assert.assertTrue(DateTools.isBefore(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-31 01:00:00")));
-        Assert.assertFalse(DateTools.isBefore(SDF.parse("2000-01-31 01:00:00"), SDF.parse("2000-01-01 01:00:00")));
+        Assert.assertTrue(DateTools.isBefore(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-31 01:00:00")));
+        Assert.assertFalse(DateTools.isBefore(DateTools.parseFull("2000-01-31 01:00:00"), DateTools.parseFull("2000-01-01 01:00:00")));
     }
 
     @Test
     public void testIsExpired() throws Exception {
 
         // One month later
-        Assert.assertFalse(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-31 01:00:00"), Calendar.MONTH, 1));
-        Assert.assertFalse(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-02-01 00:00:00"), Calendar.MONTH, 1));
-        Assert.assertTrue(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-02-01 01:00:00"), Calendar.MONTH, 1));
-        Assert.assertTrue(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-02-02 00:00:00"), Calendar.MONTH, 1));
+        Assert.assertFalse(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-31 01:00:00"), Calendar.MONTH, 1));
+        Assert.assertFalse(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-02-01 00:00:00"), Calendar.MONTH, 1));
+        Assert.assertTrue(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-02-01 01:00:00"), Calendar.MONTH, 1));
+        Assert.assertTrue(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-02-02 00:00:00"), Calendar.MONTH, 1));
 
         // 2 days later
-        Assert.assertFalse(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-02 01:00:00"), Calendar.DAY_OF_MONTH, 2));
-        Assert.assertFalse(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-03 00:00:00"), Calendar.DAY_OF_MONTH, 2));
-        Assert.assertTrue(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-03 01:00:00"), Calendar.DAY_OF_MONTH, 2));
-        Assert.assertTrue(DateTools.isExpired(SDF.parse("2000-01-01 01:00:00"), SDF.parse("2000-01-04 00:00:00"), Calendar.DAY_OF_MONTH, 2));
+        Assert.assertFalse(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-02 01:00:00"), Calendar.DAY_OF_MONTH, 2));
+        Assert.assertFalse(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-03 00:00:00"), Calendar.DAY_OF_MONTH, 2));
+        Assert.assertTrue(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-03 01:00:00"), Calendar.DAY_OF_MONTH, 2));
+        Assert.assertTrue(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-04 00:00:00"), Calendar.DAY_OF_MONTH, 2));
 
     }
 

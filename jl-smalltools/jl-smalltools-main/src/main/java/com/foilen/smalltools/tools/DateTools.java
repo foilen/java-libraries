@@ -45,6 +45,21 @@ public final class DateTools {
     }
 
     /**
+     * Add some delta to now.
+     *
+     * @param calendarUnit
+     *            the unit of the delta that is a constant on {@link Calendar}
+     * @param delta
+     *            the delta
+     * @return the new date
+     */
+    public static Date addDate(int calendarUnit, int delta) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(calendarUnit, delta);
+        return calendar.getTime();
+    }
+
+    /**
      * Format a date to "yyyy-MM-dd HH:mm:ss" format.
      *
      * @param date
