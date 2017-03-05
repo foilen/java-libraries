@@ -129,6 +129,8 @@ public class RSATools {
     /**
      * Create a {@link KeyStore} from a {@link RSATrustedCertificates}. It is taking only the trusted certificates ; not the intermediates ones.
      *
+     * The aliases will be the certificate's thumbprint to make sure they are unique.
+     *
      * @param rsaTrustedCertificates
      *            the certificates that are trusted
      * @return the keystore
@@ -141,7 +143,7 @@ public class RSATools {
 
             // Fill it with the trusted certificates
             for (RSACertificate rsaCertificate : rsaTrustedCertificates.getTrustedCertificates()) {
-                String alias = rsaCertificate.getCommonName();
+                String alias = rsaCertificate.getThumbprint();
                 Certificate certificate = rsaCertificate.getCertificate();
                 keyStore.setCertificateEntry(alias, certificate);
             }
@@ -207,6 +209,8 @@ public class RSATools {
 
     /**
      * Create a {@link TrustManagerFactory} from a {@link RSATrustedCertificates}. It is taking only the trusted certificates ; not the intermediates ones.
+     *
+     * For the KeyStore, the aliases will be the certificate's thumbprint to make sure they are unique.
      *
      * @param rsaTrustedCertificates
      *            the certificates that are trusted

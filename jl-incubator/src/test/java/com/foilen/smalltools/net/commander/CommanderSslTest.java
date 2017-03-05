@@ -8,6 +8,8 @@
  */
 package com.foilen.smalltools.net.commander;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -27,9 +29,11 @@ public class CommanderSslTest {
 
     private RSACrypt rsaCrypt = new RSACrypt();
     private RSACertificate firstRoot;
+    private RSACertificate firstRootBis;
     private RSACertificate secondRoot;
 
     private RSACertificate firstAlice;
+    private RSACertificate firstAliceBis;
     private RSACertificate secondMurray;
     private RSACertificate secondPaul;
 
@@ -40,10 +44,12 @@ public class CommanderSslTest {
 
     public CommanderSslTest() {
         firstRoot = selfSign("firstRoot");
+        firstRootBis = selfSign("firstRoot");
         secondRoot = selfSign("secondRoot");
         selfTom = selfSign("selfTom");
 
         firstAlice = nodeSign(firstRoot, "firstAlice");
+        firstAliceBis = nodeSign(firstRootBis, "firstAlice");
         secondMurray = nodeSign(secondRoot, "secondMurray");
         secondPaul = nodeSign(secondRoot, "secondPaul");
     }
@@ -97,11 +103,12 @@ public class CommanderSslTest {
         commanderServer.stop();
     }
 
-    private void testCommandSuccess(RSACertificate serverCertificate, RSACertificate serverTrustCertificate, RSACertificate clientCertificate, RSACertificate clientTrustCertificate) throws Exception {
+    private void testCommandSuccess(RSACertificate serverCertificate, List<RSACertificate> serverTrustCertificates, RSACertificate clientCertificate, List<RSACertificate> clientTrustCertificates)
+            throws Exception {
         // Server
         CommanderServer commanderServer = new CommanderServer();
         commanderServer.setServerCertificate(serverCertificate);
-        commanderServer.setClientTrustedCertificates(serverTrustCertificate == null ? null : new RSATrustedCertificates().addTrustedRsaCertificate(serverTrustCertificate));
+        commanderServer.setClientTrustedCertificates(serverTrustCertificates == null ? null : new RSATrustedCertificates().addTrustedRsaCertificate(serverTrustCertificates));
         commanderServer.start();
         int port = commanderServer.getPort();
         Assert.assertNotEquals(0, port);
@@ -110,7 +117,7 @@ public class CommanderSslTest {
         CommanderTest.countDownLatch = new CountDownLatch(1);
         CommanderClient commanderClient = new CommanderClient();
         commanderClient.setClientCertificate(clientCertificate);
-        commanderClient.setServerTrustedCertificates(clientTrustCertificate == null ? null : new RSATrustedCertificates().addTrustedRsaCertificate(clientTrustCertificate));
+        commanderClient.setServerTrustedCertificates(clientTrustCertificates == null ? null : new RSATrustedCertificates().addTrustedRsaCertificate(clientTrustCertificates));
 
         // Send one command
         CommanderConnection commanderConnection = commanderClient.getCommanderConnection("127.0.0.1", port);
@@ -125,7 +132,7 @@ public class CommanderSslTest {
 
         // Get the remote certificate
         List<RSACertificate> remoteCertificatesOnServerSide = remoteConnectionOnServerSide.getPeerSslCertificates();
-        if (clientCertificate == null || serverTrustCertificate == null) {
+        if (clientCertificate == null || serverTrustCertificates == null) {
             Assert.assertNull(remoteCertificatesOnServerSide);
         } else {
             Assert.assertNotNull(remoteCertificatesOnServerSide);
@@ -137,6 +144,15 @@ public class CommanderSslTest {
         commanderClient.closeConnection("127.0.0.1", port);
         commanderServer.stop();
         Assert.assertEquals(0, commanderClient.getConnectionsCount());
+    }
+
+    private void testCommandSuccess(RSACertificate serverCertificate, RSACertificate serverTrustCertificate, RSACertificate clientCertificate, RSACertificate clientTrustCertificate) throws Exception {
+        testCommandSuccess( //
+                serverCertificate, //
+                serverTrustCertificate == null ? null : Collections.singletonList(serverTrustCertificate), //
+                clientCertificate, //
+                clientTrustCertificate == null ? null : Collections.singletonList(clientTrustCertificate) //
+        );
     }
 
     @Test(timeout = 60000)
@@ -208,6 +224,11 @@ public class CommanderSslTest {
     @Test(timeout = 60000)
     public void testSendACommandWithResponse_SuccessTrustCA() throws Exception {
         testCommandSuccess(firstAlice, secondRoot, secondMurray, firstRoot);
+    }
+
+    @Test(timeout = 60000)
+    public void testSendACommandWithResponse_SuccessTrustCA_SameCA_Name() throws Exception {
+        testCommandSuccess(firstAlice, Arrays.asList(firstRoot, firstRootBis), firstAliceBis, Arrays.asList(firstRoot, firstRootBis));
     }
 
     @Test(timeout = 60000)

@@ -31,6 +31,7 @@ public class RSATrustedCertificatesTest {
     private static final int KEY_SIZE = 1024;
 
     private RSACertificate certA;
+    private RSACertificate certABis;
     private RSACertificate certAB;
     private RSACertificate certAB_Exp;
     private RSACertificate certABC;
@@ -69,6 +70,7 @@ public class RSATrustedCertificatesTest {
 
         RSACrypt rsaCrypt = new RSACrypt();
         certA = new RSACertificate(rsaCrypt.generateKeyPair(KEY_SIZE)).selfSign(new CertificateDetails().setCommonName("A"));
+        certABis = new RSACertificate(rsaCrypt.generateKeyPair(KEY_SIZE)).selfSign(new CertificateDetails().setCommonName("A"));
         certAB = certA.signPublicKey(rsaCrypt.generateKeyPair(KEY_SIZE), new CertificateDetails().setCommonName("AB"));
         certAB_Exp = certA.signPublicKey(rsaCrypt.generateKeyPair(KEY_SIZE), new CertificateDetails().setCommonName("AB_Exp").setStartDate(lastLastYear).setEndDate(lastYear));
         certABC = certAB.signPublicKey(rsaCrypt.generateKeyPair(KEY_SIZE), new CertificateDetails().setCommonName("ABC"));
@@ -89,6 +91,12 @@ public class RSATrustedCertificatesTest {
 
         // A is trusted ; without intermediates
         rsaTrustedCertificates.addTrustedRsaCertificate(certA);
+        assertValid(rsaTrustedCertificates, certA, certAB);
+        assertInvalid(rsaTrustedCertificates, certAB_Exp, certABC, certM, certMN, certX_Exp, certXY);
+        assertValidWithIntermediates(rsaTrustedCertificates, certAB, certA, certAB, certABC);
+
+        // A is trusted ; without intermediates (with 2 CA with the same subject)
+        rsaTrustedCertificates.addTrustedRsaCertificate(certABis);
         assertValid(rsaTrustedCertificates, certA, certAB);
         assertInvalid(rsaTrustedCertificates, certAB_Exp, certABC, certM, certMN, certX_Exp, certXY);
         assertValidWithIntermediates(rsaTrustedCertificates, certAB, certA, certAB, certABC);
@@ -128,9 +136,9 @@ public class RSATrustedCertificatesTest {
 
         KeyStore keyStore = RSATools.createKeyStore(rsaTrustedCertificates);
 
-        Assert.assertTrue(keyStore.containsAlias("A"));
-        Assert.assertTrue(keyStore.containsAlias("M"));
-        Assert.assertFalse(keyStore.containsAlias("AB"));
+        Assert.assertTrue(keyStore.containsAlias(certA.getThumbprint()));
+        Assert.assertTrue(keyStore.containsAlias(certM.getThumbprint()));
+        Assert.assertFalse(keyStore.containsAlias(certAB.getThumbprint()));
     }
 
     @Test
