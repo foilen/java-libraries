@@ -33,16 +33,6 @@ public class DateToolsTest {
     }
 
     @Test
-    public void testFullParseAndFormat() {
-        String text = "2015-05-04 04:55:23";
-        Date date = DateTools.parseFull(text);
-        Assert.assertNotNull(date);
-
-        String actual = DateTools.formatFull(date);
-        Assert.assertEquals(text, actual);
-    }
-
-    @Test
     public void testIsAfter() throws Exception {
         Assert.assertTrue(DateTools.isAfter(DateTools.parseFull("2000-01-31 01:00:00"), DateTools.parseFull("2000-01-01 01:00:00")));
         Assert.assertFalse(DateTools.isAfter(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-31 01:00:00")));
@@ -68,6 +58,21 @@ public class DateToolsTest {
         Assert.assertFalse(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-03 00:00:00"), Calendar.DAY_OF_MONTH, 2));
         Assert.assertTrue(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-03 01:00:00"), Calendar.DAY_OF_MONTH, 2));
         Assert.assertTrue(DateTools.isExpired(DateTools.parseFull("2000-01-01 01:00:00"), DateTools.parseFull("2000-01-04 00:00:00"), Calendar.DAY_OF_MONTH, 2));
+
+    }
+
+    @Test
+    public void testParseAndFormat() {
+        String text = "2015-05-04 04:55:23";
+        Date date = DateTools.parseFull(text);
+        Assert.assertNotNull(date);
+
+        Assert.assertEquals("2015-05-04 04:55:23", DateTools.formatFull(date));
+        Assert.assertEquals("2015-05-04", DateTools.formatDateOnly(date));
+        Assert.assertEquals("04:55:23", DateTools.formatTimeOnly(date));
+
+        Assert.assertEquals(DateTools.parseFull("2015-05-04 00:00:00"), DateTools.parseDateOnly("2015-05-04"));
+        Assert.assertEquals(DateTools.parseFull("1970-01-01 04:55:23"), DateTools.parseTimeOnly("04:55:23"));
 
     }
 
