@@ -50,6 +50,26 @@ public class JsonToolsTest {
     }
 
     @Test
+    public void testClone() {
+
+        Type original = new Type();
+        original.setA("Some text");
+        original.setB(5);
+
+        Type clone = JsonTools.clone(original);
+
+        Assert.assertTrue(original != clone);
+        Assert.assertEquals("Some text", clone.getA());
+        Assert.assertEquals(5, clone.getB());
+    }
+
+    @Test
+    public void testClone_null() {
+        Type clone = JsonTools.clone(null);
+        Assert.assertNull(clone);
+    }
+
+    @Test
     public void testCompactPrint() {
         String expected = ResourceTools.getResourceAsString("JsonToolsTest-compactPrint-expected", this.getClass());
         expected = expected.replaceAll("\r", "");

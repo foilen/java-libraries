@@ -53,6 +53,23 @@ public final class JsonTools {
     }
 
     /**
+     * Serialize to JSON and deserialize back as a new object.
+     *
+     * @param object
+     *            the object to clone
+     * @return the new cloned object
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T clone(T object) {
+        if (object == null) {
+            return null;
+        }
+        Class<? extends Object> type = object.getClass();
+        String json = compactPrint(object);
+        return (T) readFromString(json, type);
+    }
+
+    /**
      * Return a compact print JSON String.
      *
      * @param object
