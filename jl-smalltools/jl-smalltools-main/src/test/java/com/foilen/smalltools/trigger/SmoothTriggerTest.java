@@ -45,7 +45,7 @@ public class SmoothTriggerTest {
         startTime = System.currentTimeMillis();
     }
 
-    @Test(timeout = 7000)
+    @Test(timeout = 30000)
     public void testPassthru_Warmup_Max_Cancel() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
@@ -108,7 +108,7 @@ public class SmoothTriggerTest {
         Assert.assertEquals(7, triggers.size());
     }
 
-    @Test(timeout = 7000)
+    @Test(timeout = 30000)
     public void testWarmup() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
@@ -140,7 +140,7 @@ public class SmoothTriggerTest {
 
     }
 
-    @Test(timeout = 7000)
+    @Test(timeout = 30000)
     public void testWarmup_Max() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
@@ -156,11 +156,11 @@ public class SmoothTriggerTest {
         smoothTrigger.stop(false);
         Assert.assertEquals(2, triggers.size());
         AssertTools.assertEqualsDelta(MAX_DELAY, triggers.get(0), HALF_DELAY);
-        AssertTools.assertEqualsDelta(2 * MAX_DELAY, triggers.get(1), HALF_DELAY);
+        AssertTools.assertEqualsDelta(2 * MAX_DELAY, triggers.get(1), DELAY);
 
     }
 
-    @Test(timeout = 7000)
+    @Test(timeout = 30000)
     public void testWarmup_Max_Cancel() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
