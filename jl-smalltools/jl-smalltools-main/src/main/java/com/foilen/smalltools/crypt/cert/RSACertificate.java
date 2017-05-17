@@ -21,8 +21,10 @@ import java.security.Security;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.spongycastle.asn1.ASN1Primitive;
@@ -30,6 +32,9 @@ import org.spongycastle.asn1.ASN1Set;
 import org.spongycastle.asn1.x500.AttributeTypeAndValue;
 import org.spongycastle.asn1.x500.RDN;
 import org.spongycastle.asn1.x500.X500Name;
+import org.spongycastle.asn1.x509.Extension;
+import org.spongycastle.asn1.x509.GeneralName;
+import org.spongycastle.asn1.x509.GeneralNames;
 import org.spongycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.spongycastle.cert.X509CertificateHolder;
 import org.spongycastle.cert.X509v3CertificateBuilder;
@@ -55,6 +60,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.hash.HashSha1;
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.CloseableTools;
+import com.foilen.smalltools.tools.CollectionsTools;
 import com.foilen.smalltools.tools.DateTools;
 import com.foilen.smalltools.tools.FileTools;
 
@@ -294,6 +300,33 @@ public class RSACertificate {
     }
 
     /**
+     * Get all the Subject Alternative Names.
+     * 
+     * @return the SANs
+     */
+    public Set<String> getSubjectAltNames() {
+        AssertTools.assertNotNull(certificateHolder, "The certificate is not set");
+
+        Set<String> results = new HashSet<>();
+
+        X509Certificate x509Certificate = getCertificate();
+        try {
+            Collection<List<?>> subjectAlternativeNames = x509Certificate.getSubjectAlternativeNames();
+            if (subjectAlternativeNames == null) {
+                return results;
+            }
+
+            for (Object next : subjectAlternativeNames) {
+                results.add(((List<?>) next).get(1).toString());
+            }
+
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem parsing the certificate", e);
+        }
+        return results;
+    }
+
+    /**
      * Compute the SHA1 thumbprint.
      *
      * @return the SHA1 thumbprint
@@ -444,9 +477,21 @@ public class RSACertificate {
             Date endDate = certificateDetails.getEndDate();
             BigInteger serial = certificateDetails.getSerial();
 
+            // Common Name
             X500Name issuer = new X500Name("CN=" + certificateDetails.getCommonName());
 
             X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(issuer, serial, startDate, endDate, issuer, subPubKeyInfo);
+
+            // Subject Alternative Names (DNS)
+            if (!CollectionsTools.isNullOrEmpty(certificateDetails.getSanDns())) {
+                GeneralName[] altNames = new GeneralName[certificateDetails.getSanDns().size()];
+                int i = 0;
+                for (String sanDns : certificateDetails.getSanDns()) {
+                    altNames[i++] = new GeneralName(GeneralName.dNSName, sanDns);
+                }
+                GeneralNames subjectAltNames = new GeneralNames(altNames);
+                certificateBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
+            }
             certificateHolder = certificateBuilder.build(sigGen);
 
             return this;
@@ -475,6 +520,7 @@ public class RSACertificate {
      * @return the new certificate
      */
     public RSACertificate signPublicKey(AsymmetricKeys publicKeyToSign, CertificateDetails certificateDetails) {
+
         try {
             PrivateKey privKey = rsaCrypt.retrieveKeyDetails(keysForSigning).getJcaPrivateKey();
             PublicKey publicKey = rsaCrypt.retrieveKeyDetails(publicKeyToSign).getJcaPublicKey();
@@ -489,6 +535,18 @@ public class RSACertificate {
             X500Name subject = new X500Name("CN=" + certificateDetails.getCommonName());
 
             X509v3CertificateBuilder certificateBuilder = new X509v3CertificateBuilder(issuer, serial, startDate, endDate, subject, subPubKeyInfo);
+
+            // Subject Alternative Names (DNS)
+            if (!CollectionsTools.isNullOrEmpty(certificateDetails.getSanDns())) {
+                GeneralName[] altNames = new GeneralName[certificateDetails.getSanDns().size()];
+                int i = 0;
+                for (String sanDns : certificateDetails.getSanDns()) {
+                    altNames[i++] = new GeneralName(GeneralName.dNSName, sanDns);
+                }
+                GeneralNames subjectAltNames = new GeneralNames(altNames);
+                certificateBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
+            }
+
             X509CertificateHolder newCert = certificateBuilder.build(sigGen);
 
             return new RSACertificate(newCert, publicKeyToSign);

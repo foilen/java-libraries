@@ -9,6 +9,9 @@
 package com.foilen.smalltools.crypt.cert;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
@@ -20,6 +23,7 @@ import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 
 import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
 import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
+import com.foilen.smalltools.test.asserts.AssertTools;
 
 public class RSACertificateTest {
 
@@ -30,19 +34,37 @@ public class RSACertificateTest {
         Assert.assertEquals(expected.getThumbprint(), actual.getThumbprint());
     }
 
+    private void assertCommonNamesAndSans(RSACertificate certificate, String[] expectedCommonNames, String[] expectedSans) {
+        // Common names
+        List<String> expected = Arrays.asList(expectedCommonNames);
+        List<String> actual = certificate.getCommonNames().stream().sorted().collect(Collectors.toList());
+        AssertTools.assertJsonComparison(expected, actual);
+
+        // Sans
+        expected = Arrays.asList(expectedSans);
+        actual = certificate.getSubjectAltNames().stream().sorted().collect(Collectors.toList());
+        AssertTools.assertJsonComparison(expected, actual);
+    }
+
     @Test
     public void testIsValidSignature() {
-
         // Root
         AsymmetricKeys rootKeys = rsaCrypt.generateKeyPair(2048);
         AsymmetricKeyParameter rootPublicKey = rootKeys.getPublicKey();
         RSACertificate rootCertificate = new RSACertificate(rootKeys);
-        rootCertificate.selfSign(new CertificateDetails().setCommonName("CA root"));
+        rootCertificate.selfSign(new CertificateDetails().setCommonName("CA root").addSanDns("CA root SAN 1", "CA root SAN 2"));
+        assertCommonNamesAndSans(rootCertificate, new String[] { "CA root" }, new String[] { "CA root SAN 1", "CA root SAN 2" });
 
         // Node
         AsymmetricKeys nodeKeys = rsaCrypt.generateKeyPair(2048);
         AsymmetricKeyParameter nodePublicKey = nodeKeys.getPublicKey();
-        RSACertificate nodeCertificate = rootCertificate.signPublicKey(nodeKeys, new CertificateDetails().setCommonName("p001.node.foilen.org"));
+        RSACertificate nodeCertificate = rootCertificate.signPublicKey(nodeKeys, new CertificateDetails().setCommonName("p001.node.foilen.org").addSanDns("P SAN 1", "P SAN 2"));
+        assertCommonNamesAndSans(nodeCertificate, new String[] { "p001.node.foilen.org" }, new String[] { "P SAN 1", "P SAN 2" });
+
+        // Node without san
+        AsymmetricKeys nodeNoSanKeys = rsaCrypt.generateKeyPair(2048);
+        RSACertificate nodeNoSanCertificate = rootCertificate.signPublicKey(nodeNoSanKeys, new CertificateDetails().setCommonName("p002.node.foilen.org"));
+        assertCommonNamesAndSans(nodeNoSanCertificate, new String[] { "p002.node.foilen.org" }, new String[] {});
 
         // Fake Root
         AsymmetricKeys fakeRootKeys = rsaCrypt.generateKeyPair(2048);
