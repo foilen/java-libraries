@@ -40,6 +40,28 @@ public class ReflectionToolsTest {
         }
     }
 
+    private static class PartialProperties {
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getSpecialName() {
+            return name + "YaY";
+        }
+
+        @SuppressWarnings("unused")
+        public void setNothing(String nothing) {
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+    }
+
     private static class Anything {
         private String name;
         private int age;
@@ -223,6 +245,14 @@ public class ReflectionToolsTest {
         Assert.assertEquals(0, anything.getAge());
         Assert.assertNull(anything.getName());
         Assert.assertNull(anything.getAnimal());
+
+        // Partial Properties
+        PartialProperties partial = new PartialProperties();
+        partial.setName("Joe");
+        PartialProperties copiedPartial = new PartialProperties();
+        ReflectionTools.copyAllProperties(partial, copiedPartial);
+        Assert.assertEquals("Joe", copiedPartial.getName());
+        Assert.assertEquals("JoeYaY", copiedPartial.getSpecialName());
     }
 
     @Test

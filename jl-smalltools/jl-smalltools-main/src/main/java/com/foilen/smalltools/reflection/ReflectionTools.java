@@ -197,7 +197,12 @@ public final class ReflectionTools {
                 }
 
                 // Copy
-                toPropertyDescriptor.getWriteMethod().invoke(to, fromPropertyDescriptor.getReadMethod().invoke(from));
+                Method writeMethod = toPropertyDescriptor.getWriteMethod();
+                Method readMethod = fromPropertyDescriptor.getReadMethod();
+                if (writeMethod == null || readMethod == null) {
+                    continue;
+                }
+                writeMethod.invoke(to, readMethod.invoke(from));
             }
 
         } catch (Exception e) {
