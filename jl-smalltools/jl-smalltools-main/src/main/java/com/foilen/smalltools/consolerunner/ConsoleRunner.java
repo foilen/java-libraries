@@ -32,7 +32,7 @@ import com.foilen.smalltools.tuple.Tuple2;
  *  Usage to have the out/err stream piped to the standard out/err.
  *
  *     ConsoleRunner runner = new ConsoleRunner();
- *         runner.command = "apt-get";
+ *         runner.setCommand("apt-get");
  *         runner.addArguments("-y", "install");
  *         runner.addArguments(packageNames);
  *
@@ -43,7 +43,7 @@ import com.foilen.smalltools.tuple.Tuple2;
  *  Usage to get the output in a string.
  *
  *     ConsoleRunner runner = new ConsoleRunner();
- *         runner.command = "dpkg";
+ *         runner.setCommand("dpkg");
  *         runner.addArguments("-s", packageName);
  *
  *         String content = runner.executeForString();
@@ -62,7 +62,6 @@ public class ConsoleRunner {
     private Long timeoutInMilliseconds = null;
 
     private String command;
-
     private String workingDirectory;
     private List<String> arguments = new ArrayList<>();
     private Map<String, String> environments = new HashMap<>();
@@ -75,6 +74,9 @@ public class ConsoleRunner {
     private boolean closeConsoleError = false;
 
     private int statusCode;
+
+    private ConsoleTimeoutHandlerRunnable consoleTimeoutHandlerRunnable;
+    private volatile boolean cancelled;
 
     /**
      * Add arguments to the command.
@@ -123,7 +125,9 @@ public class ConsoleRunner {
      */
     public int execute() {
 
-        ConsoleTimeoutHandlerRunnable consoleTimeoutHandlerRunnable = new ConsoleTimeoutHandlerRunnable(this);
+        cancelled = false;
+
+        consoleTimeoutHandlerRunnable = new ConsoleTimeoutHandlerRunnable(this);
 
         if (timeoutInMilliseconds == null) {
             // No timeout
@@ -138,6 +142,10 @@ public class ConsoleRunner {
                 logger.debug("The console timed out");
                 throw new ConsoleTimedoutException();
             }
+        }
+
+        if (cancelled) {
+            throw new ConsoleKilledException();
         }
 
         return statusCode;
@@ -409,6 +417,13 @@ public class ConsoleRunner {
     public ConsoleRunner setWorkingDirectory(String workingDirectory) {
         this.workingDirectory = workingDirectory;
         return this;
+    }
+
+    public void stopRequested() {
+        if (consoleTimeoutHandlerRunnable != null) {
+            cancelled = true;
+            consoleTimeoutHandlerRunnable.stopRequested();
+        }
     }
 
 }

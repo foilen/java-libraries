@@ -149,7 +149,9 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
 
     @Override
     public void stopRequested() {
-        process.destroy();
+        if (process != null) {
+            process.destroy();
+        }
     }
 
 }
