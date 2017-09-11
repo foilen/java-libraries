@@ -14,20 +14,18 @@ import java.util.List;
 /**
  * To execute multiple actions on one object.
  *
- * @param <T>
- *            the type of action to execute
  * @param <I>
  *            the type of item that the actions will be applied to
  */
 public class AssemblyLine<T extends AssemblyLineAction<I>, I> {
 
-    protected List<T> actions = new ArrayList<>();
+    protected List<AssemblyLineAction<I>> actions = new ArrayList<>();
 
     public void addAction(T action) {
         actions.add(action);
     }
 
-    public List<T> getActions() {
+    public List<AssemblyLineAction<I>> getActions() {
         return actions;
     }
 
@@ -44,7 +42,7 @@ public class AssemblyLine<T extends AssemblyLineAction<I>, I> {
             return item;
         }
 
-        for (T action : actions) {
+        for (AssemblyLineAction<I> action : actions) {
             item = action.executeAction(item);
             if (item == null) {
                 break;
@@ -53,7 +51,7 @@ public class AssemblyLine<T extends AssemblyLineAction<I>, I> {
         return item;
     }
 
-    public void setActions(List<T> actions) {
+    public void setActions(List<AssemblyLineAction<I>> actions) {
         this.actions = actions;
     }
 
