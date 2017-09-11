@@ -10,7 +10,15 @@ package com.foilen.smalltools.tools;
 
 import java.util.Optional;
 
-// TODO +++ Javadoc
+/**
+ * This is to help searching for an available value by checking small ranges at a time.
+ * 
+ * Features:
+ * <ul>
+ * <li>Keeps track of the last found value to use it as the next lower range</li>
+ * <li>Will loop once if the end is reached</li>
+ * </ul>
+ */
 public final class SearchingAvailabilityIntTools extends AbstractBasics {
 
     public interface CheckAvailabilityInt {
