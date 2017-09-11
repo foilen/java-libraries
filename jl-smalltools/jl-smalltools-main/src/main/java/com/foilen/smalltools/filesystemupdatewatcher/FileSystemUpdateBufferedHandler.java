@@ -16,7 +16,8 @@ import java.util.Map.Entry;
 import com.foilen.smalltools.trigger.SmoothTrigger;
 
 /**
- * This is the handler that will get the notifications.
+ * This is an handler that will get the notifications for a few seconds and then trigger back a summary (e.g if a file is changed 10 times in 1 second, you will be notified only once instead of 10
+ * times).
  *
  * The buffering:
  * <ul>
