@@ -40,28 +40,6 @@ public class ReflectionToolsTest {
         }
     }
 
-    private static class PartialProperties {
-
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public String getSpecialName() {
-            return name + "YaY";
-        }
-
-        @SuppressWarnings("unused")
-        public void setNothing(String nothing) {
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-    }
-
     private static class Anything {
         private String name;
         private int age;
@@ -157,6 +135,28 @@ public class ReflectionToolsTest {
 
     @Retention(RetentionPolicy.RUNTIME)
     private static @interface MyAnnotation {
+    }
+
+    private static class PartialProperties {
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getSpecialName() {
+            return name + "YaY";
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @SuppressWarnings("unused")
+        public void setNothing(String nothing) {
+        }
+
     }
 
     private void assertContainField(List<Field> fields, String fieldName) {

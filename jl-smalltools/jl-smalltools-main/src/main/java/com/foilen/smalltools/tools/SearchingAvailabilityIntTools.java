@@ -12,7 +12,7 @@ import java.util.Optional;
 
 /**
  * This is to help searching for an available value by checking small ranges at a time.
- * 
+ *
  * Features:
  * <ul>
  * <li>Keeps track of the last found value to use it as the next lower range</li>

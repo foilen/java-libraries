@@ -301,7 +301,7 @@ public class RSACertificate {
 
     /**
      * Get all the Subject Alternative Names.
-     * 
+     *
      * @return the SANs
      */
     public Set<String> getSubjectAltNames() {

@@ -80,10 +80,9 @@ public abstract class AbstractFlywayMigrateOffUpgradeTask extends AbstractDataba
                         updateFromResource("/db/migration/" + scriptName);
 
                         // Save in schema_version
-                        jdbcTemplate.update(
-                                "INSERT INTO schema_version " //
-                                        + "(version_rank, installed_rank, version, description, type, script, installed_by, execution_time, success) " //
-                                        + "VALUES (?,?,?,'','SQL',?,'upgrader',1, 1)", //
+                        jdbcTemplate.update("INSERT INTO schema_version " //
+                                + "(version_rank, installed_rank, version, description, type, script, installed_by, execution_time, success) " //
+                                + "VALUES (?,?,?,'','SQL',?,'upgrader',1, 1)", //
                                 rank, rank, //
                                 scriptName.substring(0, Math.min(50, scriptName.length())), //
                                 scriptName //
