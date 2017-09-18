@@ -25,7 +25,7 @@ import com.google.common.base.Objects;
  *
  * <pre>
  * Dependencies:
- * compile 'com.google.guava:guava:18.0'
+ * compile 'com.google.guava:guava:23.0'
  * </pre>
  */
 public class DiscoverableService {

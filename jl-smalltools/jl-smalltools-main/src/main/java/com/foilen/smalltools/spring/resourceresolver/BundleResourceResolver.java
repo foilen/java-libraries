@@ -104,11 +104,11 @@ import com.google.common.cache.LoadingCache;
  *
  * <pre>
  * Dependencies:
- * compile 'com.google.guava:guava:18.0'
+ * compile 'com.google.guava:guava:23.0'
  * compile 'javax.servlet:javax.servlet-api:3.1.0'
- * compile 'org.slf4j:slf4j-api:1.7.21'
- * compile 'org.springframework:spring-core:4.1.6.RELEASE'
- * compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
+ * compile 'org.slf4j:slf4j-api:1.7.25'
+ * compile 'org.springframework:spring-core:4.3.11.RELEASE'
+ * compile 'org.springframework:spring-webmvc:4.3.11.RELEASE'
  * </pre>
  */
 public class BundleResourceResolver implements ResourceResolver {

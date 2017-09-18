@@ -32,9 +32,9 @@ import com.foilen.smalltools.exception.SmallToolsException;
  *
  * <pre>
  * Dependencies:
- * compile 'com.madgag.spongycastle:prov:1.51.0.0'
- * compile 'com.madgag.spongycastle:pkix:1.51.0.0'
- * compile 'com.madgag.spongycastle:pg:1.51.0.0'
+ * compile 'com.madgag.spongycastle:prov:1.54.0.0'
+ * compile 'com.madgag.spongycastle:pkix:1.54.0.0'
+ * compile 'com.madgag.spongycastle:pg:1.54.0.0'
  * </pre>
  */
 public class RSATools {

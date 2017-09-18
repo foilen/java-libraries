@@ -22,7 +22,7 @@ import freemarker.template.TemplateExceptionHandler;
  *
  * <pre>
  * Dependencies:
- * compile 'org.freemarker:freemarker:2.3.22'
+ * compile 'org.freemarker:freemarker:2.3.23'
  * </pre>
  */
 public final class FreemarkerTools {

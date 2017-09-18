@@ -100,7 +100,7 @@ import com.foilen.smalltools.tools.CloseableTools;
  * <pre>
  * Dependencies:
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
- * compile 'org.springframework:spring-beans:4.1.6.RELEASE' (optional)
+ * compile 'org.springframework:spring-beans:4.3.11.RELEASE' (optional)
  * </pre>
  */
 public class CommanderServer {

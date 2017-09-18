@@ -287,7 +287,7 @@ public final class ReflectionUtils {
                 if (contructorParamType == null) {
                     continue;
                 }
-                if (!currentTypes.equals(contructorParamType) && !currentTypes[i].isAssignableFrom(contructorParamType)) {
+                if (!currentTypes[i].equals(contructorParamType) && !currentTypes[i].isAssignableFrom(contructorParamType)) {
                     allRightTypes = false;
                     break;
                 }

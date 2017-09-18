@@ -8,6 +8,8 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.util.EnumSet;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
@@ -18,10 +20,10 @@ import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
-import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
 import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
@@ -33,6 +35,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
  * To generate the SQL file:
  *
  * <pre>
+ * System.setProperty("hibernate.dialect.storage_engine", "innodb");
  * Hibernate5Tools.generateSqlSchema(MySQL5InnoDBDialect.class, "sql/mysql.sql", true, "com.foilen.confignui.db.domain");
  * </pre>
  *
@@ -45,9 +48,9 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
  *
  * <pre>
  * Dependencies:
- * compile 'org.hibernate:hibernate-core:5.0.11.Final'
- * compile 'org.springframework:spring-orm:4.3.3.RELEASE'
- * compile 'org.springframework.boot:spring-boot:1.4.1.RELEASE'
+ * compile 'org.hibernate:hibernate-core:5.2.11.Final'
+ * compile 'org.springframework:spring-orm:4.3.11.RELEASE'
+ * compile 'org.springframework.boot:spring-boot:1.5.7.RELEASE'
  * </pre>
  */
 public final class Hibernate5Tools {
@@ -90,12 +93,12 @@ public final class Hibernate5Tools {
             metadataBuilder.applyPhysicalNamingStrategy(new SpringPhysicalNamingStrategy());
         }
 
-        new SchemaExport((MetadataImplementor) metadataBuilder.build()) //
+        new SchemaExport() //
                 .setHaltOnError(true) //
                 .setOutputFile(outputSqlFile) //
                 .setFormat(true) //
                 .setDelimiter(";") //
-                .execute(true, false, false, true);
+                .execute(EnumSet.of(TargetType.SCRIPT), SchemaExport.Action.CREATE, metadataBuilder.build());
 
     }
 

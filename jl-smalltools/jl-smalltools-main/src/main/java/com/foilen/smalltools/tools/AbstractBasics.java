@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory;
  *
  * <pre>
  * Dependencies:
- * compile 'org.apache.commons:commons-lang3:3.5'
- * compile 'org.slf4j:slf4j-api:1.7.21'
+ * compile 'org.apache.commons:commons-lang3:3.6'
+ * compile 'org.slf4j:slf4j-api:1.7.25'
  * </pre>
  */
 public abstract class AbstractBasics {

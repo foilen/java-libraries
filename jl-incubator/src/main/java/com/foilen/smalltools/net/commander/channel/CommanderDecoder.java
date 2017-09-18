@@ -31,7 +31,7 @@ import io.netty.handler.codec.ReplayingDecoder;
  *
  * <pre>
  * Dependencies:
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+ * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
  * compile 'io.netty:netty-all:5.0.0.Alpha2'
  * </pre>
  */

@@ -19,6 +19,7 @@ public class Hibernate5ToolsTest {
 
     @Test
     public void testGenerateSqlSchema_WithoutUnderscore() throws Exception {
+        System.setProperty("hibernate.dialect.storage_engine", "innodb");
         String outputSqlFile = File.createTempFile("output", ".sql").getAbsolutePath();
         Hibernate5Tools.generateSqlSchema(MySQLDialect.class, outputSqlFile, false, "com.foilen.smalltools.tools.test.entities");
 
@@ -29,6 +30,7 @@ public class Hibernate5ToolsTest {
 
     @Test
     public void testGenerateSqlSchema_WithUnderscore() throws Exception {
+        System.setProperty("hibernate.dialect.storage_engine", "innodb");
         String outputSqlFile = File.createTempFile("output", ".sql").getAbsolutePath();
         Hibernate5Tools.generateSqlSchema(MySQLDialect.class, outputSqlFile, true, "com.foilen.smalltools.tools.test.entities");
 

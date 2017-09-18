@@ -56,13 +56,13 @@
     );
 
     alter table machine 
-        add constraint UK_iy15tft5g7qcqkfxicfxy3f2y  unique (name);
+        add constraint UK_iy15tft5g7qcqkfxicfxy3f2y unique (name);
 
     alter table machine_statistics_fs 
-        add constraint UK_11xmgisdqthd1wmelad3yhifc  unique (fs);
+        add constraint UK_11xmgisdqthd1wmelad3yhifc unique (fs);
 
     alter table machine_statistics_networks 
-        add constraint UK_9wul3wlxdhb8cxof5nffxjbih  unique (networks);
+        add constraint UK_9wul3wlxdhb8cxof5nffxjbih unique (networks);
 
     alter table machine_ips 
         add constraint FK_tc9tuv0to5jtdiftmfed23j0f 

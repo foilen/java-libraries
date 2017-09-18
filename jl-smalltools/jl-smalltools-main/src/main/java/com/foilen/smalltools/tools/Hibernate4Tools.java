@@ -45,8 +45,8 @@ import org.springframework.util.ClassUtils;
  *
  * <pre>
  * Dependencies:
- * compile 'org.hibernate:hibernate-core:4.3.10.Final'
- * compile 'org.springframework:spring-orm:4.1.6.RELEASE'
+ * compile 'org.hibernate:hibernate-core:4.3.11.Final'
+ * compile 'org.springframework:spring-orm:4.3.11.RELEASE'
  * </pre>
  */
 public final class Hibernate4Tools {

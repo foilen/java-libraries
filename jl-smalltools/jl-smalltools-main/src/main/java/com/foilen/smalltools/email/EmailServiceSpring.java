@@ -22,8 +22,8 @@ import com.foilen.smalltools.exception.SmallToolsException;
  *
  * <pre>
  * Dependencies:
- * compile 'com.sun.mail:javax.mail:1.5.2'
- * compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
+ * compile 'com.sun.mail:javax.mail:1.6.0'
+ * compile 'org.springframework:spring-context-support:4.3.11.RELEASE'
  * </pre>
  */
 public class EmailServiceSpring implements EmailService {
