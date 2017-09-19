@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.cert;
+package com.foilen.smalltools.crypt.spongycastle.cert;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
@@ -53,9 +53,9 @@ import org.spongycastle.util.io.pem.PemObjectGenerator;
 import org.spongycastle.util.io.pem.PemReader;
 import org.spongycastle.util.io.pem.PemWriter;
 
-import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
-import com.foilen.smalltools.crypt.asymmetric.RSAKeyDetails;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSAKeyDetails;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.hash.HashSha1;
 import com.foilen.smalltools.tools.AssertTools;

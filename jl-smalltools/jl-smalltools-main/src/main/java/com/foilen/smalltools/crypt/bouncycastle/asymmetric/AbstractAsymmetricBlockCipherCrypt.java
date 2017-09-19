@@ -6,15 +6,15 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.asymmetric;
+package com.foilen.smalltools.crypt.bouncycastle.asymmetric;
 
 import java.security.SecureRandom;
 
+import org.bouncycastle.crypto.AsymmetricBlockCipher;
+import org.bouncycastle.crypto.BufferedBlockCipher;
+import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spongycastle.crypto.AsymmetricBlockCipher;
-import org.spongycastle.crypto.BufferedBlockCipher;
-import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
@@ -23,9 +23,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
  *
  * <pre>
  * Dependencies:
- * compile 'com.madgag.spongycastle:prov:1.54.0.0'
- * compile 'com.madgag.spongycastle:pkix:1.54.0.0'
- * compile 'com.madgag.spongycastle:pg:1.54.0.0'
+ * compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
  * </pre>
  */
 public abstract class AbstractAsymmetricBlockCipherCrypt {

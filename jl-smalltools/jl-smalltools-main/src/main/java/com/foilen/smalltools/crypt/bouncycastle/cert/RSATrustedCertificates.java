@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.cert;
+package com.foilen.smalltools.crypt.bouncycastle.cert;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -17,11 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.spongycastle.asn1.x500.X500Name;
-import org.spongycastle.asn1.x509.Certificate;
-import org.spongycastle.cert.X509CertificateHolder;
-import org.spongycastle.util.io.pem.PemObject;
-import org.spongycastle.util.io.pem.PemReader;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.Certificate;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemReader;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.CloseableTools;
@@ -46,9 +46,7 @@ import com.foilen.smalltools.tools.CloseableTools;
  *
  * <pre>
  * Dependencies:
- * compile 'com.madgag.spongycastle:prov:1.54.0.0'
- * compile 'com.madgag.spongycastle:pkix:1.54.0.0'
- * compile 'com.madgag.spongycastle:pg:1.54.0.0'
+ * compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
  * </pre>
  */
 public class RSATrustedCertificates {

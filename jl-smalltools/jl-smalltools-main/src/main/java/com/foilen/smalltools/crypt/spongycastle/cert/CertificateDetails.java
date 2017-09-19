@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.cert;
+package com.foilen.smalltools.crypt.spongycastle.cert;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

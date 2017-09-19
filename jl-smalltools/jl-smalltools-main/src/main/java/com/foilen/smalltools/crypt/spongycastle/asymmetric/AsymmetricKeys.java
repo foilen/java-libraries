@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.asymmetric;
+package com.foilen.smalltools.crypt.spongycastle.asymmetric;
 
 import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 

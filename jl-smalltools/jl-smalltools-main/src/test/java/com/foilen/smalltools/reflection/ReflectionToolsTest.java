@@ -17,7 +17,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.crypt.cert.CertificateDetails;
+import com.foilen.smalltools.crypt.spongycastle.cert.CertificateDetails;
 import com.foilen.smalltools.inputstream.ZerosInputStream;
 
 public class ReflectionToolsTest {

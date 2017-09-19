@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.cert;
+package com.foilen.smalltools.crypt.bouncycastle.cert;
 
 import java.io.File;
 import java.security.KeyStore;
@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
 import com.foilen.smalltools.tools.DateTools;
 
 public class RSATrustedCertificatesTest {

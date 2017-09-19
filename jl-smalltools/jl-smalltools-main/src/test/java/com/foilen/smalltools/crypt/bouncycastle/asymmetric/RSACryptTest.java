@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.asymmetric;
+package com.foilen.smalltools.crypt.bouncycastle.asymmetric;
 
 import java.io.File;
 import java.math.BigInteger;

@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.cert;
+package com.foilen.smalltools.crypt.spongycastle.cert;
 
 import java.io.File;
 import java.util.Arrays;
@@ -21,8 +21,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 
-import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSACrypt;
 import com.foilen.smalltools.test.asserts.AssertTools;
 
 public class RSACertificateTest {

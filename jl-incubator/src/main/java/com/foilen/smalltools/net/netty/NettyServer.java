@@ -22,9 +22,9 @@ import javax.net.ssl.TrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.crypt.cert.RSACertificate;
-import com.foilen.smalltools.crypt.cert.RSATools;
-import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSACertificate;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSATools;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSATrustedCertificates;
 import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.tools.AssertTools;
 

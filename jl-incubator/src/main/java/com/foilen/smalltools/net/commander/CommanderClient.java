@@ -11,8 +11,8 @@ package com.foilen.smalltools.net.commander;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.foilen.smalltools.crypt.cert.RSACertificate;
-import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSACertificate;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSATrustedCertificates;
 import com.foilen.smalltools.net.commander.channel.CommanderDecoder;
 import com.foilen.smalltools.net.commander.channel.CommanderEncoder;
 import com.foilen.smalltools.net.commander.channel.CommanderExecutionChannel;

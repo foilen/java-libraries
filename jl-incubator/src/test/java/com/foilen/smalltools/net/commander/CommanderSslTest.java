@@ -18,10 +18,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
-import com.foilen.smalltools.crypt.cert.CertificateDetails;
-import com.foilen.smalltools.crypt.cert.RSACertificate;
-import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.spongycastle.cert.CertificateDetails;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSACertificate;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSATrustedCertificates;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
 

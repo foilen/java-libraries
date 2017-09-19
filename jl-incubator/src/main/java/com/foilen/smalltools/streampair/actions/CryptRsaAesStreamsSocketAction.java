@@ -12,9 +12,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 
-import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.asymmetric.RSACrypt;
-import com.foilen.smalltools.crypt.asymmetric.RSAKeyDetails;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSAKeyDetails;
 import com.foilen.smalltools.crypt.symmetric.AESCrypt;
 import com.foilen.smalltools.crypt.symmetric.AESKeyDetails;
 import com.foilen.smalltools.crypt.symmetric.SymmetricKey;

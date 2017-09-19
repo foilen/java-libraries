@@ -6,7 +6,7 @@
     http://opensource.org/licenses/MIT
 
  */
-package com.foilen.smalltools.crypt.cert;
+package com.foilen.smalltools.crypt.bouncycastle.cert;
 
 import java.security.Key;
 import java.security.KeyFactory;
@@ -21,10 +21,10 @@ import java.security.spec.RSAPublicKeySpec;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.spongycastle.crypto.params.RSAKeyParameters;
-import org.spongycastle.crypto.params.RSAPrivateCrtKeyParameters;
+import org.bouncycastle.crypto.params.RSAKeyParameters;
+import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;
 
-import com.foilen.smalltools.crypt.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
@@ -32,9 +32,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
  *
  * <pre>
  * Dependencies:
- * compile 'com.madgag.spongycastle:prov:1.54.0.0'
- * compile 'com.madgag.spongycastle:pkix:1.54.0.0'
- * compile 'com.madgag.spongycastle:pg:1.54.0.0'
+ * compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
  * </pre>
  */
 public class RSATools {

@@ -11,8 +11,8 @@ package com.foilen.smalltools.net.netty;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.foilen.smalltools.crypt.cert.RSACertificate;
-import com.foilen.smalltools.crypt.cert.RSATrustedCertificates;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSACertificate;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSATrustedCertificates;
 
 import io.netty.channel.ChannelHandler;
 

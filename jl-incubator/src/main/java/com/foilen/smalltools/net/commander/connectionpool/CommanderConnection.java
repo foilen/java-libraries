@@ -16,7 +16,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.crypt.cert.RSACertificate;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSACertificate;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.net.commander.CommanderClient;
 import com.foilen.smalltools.net.commander.CommanderServer;
