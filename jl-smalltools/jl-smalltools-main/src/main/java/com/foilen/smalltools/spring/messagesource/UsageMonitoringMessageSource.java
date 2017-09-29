@@ -39,6 +39,20 @@ public class UsageMonitoringMessageSource implements MessageSource {
 
     private static final Logger logger = LoggerFactory.getLogger(UsageMonitoringMessageSource.class);
 
+    static protected String format(String value, Object[] args) {
+        if (args != null) {
+            for (int i = 0; i < args.length; ++i) {
+                Object arg = args[i];
+                String text = "null";
+                if (arg != null) {
+                    text = arg.toString();
+                }
+                value = value.replaceAll("\\{" + i + "\\}", text);
+            }
+        }
+        return value;
+    }
+
     private String basename;
     private File tmpUsed;
 
@@ -106,14 +120,14 @@ public class UsageMonitoringMessageSource implements MessageSource {
     public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
         addKnownUsedCode(code);
         String value = messagesPerLocale.get(locale).get(code);
-        return String.format(value, args);
+        return format(value, args);
     }
 
     @Override
     public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
         addKnownUsedCode(code);
         String value = messagesPerLocale.get(locale).get(code);
-        return String.format(value, args);
+        return format(value, args);
     }
 
     private void init() {
