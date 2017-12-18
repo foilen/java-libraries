@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,6 +68,24 @@ public class JsonToolsTest {
     public void testClone_null() {
         Type clone = JsonTools.clone(null);
         Assert.assertNull(clone);
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testClone_otherType() {
+
+        Type original = new Type();
+        original.setA("Some text");
+        original.setB(5);
+
+        Object clone = JsonTools.clone(original, Object.class);
+
+        Assert.assertTrue(original != clone);
+        Assert.assertTrue(clone instanceof Map);
+        Map<?, ?> cloneMap = (Map) clone;
+
+        Assert.assertEquals("Some text", cloneMap.get("a"));
+        Assert.assertEquals(5, cloneMap.get("b"));
     }
 
     @Test

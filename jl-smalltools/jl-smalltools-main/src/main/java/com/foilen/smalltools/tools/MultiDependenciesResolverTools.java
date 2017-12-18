@@ -31,12 +31,12 @@ import com.google.common.base.Strings;
  *   -&gt; E -&gt; (D)
  *        -&gt; F -&gt; G -&gt; (C)
  * H -&gt; (E)
- * 
+ *
  * MultiDependenciesResolverTools resolver = new MultiDependenciesResolverTools();
- * 
+ *
  * // Add some items that might be dangling
  * resolver.addItems("A", "B", "C", "D", "H");
- *  
+ *
  * // Add dependencies
  * resolver.addDependency("C", "B");
  * resolver.addDependency("C", "G");
@@ -46,9 +46,9 @@ import com.google.common.base.Strings;
  * resolver.addDependency("E", "H");
  * resolver.addDependency("F", "E");
  * resolver.addDependency("G", "F");
- *  
+ *
  * List&lt;String&gt; executionPlan = resolver.getExecution();
- * 
+ *
  * Gives: "A", "B", "H", "E", "F", "G", "C", "D"
  *
  * </pre>

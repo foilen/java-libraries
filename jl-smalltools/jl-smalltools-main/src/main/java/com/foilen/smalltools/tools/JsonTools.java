@@ -53,6 +53,25 @@ public final class JsonTools {
     }
 
     /**
+     * Serialize to JSON and deserialize back as a new object of the specified class.
+     *
+     * @param object
+     *            the object to clone
+     * @param clazz
+     *            the type of the final object
+     * @param <T>
+     *            the type of the final object
+     * @return the new cloned object
+     */
+    public static <T> T clone(Object object, Class<T> clazz) {
+        if (object == null) {
+            return null;
+        }
+        String json = compactPrint(object);
+        return readFromString(json, clazz);
+    }
+
+    /**
      * Serialize to JSON and deserialize back as a new object.
      *
      * @param object
