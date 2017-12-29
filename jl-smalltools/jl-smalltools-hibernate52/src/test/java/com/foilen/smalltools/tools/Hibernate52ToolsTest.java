@@ -15,13 +15,13 @@ import org.junit.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 
-public class Hibernate5ToolsTest {
+public class Hibernate52ToolsTest {
 
     @Test
     public void testGenerateSqlSchema_WithoutUnderscore() throws Exception {
         System.setProperty("hibernate.dialect.storage_engine", "innodb");
         String outputSqlFile = File.createTempFile("output", ".sql").getAbsolutePath();
-        Hibernate5Tools.generateSqlSchema(MySQLDialect.class, outputSqlFile, false, "com.foilen.smalltools.tools.test.entities");
+        Hibernate52Tools.generateSqlSchema(MySQLDialect.class, outputSqlFile, false, "com.foilen.smalltools.tools.test.entities");
 
         String expected = ResourceTools.getResourceAsString("Hibernate5ToolsTest-testGenerateSqlSchema_WithoutUnderscore-expected.sql", this.getClass());
         String actual = FileTools.getFileAsString(outputSqlFile);
@@ -32,7 +32,7 @@ public class Hibernate5ToolsTest {
     public void testGenerateSqlSchema_WithUnderscore() throws Exception {
         System.setProperty("hibernate.dialect.storage_engine", "innodb");
         String outputSqlFile = File.createTempFile("output", ".sql").getAbsolutePath();
-        Hibernate5Tools.generateSqlSchema(MySQLDialect.class, outputSqlFile, true, "com.foilen.smalltools.tools.test.entities");
+        Hibernate52Tools.generateSqlSchema(MySQLDialect.class, outputSqlFile, true, "com.foilen.smalltools.tools.test.entities");
 
         String expected = ResourceTools.getResourceAsString("Hibernate5ToolsTest-testGenerateSqlSchema_WithUnderscore-expected.sql", this.getClass());
         String actual = FileTools.getFileAsString(outputSqlFile);

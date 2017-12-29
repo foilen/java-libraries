@@ -53,7 +53,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
  * compile 'org.springframework.boot:spring-boot:1.5.7.RELEASE'
  * </pre>
  */
-public final class Hibernate5Tools {
+public final class Hibernate52Tools {
 
     /**
      * Generate the SQL file. This is based on the code in {@link LocalSessionFactoryBuilder#scanPackages(String...)}
@@ -102,7 +102,7 @@ public final class Hibernate5Tools {
 
     }
 
-    private Hibernate5Tools() {
+    private Hibernate52Tools() {
 
     }
 
