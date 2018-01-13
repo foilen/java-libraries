@@ -401,6 +401,26 @@ public final class FileTools {
     /**
      * Create a staging file to write to and when you will close it, it will rename to its final destination.
      *
+     * @param stagingFile
+     *            the file to write to temporarily
+     * @param finalFile
+     *            when closing, rename the staging file to this file
+     * @param deleteOnClose
+     *            will delete the file instead of renaming it (good to confirm full write)
+     * @return the outputstream to write to the staging file and that needs to be closed to rename
+     */
+    public static OutputStream createStagingFile(File stagingFile, File finalFile, boolean deleteOnClose) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(stagingFile);
+            return new RenamingOnCloseOutputStreamWrapper(outputStream, stagingFile, finalFile, deleteOnClose);
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem creating the staging file", e);
+        }
+    }
+
+    /**
+     * Create a staging file to write to and when you will close it, it will rename to its final destination.
+     *
      * @param stagingFileName
      *            the file to write to temporarily
      * @param finalFileName
@@ -409,6 +429,21 @@ public final class FileTools {
      */
     public static OutputStream createStagingFile(String stagingFileName, String finalFileName) {
         return createStagingFile(new File(stagingFileName), new File(finalFileName));
+    }
+
+    /**
+     * Create a staging file to write to and when you will close it, it will rename to its final destination.
+     *
+     * @param stagingFileName
+     *            the file to write to temporarily
+     * @param finalFileName
+     *            when closing, rename the staging file to this file
+     * @param deleteOnClose
+     *            will delete the file instead of renaming it (good to confirm full write)
+     * @return the outputstream to write to the staging file and that needs to be closed to rename
+     */
+    public static OutputStream createStagingFile(String stagingFileName, String finalFileName, boolean deleteOnClose) {
+        return createStagingFile(new File(stagingFileName), new File(finalFileName), deleteOnClose);
     }
 
     /**
