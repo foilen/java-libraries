@@ -89,8 +89,8 @@ public class JsonToolsTest {
     }
 
     @Test
-    public void testCompactPrint() {
-        String expected = ResourceTools.getResourceAsString("JsonToolsTest-compactPrint-expected", this.getClass());
+    public void testCompactPrint_filled() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-compactPrint_filled-expected.json", this.getClass());
         expected = expected.replaceAll("\r", "");
         Type type = new Type();
         type.setA("hello");
@@ -100,8 +100,28 @@ public class JsonToolsTest {
     }
 
     @Test
-    public void testPrettyPrint() {
-        String expected = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
+    public void testCompactPrint_withNull() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-compactPrint_withNull-expected.json", this.getClass());
+        expected = expected.replaceAll("\r", "");
+        Type type = new Type();
+        type.setB(10);
+        String actual = JsonTools.compactPrint(type).replaceAll("\r", "");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCompactPrint_withoutNull() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-compactPrint_withoutNull-expected.json", this.getClass());
+        expected = expected.replaceAll("\r", "");
+        Type type = new Type();
+        type.setB(10);
+        String actual = JsonTools.compactPrintWithoutNulls(type).replaceAll("\r", "");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPrettyPrint_filled() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint_filled-expected.json", this.getClass());
         expected = expected.replaceAll("\r", "");
         Type type = new Type();
         type.setA("hello");
@@ -111,8 +131,28 @@ public class JsonToolsTest {
     }
 
     @Test
+    public void testPrettyPrint_withNull() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint_withNull-expected.json", this.getClass());
+        expected = expected.replaceAll("\r", "");
+        Type type = new Type();
+        type.setB(10);
+        String actual = JsonTools.prettyPrint(type).replaceAll("\r", "");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testPrettyPrint_withoutNull() {
+        String expected = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint_withoutNull-expected.json", this.getClass());
+        expected = expected.replaceAll("\r", "");
+        Type type = new Type();
+        type.setB(10);
+        String actual = JsonTools.prettyPrintWithoutNulls(type).replaceAll("\r", "");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void testReadFromFileFileClassOfT() {
-        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
+        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint_filled-expected.json", this.getClass());
         FileTools.writeFile(content, tmpFile);
         Type type = JsonTools.readFromFile(tmpFile, Type.class);
 
@@ -122,7 +162,7 @@ public class JsonToolsTest {
 
     @Test
     public void testReadFromFileFileObject() {
-        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
+        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint_filled-expected.json", this.getClass());
         FileTools.writeFile(content, tmpFile);
 
         Type type = new Type();
@@ -136,7 +176,7 @@ public class JsonToolsTest {
 
     @Test
     public void testReadFromFileStringClassOfT() {
-        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
+        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint_filled-expected.json", this.getClass());
         FileTools.writeFile(content, tmpFile);
         Type type = JsonTools.readFromFile(tmpFile.getAbsolutePath(), Type.class);
 
@@ -146,7 +186,7 @@ public class JsonToolsTest {
 
     @Test
     public void testReadFromFileStringObject() {
-        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint-expected", this.getClass());
+        String content = ResourceTools.getResourceAsString("JsonToolsTest-prettyPrint_filled-expected.json", this.getClass());
         FileTools.writeFile(content, tmpFile);
 
         Type type = new Type();

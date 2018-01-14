@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -33,7 +34,9 @@ import com.foilen.smalltools.reflection.ReflectionTools;
 public final class JsonTools {
 
     private static final ObjectMapper COMPACT_OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper COMPACT_SKIPNULL_OBJECT_MAPPER = new ObjectMapper();
     private static final ObjectMapper PRETTY_OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper PRETTY_SKIPNULL_OBJECT_MAPPER = new ObjectMapper();
     private static final ObjectMapper NON_FAIL_OBJECT_MAPPER = new ObjectMapper();
 
     static {
@@ -41,8 +44,17 @@ public final class JsonTools {
         PRETTY_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         PRETTY_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
 
+        PRETTY_SKIPNULL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+        PRETTY_SKIPNULL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        PRETTY_SKIPNULL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
+        PRETTY_SKIPNULL_OBJECT_MAPPER.setSerializationInclusion(Include.NON_NULL);
+
         COMPACT_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         COMPACT_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
+
+        COMPACT_SKIPNULL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        COMPACT_SKIPNULL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
+        COMPACT_SKIPNULL_OBJECT_MAPPER.setSerializationInclusion(Include.NON_NULL);
 
         NON_FAIL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         NON_FAIL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
@@ -104,6 +116,21 @@ public final class JsonTools {
     }
 
     /**
+     * Return a compact print JSON String and ignore all null values.
+     *
+     * @param object
+     *            the object to serialize
+     * @return the JSON String
+     */
+    public static String compactPrintWithoutNulls(Object object) {
+        try {
+            return COMPACT_SKIPNULL_OBJECT_MAPPER.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new SmallToolsException("Problem serializing in JSON", e);
+        }
+    }
+
+    /**
      * Return a pretty print JSON String.
      *
      * @param object
@@ -113,6 +140,21 @@ public final class JsonTools {
     public static String prettyPrint(Object object) {
         try {
             return PRETTY_OBJECT_MAPPER.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new SmallToolsException("Problem serializing in JSON", e);
+        }
+    }
+
+    /**
+     * Return a pretty print JSON String and ignore all null values.
+     *
+     * @param object
+     *            the object to serialize
+     * @return the JSON String
+     */
+    public static String prettyPrintWithoutNulls(Object object) {
+        try {
+            return PRETTY_SKIPNULL_OBJECT_MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }

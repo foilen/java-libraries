@@ -127,6 +127,38 @@ public final class AssertTools {
         assertIgnoreLineFeed(expectedJson, actualJson);
     }
 
+    /**
+     * Compare the expected object to the actual object (by their JSON dump ignoring nulls).
+     *
+     * @param expected
+     *            the expected object to compare
+     * @param actual
+     *            the actual object to compare to
+     */
+    public static void assertJsonComparisonWithoutNulls(Object expected, Object actual) {
+        String expectedJson = JsonTools.prettyPrintWithoutNulls(expected);
+        String actualJson = JsonTools.prettyPrintWithoutNulls(actual);
+
+        assertIgnoreLineFeed(expectedJson, actualJson);
+    }
+
+    /**
+     * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump ignoring nulls).
+     *
+     * @param expectedResource
+     *            the filename of the resource
+     * @param expectedContext
+     *            the class in which the resource file is
+     * @param actual
+     *            the actual object to compare to
+     */
+    public static void assertJsonComparisonWithoutNulls(String expectedResource, Class<?> expectedContext, Object actual) {
+        String expectedJson = ResourceTools.getResourceAsString(expectedResource, expectedContext);
+        String actualJson = JsonTools.prettyPrintWithoutNulls(actual);
+
+        assertIgnoreLineFeed(expectedJson, actualJson);
+    }
+
     public static void assertStreamContent(InputStream expectedStream, InputStream actualStream) {
 
         // Check the content
