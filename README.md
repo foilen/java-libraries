@@ -43,7 +43,20 @@ Design choices
 Deployment instructions
 -----------------------
 
-See *DEPLOYMENT.txt* for the instructions.
+Execute:
+
+```
+# For locally testing and skip checking the tests:
+./create-local-release-no-tests.sh   # Will use master-SNAPSHOT as the version
+./create-local-release-no-tests.sh THE_VERSION
+
+# For locally testing:
+./create-local-release.sh   # Will use master-SNAPSHOT as the version
+./create-local-release.sh THE_VERSION
+
+# For creating a public release and publishing it
+./create-public-release.sh THE_VERSION
+```
 
 You can see releases available:
 - https://bintray.com/foilen/maven/com.foilen%3Ajl-smalltools
