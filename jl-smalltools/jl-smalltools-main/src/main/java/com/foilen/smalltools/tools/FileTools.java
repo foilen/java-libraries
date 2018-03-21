@@ -772,6 +772,38 @@ public final class FileTools {
     }
 
     /**
+     * Save some bytes to a file.
+     *
+     * @param content
+     *            the content to write
+     * @param file
+     *            the file to write into
+     * @return true if it worked
+     */
+    public static boolean writeFile(byte[] content, File file) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(content);
+            fos.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Save some bytes to a file.
+     *
+     * @param content
+     *            the content to write
+     * @param path
+     *            the path to the file
+     */
+    public static void writeFile(byte[] content, String path) {
+        writeFile(content, new File(path));
+    }
+
+    /**
      * Save the stream to a file.
      *
      * @param inputStream
