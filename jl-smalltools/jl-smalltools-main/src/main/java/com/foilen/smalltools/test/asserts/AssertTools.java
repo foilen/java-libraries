@@ -12,14 +12,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.DirectoryTools;
+import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.JsonTools;
 import com.foilen.smalltools.tools.ResourceTools;
+import com.foilen.smalltools.tools.SystemTools;
 
 /**
  * Assertions.
@@ -113,6 +120,9 @@ public final class AssertTools {
     /**
      * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump).
      *
+     *
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPETED_FILE" to "true" to let the tool update the file with the "actual" json.
+     *
      * @param expectedResource
      *            the filename of the resource
      * @param expectedContext
@@ -121,10 +131,12 @@ public final class AssertTools {
      *            the actual object to compare to
      */
     public static void assertJsonComparison(String expectedResource, Class<?> expectedContext, Object actual) {
-        String expectedJson = ResourceTools.getResourceAsString(expectedResource, expectedContext);
         String actualJson = JsonTools.prettyPrint(actual);
 
-        assertIgnoreLineFeed(expectedJson, actualJson);
+        if (updateFileIfRequested(expectedResource, expectedContext, actualJson)) {
+            String expectedJson = ResourceTools.getResourceAsString(expectedResource, expectedContext);
+            assertIgnoreLineFeed(expectedJson, actualJson);
+        }
     }
 
     /**
@@ -145,6 +157,8 @@ public final class AssertTools {
     /**
      * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump ignoring nulls).
      *
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPETED_FILE" to "true" to let the tool update the file with the "actual" json.
+     *
      * @param expectedResource
      *            the filename of the resource
      * @param expectedContext
@@ -153,10 +167,12 @@ public final class AssertTools {
      *            the actual object to compare to
      */
     public static void assertJsonComparisonWithoutNulls(String expectedResource, Class<?> expectedContext, Object actual) {
-        String expectedJson = ResourceTools.getResourceAsString(expectedResource, expectedContext);
         String actualJson = JsonTools.prettyPrintWithoutNulls(actual);
 
-        assertIgnoreLineFeed(expectedJson, actualJson);
+        if (updateFileIfRequested(expectedResource, expectedContext, actualJson)) {
+            String expectedJson = ResourceTools.getResourceAsString(expectedResource, expectedContext);
+            assertIgnoreLineFeed(expectedJson, actualJson);
+        }
     }
 
     public static void assertStreamContent(InputStream expectedStream, InputStream actualStream) {
@@ -227,6 +243,27 @@ public final class AssertTools {
         Yaml yaml = new Yaml();
         Object expected = yaml.load(expectedContext.getResourceAsStream(expectedResource));
         assertYamlComparison(expected, actual);
+    }
+
+    private static boolean updateFileIfRequested(String expectedResource, Class<?> expectedContext, String actualJson) {
+        if ("true".equals(SystemTools.getPropertyOrEnvironment("ASSERT_TOOLS_UPDATE_EXPETED_FILE", "false"))) {
+            URL url = expectedContext.getResource(expectedResource);
+            if (url == null) {
+                Assert.fail("The file must already exists (you can create an empty file)");
+            } else {
+                String filename = url.toString().substring(5);
+                String filePart = filename.substring(filename.lastIndexOf('/'));
+                List<String> availableFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true).stream() //
+                        .filter(it -> it.endsWith(filePart) && !it.equals(filename)) //
+                        .collect(Collectors.toList());
+
+                Assert.assertEquals("Must have exactly one candidate", 1, availableFiles.size());
+                FileTools.writeFile(actualJson, availableFiles.get(0));
+            }
+            return false;
+        }
+
+        return true;
     }
 
     private AssertTools() {
