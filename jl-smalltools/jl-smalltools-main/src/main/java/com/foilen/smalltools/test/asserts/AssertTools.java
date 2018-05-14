@@ -252,7 +252,7 @@ public final class AssertTools {
                 Assert.fail("The file must already exists (you can create an empty file)");
             } else {
                 String filename = url.toString().substring(5);
-                String filePart = filename.substring(filename.lastIndexOf('/'));
+                String filePart = new File(filename).getName();
                 List<String> availableFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true).stream() //
                         .filter(it -> it.endsWith(filePart) && !it.equals(filename)) //
                         .collect(Collectors.toList());
