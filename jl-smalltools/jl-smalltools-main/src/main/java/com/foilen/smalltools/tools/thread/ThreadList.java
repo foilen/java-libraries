@@ -121,6 +121,7 @@ public class ThreadList {
      * Join all threads.
      *
      * @exception InterruptedException
+     *                if interrupted
      */
     public void join() throws InterruptedException {
         for (Thread thread : threads) {
@@ -135,6 +136,7 @@ public class ThreadList {
      *            the time to wait in milliseconds for all of them to be completed
      *
      * @exception InterruptedException
+     *                if interrupted
      */
     public void join(long millis) throws InterruptedException {
         long timeoutAt = System.currentTimeMillis() + millis;

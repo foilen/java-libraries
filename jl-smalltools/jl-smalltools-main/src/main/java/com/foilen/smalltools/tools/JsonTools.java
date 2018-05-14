@@ -86,6 +86,8 @@ public final class JsonTools {
     /**
      * Serialize to JSON and deserialize back as a new object.
      *
+     * @param <T>
+     *            the class of the object
      * @param object
      *            the object to clone
      * @return the new cloned object

@@ -135,6 +135,8 @@ public class BeanPropertiesCopierTools {
     /**
      * Get the property's value from the source.
      *
+     * @param <T>
+     *            the return type
      * @param propertyName
      *            the name of the property
      * @param type

@@ -235,6 +235,24 @@ public final class DirectoryTools {
     }
 
     /**
+     * List files and directories recursively. It can list the absolute or relative paths.
+     *
+     * Directories will end with a trailing slash.
+     *
+     *
+     * Ex:
+     * <ul>
+     * <li>foo/bar/aFile</li>
+     * <li>foo/bar/aDirectory/</li>
+     * </ul>
+     *
+     * WARNING: It will follow symbolic links.
+     *
+     * @param directory
+     *            the directory
+     * @param absolute
+     *            true to get the absolute paths
+     * @return the names of the files (sorted)
      * @deprecated use {@link #listFilesAndFoldersRecursively(File, boolean)}
      */
     @Deprecated
@@ -243,6 +261,23 @@ public final class DirectoryTools {
     }
 
     /**
+     * List files and directories recursively. It can list the absolute or relative paths.
+     *
+     * Directories will end with a trailing slash.
+     *
+     * Ex:
+     * <ul>
+     * <li>foo/bar/aFile</li>
+     * <li>foo/bar/aDirectory/</li>
+     * </ul>
+     *
+     * WARNING: It will follow symbolic links.
+     *
+     * @param path
+     *            the full path to the directory
+     * @param absolute
+     *            true to get the absolute paths
+     * @return the names of the files (sorted)
      * @deprecated use {@link #listFilesAndFoldersRecursively(String, boolean)}
      */
     @Deprecated
@@ -260,7 +295,7 @@ public final class DirectoryTools {
      * <ul>
      * <li>foo/bar/aFile</li>
      * <li>foo/bar/aDirectory/</li>
-     * <ul>
+     * </ul>
      *
      * WARNING: It will follow symbolic links.
      *
@@ -320,7 +355,7 @@ public final class DirectoryTools {
      * <ul>
      * <li>foo/bar/aFile</li>
      * <li>foo/bar/aDirectory/</li>
-     * <ul>
+     * </ul>
      *
      * WARNING: It will follow symbolic links.
      *

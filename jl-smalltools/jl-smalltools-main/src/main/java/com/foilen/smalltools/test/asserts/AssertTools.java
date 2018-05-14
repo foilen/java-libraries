@@ -41,7 +41,7 @@ import com.foilen.smalltools.tools.SystemTools;
 public final class AssertTools {
 
     /**
-     * Assert expected - delta <= actual <= expected + delta .
+     * Assert expected - delta &lt;= actual &lt;= expected + delta .
      *
      * @param expected
      *            the center of the expected value
@@ -59,7 +59,7 @@ public final class AssertTools {
     }
 
     /**
-     * Assert expected - delta <= actual <= expected + delta .
+     * Assert expected - delta &lt;= actual &lt;= expected + delta .
      *
      * @param expected
      *            the center of the expected value
