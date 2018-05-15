@@ -468,7 +468,7 @@ public class RSACertificate {
             RSAKeyDetails keyDetails = rsaCrypt.retrieveKeyDetails(keysForSigning);
             PrivateKey privKey = keyDetails.getJcaPrivateKey();
             PublicKey publicKey = keyDetails.getJcaPublicKey();
-            ContentSigner sigGen = new JcaContentSignerBuilder("SHA256withRSA").setProvider("SC").build(privKey);
+            ContentSigner sigGen = new JcaContentSignerBuilder("SHA256withRSA").setProvider("BC").build(privKey);
             SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
 
             Date startDate = certificateDetails.getStartDate();
@@ -522,7 +522,7 @@ public class RSACertificate {
         try {
             PrivateKey privKey = rsaCrypt.retrieveKeyDetails(keysForSigning).getJcaPrivateKey();
             PublicKey publicKey = rsaCrypt.retrieveKeyDetails(publicKeyToSign).getJcaPublicKey();
-            ContentSigner sigGen = new JcaContentSignerBuilder("SHA256withRSA").setProvider("SC").build(privKey);
+            ContentSigner sigGen = new JcaContentSignerBuilder("SHA256withRSA").setProvider("BC").build(privKey);
             SubjectPublicKeyInfo subPubKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
 
             Date startDate = certificateDetails.getStartDate();
