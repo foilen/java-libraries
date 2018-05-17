@@ -67,6 +67,8 @@ import com.foilen.smalltools.tools.CollectionsTools;
  * <pre>
  * Dependencies:
  * compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
+ * compile 'org.bouncycastle:bcpg-jdk15on:1.58'
+ * compile 'org.bouncycastle:bcprov-jdk15on:1.58'
  * </pre>
  */
 public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {

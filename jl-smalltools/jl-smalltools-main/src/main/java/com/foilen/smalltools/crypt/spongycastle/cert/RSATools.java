@@ -25,6 +25,7 @@ import org.spongycastle.crypto.params.RSAKeyParameters;
 import org.spongycastle.crypto.params.RSAPrivateCrtKeyParameters;
 
 import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.spongycastle.cert.trustmanager.RSATrustManagerFactory;
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
@@ -208,16 +209,16 @@ public class RSATools {
     }
 
     /**
-     * Create a {@link TrustManagerFactory} from a {@link RSATrustedCertificates}. It is taking only the trusted certificates ; not the intermediates ones.
-     *
-     * For the KeyStore, the aliases will be the certificate's thumbprint to make sure they are unique.
+     * Create a {@link TrustManagerFactory} from a {@link RSATrustedCertificates}.
      *
      * @param rsaTrustedCertificates
      *            the certificates that are trusted
      * @return the trust manager factory
      */
-    static public TrustManagerFactory createTrustManagerFactory(RSATrustedCertificates rsaTrustedCertificates) {
-        return createTrustManagerFactory(createKeyStore(rsaTrustedCertificates));
+    static public RSATrustManagerFactory createTrustManagerFactory(RSATrustedCertificates rsaTrustedCertificates) {
+        RSATrustManagerFactory trustManagerFactory = RSATrustManagerFactory.getInstance();
+        trustManagerFactory.init(rsaTrustedCertificates);
+        return trustManagerFactory;
     }
 
     private RSATools() {

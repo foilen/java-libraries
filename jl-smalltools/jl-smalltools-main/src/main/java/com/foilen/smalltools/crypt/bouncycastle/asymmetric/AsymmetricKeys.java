@@ -16,6 +16,8 @@ import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
  * <pre>
  * Dependencies:
  * compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
+ * compile 'org.bouncycastle:bcpg-jdk15on:1.58'
+ * compile 'org.bouncycastle:bcprov-jdk15on:1.58'
  * </pre>
  */
 public class AsymmetricKeys {

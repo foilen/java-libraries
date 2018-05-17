@@ -37,6 +37,7 @@ public class RSATrustedCertificatesTest {
     private RSACertificate certABC;
     private RSACertificate certM;
     private RSACertificate certMN;
+    private RSACertificate certMNO;
     private RSACertificate certX_Exp;
     private RSACertificate certXY;
 
@@ -77,6 +78,7 @@ public class RSATrustedCertificatesTest {
 
         certM = new RSACertificate(rsaCrypt.generateKeyPair(KEY_SIZE)).selfSign(new CertificateDetails().setCommonName("M"));
         certMN = certM.signPublicKey(rsaCrypt.generateKeyPair(KEY_SIZE), new CertificateDetails().setCommonName("MN"));
+        certMNO = certMN.signPublicKey(rsaCrypt.generateKeyPair(KEY_SIZE), new CertificateDetails().setCommonName("MNO"));
 
         certX_Exp = new RSACertificate(rsaCrypt.generateKeyPair(KEY_SIZE)).selfSign(new CertificateDetails().setCommonName("X_Exp").setStartDate(lastLastYear).setEndDate(lastYear));
         certXY = certX_Exp.signPublicKey(rsaCrypt.generateKeyPair(KEY_SIZE), new CertificateDetails().setCommonName("X_ExpY"));
@@ -160,11 +162,17 @@ public class RSATrustedCertificatesTest {
         String authType = "RSA";
         trustManager.checkServerTrusted(chain, authType);
 
-        // Try fail (without intermediate)
+        // Try success (with provided intermediate)
+        chain = new X509Certificate[1];
+        chain[0] = certABC.getCertificate();
+        trustManager.checkServerTrusted(chain, authType);
+
+        // Try fail (not provided intermediate)
         boolean hadException = false;
         try {
-            chain = new X509Certificate[1];
+            chain = new X509Certificate[2];
             chain[0] = certABC.getCertificate();
+            chain[1] = certMNO.getCertificate();
             trustManager.checkServerTrusted(chain, authType);
         } catch (CertificateException e) {
             hadException = true;
