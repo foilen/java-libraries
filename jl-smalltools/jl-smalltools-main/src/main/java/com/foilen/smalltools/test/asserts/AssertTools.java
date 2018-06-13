@@ -121,7 +121,7 @@ public final class AssertTools {
      * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump).
      *
      *
-     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPETED_FILE" to "true" to let the tool update the file with the "actual" json.
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
      *
      * @param expectedResource
      *            the filename of the resource
@@ -157,7 +157,7 @@ public final class AssertTools {
     /**
      * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump ignoring nulls).
      *
-     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPETED_FILE" to "true" to let the tool update the file with the "actual" json.
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
      *
      * @param expectedResource
      *            the filename of the resource
@@ -246,7 +246,7 @@ public final class AssertTools {
     }
 
     private static boolean updateFileIfRequested(String expectedResource, Class<?> expectedContext, String actualJson) {
-        if ("true".equals(SystemTools.getPropertyOrEnvironment("ASSERT_TOOLS_UPDATE_EXPETED_FILE", "false"))) {
+        if ("true".equals(SystemTools.getPropertyOrEnvironment("ASSERT_TOOLS_UPDATE_EXPECTED_FILE", "false"))) {
             URL url = expectedContext.getResource(expectedResource);
             if (url == null) {
                 Assert.fail("The file must already exists (you can create an empty file)");
