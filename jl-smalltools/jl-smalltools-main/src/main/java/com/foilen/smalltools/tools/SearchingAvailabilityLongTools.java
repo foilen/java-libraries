@@ -17,16 +17,16 @@ package com.foilen.smalltools.tools;
  * <li>Will loop once if the end is reached</li>
  * </ul>
  */
-public final class SearchingAvailabilityIntTools extends SearchingAvailabilityTools<Integer> {
+public final class SearchingAvailabilityLongTools extends SearchingAvailabilityTools<Long> {
 
-    public interface CheckAvailabilityInt extends CheckAvailability<Integer> {
+    public interface CheckAvailabilityLong extends CheckAvailability<Long> {
         @Override
-        default Integer increment(Integer from, long increment) {
-            return (int) (from + increment);
+        default Long increment(Long from, long increment) {
+            return from + increment;
         }
     }
 
-    public SearchingAvailabilityIntTools(int min, int max, long range, CheckAvailabilityInt checkAvailability) {
+    public SearchingAvailabilityLongTools(long min, long max, long range, CheckAvailabilityLong checkAvailability) {
         super(min, max, range, checkAvailability);
     }
 

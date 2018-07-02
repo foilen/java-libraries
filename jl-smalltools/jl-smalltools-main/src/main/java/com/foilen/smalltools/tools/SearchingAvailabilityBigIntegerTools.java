@@ -8,6 +8,8 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.math.BigInteger;
+
 /**
  * This is to help searching for an available value by checking small ranges at a time.
  *
@@ -17,16 +19,16 @@ package com.foilen.smalltools.tools;
  * <li>Will loop once if the end is reached</li>
  * </ul>
  */
-public final class SearchingAvailabilityIntTools extends SearchingAvailabilityTools<Integer> {
+public final class SearchingAvailabilityBigIntegerTools extends SearchingAvailabilityTools<BigInteger> {
 
-    public interface CheckAvailabilityInt extends CheckAvailability<Integer> {
+    public interface CheckAvailabilityBigInteger extends CheckAvailability<BigInteger> {
         @Override
-        default Integer increment(Integer from, long increment) {
-            return (int) (from + increment);
+        default BigInteger increment(BigInteger from, long increment) {
+            return from.add(new BigInteger(String.valueOf(increment)));
         }
     }
 
-    public SearchingAvailabilityIntTools(int min, int max, long range, CheckAvailabilityInt checkAvailability) {
+    public SearchingAvailabilityBigIntegerTools(BigInteger min, BigInteger max, long range, CheckAvailabilityBigInteger checkAvailability) {
         super(min, max, range, checkAvailability);
     }
 

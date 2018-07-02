@@ -15,17 +15,17 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SearchingAvailabilityIntToolsTest {
+public class SearchingAvailabilityLongToolsTest {
 
     @Test
     public void test() {
 
         // Initial values
-        Set<Integer> used = new HashSet<>();
+        Set<Long> used = new HashSet<>();
 
         // The searching
-        SearchingAvailabilityIntTools searchingAvailability = new SearchingAvailabilityIntTools(0, 9, 3, (from, to) -> {
-            for (int i = from; i <= to; ++i) {
+        SearchingAvailabilityLongTools searchingAvailability = new SearchingAvailabilityLongTools(0, 9, 3, (from, to) -> {
+            for (long i = from; i <= to; ++i) {
                 if (used.add(i)) {
                     return Optional.of(i);
                 }
@@ -34,20 +34,20 @@ public class SearchingAvailabilityIntToolsTest {
         });
 
         // Get them all
-        for (int i = 0; i < 10; ++i) {
-            Assert.assertEquals(i, (int) searchingAvailability.getNext().get());
+        for (long i = 0; i < 10; ++i) {
+            Assert.assertEquals(i, (long) searchingAvailability.getNext().get());
         }
         Assert.assertFalse(searchingAvailability.getNext().isPresent());
 
         // Release 6th
-        used.remove(6);
-        Assert.assertEquals(6, (int) searchingAvailability.getNext().get());
+        used.remove(6L);
+        Assert.assertEquals(6, (long) searchingAvailability.getNext().get());
 
         // Release 1, 5
-        used.remove(1);
-        used.remove(5);
-        Assert.assertEquals(1, (int) searchingAvailability.getNext().get());
-        Assert.assertEquals(5, (int) searchingAvailability.getNext().get());
+        used.remove(1L);
+        used.remove(5L);
+        Assert.assertEquals(1, (long) searchingAvailability.getNext().get());
+        Assert.assertEquals(5, (long) searchingAvailability.getNext().get());
         Assert.assertFalse(searchingAvailability.getNext().isPresent());
 
     }
