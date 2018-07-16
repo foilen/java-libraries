@@ -18,10 +18,11 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.StringTools;
 import com.foilen.smalltools.tools.ThreadTools;
 
-public class AbstractListSingleJsonFileDaoTest {
+public class AbstractListSingleJsonFileDaoTest extends AbstractBasics {
 
     public static class TestListSingleDao extends AbstractListSingleJsonFileDao<TestDbEntity, String> {
 
@@ -139,6 +140,18 @@ public class AbstractListSingleJsonFileDaoTest {
         expectedIds = Arrays.asList("id3", "id4", "id5", "id2", "id6", "id7", "id8", "id9", "id10", "idSlow");
         actualIds = thirdDao.findAllAsList().stream().map(it -> it.getId()).collect(Collectors.toList());
         Assert.assertEquals(expectedIds, actualIds);
+
+        // Changing the value and reverting back before saving won't save to the file
+        thirdDao.add(new TestDbEntity("idExtra", 10));
+        Assert.assertEquals(11, thirdDao.count());
+        thirdDao.delete("idExtra");
+        Assert.assertEquals(10, thirdDao.count());
+
+        modifiedTime = dbFile.lastModified();
+        for (int i = 0; i < 8 && dbFile.lastModified() == modifiedTime; ++i) {
+            ThreadTools.sleep(500);
+        }
+        Assert.assertEquals(dbFile.lastModified(), modifiedTime);
 
     }
 

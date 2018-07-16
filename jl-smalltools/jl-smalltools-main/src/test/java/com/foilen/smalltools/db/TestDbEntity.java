@@ -10,7 +10,9 @@ package com.foilen.smalltools.db;
 
 import org.junit.Assert;
 
-public class TestDbEntity {
+import com.foilen.smalltools.tools.AbstractBasics;
+
+public class TestDbEntity extends AbstractBasics {
 
     private String id;
     private int number;
