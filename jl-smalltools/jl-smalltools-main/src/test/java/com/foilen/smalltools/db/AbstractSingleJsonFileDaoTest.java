@@ -97,6 +97,17 @@ public class AbstractSingleJsonFileDaoTest {
         TestSingleDao thirdDao = new TestSingleDao(dbFile);
         entity = thirdDao.load();
         entity.assertValue("id3", 4);
+
+        // Changing the value and reverting back before saving won't save to the file
+        thirdDao.save(new TestDbEntity("id4", 4));
+        thirdDao.save(new TestDbEntity("id3", 4));
+
+        modifiedTime = dbFile.lastModified();
+        for (int i = 0; i < 8 && dbFile.lastModified() == modifiedTime; ++i) {
+            ThreadTools.sleep(500);
+        }
+        Assert.assertEquals(dbFile.lastModified(), modifiedTime);
+
     }
 
 }

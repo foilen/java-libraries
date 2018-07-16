@@ -14,10 +14,12 @@ import java.io.OutputStream;
 
 import javax.annotation.PostConstruct;
 
+import com.foilen.smalltools.hash.HashMd5sum;
 import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.JsonTools;
+import com.foilen.smalltools.tools.StringTools;
 import com.foilen.smalltools.trigger.SmoothTrigger;
 
 /**
@@ -25,20 +27,20 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * This is a simple DAO that can contain a single entity and it will be persisted to a single json file. Whenever {@link #save(Object)} is called, it will request the save of the file, but it won't be
  * saved right away to prevent over-usage of the disk. It will save to the file 2 seconds after the last {@link #save(Object)} call or maximum 10 seconds after the first {@link #save(Object)} call .
  * </p>
- * 
+ *
  * <p>
  * Everytime you retrieve the entity, it will be a clone from the underlying entity. That means you can safely modify a saved or retrieved entity without worrying that it will be modifying the same
  * entity in the database or be modified by any other thread that retrieved it. You need to call {@link #save(Object)} to persist any changes.
  * </p>
- * 
+ *
  * <p>
  * This DAO is not meant for heavy performance.
  * </p>
- * 
+ *
  * <p>
  * Every actions are done in a cached in-memory entity to ensure to not over-use the disk for reading.
  * </p>
- * 
+ *
  * Usage:
  * <ol>
  * <li>Create your entity</li>
@@ -46,93 +48,105 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * <li>Instantiate the DAO</li>
  * <li>Use it</li>
  * </ol>
- * 
+ *
  * <pre>
  * // Create your entity
  * public class TestDbEntity {
- * 
+ *
  *     private String id;
  *     private int number;
- * 
+ *
  *     public TestDbEntity() {
  *     }
- * 
+ *
  *     public TestDbEntity(String id, int number) {
  *         this.id = id;
  *         this.number = number;
  *     }
- * 
+ *
  *     public String getId() {
  *         return id;
  *     }
- * 
+ *
  *     public int getNumber() {
  *         return number;
  *     }
- * 
+ *
  *     public void setId(String id) {
  *         this.id = id;
  *     }
- * 
+ *
  *     public void setNumber(int number) {
  *         this.number = number;
  *     }
  * }
- * 
+ *
  * // Create a DAO for your entity to persist
  * public static class TestSingleDao extends AbstractSingleJsonFileDao&lt;TestDbEntity&gt; {
- * 
+ *
  *     private File dbFile;
  *     private File stagingFile;
- * 
+ *
  *     public TestSingleDao(File dbFile) {
  *         this.dbFile = dbFile;
  *         this.stagingFile = new File(dbFile.getAbsolutePath() + "_tmp");
  *     }
- * 
+ *
  *     &#64;Override
  *     protected File getFinalFile() {
  *         return dbFile;
  *     }
- * 
+ *
  *     &#64;Override
  *     protected File getStagingFile() {
  *         return stagingFile;
  *     }
- * 
+ *
  *     &#64;Override
  *     protected Class&lt;TestDbEntity&gt; getType() {
  *         return TestDbEntity.class;
  *     }
- * 
+ *
  * }
- * 
+ *
  * // Instantiate the DAO
  * TestSingleDao dao = new TestSingleDao(dbFile);
  * dao.init(); // Called automatically if DAO is exposed as a Spring Bean
- * 
+ *
  * // Use it
  * TestDbEntity entity = dao.load();
  * entity.setNumber(10);
  * dao.save(entity);
  * </pre>
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
  * </pre>
- * 
+ *
  */
 public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
 
+    private String previousMd5sum;
     private T cached;
 
     protected Runnable saveToFile = () -> {
+
+        String cachedMd5sum = HashMd5sum.hashString(JsonTools.prettyPrint(cached));
+
+        // Check if content is different
+        if (StringTools.safeEquals(previousMd5sum, cachedMd5sum)) {
+            logger.debug("Content didn't change. Skipping saving");
+            return;
+        }
+
+        // Save
         logger.debug("Saving to {}", getFinalFile().getAbsolutePath());
         OutputStream out = FileTools.createStagingFile(getStagingFile(), getFinalFile());
         JsonTools.writeToStream(out, cached);
         try {
             out.close();
+            previousMd5sum = cachedMd5sum;
         } catch (IOException e) {
             logger.error("Could not close the staging file {}", getStagingFile().getAbsolutePath(), e);
         }
@@ -191,6 +205,7 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
             logger.debug("Loading from file");
             String json = FileTools.getFileAsString(getFinalFile());
             cached = JsonTools.readFromString(json, getType());
+            previousMd5sum = HashMd5sum.hashString(json);
             return JsonTools.readFromString(json, getType());
         } else {
             logger.debug("New state");
@@ -207,7 +222,6 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
      */
     public void save(T entity) {
         cached = JsonTools.clone(entity);
-
         saveSmoothTrigger.request();
     }
 
