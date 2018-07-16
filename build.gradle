@@ -31,6 +31,9 @@ allprojects {
 }
 
 subprojects {
+	configurations {
+		testCompile.extendsFrom compileOnly
+	}
 }
 
 task wrapper(type: Wrapper) { gradleVersion = '4.7' }

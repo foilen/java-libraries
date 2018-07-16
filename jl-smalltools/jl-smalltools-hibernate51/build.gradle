@@ -4,11 +4,7 @@ dependencies {
   compileOnly 'org.springframework:spring-orm:4.3.11.RELEASE'
   compileOnly 'org.springframework.boot:spring-boot:1.5.7.RELEASE'
   
-  testCompile project(':jl-smalltools:jl-smalltools-main')
   testCompile 'com.google.guava:guava:23.0'
   testCompile 'junit:junit:4.12'
-  testCompile 'org.hibernate:hibernate-core:5.1.10.Final'
   testCompile 'org.slf4j:slf4j-api:1.7.25'
-  testCompile 'org.springframework:spring-orm:4.3.11.RELEASE'
-  testCompile 'org.springframework.boot:spring-boot:1.5.7.RELEASE'
 }

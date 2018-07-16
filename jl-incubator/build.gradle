@@ -68,26 +68,5 @@ dependencies {
   compileOnly 'org.springframework:spring-webmvc:4.3.11.RELEASE'
   compileOnly 'org.springframework.security:spring-security-web:4.2.3.RELEASE'
 
-  testCompile project(':jl-smalltools:jl-smalltools-main')
-  
-  testCompile 'ch.qos.logback:logback-classic:1.2.3'
-  testCompile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
-  testCompile 'com.google.guava:guava:23.0'
-  testCompile 'com.madgag.spongycastle:prov:1.54.0.0'
-  testCompile 'com.madgag.spongycastle:pkix:1.54.0.0'
-  testCompile 'com.madgag.spongycastle:pg:1.54.0.0'
-  testCompile 'com.sun.mail:javax.mail:1.6.0'
-  testCompile 'io.netty:netty-all:5.0.0.Alpha2'
-  testCompile 'javax.servlet:javax.servlet-api:3.1.0'
-  testCompile 'junit:junit:4.12'
-  testCompile 'org.freemarker:freemarker:2.3.23'
-  testCompile 'org.hibernate:hibernate-core:4.3.11.Final'
   testCompile 'org.mockito:mockito-core:2.10.0'
-  testCompile 'org.yaml:snakeyaml:1.18'
-  testCompile 'org.slf4j:slf4j-api:1.7.25'
-  testCompile 'org.springframework:spring-context-support:4.3.11.RELEASE'
-  testCompile 'org.springframework:spring-core:4.3.11.RELEASE'
-  testCompile 'org.springframework:spring-orm:4.3.11.RELEASE'
-  testCompile 'org.springframework:spring-webmvc:4.3.11.RELEASE'
-  testCompile 'org.springframework.security:spring-security-web:4.2.3.RELEASE'
 }
