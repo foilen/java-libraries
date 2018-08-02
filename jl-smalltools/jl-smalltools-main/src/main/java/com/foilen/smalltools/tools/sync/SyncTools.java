@@ -220,9 +220,15 @@ public final class SyncTools {
 
                 // Apply changes
                 log.debug("Will apply changes: add {} ; update {} ; delete {}", toAdd.size(), toUpdate.size(), toRemove.size());
-                syncConfiguration.getDeleteHandler().accept(toRemove);
-                syncConfiguration.getUpdateHandler().accept(toUpdate);
-                syncConfiguration.getAddHandler().accept(toAdd);
+                if (!toRemove.isEmpty()) {
+                    syncConfiguration.getDeleteHandler().accept(toRemove);
+                }
+                if (!toUpdate.isEmpty()) {
+                    syncConfiguration.getUpdateHandler().accept(toUpdate);
+                }
+                if (!toAdd.isEmpty()) {
+                    syncConfiguration.getAddHandler().accept(toAdd);
+                }
 
                 changes.added += toAdd.size();
                 changes.updated += toUpdate.size();
