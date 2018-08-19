@@ -15,8 +15,11 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -179,6 +182,41 @@ public final class DirectoryTools {
     }
 
     /**
+     * Delete all the sub-folders that are empty.
+     *
+     * @param rootFolder
+     *            the folder
+     * @return the amount of folders removed
+     */
+    public static int deleteEmptySubFolders(File rootFolder) {
+        AtomicInteger count = new AtomicInteger();
+        visitFilesAndFoldersRecursively(rootFolder, item -> {
+            if (item.isDirectory()) {
+                logger.debug("Checking if directory {} is empty", item.getPath());
+                if (item.listFiles().length == 0) {
+                    logger.info("Deleting directory {} because it is empty", item.getPath());
+                    count.incrementAndGet();
+                    if (!item.delete()) {
+                        logger.error("Could not delete folder {}", item.getPath());
+                    }
+                }
+            }
+        });
+        return count.get();
+    }
+
+    /**
+     * Delete all the sub-folders that are empty.
+     *
+     * @param rootFolder
+     *            the folder
+     * @return the amount of folders removed
+     */
+    public static int deleteEmptySubFolders(String rootFolder) {
+        return deleteEmptySubFolders(new File(rootFolder));
+    }
+
+    /**
      * Delete the folder and everything inside it. Will not follow symbolic links, but will delete them.
      *
      * WARNING: If you have hard links, it will follow them. (but not symbolic links)
@@ -214,6 +252,46 @@ public final class DirectoryTools {
      */
     public static void deleteFolder(String folderPath) {
         deleteFolder(new File(folderPath));
+    }
+
+    /**
+     * Delete all the files that are older (modified time) than the specified date in the folder and sub-folders.
+     *
+     * @param rootFolder
+     *            the folder
+     * @param beforeDate
+     *            the date of the modified time
+     * @return the amount of files removed
+     */
+    public static int deleteOlderFilesInDirectory(File rootFolder, Date beforeDate) {
+        AtomicInteger count = new AtomicInteger();
+        long expiredBefore = beforeDate.getTime();
+        visitFilesAndFoldersRecursively(rootFolder, item -> {
+            if (item.isFile()) {
+                logger.debug("Checking if file {} is too old", item.getPath());
+                if (item.lastModified() < expiredBefore) {
+                    logger.info("Deleting file {} . Last modified time: {}", item.getPath(), DateTools.formatFull(new Date(item.lastModified())));
+                    count.incrementAndGet();
+                    if (!item.delete()) {
+                        logger.error("Could not delete file {}", item.getPath());
+                    }
+                }
+            }
+        });
+        return count.get();
+    }
+
+    /**
+     * Delete all the files that are older (modified time) than the specified date in the folder and sub-folders.
+     *
+     * @param rootFolder
+     *            the folder
+     * @param beforeDate
+     *            the date of the modified time
+     * @return the amount of files removed
+     */
+    public static int deleteOlderFilesInDirectory(String rootFolder, Date beforeDate) {
+        return deleteOlderFilesInDirectory(new File(rootFolder), beforeDate);
     }
 
     private static void deleteSub(String rootDir, File folder) {
@@ -321,6 +399,26 @@ public final class DirectoryTools {
         return results;
     }
 
+    /**
+     * List files and directories recursively. It can list the absolute or relative paths.
+     *
+     * Directories will end with a trailing slash.
+     *
+     *
+     * Ex:
+     * <ul>
+     * <li>foo/bar/aFile</li>
+     * <li>foo/bar/aDirectory/</li>
+     * </ul>
+     *
+     * WARNING: It will follow symbolic links.
+     *
+     * @param directory
+     *            the directory
+     * @param absolute
+     *            true to get the absolute paths
+     * @return the names of the files (sorted)
+     */
     private static List<String> listFilesAndFoldersRecursively(File directory, boolean absolute, int relativeStartPos) {
         List<String> results = new ArrayList<>();
 
@@ -439,6 +537,47 @@ public final class DirectoryTools {
         }
 
         return path;
+    }
+
+    /**
+     * Visit all the files and folders in sub-directories. When visiting a folder, will do it after visiting everything inside it.
+     *
+     * @param directory
+     *            the directory
+     * @param fileAction
+     *            the action to execute on each file
+     */
+    public static void visitFilesAndFoldersRecursively(File directory, Consumer<File> fileAction) {
+
+        // Check if directory
+        if (!directory.isDirectory()) {
+            throw new SmallToolsException(directory.getAbsolutePath() + " is not a directory");
+        }
+
+        // Scan the directory
+        for (File file : directory.listFiles()) {
+            if (file.isFile()) {
+                fileAction.accept(file);
+            }
+
+            if (file.isDirectory()) {
+                visitFilesAndFoldersRecursively(file, fileAction);
+                fileAction.accept(file);
+            }
+        }
+
+    }
+
+    /**
+     * Visit all the files and folders in sub-directories. Will do it in depth-first order.
+     *
+     * @param directory
+     *            the directory
+     * @param fileAction
+     *            the action to execute on each file
+     */
+    public static void visitFilesAndFoldersRecursively(String directory, Consumer<File> fileAction) {
+        visitFilesAndFoldersRecursively(new File(directory), fileAction);
     }
 
     private DirectoryTools() {

@@ -11,15 +11,36 @@ package com.foilen.smalltools.tools;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
+import com.google.common.base.Joiner;
 import com.google.common.io.Files;
 
 public class DirectoryToolsTest {
+
+    private void createFile(File rootDir, String path) {
+        File file = new File(rootDir.getAbsolutePath() + File.separatorChar + path);
+        DirectoryTools.createPathToFile(file.getAbsolutePath());
+        FileTools.writeFile("", file);
+    }
+
+    private void createFile(File rootDir, String path, Date lastModified) {
+        File file = new File(rootDir.getAbsolutePath() + File.separatorChar + path);
+        DirectoryTools.createPathToFile(file.getAbsolutePath());
+        FileTools.writeFile("", file);
+        file.setLastModified(lastModified.getTime());
+    }
+
+    private void createFolder(File rootDir, String path) {
+        DirectoryTools.createPath(rootDir.getAbsolutePath() + File.separatorChar + path);
+    }
 
     @Test
     public void testCleanupDots() {
@@ -36,6 +57,37 @@ public class DirectoryToolsTest {
         Assert.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../../../file"));
         Assert.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/./file"));
         Assert.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/.././file"));
+    }
+
+    @Test
+    public void testDeleteEmptySubFolders() {
+
+        // Create files
+        File rootDir = Files.createTempDir();
+        createFile(rootDir, "a/a/one.txt");
+        createFile(rootDir, "b/b/b/one.txt");
+        createFolder(rootDir, "b/b/b/e/e1");
+        createFolder(rootDir, "b/b/b/e/e2/e");
+        createFolder(rootDir, "b/b/b/e/e2");
+        createFolder(rootDir, "e");
+
+        // Execute
+        int removed = DirectoryTools.deleteEmptySubFolders(rootDir.getAbsolutePath());
+
+        // Assert
+        Assert.assertEquals(5, removed);
+
+        String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
+        AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList( //
+                "a/", //
+                "a/a/", //
+                "a/a/one.txt", //
+                "b/", //
+                "b/b/", //
+                "b/b/b/", //
+                "b/b/b/one.txt" //
+        )), //
+                actual);
     }
 
     @Test
@@ -81,6 +133,47 @@ public class DirectoryToolsTest {
         expected.add("aFile");
         actual = DirectoryTools.listFilesAndFoldersRecursively(keepSafe, false);
         AssertTools.assertJsonComparison(expected, actual);
+    }
+
+    @Test
+    public void testDeleteOlderFilesInDirectory() {
+
+        // Create files
+        File rootDir = Files.createTempDir();
+        for (int i = 0; i < 20; ++i) {
+            createFile(rootDir, "a/a/" + i + ".txt", DateTools.addDate(Calendar.HOUR, -i));
+        }
+        for (int i = 0; i < 40; ++i) {
+            createFile(rootDir, "b/" + i + ".txt", DateTools.addDate(Calendar.HOUR, -i));
+        }
+        for (int i = 0; i < 50; ++i) {
+            createFile(rootDir, "a/c/d/" + i + ".txt", DateTools.addDate(Calendar.HOUR, -i));
+        }
+
+        // Execute
+        int removed = DirectoryTools.deleteOlderFilesInDirectory(rootDir.getAbsolutePath(), DateTools.addDate(Calendar.MINUTE, -130));
+
+        // Assert
+        Assert.assertEquals(110 - 9, removed);
+
+        String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
+        AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList( //
+                "a/", //
+                "a/a/", //
+                "a/a/0.txt", //
+                "a/a/1.txt", //
+                "a/a/2.txt", //
+                "a/c/", //
+                "a/c/d/", //
+                "a/c/d/0.txt", //
+                "a/c/d/1.txt", //
+                "a/c/d/2.txt", //
+                "b/", //
+                "b/0.txt", //
+                "b/1.txt", //
+                "b/2.txt" //
+        )), //
+                actual);
     }
 
     @Test
