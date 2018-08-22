@@ -193,7 +193,7 @@ public final class DirectoryTools {
         visitFilesAndFoldersRecursively(rootFolder, item -> {
             if (item.isDirectory()) {
                 logger.debug("Checking if directory {} is empty", item.getPath());
-                if (item.listFiles().length == 0) {
+                if (safeListFiles(item).length == 0) {
                     logger.info("Deleting directory {} because it is empty", item.getPath());
                     count.incrementAndGet();
                     if (!item.delete()) {
@@ -232,7 +232,7 @@ public final class DirectoryTools {
 
         if (folder.isDirectory()) {
             String rootDir = folder.getAbsolutePath() + File.separator;
-            for (File toDelete : folder.listFiles()) {
+            for (File toDelete : safeListFiles(folder)) {
                 deleteSub(rootDir, toDelete);
             }
         }
@@ -302,7 +302,7 @@ public final class DirectoryTools {
         }
 
         if (!Files.isSymbolicLink(folder.toPath()) && folder.isDirectory()) {
-            for (File toDeleteSub : folder.listFiles()) {
+            for (File toDeleteSub : safeListFiles(folder)) {
                 deleteSub(rootDir, toDeleteSub);
             }
         }
@@ -422,7 +422,7 @@ public final class DirectoryTools {
     private static List<String> listFilesAndFoldersRecursively(File directory, boolean absolute, int relativeStartPos) {
         List<String> results = new ArrayList<>();
 
-        for (File file : directory.listFiles()) {
+        for (File file : safeListFiles(directory)) {
             if (file.isFile()) {
                 if (absolute) {
                     results.add(file.getAbsolutePath());
@@ -488,7 +488,7 @@ public final class DirectoryTools {
 
         // Scan the directory
         List<String> result = new ArrayList<>();
-        for (File file : directory.listFiles()) {
+        for (File file : safeListFiles(directory)) {
             if (!file.isFile()) {
                 continue;
             }
@@ -517,7 +517,7 @@ public final class DirectoryTools {
      * @return the sorted list of file names
      */
     public static List<String> listOnlyFileNames(String directory) {
-        return Arrays.asList(new File(directory).listFiles()).stream() //
+        return Arrays.asList(safeListFiles(new File(directory))).stream() //
                 .filter(File::isFile) //
                 .map(File::getName) //
                 .sorted() //
@@ -540,6 +540,18 @@ public final class DirectoryTools {
     }
 
     /**
+     * List the content of the directory. Does not return null, but an empty list.
+     *
+     * @param directory
+     *            the directory to list
+     * @return the list of files or empty list if null
+     */
+    public static File[] safeListFiles(File directory) {
+        File[] files = directory.listFiles();
+        return files == null ? new File[] {} : files;
+    }
+
+    /**
      * Visit all the files and folders in sub-directories. When visiting a folder, will do it after visiting everything inside it.
      *
      * @param directory
@@ -555,7 +567,7 @@ public final class DirectoryTools {
         }
 
         // Scan the directory
-        for (File file : directory.listFiles()) {
+        for (File file : safeListFiles(directory)) {
             if (file.isFile()) {
                 fileAction.accept(file);
             }
