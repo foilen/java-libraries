@@ -79,6 +79,9 @@ public final class DateTools {
      * @return the text date
      */
     public static String formatDateOnly(Date date) {
+        if (date == null) {
+            return null;
+        }
         try {
             return sdfDateOnly.get().format(date);
         } catch (Exception e) {
@@ -94,6 +97,9 @@ public final class DateTools {
      * @return the text date
      */
     public static String formatFull(Date date) {
+        if (date == null) {
+            return null;
+        }
         try {
             return sdfFull.get().format(date);
         } catch (Exception e) {
@@ -109,6 +115,9 @@ public final class DateTools {
      * @return the text date
      */
     public static String formatTimeOnly(Date date) {
+        if (date == null) {
+            return null;
+        }
         try {
             return sdfTimeOnly.get().format(date);
         } catch (Exception e) {
@@ -183,6 +192,9 @@ public final class DateTools {
      * @return the date
      */
     public static Date parseDateOnly(String date) {
+        if (date == null) {
+            return null;
+        }
         try {
             return sdfDateOnly.get().parse(date);
         } catch (Exception e) {
@@ -198,6 +210,9 @@ public final class DateTools {
      * @return the date
      */
     public static Date parseFull(String date) {
+        if (date == null) {
+            return null;
+        }
         try {
             return sdfFull.get().parse(date);
         } catch (Exception e) {
@@ -213,6 +228,9 @@ public final class DateTools {
      * @return the date
      */
     public static Date parseTimeOnly(String date) {
+        if (date == null) {
+            return null;
+        }
         try {
             return sdfTimeOnly.get().parse(date);
         } catch (Exception e) {

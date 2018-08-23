@@ -74,6 +74,13 @@ public class DateToolsTest {
         Assert.assertEquals(DateTools.parseFull("2015-05-04 00:00:00"), DateTools.parseDateOnly("2015-05-04"));
         Assert.assertEquals(DateTools.parseFull("1970-01-01 04:55:23"), DateTools.parseTimeOnly("04:55:23"));
 
+        Assert.assertNull(DateTools.parseDateOnly(null));
+        Assert.assertNull(DateTools.parseFull(null));
+        Assert.assertNull(DateTools.parseTimeOnly(null));
+        Assert.assertNull(DateTools.formatDateOnly(null));
+        Assert.assertNull(DateTools.formatFull(null));
+        Assert.assertNull(DateTools.formatTimeOnly(null));
+
     }
 
 }
