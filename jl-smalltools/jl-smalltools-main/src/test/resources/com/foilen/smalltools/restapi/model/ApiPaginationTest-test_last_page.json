@@ -1,9 +1,9 @@
 {
   "currentPage" : 2,
-  "totalPages" : 3,
-  "itemsPerPage" : 100,
-  "totalItems" : 250,
   "currentPageUi" : 3,
   "firstPage" : false,
-  "lastPage" : true
+  "itemsPerPage" : 100,
+  "lastPage" : true,
+  "totalItems" : 250,
+  "totalPages" : 3
 }
