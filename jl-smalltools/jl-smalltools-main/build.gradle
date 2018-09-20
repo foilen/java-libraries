@@ -2,6 +2,7 @@ dependencies {
   compileOnly 'ch.qos.logback:logback-classic:1.2.3'
   compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
   compileOnly 'com.google.guava:guava:23.0'
+  compileOnly 'com.jcraft:jsch:0.1.54'
   compileOnly 'com.madgag.spongycastle:prov:1.54.0.0'
   compileOnly 'com.madgag.spongycastle:pkix:1.54.0.0'
   compileOnly 'com.madgag.spongycastle:pg:1.54.0.0'
