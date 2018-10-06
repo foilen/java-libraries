@@ -49,7 +49,7 @@ public class SshLogin extends AbstractBasics {
             logger.info("Known hosts file {} exists. Will use it per default", possibleKnownHostsFile);
             knownHostsFile = possibleKnownHostsFile;
         } else {
-            logger.info("Known hosts file {} does not exist. You must set it if you want to use it");
+            logger.info("Known hosts file {} does not exist. You must set it if you want to use it", possibleKnownHostsFile);
         }
     }
 
