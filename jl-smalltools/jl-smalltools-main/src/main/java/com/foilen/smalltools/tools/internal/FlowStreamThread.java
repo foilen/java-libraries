@@ -50,7 +50,7 @@ public class FlowStreamThread extends Thread {
                 completedEventList.dispatch("disconnected");
             } else {
                 completedEventList.dispatch("error");
-                throw e;
+                logger.error("Problem while streaming", e);
             }
         } finally {
             if (closeAtEnd) {
