@@ -9,6 +9,8 @@
 package com.foilen.smalltools.tools;
 
 import java.util.Map.Entry;
+import java.util.concurrent.ThreadFactory;
+import java.util.function.Consumer;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.thread.ThreadList;
@@ -17,6 +19,41 @@ import com.foilen.smalltools.tools.thread.ThreadList;
  * Some common methods for threads.
  */
 public final class ThreadTools {
+
+    /**
+     * Create a thread factory that is configured as daemon threads.
+     * 
+     * @return the thread factory
+     */
+    public static ThreadFactory daemonThreadFactory() {
+        return new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread thread = new Thread(r);
+                thread.setDaemon(true);
+                return thread;
+            }
+        };
+    }
+
+    /**
+     * Create a thread factory that is configured as daemon threads.
+     * 
+     * @param consumer
+     *            the consumer to configure more the thread
+     * @return the thread factory
+     */
+    public static ThreadFactory daemonThreadFactory(Consumer<Thread> consumer) {
+        return new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread thread = new Thread(r);
+                thread.setDaemon(true);
+                consumer.accept(thread);
+                return thread;
+            }
+        };
+    }
 
     /**
      * To help change the name of a thread and revert back later.

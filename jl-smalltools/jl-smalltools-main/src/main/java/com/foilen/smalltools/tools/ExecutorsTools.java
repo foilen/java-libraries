@@ -17,6 +17,16 @@ import java.util.concurrent.Executors;
 public final class ExecutorsTools {
 
     private static ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    private static ExecutorService cachedDaemonThreadPool = Executors.newCachedThreadPool(ThreadTools.daemonThreadFactory());
+
+    /**
+     * Get a shared executor that executes everything right now and keep the idling Threads around for 1 minute. The threads are set as being daemon threads.
+     *
+     * @return the {@link ExecutorService}
+     */
+    public static ExecutorService getCachedDaemonThreadPool() {
+        return cachedDaemonThreadPool;
+    }
 
     /**
      * Get a shared executor that executes everything right now and keep the idling Threads around for 1 minute.
