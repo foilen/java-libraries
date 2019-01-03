@@ -80,7 +80,7 @@ public class ApiPagination extends AbstractApiBase {
     }
 
     public boolean isLastPage() {
-        return currentPage == totalPages - 1;
+        return currentPage >= totalPages - 1;
     }
 
     /**
