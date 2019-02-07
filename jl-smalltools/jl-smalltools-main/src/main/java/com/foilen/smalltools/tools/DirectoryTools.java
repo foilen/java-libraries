@@ -160,6 +160,56 @@ public final class DirectoryTools {
     }
 
     /**
+     * Create the directory and all the parent ones if needed. They will all have the owner and group of the first existing parent.
+     *
+     * @param directory
+     *            the directory
+     * @return true if well created or already exists
+     */
+    public static boolean createPathAndCopyOwnerAndGroupFromParent(File directory) {
+        if (!directory.exists()) {
+            File parentDirectory = directory.getParentFile();
+            // Create parent if missing
+            if (!parentDirectory.exists()) {
+                if (!createPathAndCopyOwnerAndGroupFromParent(parentDirectory)) {
+                    return false;
+                }
+            }
+            // Create directory
+            if (!directory.mkdir()) {
+                logger.error("Could not create directory {}", directory.getAbsolutePath());
+                return false;
+            }
+
+            // Copy parent owner/group
+            FileTools.copyOwnerAndGroupFromParentDir(directory, false);
+        }
+        return true;
+    }
+
+    /**
+     * Create the directory and all the parent ones if needed. They will all have the owner and group of the first existing parent.
+     *
+     * @param directoryPath
+     *            the full path
+     * @return true if well created or already exists
+     */
+    public static boolean createPathAndCopyOwnerAndGroupFromParent(String directoryPath) {
+        return createPathAndCopyOwnerAndGroupFromParent(new File(directoryPath));
+    }
+
+    /**
+     * Create the directory and all the parent ones if needed. They will all have the owner and group of the first existing parent.
+     *
+     * @param directoryPathParts
+     *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
+     * @return true if well created or already exists
+     */
+    public static boolean createPathAndCopyOwnerAndGroupFromParent(String[] directoryPathParts) {
+        return createPathAndCopyOwnerAndGroupFromParent(new File(FileTools.concatPath(directoryPathParts)));
+    }
+
+    /**
      * Create the directory and all the parent ones if needed to get to that file.
      *
      * @param filePath
