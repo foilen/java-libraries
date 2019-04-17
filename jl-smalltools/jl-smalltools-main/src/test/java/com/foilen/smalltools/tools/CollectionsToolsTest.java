@@ -11,8 +11,10 @@ package com.foilen.smalltools.tools;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Assert;
@@ -54,6 +56,42 @@ public class CollectionsToolsTest {
         actual = CollectionsTools.getOrCreateEmptyArrayList(map, "first", String.class);
         actual.add("itemB");
         Assert.assertEquals(Arrays.asList("itemA", "itemB"), actual);
+    }
+
+    @Test
+    public void testGetOrCreateEmptyHashSet() {
+        Map<String, Set<String>> map = new HashMap<>();
+        Set<String> actual = CollectionsTools.getOrCreateEmptyHashSet(map, "first", String.class);
+        actual.add("itemA");
+        actual.add("itemA");
+        actual.add("itemB");
+        Set<String> expected = new HashSet<>();
+        expected.add("itemA");
+        expected.add("itemB");
+        Assert.assertEquals(expected, actual);
+
+        actual = CollectionsTools.getOrCreateEmptyHashSet(map, "first", String.class);
+        actual.add("itemC");
+        expected.add("itemC");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGetOrCreateEmptyTreeSet() {
+        Map<String, Set<String>> map = new HashMap<>();
+        Set<String> actual = CollectionsTools.getOrCreateEmptyTreeSet(map, "first", String.class);
+        actual.add("itemA");
+        actual.add("itemA");
+        actual.add("itemB");
+        Set<String> expected = new HashSet<>();
+        expected.add("itemA");
+        expected.add("itemB");
+        Assert.assertEquals(expected, actual);
+
+        actual = CollectionsTools.getOrCreateEmptyTreeSet(map, "first", String.class);
+        actual.add("itemC");
+        expected.add("itemC");
+        Assert.assertEquals(expected, actual);
     }
 
     @Test

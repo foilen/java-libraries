@@ -10,10 +10,13 @@ package com.foilen.smalltools.tools;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
@@ -67,6 +70,56 @@ public final class CollectionsTools {
         List<V> value = map.get(key);
         if (value == null) {
             value = new ArrayList<>();
+            map.put(key, value);
+        }
+
+        return value;
+    }
+
+    /**
+     * Get a value from a map or insert an empty {@link HashSet} for that value.
+     *
+     * @param map
+     *            the map
+     * @param key
+     *            the key
+     * @param clazz
+     *            the class of the values in the list
+     * @param <K>
+     *            type of the key
+     * @param <V>
+     *            type of the value in the list
+     * @return the value or the new empty value
+     */
+    public static <K, V> Set<V> getOrCreateEmptyHashSet(Map<K, Set<V>> map, K key, Class<V> clazz) {
+        Set<V> value = map.get(key);
+        if (value == null) {
+            value = new HashSet<>();
+            map.put(key, value);
+        }
+
+        return value;
+    }
+
+    /**
+     * Get a value from a map or insert an empty {@link TreeSet} for that value.
+     *
+     * @param map
+     *            the map
+     * @param key
+     *            the key
+     * @param clazz
+     *            the class of the values in the list
+     * @param <K>
+     *            type of the key
+     * @param <V>
+     *            type of the value in the list
+     * @return the value or the new empty value
+     */
+    public static <K, V> Set<V> getOrCreateEmptyTreeSet(Map<K, Set<V>> map, K key, Class<V> clazz) {
+        Set<V> value = map.get(key);
+        if (value == null) {
+            value = new TreeSet<>();
             map.put(key, value);
         }
 
