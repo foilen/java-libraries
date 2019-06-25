@@ -106,7 +106,7 @@ public final class ThreadTools {
      *            the thread to dump
      */
     public static void printStackTrace(Thread thread) {
-        printStackTrace(thread);
+        printStackTrace(thread.getStackTrace());
     }
 
     /**
