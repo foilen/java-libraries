@@ -9,6 +9,7 @@
 package com.foilen.smalltools.tools;
 
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.ThreadFactory;
 import java.util.function.Consumer;
 
@@ -22,7 +23,7 @@ public final class ThreadTools {
 
     /**
      * Create a thread factory that is configured as daemon threads.
-     * 
+     *
      * @return the thread factory
      */
     public static ThreadFactory daemonThreadFactory() {
@@ -38,7 +39,7 @@ public final class ThreadTools {
 
     /**
      * Create a thread factory that is configured as daemon threads.
-     * 
+     *
      * @param consumer
      *            the consumer to configure more the thread
      * @return the thread factory
@@ -53,6 +54,26 @@ public final class ThreadTools {
                 return thread;
             }
         };
+    }
+
+    /**
+     * Check the current stack and return the name of the highest method in the stack from the desired class.
+     *
+     * @param onClass
+     *            the class to check.
+     * @return the method's name
+     */
+    public static Optional<String> getStackMethodName(Class<?> onClass) {
+
+        String onClassName = onClass.getName();
+
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            if (element.getClassName().equals(onClassName)) {
+                return Optional.of(element.getMethodName());
+            }
+        }
+
+        return Optional.empty();
     }
 
     /**

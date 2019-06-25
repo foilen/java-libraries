@@ -22,6 +22,18 @@ public class ThreadToolsTest {
     }
 
     @Test
+    public void testGetStackMethod_ofTest() {
+        Assert.assertEquals("testGetStackMethod_ofTest", ThreadTools.getStackMethodName(getClass()).get());
+        ThreadTools.printStackTrace(Thread.currentThread());
+    }
+
+    @Test
+    public void testGetStackMethod_ofThreadTools() {
+        Assert.assertEquals("getStackMethodName", ThreadTools.getStackMethodName(ThreadTools.class).get());
+        ThreadTools.printStackTrace(Thread.currentThread());
+    }
+
+    @Test
     public void testNameThread() {
 
         // No change
