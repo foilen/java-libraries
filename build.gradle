@@ -20,7 +20,6 @@ allprojects {
     }
 
     sourceCompatibility = 1.8
-    targetCompatibility = 1.8
 
     eclipse {
         classpath {
@@ -36,4 +35,3 @@ subprojects {
 	}
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '4.7' }
