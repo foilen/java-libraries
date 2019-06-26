@@ -9,10 +9,15 @@
 package com.foilen.smalltools.db;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.tools.ExecutorsTools;
 import com.foilen.smalltools.tools.ThreadTools;
 
 public class AbstractSingleJsonFileDaoTest {
@@ -107,6 +112,97 @@ public class AbstractSingleJsonFileDaoTest {
             ThreadTools.sleep(500);
         }
         Assert.assertEquals(dbFile.lastModified(), modifiedTime);
+
+    }
+
+    @Test(timeout = 30000)
+    public void test_not_transaction() throws Exception {
+
+        int loop = 1000;
+
+        File dbFile = File.createTempFile("junit", ".json");
+        Assert.assertTrue(dbFile.delete());
+
+        TestSingleDao dao = new TestSingleDao(dbFile);
+
+        // Created an empty one
+        dao.load().assertValue(null, 0);
+
+        // Update in multiple threads
+        CountDownLatch countDownLatch = new CountDownLatch(loop);
+        List<Future<?>> futures = new ArrayList<>();
+        for (int i = 0; i < loop; ++i) {
+            futures.add(ExecutorsTools.getCachedDaemonThreadPool().submit(() -> {
+                try {
+                    countDownLatch.countDown();
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                TestDbEntity entity = dao.load();
+                entity.setNumber(entity.getNumber() + 1);
+                dao.save(entity);
+            }));
+        }
+
+        // Wait for all the changes to be completed
+        futures.forEach(f -> {
+            try {
+                f.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Assert
+        Assert.assertTrue(dao.load().getNumber() < (loop * .9));
+
+    }
+
+    @Test(timeout = 30000)
+    public void test_transaction() throws Exception {
+
+        int loop = 1000;
+
+        File dbFile = File.createTempFile("junit", ".json");
+        Assert.assertTrue(dbFile.delete());
+
+        TestSingleDao dao = new TestSingleDao(dbFile);
+
+        // Created an empty one
+        dao.load().assertValue(null, 0);
+
+        // Update in multiple threads
+        CountDownLatch countDownLatch = new CountDownLatch(loop);
+        List<Future<?>> futures = new ArrayList<>();
+        for (int i = 0; i < loop; ++i) {
+            futures.add(ExecutorsTools.getCachedDaemonThreadPool().submit(() -> {
+                try {
+                    countDownLatch.countDown();
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                // In transaction
+                dao.loadInTransaction(entity -> {
+                    entity.setNumber(entity.getNumber() + 1);
+                });
+            }));
+        }
+
+        // Wait for all the changes to be completed
+        futures.forEach(f -> {
+            try {
+                f.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Assert
+        dao.load().assertValue(null, loop);
 
     }
 

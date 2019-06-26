@@ -10,12 +10,15 @@ package com.foilen.smalltools.db;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
 
 import com.foilen.smalltools.hash.HashMd5sum;
 import com.foilen.smalltools.reflection.ReflectionTools;
+import com.foilen.smalltools.streamwrapper.RenamingOnCloseOutputStreamWrapper;
 import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.JsonTools;
@@ -117,6 +120,11 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * TestDbEntity entity = dao.load();
  * entity.setNumber(10);
  * dao.save(entity);
+ * 
+ * // Use it in a transaction
+ * dao.loadInTransaction(entity -> {
+ *     entity.setNumber(entity.getNumber() + 1);
+ * });
  * </pre>
  *
  * <pre>
@@ -130,6 +138,8 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
     private String previousMd5sum;
     private T cached;
 
+    private Lock transactionLock = new ReentrantLock();
+
     protected Runnable saveToFile = () -> {
 
         String cachedMd5sum = HashMd5sum.hashString(JsonTools.prettyPrint(cached));
@@ -142,9 +152,11 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
 
         // Save
         logger.debug("Saving to {}", getFinalFile().getAbsolutePath());
-        OutputStream out = FileTools.createStagingFile(getStagingFile(), getFinalFile());
-        JsonTools.writeToStream(out, cached);
+        RenamingOnCloseOutputStreamWrapper out = FileTools.createStagingFile(getStagingFile(), getFinalFile(), true);
         try {
+            JsonTools.writeToStream(out, cached);
+            out.flush();
+            out.setDeleteOnClose(false);
             out.close();
             previousMd5sum = cachedMd5sum;
         } catch (IOException e) {
@@ -197,21 +209,45 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
      * @return the entity
      */
     public T load() {
-        if (cached != null) {
-            logger.debug("Return cached");
-            return JsonTools.clone(cached);
+        transactionLock.lock();
+        try {
+            if (cached != null) {
+                logger.debug("Return cached");
+                return JsonTools.clone(cached);
+            }
+            if (getFinalFile().exists()) {
+                logger.debug("Loading from file");
+                String json = FileTools.getFileAsString(getFinalFile());
+                cached = JsonTools.readFromString(json, getType());
+                previousMd5sum = HashMd5sum.hashString(json);
+                return JsonTools.readFromString(json, getType());
+            } else {
+                logger.debug("New state");
+                cached = ReflectionTools.instantiate(getType());
+                return ReflectionTools.instantiate(getType());
+            }
+        } finally {
+            transactionLock.unlock();
         }
-        if (getFinalFile().exists()) {
-            logger.debug("Loading from file");
-            String json = FileTools.getFileAsString(getFinalFile());
-            cached = JsonTools.readFromString(json, getType());
-            previousMd5sum = HashMd5sum.hashString(json);
-            return JsonTools.readFromString(json, getType());
-        } else {
-            logger.debug("New state");
-            cached = ReflectionTools.instantiate(getType());
-            return ReflectionTools.instantiate(getType());
+    }
+
+    /**
+     * Get the last saved entity and keep a lock on it for the execution block. Once the execution completed, it will save the entity unless an exception is thrown.
+     *
+     * @param execution
+     *            what to execute in the transaction. It gets the entity as its parameter
+     */
+    public void loadInTransaction(Consumer<T> execution) {
+
+        transactionLock.lock();
+        try {
+            T entity = load();
+            execution.accept(entity);
+            save(entity);
+        } finally {
+            transactionLock.unlock();
         }
+
     }
 
     /**
@@ -221,8 +257,13 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
      *            the entity
      */
     public void save(T entity) {
-        cached = JsonTools.clone(entity);
-        saveSmoothTrigger.request();
+        transactionLock.lock();
+        try {
+            cached = JsonTools.clone(entity);
+            saveSmoothTrigger.request();
+        } finally {
+            transactionLock.unlock();
+        }
     }
 
 }
