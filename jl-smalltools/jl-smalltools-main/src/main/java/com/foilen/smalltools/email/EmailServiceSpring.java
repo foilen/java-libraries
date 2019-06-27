@@ -100,4 +100,8 @@ public class EmailServiceSpring implements EmailService {
         }
     }
 
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
 }
