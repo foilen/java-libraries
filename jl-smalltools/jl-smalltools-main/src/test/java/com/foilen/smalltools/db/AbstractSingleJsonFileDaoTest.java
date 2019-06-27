@@ -18,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.foilen.smalltools.tools.ExecutorsTools;
+import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.ThreadTools;
 
 public class AbstractSingleJsonFileDaoTest {
@@ -157,6 +158,18 @@ public class AbstractSingleJsonFileDaoTest {
 
         // Assert
         Assert.assertTrue(dao.load().getNumber() < (loop * .9));
+
+    }
+
+    @Test()
+    public void test_savedNothing_notNull() throws Exception {
+
+        File dbFile = File.createTempFile("junit", ".json");
+        FileTools.writeFile("null", dbFile);
+
+        TestSingleDao dao = new TestSingleDao(dbFile);
+        TestDbEntity entity = dao.load();
+        Assert.assertNotNull(entity);
 
     }
 

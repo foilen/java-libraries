@@ -120,7 +120,7 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * TestDbEntity entity = dao.load();
  * entity.setNumber(10);
  * dao.save(entity);
- * 
+ *
  * // Use it in a transaction
  * dao.loadInTransaction(entity -> {
  *     entity.setNumber(entity.getNumber() + 1);
@@ -219,8 +219,12 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
                 logger.debug("Loading from file");
                 String json = FileTools.getFileAsString(getFinalFile());
                 cached = JsonTools.readFromString(json, getType());
+                if (cached == null) {
+                    logger.debug("Loaded null");
+                    cached = ReflectionTools.instantiate(getType());
+                }
                 previousMd5sum = HashMd5sum.hashString(json);
-                return JsonTools.readFromString(json, getType());
+                return JsonTools.clone(cached);
             } else {
                 logger.debug("New state");
                 cached = ReflectionTools.instantiate(getType());
