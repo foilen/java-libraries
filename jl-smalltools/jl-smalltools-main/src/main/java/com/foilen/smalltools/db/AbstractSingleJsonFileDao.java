@@ -150,6 +150,12 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
             return;
         }
 
+        // Don't save if the content is null
+        if (cached == null) {
+            logger.debug("Content wasn't loaded yet. Skipping saving");
+            return;
+        }
+
         // Save
         logger.debug("Saving to {}", getFinalFile().getAbsolutePath());
         RenamingOnCloseOutputStreamWrapper out = FileTools.createStagingFile(getStagingFile(), getFinalFile(), true);
