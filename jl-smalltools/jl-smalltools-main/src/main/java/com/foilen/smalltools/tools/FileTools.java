@@ -830,6 +830,33 @@ public final class FileTools {
      *            the content to write
      * @param file
      *            the file to write into
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if it worked
+     */
+    public static boolean writeFile(InputStream inputStream, File file, String permissions) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            StreamsTools.flowStream(inputStream, fos);
+            fos.close();
+
+            // Update permissions
+            String path = file.getAbsolutePath();
+            changePermissions(path, false, permissions);
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Save the stream to a file.
+     *
+     * @param inputStream
+     *            the content to write
+     * @param file
+     *            the file to write into
      * @param owner
      *            the owner of the file
      * @param group
@@ -869,6 +896,33 @@ public final class FileTools {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(content.getBytes(CharsetTools.UTF_8));
             fos.close();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Save some texts to a file.
+     *
+     * @param content
+     *            the content to write
+     * @param file
+     *            the file to write into
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if it worked
+     */
+    public static boolean writeFile(String content, File file, String permissions) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(content.getBytes(CharsetTools.UTF_8));
+            fos.close();
+
+            // Update permissions
+            String path = file.getAbsolutePath();
+            changePermissions(path, false, permissions);
+
             return true;
         } catch (IOException e) {
             return false;
@@ -930,6 +984,27 @@ public final class FileTools {
      */
     public static boolean writeFileWithContentCheck(String path, List<String> contentLines) {
         return writeFileWithContentCheck(path, LINES_JOINER.join(contentLines));
+    }
+
+    /**
+     * Save some texts to a file.
+     *
+     * @param path
+     *            the path to the file
+     * @param contentLines
+     *            all the lines of text
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if the file was created or the content is different
+     */
+    public static boolean writeFileWithContentCheck(String path, List<String> contentLines, String permissions) {
+
+        boolean needUpdate = writeFileWithContentCheck(path, contentLines);
+
+        // Update permissions
+        changePermissions(path, false, permissions);
+
+        return needUpdate;
     }
 
     /**
@@ -1005,6 +1080,26 @@ public final class FileTools {
      *            the path to the file
      * @param content
      *            the text content
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if the file was created or the content is different
+     */
+    public static boolean writeFileWithContentCheck(String path, String content, String permissions) {
+        boolean needUpdate = writeFileWithContentCheck(path, content);
+
+        // Update permissions
+        changePermissions(path, false, permissions);
+
+        return needUpdate;
+    }
+
+    /**
+     * Save some texts to a file.
+     *
+     * @param path
+     *            the path to the file
+     * @param content
+     *            the text content
      * @param owner
      *            the owner of the file
      * @param group
@@ -1030,6 +1125,21 @@ public final class FileTools {
      *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
      * @param contentLines
      *            all the lines of text
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if the file was created or the content is different
+     */
+    public static boolean writeFileWithContentCheck(String[] pathParts, List<String> contentLines, String permissions) {
+        return writeFileWithContentCheck(concatPath(pathParts), contentLines, permissions);
+    }
+
+    /**
+     * Save some texts to a file.
+     *
+     * @param pathParts
+     *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
+     * @param contentLines
+     *            all the lines of text
      * @param owner
      *            the owner of the file
      * @param group
@@ -1040,6 +1150,21 @@ public final class FileTools {
      */
     public static boolean writeFileWithContentCheck(String[] pathParts, List<String> contentLines, String owner, String group, String permissions) {
         return writeFileWithContentCheck(concatPath(pathParts), contentLines, owner, group, permissions);
+    }
+
+    /**
+     * Save some texts to a file.
+     *
+     * @param pathParts
+     *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
+     * @param content
+     *            the text content
+     * @param permissions
+     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @return true if the file was created or the content is different
+     */
+    public static boolean writeFileWithContentCheck(String[] pathParts, String content, String permissions) {
+        return writeFileWithContentCheck(concatPath(pathParts), content, permissions);
     }
 
     /**
