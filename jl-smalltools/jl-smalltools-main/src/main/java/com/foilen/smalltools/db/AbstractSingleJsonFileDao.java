@@ -10,7 +10,6 @@ package com.foilen.smalltools.db;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
@@ -20,6 +19,7 @@ import com.foilen.smalltools.hash.HashMd5sum;
 import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.streamwrapper.RenamingOnCloseOutputStreamWrapper;
 import com.foilen.smalltools.tools.AbstractBasics;
+import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.JsonTools;
 import com.foilen.smalltools.tools.StringTools;
@@ -138,7 +138,7 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
     private String previousMd5sum;
     private T cached;
 
-    private Lock transactionLock = new ReentrantLock();
+    private ReentrantLock transactionLock = new ReentrantLock();
 
     protected Runnable saveToFile = () -> {
 
@@ -249,6 +249,7 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
      */
     public void loadInTransaction(Consumer<T> execution) {
 
+        AssertTools.assertFalse(transactionLock.isHeldByCurrentThread(), "Nested transactions are not supported");
         transactionLock.lock();
         try {
             T entity = load();

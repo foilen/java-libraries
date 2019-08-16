@@ -219,4 +219,30 @@ public class AbstractSingleJsonFileDaoTest {
 
     }
 
+    @Test(timeout = 30000)
+    public void test_transactions_nested_not_allowed() throws Exception {
+
+        File dbFile = File.createTempFile("junit", ".json");
+        Assert.assertTrue(dbFile.delete());
+
+        TestSingleDao dao = new TestSingleDao(dbFile);
+
+        // Created an empty one
+        dao.load().assertValue(null, 0);
+
+        // In transaction
+        try {
+            dao.loadInTransaction(entity -> {
+                entity.setNumber(entity.getNumber() + 1);
+                dao.loadInTransaction(entitye -> {
+                    // Expect crash
+                });
+            });
+            Assert.fail("Expecting an exception");
+        } catch (Exception e) {
+            Assert.assertEquals("Nested transactions are not supported", e.getMessage());
+        }
+
+    }
+
 }
