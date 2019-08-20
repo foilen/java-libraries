@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,29 +98,39 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
                 process = processBuilder.start();
 
                 // Setup the streams
+                List<Future<Void>> streamFutures = new ArrayList<>();
                 processBuilder.redirectErrorStream(redirectErrorStream);
                 if (consoleInput == null) {
                     CloseableTools.close(process.getOutputStream());
                 } else {
-                    StreamsTools.flowStreamNonBlocking(consoleInput, process.getOutputStream(), true);
+                    streamFutures.add(StreamsTools.flowStreamNonBlocking(consoleInput, process.getOutputStream(), true).getFuture());
                 }
 
                 if (consoleOutput == null) {
                     CloseableTools.close(process.getInputStream());
                 } else {
-                    StreamsTools.flowStreamNonBlocking(process.getInputStream(), consoleOutput);
+                    streamFutures.add(StreamsTools.flowStreamNonBlocking(process.getInputStream(), consoleOutput).getFuture());
                 }
 
                 if (consoleError == null) {
                     CloseableTools.close(process.getErrorStream());
                 } else {
                     if (!redirectErrorStream) {
-                        StreamsTools.flowStreamNonBlocking(process.getErrorStream(), consoleError);
+                        streamFutures.add(StreamsTools.flowStreamNonBlocking(process.getErrorStream(), consoleError).getFuture());
                     }
                 }
 
-                // Wait for the completion
+                // Wait for the completion of the process
                 process.waitFor();
+
+                // Wait for the completion of the streams
+                streamFutures.forEach(f -> {
+                    try {
+                        f.get();
+                    } catch (Exception e) {
+                        throw new SmallToolsException("Got an exception while waiting for the completion of the streams", e);
+                    }
+                });
 
                 // Close the threads if needed
                 if (closeConsoleOutput) {

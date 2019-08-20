@@ -10,6 +10,8 @@ package com.foilen.smalltools.tools.internal;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,8 @@ public class FlowStreamThread extends Thread {
 
     private EventList<String> completedEventList = new EventList<>();
 
+    private CompletableFuture<Void> future = new CompletableFuture<>();
+
     public FlowStreamThread(InputStream source, OutputStream destination, boolean closeAtEnd) {
         this.source = source;
         this.destination = destination;
@@ -37,6 +41,10 @@ public class FlowStreamThread extends Thread {
 
     public EventList<String> getCompletedEventList() {
         return completedEventList;
+    }
+
+    public Future<Void> getFuture() {
+        return future;
     }
 
     @Override
@@ -57,6 +65,7 @@ public class FlowStreamThread extends Thread {
                 CloseableTools.close(source);
                 CloseableTools.close(destination);
             }
+            future.complete(null);
         }
     }
 
