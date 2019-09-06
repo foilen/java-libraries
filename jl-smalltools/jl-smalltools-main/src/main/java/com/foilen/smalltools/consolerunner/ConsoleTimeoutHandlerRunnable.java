@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,8 @@ import com.google.common.base.Strings;
 class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsoleTimeoutHandlerRunnable.class);
+
+    private static final AtomicLong nextRunnerId = new AtomicLong();
 
     private ConsoleRunner consoleRunner;
 
@@ -49,6 +52,8 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
 
     @Override
     public void run() {
+
+        long runnerId = nextRunnerId.getAndIncrement();
 
         // Retrieve all the parameters
         String command = consoleRunner.getCommand();
@@ -80,7 +85,7 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
             try {
 
                 // Run the command
-                logger.debug("Command to run: {}", fullCommand);
+                logger.debug("[{}] Command to run: {}", runnerId, fullCommand);
                 ProcessBuilder processBuilder = new ProcessBuilder(fullCommand);
 
                 // Working directory
@@ -103,20 +108,20 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
                 if (consoleInput == null) {
                     CloseableTools.close(process.getOutputStream());
                 } else {
-                    streamFutures.add(StreamsTools.flowStreamNonBlocking(consoleInput, process.getOutputStream(), true).getFuture());
+                    streamFutures.add(StreamsTools.flowStreamNonBlocking(consoleInput, process.getOutputStream(), true, "stdin-" + runnerId).getFuture());
                 }
 
                 if (consoleOutput == null) {
                     CloseableTools.close(process.getInputStream());
                 } else {
-                    streamFutures.add(StreamsTools.flowStreamNonBlocking(process.getInputStream(), consoleOutput).getFuture());
+                    streamFutures.add(StreamsTools.flowStreamNonBlocking(process.getInputStream(), consoleOutput, false, "stdout-" + runnerId).getFuture());
                 }
 
                 if (consoleError == null) {
                     CloseableTools.close(process.getErrorStream());
                 } else {
                     if (!redirectErrorStream) {
-                        streamFutures.add(StreamsTools.flowStreamNonBlocking(process.getErrorStream(), consoleError).getFuture());
+                        streamFutures.add(StreamsTools.flowStreamNonBlocking(process.getErrorStream(), consoleError, false, "stderr-" + runnerId).getFuture());
                     }
                 }
 
@@ -144,13 +149,15 @@ class ConsoleTimeoutHandlerRunnable implements TimeoutHandlerRunnable<Integer> {
                 statusCode = process.exitValue();
 
                 // Check it was successful
-                if (statusCode != 0) {
-                    logger.debug("Command {} failed. Exit code: {}", fullCommand, statusCode);
+                if (statusCode == 0) {
+                    logger.debug("[{}] Command {} succeeded", runnerId, fullCommand);
+                } else {
+                    logger.debug("[{}] Command {} failed. Exit code: {}", runnerId, fullCommand, statusCode);
                     // Don't fail to get the result
                 }
 
             } catch (Exception e) {
-                logger.debug("Command {} failed.", fullCommand, e);
+                logger.debug("[{}] Command {} failed.", runnerId, fullCommand, e);
                 throw new SmallToolsException(e);
             }
         } catch (RuntimeException e) {
