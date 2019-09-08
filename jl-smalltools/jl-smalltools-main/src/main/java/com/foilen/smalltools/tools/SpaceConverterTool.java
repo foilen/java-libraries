@@ -26,6 +26,51 @@ public class SpaceConverterTool {
     static public long TIB = 1024 * 1024 * 1024 * 1024L;
 
     /**
+     * Convert the value to its biggest unit with 2 decimals. (e.g: 123000 will become 123K ; 1230000 will become 1.23M)
+     *
+     * @param bytes
+     *            the amount of bytes
+     * @return the value with its unit
+     */
+    static public String convertToBiggestBUnit(Long bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        String unit = "B";
+        double main = bytes;
+
+        if (bytes >= TB) {
+            unit = "T";
+            main = main / TB;
+        } else if (bytes >= GB) {
+            unit = "G";
+            main = main / GB;
+        } else if (bytes >= MB) {
+            unit = "M";
+            main = main / MB;
+        } else if (bytes >= KB) {
+            unit = "K";
+            main = main / KB;
+        }
+
+        main *= 100;
+        main = Math.round(main) / 100.0;
+
+        String text = String.valueOf(main);
+        int dotPos = text.indexOf('.');
+        if (dotPos != -1) {
+            int maxDecimalPos = Math.min(text.length(), dotPos + 3);
+            while (text.charAt(maxDecimalPos - 1) == '.' || text.charAt(maxDecimalPos - 1) == '0') {
+                --maxDecimalPos;
+            }
+            text = text.substring(0, maxDecimalPos);
+        }
+
+        return text + unit;
+    }
+
+    /**
      * Convert text like "15k", "15 k", "15 kB", "15 kb" to its {@link Long} representation (always bytes; not bits).
      *
      * <ul>

@@ -105,4 +105,56 @@ public class SpaceConverterToolTest {
         Assert.assertEquals(85000000000000L, SpaceConverterTool.convertToBytes("85 tB"));
     }
 
+    @Test
+    public void testConvertToBiggestBUnit_Exact() {
+        Assert.assertEquals("1B", SpaceConverterTool.convertToBiggestBUnit(1L));
+        Assert.assertEquals("1K", SpaceConverterTool.convertToBiggestBUnit(1000L));
+        Assert.assertEquals("1M", SpaceConverterTool.convertToBiggestBUnit(1000000L));
+        Assert.assertEquals("1G", SpaceConverterTool.convertToBiggestBUnit(1000000000L));
+        Assert.assertEquals("1T", SpaceConverterTool.convertToBiggestBUnit(1000000000000L));
+    }
+
+    @Test
+    public void testConvertToBiggestBUnit_NoDecimal() {
+        Assert.assertEquals("85B", SpaceConverterTool.convertToBiggestBUnit(85L));
+        Assert.assertEquals("85K", SpaceConverterTool.convertToBiggestBUnit(85000L));
+        Assert.assertEquals("85G", SpaceConverterTool.convertToBiggestBUnit(85000000000L));
+        Assert.assertEquals("85T", SpaceConverterTool.convertToBiggestBUnit(85000000000000L));
+    }
+
+    @Test
+    public void testConvertToBiggestBUnit_OneDecimal() {
+        Assert.assertEquals("8.5K", SpaceConverterTool.convertToBiggestBUnit(8500L));
+        Assert.assertEquals("8.5G", SpaceConverterTool.convertToBiggestBUnit(8500000000L));
+        Assert.assertEquals("8.5T", SpaceConverterTool.convertToBiggestBUnit(8500000000000L));
+    }
+
+    @Test
+    public void testConvertToBiggestBUnit_TwoDecimal() {
+        Assert.assertEquals("8.51K", SpaceConverterTool.convertToBiggestBUnit(8510L));
+        Assert.assertEquals("8.51G", SpaceConverterTool.convertToBiggestBUnit(8510000000L));
+        Assert.assertEquals("8.51T", SpaceConverterTool.convertToBiggestBUnit(8510000000000L));
+    }
+
+    @Test
+    public void testConvertToBiggestBUnit_TwoDecimal_Bigger() {
+        Assert.assertEquals("8.51K", SpaceConverterTool.convertToBiggestBUnit(8512L));
+        Assert.assertEquals("8.51G", SpaceConverterTool.convertToBiggestBUnit(8512000000L));
+        Assert.assertEquals("8.51T", SpaceConverterTool.convertToBiggestBUnit(8512000000000L));
+    }
+
+    @Test
+    public void testConvertToBiggestBUnit_TwoDecimal_Bigger_Higher() {
+        Assert.assertEquals("8.52K", SpaceConverterTool.convertToBiggestBUnit(8517L));
+        Assert.assertEquals("8.52G", SpaceConverterTool.convertToBiggestBUnit(8517000000L));
+        Assert.assertEquals("8.52T", SpaceConverterTool.convertToBiggestBUnit(8517000000000L));
+    }
+
+    @Test
+    public void testConvertToBiggestBUnit_TwoDecimal_With_0() {
+        Assert.assertEquals("8.01K", SpaceConverterTool.convertToBiggestBUnit(8010L));
+        Assert.assertEquals("8.01G", SpaceConverterTool.convertToBiggestBUnit(8010000000L));
+        Assert.assertEquals("8.01T", SpaceConverterTool.convertToBiggestBUnit(8010000000000L));
+    }
+
 }
