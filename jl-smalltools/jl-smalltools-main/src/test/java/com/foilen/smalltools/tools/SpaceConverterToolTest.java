@@ -107,6 +107,7 @@ public class SpaceConverterToolTest {
 
     @Test
     public void testConvertToBiggestBUnit_Exact() {
+        Assert.assertEquals("0B", SpaceConverterTool.convertToBiggestBUnit(0L));
         Assert.assertEquals("1B", SpaceConverterTool.convertToBiggestBUnit(1L));
         Assert.assertEquals("1K", SpaceConverterTool.convertToBiggestBUnit(1000L));
         Assert.assertEquals("1M", SpaceConverterTool.convertToBiggestBUnit(1000000L));

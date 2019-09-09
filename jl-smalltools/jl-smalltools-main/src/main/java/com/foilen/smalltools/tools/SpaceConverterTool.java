@@ -63,6 +63,9 @@ public class SpaceConverterTool {
             int maxDecimalPos = Math.min(text.length(), dotPos + 3);
             while (text.charAt(maxDecimalPos - 1) == '.' || text.charAt(maxDecimalPos - 1) == '0') {
                 --maxDecimalPos;
+                if (text.charAt(maxDecimalPos) == '.') {
+                    break;
+                }
             }
             text = text.substring(0, maxDecimalPos);
         }
