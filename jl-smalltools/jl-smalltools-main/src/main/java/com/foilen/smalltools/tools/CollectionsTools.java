@@ -313,6 +313,18 @@ public final class CollectionsTools {
         }
     }
 
+    public static <T> ArrayList<T> toArrayList(T[] array) {
+        ArrayList<T> list = new ArrayList<>(array.length);
+
+        if (array != null) {
+            for (T i : array) {
+                list.add(i);
+            }
+        }
+
+        return list;
+    }
+
     private CollectionsTools() {
     }
 
