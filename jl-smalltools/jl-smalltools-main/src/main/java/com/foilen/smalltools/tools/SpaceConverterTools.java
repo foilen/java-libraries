@@ -12,11 +12,8 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * To help converting space values to Long.
- * 
- * @deprecated use {@link SpaceConverterTools}
  */
-@Deprecated
-public class SpaceConverterTool {
+public class SpaceConverterTools {
 
     static public long KB = 1000L;
     static public long MB = 1000 * 1000L;
