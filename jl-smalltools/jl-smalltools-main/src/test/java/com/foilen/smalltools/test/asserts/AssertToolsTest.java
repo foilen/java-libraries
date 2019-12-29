@@ -8,10 +8,38 @@
  */
 package com.foilen.smalltools.test.asserts;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 public class AssertToolsTest {
+
+    @Test
+    public void testAssertDiffJsonComparison() {
+        AssertDiff expected = new AssertDiff();
+        expected.getAdded().add("actual-1");
+        expected.getAdded().add("actual-2");
+        expected.getAdded().add("actual-3");
+        expected.getRemoved().add("initial-1");
+        expected.getRemoved().add("initial-2");
+
+        List<String> initial = new ArrayList<>();
+        initial.add("initial-1");
+        initial.add("both-1");
+        initial.add("both-2");
+        initial.add("both-2");
+        initial.add("initial-2");
+        List<String> actual = new ArrayList<>();
+        actual.add("actual-1");
+        actual.add("both-1");
+        actual.add("both-1");
+        actual.add("actual-2");
+        actual.add("both-2");
+        actual.add("actual-3");
+        AssertTools.assertDiffJsonComparison(expected, initial, actual);
+    }
 
     private void testAssertEqualsDeltaFail(int expected, int actual, int delta, String errorMessage) {
         try {

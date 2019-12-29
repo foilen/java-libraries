@@ -17,10 +17,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
 public final class CollectionsTools {
+
+    public static <T> Collector<T, ?, ArrayList<T>> collectToArrayList() {
+        return Collectors.toCollection(() -> new ArrayList<T>());
+    }
 
     /**
      * Get a value from a map or insert an empty object for that value.

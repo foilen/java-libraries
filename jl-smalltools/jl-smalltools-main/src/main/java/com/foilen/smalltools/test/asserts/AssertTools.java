@@ -22,6 +22,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.CollectionsTools;
 import com.foilen.smalltools.tools.DirectoryTools;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.JsonTools;
@@ -39,6 +40,71 @@ import com.foilen.smalltools.tools.SystemTools;
  * </pre>
  */
 public final class AssertTools {
+
+    /**
+     * Diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump).
+     *
+     * @param expected
+     *            the expected object to compare
+     * @param initialItems
+     *            the initial items
+     * @param finalItems
+     *            the final items
+     */
+    public static void assertDiffJsonComparison(AssertDiff expected, List<?> initialItems, List<?> finalItems) {
+        assertJsonComparison(expected, diffLists(initialItems, finalItems));
+    }
+
+    /**
+     * Load an expected object from a JSON resource file and diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump).
+     *
+     *
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
+     *
+     * @param expectedResource
+     *            the filename of the resource
+     * @param expectedContext
+     *            the class in which the resource file is
+     * @param initialItems
+     *            the initial items
+     * @param finalItems
+     *            the final items
+     */
+    public static void assertDiffJsonComparison(String expectedResource, Class<?> expectedContext, List<?> initialItems, List<?> finalItems) {
+        assertJsonComparison(expectedResource, expectedContext, diffLists(initialItems, finalItems));
+    }
+
+    /**
+     * Diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump ignoring nulls).
+     *
+     * @param expected
+     *            the expected object to compare
+     * @param initialItems
+     *            the initial items
+     * @param finalItems
+     *            the final items
+     */
+    public static void assertDiffJsonComparisonWithoutNulls(Object expected, List<?> initialItems, List<?> finalItems) {
+        assertJsonComparisonWithoutNulls(expected, diffLists(initialItems, finalItems));
+    }
+
+    /**
+     * Load an expected object from a JSON resource file and diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump ignoring nulls).
+     *
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
+     *
+     * @param expectedResource
+     *            the filename of the resource
+     * @param expectedContext
+     *            the class in which the resource file is
+     * @param initialItems
+     *            the initial items
+     * @param finalItems
+     *            the final items
+     */
+    public static void assertDiffJsonComparisonWithoutNulls(String expectedResource, Class<?> expectedContext, List<?> initialItems, List<?> finalItems) {
+        assertJsonComparisonWithoutNulls(expectedResource, expectedContext, diffLists(initialItems, finalItems));
+    }
 
     /**
      * Assert expected - delta &lt;= actual &lt;= expected + delta .
@@ -245,6 +311,44 @@ public final class AssertTools {
         assertYamlComparison(expected, actual);
     }
 
+    private static AssertDiff diffLists(List<?> initialItems, List<?> finalItems) {
+
+        // Transform items to json
+        List<String> initialJson = initialItems.stream() //
+                .map(i -> JsonTools.prettyPrint(i)) //
+                .collect(CollectionsTools.collectToArrayList());
+        List<String> finalJson = finalItems.stream() //
+                .map(i -> JsonTools.prettyPrint(i)) //
+                .collect(CollectionsTools.collectToArrayList());
+
+        // Diff
+        AssertDiff diff = new AssertDiff();
+        for (int i = 0; i < initialJson.size(); ++i) {
+            String left = initialJson.get(i);
+            if (!finalJson.contains(left)) {
+                diff.getRemoved().add(initialItems.get(i));
+            }
+        }
+        for (int i = 0; i < finalJson.size(); ++i) {
+            String right = finalJson.get(i);
+            if (!initialJson.contains(right)) {
+                diff.getAdded().add(finalItems.get(i));
+            }
+        }
+        return diff;
+    }
+
+    /**
+     * Update the resource file if requested.
+     *
+     * @param expectedResource
+     *            the expected resource
+     * @param expectedContext
+     *            the expected class
+     * @param actualJson
+     *            the actual
+     * @return true if should assert (when no need to update the resource file)
+     */
     private static boolean updateFileIfRequested(String expectedResource, Class<?> expectedContext, String actualJson) {
         if ("true".equals(SystemTools.getPropertyOrEnvironment("ASSERT_TOOLS_UPDATE_EXPECTED_FILE", "false"))) {
             URL url = expectedContext.getResource(expectedResource);
