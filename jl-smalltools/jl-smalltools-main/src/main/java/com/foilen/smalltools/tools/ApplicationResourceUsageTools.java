@@ -106,8 +106,10 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
                     long free = Runtime.getRuntime().freeMemory();
                     long total = Runtime.getRuntime().totalMemory();
                     long max = Runtime.getRuntime().maxMemory();
-                    logger.info("JVM Memory: free: {} ; total: {} ; max: {}", free, total, max);
-                    logger.info("JVM Memory (human): free: {} ; total: {} ; max: {}", //
+                    long used = total - free;
+                    logger.info("JVM Memory: used: {} ; (free: {} ; total: {}) ; max: {}", used, free, total, max);
+                    logger.info("JVM Memory (human): used: {} ; (free: {} ; total: {}) ; max: {}", //
+                            SpaceConverterTools.convertToBiggestBUnit(used), //
                             SpaceConverterTools.convertToBiggestBUnit(free), //
                             SpaceConverterTools.convertToBiggestBUnit(total), //
                             SpaceConverterTools.convertToBiggestBUnit(max) //
@@ -119,10 +121,10 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
                     long free = MemoryUsage.getSystemFreeMemory();
                     long used = MemoryUsage.getSystemUsedMemory();
                     long total = MemoryUsage.getSystemTotalMemory();
-                    logger.info("System Memory: free: {} ; used: {} ; total: {}", free, used, total);
-                    logger.info("System Memory (human): free: {} ; used: {} ; total: {}", //
-                            SpaceConverterTools.convertToBiggestBUnit(free), //
+                    logger.info("System Memory: used: {} ; free: {} ; total: {}", used, free, total);
+                    logger.info("System Memory (human): used: {} ; free: {} ; total: {}", //
                             SpaceConverterTools.convertToBiggestBUnit(used), //
+                            SpaceConverterTools.convertToBiggestBUnit(free), //
                             SpaceConverterTools.convertToBiggestBUnit(total) //
                     );
                 }
