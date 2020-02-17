@@ -1,0 +1,11 @@
+{
+  "schema" : "mariadb",
+  "username" : null,
+  "password" : null,
+  "server" : "localhost:3306",
+  "database" : "DB",
+  "options" : {
+    "password" : "myPassword",
+    "user" : "root"
+  }
+}
