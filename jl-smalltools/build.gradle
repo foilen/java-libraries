@@ -13,7 +13,7 @@ bintray {
   
   pkg {
     repo = 'maven'
-  	userOrg = 'foilen'
+    userOrg = 'foilen'
     name = 'com.foilen:jl-smalltools'
     licenses = ['MIT']
     vcsUrl = 'https://github.com/foilen/java-libraries.git'
@@ -25,7 +25,7 @@ bintray {
 // To append all the sub-projects in this one
 jar {
   subprojects.each { subproject ->
-	  from subproject.configurations.archives.allArtifacts.files.collect {
+    from subproject.configurations.archives.allArtifacts.files.collect {
       zipTree(it)
     }
   }
@@ -64,6 +64,26 @@ publishing {
       artifact allJavadocJar
       groupId 'com.foilen'
       artifactId 'jl-smalltools'
+      
+      pom {
+        name = "JL Smalltools"
+        description = "Some libraries to do simple tasks simply"
+        url = "https://github.com/foilen/java-libraries"
+        
+        licenses {
+          license {
+            name = "MIT"
+            url = "https://opensource.org/licenses/MIT"
+          }
+        }
+        
+        scm {
+          connection = "scm:git:git@github.com:foilen/java-libraries.git"
+          url = "https://github.com/foilen/java-libraries"
+        }
+        
+      }
+      
     }
   }
 }

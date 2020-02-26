@@ -13,7 +13,7 @@ bintray {
   
   pkg {
     repo = 'maven'
-  	userOrg = 'foilen'
+    userOrg = 'foilen'
     name = 'com.foilen:jl-incubator'
     licenses = ['MIT']
     vcsUrl = 'https://github.com/foilen/java-libraries.git'
@@ -40,6 +40,26 @@ publishing {
       artifact javadocJar
       groupId 'com.foilen'
       artifactId 'jl-incubator'
+      
+      pom {
+        name = "JL Smalltools"
+        description = "Some libraries to do simple tasks simply (experimental)"
+        url = "https://github.com/foilen/java-libraries"
+        
+        licenses {
+          license {
+            name = "MIT"
+            url = "https://opensource.org/licenses/MIT"
+          }
+        }
+        
+        scm {
+          connection = "scm:git:git@github.com:foilen/java-libraries.git"
+          url = "https://github.com/foilen/java-libraries"
+        }
+        
+      }
+      
     }
   }
 }
