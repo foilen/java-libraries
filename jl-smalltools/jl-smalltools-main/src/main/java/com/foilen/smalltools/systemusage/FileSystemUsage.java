@@ -30,18 +30,18 @@ public class FileSystemUsage {
         }
 
         /**
-         * The number of unallocated bytes on the partition.
+         * The number of bytes available on the partition.
          *
-         * @return the number of unallocated bytes on the partition
+         * @return the number of bytes available on the partition
          */
         public long getFreeSpace() {
-            return file.getFreeSpace();
+            return file.getUsableSpace();
         }
 
         /**
-         * The percentage of unallocated bytes on the partition.
+         * The percentage of bytes available on the partition.
          *
-         * @return the percentage of unallocated bytes on the partition from 0 to 100
+         * @return the percentage of bytes available on the partition from 0 to 100
          */
         public double getFreeSpacePercent() {
             long totalSpace = getTotalSpace();
