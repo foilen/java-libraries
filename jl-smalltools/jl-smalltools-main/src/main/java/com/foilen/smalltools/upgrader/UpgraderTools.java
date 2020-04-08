@@ -103,7 +103,7 @@ public class UpgraderTools {
             upgraderTracker.executionBegin(taskSimpleName);
             try {
                 task.execute();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 logger.error("[{}/{}] Problem executing upgrade task {}", count, tasks.size(), task.getClass().getSimpleName(), e);
                 failure = new SmallToolsException("Problem executing upgrade task " + task.getClass().getSimpleName(), e);
                 break;
