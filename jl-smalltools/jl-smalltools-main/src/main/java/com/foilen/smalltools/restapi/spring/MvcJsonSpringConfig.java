@@ -23,7 +23,7 @@ import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 /**
- * To configure Spring MVC to render using JSON.
+ * To configure Spring MVC to render using JSON. Not needed when using @RestController .
  *
  * <pre>
  * Dependencies:
