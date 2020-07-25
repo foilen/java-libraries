@@ -80,7 +80,7 @@ public final class ProcUsage {
         MemoryInfo memoryInfo = new MemoryInfo();
 
         long memTotal = 0;
-        long memFree = 0;
+        long memAvailable = 0;
         long swapTotal = 0;
         long swapFree = 0;
 
@@ -98,8 +98,8 @@ public final class ProcUsage {
                     memTotal = SpaceConverterTools.convertToBytes(size);
                     memoryInfo.setPhysicalTotal(memTotal);
                     break;
-                case "MemFree:":
-                    memFree = SpaceConverterTools.convertToBytes(size);
+                case "MemAvailable:":
+                    memAvailable = SpaceConverterTools.convertToBytes(size);
                     break;
                 case "SwapTotal:":
                     swapTotal = SpaceConverterTools.convertToBytes(size);
@@ -114,7 +114,9 @@ public final class ProcUsage {
 
         }
 
-        memoryInfo.setPhysicalUsed(memTotal - memFree);
+        memoryInfo.setPhysicalAvailable(memAvailable);
+        memoryInfo.setPhysicalUsed(memTotal - memAvailable);
+        memoryInfo.setSwapAvailable(swapFree);
         memoryInfo.setSwapUsed(swapTotal - swapFree);
 
         return memoryInfo;

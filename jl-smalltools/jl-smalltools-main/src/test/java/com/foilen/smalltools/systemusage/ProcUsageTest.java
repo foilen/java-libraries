@@ -17,10 +17,16 @@ import org.junit.Test;
 import com.foilen.smalltools.systemusage.results.CpuInfo;
 import com.foilen.smalltools.systemusage.results.MemoryInfo;
 import com.foilen.smalltools.systemusage.results.NetworkInfo;
+import com.foilen.smalltools.tools.JsonTools;
 import com.foilen.smalltools.tools.ResourceTools;
 import com.google.common.io.Files;
 
 public class ProcUsageTest {
+
+    public static void main(String[] args) {
+        MemoryInfo memoryInfo = ProcUsage.getMemoryInfo("/proc/meminfo");
+        System.out.println(JsonTools.prettyPrintWithoutNulls(memoryInfo));
+    }
 
     private void assertNetworkInfo(NetworkInfo networkInfo, String interfaceName, long inBytes, long inPackets, long outBytes, long outPackets) {
         Assert.assertEquals(interfaceName, networkInfo.getInterfaceName());
@@ -88,8 +94,10 @@ public class ProcUsageTest {
         // Execute
         MemoryInfo memoryInfo = ProcUsage.getMemoryInfo(procMemPath);
 
-        Assert.assertEquals(877460000l, memoryInfo.getPhysicalUsed());
+        Assert.assertEquals(377956000l, memoryInfo.getPhysicalAvailable());
+        Assert.assertEquals(638984000l, memoryInfo.getPhysicalUsed());
         Assert.assertEquals(1016940000l, memoryInfo.getPhysicalTotal());
+        Assert.assertEquals(4820480000l, memoryInfo.getSwapAvailable());
         Assert.assertEquals(179516000l, memoryInfo.getSwapUsed());
         Assert.assertEquals(4999996000l, memoryInfo.getSwapTotal());
     }

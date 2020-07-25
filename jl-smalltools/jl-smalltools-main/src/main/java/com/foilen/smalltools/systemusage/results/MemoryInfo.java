@@ -13,10 +13,16 @@ package com.foilen.smalltools.systemusage.results;
  */
 public class MemoryInfo {
 
+    private long physicalAvailable;
     private long physicalUsed;
     private long physicalTotal;
+    private long swapAvailable;
     private long swapUsed;
     private long swapTotal;
+
+    public long getPhysicalAvailable() {
+        return physicalAvailable;
+    }
 
     public long getPhysicalTotal() {
         return physicalTotal;
@@ -24,6 +30,10 @@ public class MemoryInfo {
 
     public long getPhysicalUsed() {
         return physicalUsed;
+    }
+
+    public long getSwapAvailable() {
+        return swapAvailable;
     }
 
     public long getSwapTotal() {
@@ -34,12 +44,20 @@ public class MemoryInfo {
         return swapUsed;
     }
 
+    public void setPhysicalAvailable(long physicalAvailable) {
+        this.physicalAvailable = physicalAvailable;
+    }
+
     public void setPhysicalTotal(long physicalTotal) {
         this.physicalTotal = physicalTotal;
     }
 
     public void setPhysicalUsed(long physicalUsed) {
         this.physicalUsed = physicalUsed;
+    }
+
+    public void setSwapAvailable(long swapAvailable) {
+        this.swapAvailable = swapAvailable;
     }
 
     public void setSwapTotal(long swapTotal) {
