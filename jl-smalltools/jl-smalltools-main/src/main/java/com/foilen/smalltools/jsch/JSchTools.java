@@ -32,6 +32,7 @@ import com.foilen.smalltools.shell.ExecResultOnlyExitCode;
 import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.StreamsTools;
+import com.foilen.smalltools.tools.ThreadTools;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
@@ -220,6 +221,10 @@ public class JSchTools extends AbstractBasics {
 
             out.close();
             err.close();
+
+            while (!channel.isClosed()) {
+                ThreadTools.sleep(100);
+            }
 
             exitCode.set(channel.getExitStatus());
         });
