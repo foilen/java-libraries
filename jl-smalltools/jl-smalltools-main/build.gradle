@@ -21,7 +21,7 @@ dependencies {
   compileOnly 'org.mongodb:mongo-java-driver:3.11.0'
   compileOnly 'org.yaml:snakeyaml:1.18'
   compileOnly 'org.slf4j:slf4j-api:1.7.25'
-  compileOnly 'org.springframework.data:spring-data-jpa:1.11.7.RELEASE'
+  compileOnly 'org.springframework.data:spring-data-commons:1.13.7.RELEASE'
   compileOnly 'org.springframework:spring-context-support:4.3.11.RELEASE'
   compileOnly 'org.springframework:spring-core:4.3.11.RELEASE'
   compileOnly 'org.springframework:spring-orm:4.3.11.RELEASE'

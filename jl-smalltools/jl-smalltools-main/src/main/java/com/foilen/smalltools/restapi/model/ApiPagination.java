@@ -18,7 +18,7 @@ import org.springframework.data.domain.Page;
  * compile 'org.apache.commons:commons-lang3:3.6'
  * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
  * compile 'org.slf4j:slf4j-api:1.7.25'
- * compile 'org.springframework.data:spring-data-jpa:1.11.7.RELEASE' (optional if using the constructor with the {@link Page}.
+ * compile 'org.springframework.data:spring-data-commons:1.13.7.RELEASE' (optional if using the constructor with the {@link Page}.
  * </pre>
  */
 public class ApiPagination extends AbstractApiBase {
