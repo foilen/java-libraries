@@ -25,7 +25,6 @@ import org.slf4j.event.Level;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.function.ConsumerWithException;
-import com.foilen.smalltools.shell.ExecResult;
 import com.foilen.smalltools.shell.ExecResultInFiles;
 import com.foilen.smalltools.shell.ExecResultInMemory;
 import com.foilen.smalltools.shell.ExecResultOnlyExitCode;
@@ -240,7 +239,7 @@ public class JSchTools extends AbstractBasics {
      *            the command and arguments
      * @return the execution's result
      */
-    public ExecResult executeInFile(String command) {
+    public ExecResultInFiles executeInFile(String command) {
 
         try {
             File out = File.createTempFile("out", ".txt");
@@ -269,7 +268,7 @@ public class JSchTools extends AbstractBasics {
      *            the command and arguments
      * @return the execution's result, but only the exit code is retrievable
      */
-    public ExecResult executeInLogger(String command) {
+    public ExecResultOnlyExitCode executeInLogger(String command) {
 
         OutputStream out = StreamsTools.createLoggerOutputStream(logger, Level.INFO);
         OutputStream err = StreamsTools.createLoggerOutputStream(logger, Level.ERROR);
@@ -286,13 +285,26 @@ public class JSchTools extends AbstractBasics {
      *            the command and arguments
      * @return the execution's result
      */
-    public ExecResult executeInMemory(String command) {
+    public ExecResultInMemory executeInMemory(String command) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ByteArrayOutputStream err = new ByteArrayOutputStream();
 
         int exitCode = execute(command, out, err);
 
         return new ExecResultInMemory(out, err, exitCode);
+    }
+
+    /**
+     * Execute a command and send the stdout and stderr in output streams.
+     *
+     * @param command
+     *            the command and arguments
+     * @return the execution's result, but only the exit code is retrievable
+     */
+    public ExecResultOnlyExitCode executeOutputStreams(String command, OutputStream out, OutputStream err) {
+        int exitCode = execute(command, out, err);
+
+        return new ExecResultOnlyExitCode(exitCode);
     }
 
     /**

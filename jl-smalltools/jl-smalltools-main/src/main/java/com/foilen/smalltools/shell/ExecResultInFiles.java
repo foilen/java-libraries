@@ -30,9 +30,17 @@ public class ExecResultInFiles implements ExecResult {
         this.exitCode = exitCode;
     }
 
+    public File getErr() {
+        return err;
+    }
+
     @Override
     public int getExitCode() {
         return exitCode;
+    }
+
+    public File getOut() {
+        return out;
     }
 
     @Override

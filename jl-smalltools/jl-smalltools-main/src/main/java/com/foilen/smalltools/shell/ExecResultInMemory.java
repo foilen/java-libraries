@@ -28,9 +28,17 @@ public class ExecResultInMemory implements ExecResult {
         this.exitCode = exitCode;
     }
 
+    public ByteArrayOutputStream getErr() {
+        return err;
+    }
+
     @Override
     public int getExitCode() {
         return exitCode;
+    }
+
+    public ByteArrayOutputStream getOut() {
+        return out;
     }
 
     @Override
