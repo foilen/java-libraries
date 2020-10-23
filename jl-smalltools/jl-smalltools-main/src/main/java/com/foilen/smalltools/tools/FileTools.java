@@ -701,21 +701,6 @@ public final class FileTools {
     }
 
     /**
-     * List the names of the files that the content starts with the specified text.
-     *
-     * @param path
-     *            the full path to the directory
-     * @param startText
-     *            the text that the files must start with
-     * @return the names of the files (sorted)
-     * @deprecated use that method in {@link DirectoryTools}
-     */
-    @Deprecated
-    public static List<String> listFilesStartingWith(String path, String startText) {
-        return DirectoryTools.listFilesStartingWith(path, startText);
-    }
-
-    /**
      * Opens a file and iterates over all the lines.
      *
      * @param file

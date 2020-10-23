@@ -381,57 +381,6 @@ public final class DirectoryTools {
      * @param absolute
      *            true to get the absolute paths
      * @return the names of the files (sorted)
-     * @deprecated use {@link #listFilesAndFoldersRecursively(File, boolean)}
-     */
-    @Deprecated
-    public static List<String> list(File directory, boolean absolute) {
-        return listFilesAndFoldersRecursively(directory, absolute);
-    }
-
-    /**
-     * List files and directories recursively. It can list the absolute or relative paths.
-     *
-     * Directories will end with a trailing slash.
-     *
-     * Ex:
-     * <ul>
-     * <li>foo/bar/aFile</li>
-     * <li>foo/bar/aDirectory/</li>
-     * </ul>
-     *
-     * WARNING: It will follow symbolic links.
-     *
-     * @param path
-     *            the full path to the directory
-     * @param absolute
-     *            true to get the absolute paths
-     * @return the names of the files (sorted)
-     * @deprecated use {@link #listFilesAndFoldersRecursively(String, boolean)}
-     */
-    @Deprecated
-    public static List<String> list(String path, boolean absolute) {
-        return listFilesAndFoldersRecursively(path, absolute);
-    }
-
-    /**
-     * List files and directories recursively. It can list the absolute or relative paths.
-     *
-     * Directories will end with a trailing slash.
-     *
-     *
-     * Ex:
-     * <ul>
-     * <li>foo/bar/aFile</li>
-     * <li>foo/bar/aDirectory/</li>
-     * </ul>
-     *
-     * WARNING: It will follow symbolic links.
-     *
-     * @param directory
-     *            the directory
-     * @param absolute
-     *            true to get the absolute paths
-     * @return the names of the files (sorted)
      */
     public static List<String> listFilesAndFoldersRecursively(File directory, boolean absolute) {
         // Check if directory
