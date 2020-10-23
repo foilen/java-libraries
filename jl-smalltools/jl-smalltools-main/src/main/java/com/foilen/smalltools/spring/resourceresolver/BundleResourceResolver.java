@@ -87,7 +87,7 @@ import com.google.common.cache.LoadingCache;
  *                     .addBundleResource("all.js", "/WEB-INF/confignui/resources/js/fields.js") //
  *                     .primeCache() //
  *
- *     );
+ *             );
  *
  * }
  * </pre>

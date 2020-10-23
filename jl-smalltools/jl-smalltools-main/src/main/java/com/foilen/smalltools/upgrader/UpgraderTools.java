@@ -29,7 +29,7 @@ import com.foilen.smalltools.upgrader.trackers.UpgraderTracker;
  * A tool to help manage upgrade tasks. (E.g: database, file updates, ...)
  *
  * You can choose different backends to keep track of what was already executed.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile 'org.slf4j:slf4j-api:1.7.25'

@@ -14,7 +14,7 @@ import com.foilen.smalltools.restapi.model.AbstractListResultWithPagination;
 
 /**
  * Some methods to convert and store items in an {@link AbstractListResultWithPagination}.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile "org.springframework.data:spring-data-commons:1.13.7.RELEASE"

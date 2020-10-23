@@ -18,7 +18,7 @@ public class PriceFormatTools {
 
     /**
      * Convert a long in the form AAABB to a text AAA.BB .
-     * 
+     *
      * @param price
      *            the price
      * @return the formatted price
@@ -37,7 +37,7 @@ public class PriceFormatTools {
 
     /**
      * Given a price in the format AAA.BB , convert it to a long value of AAABB .
-     * 
+     *
      * @param text
      *            the text
      * @return the long

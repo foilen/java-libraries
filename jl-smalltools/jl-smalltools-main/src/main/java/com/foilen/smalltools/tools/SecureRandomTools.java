@@ -14,7 +14,7 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * Some methods to get random values.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile "javax.xml.bind:jaxb-api:2.3.1"

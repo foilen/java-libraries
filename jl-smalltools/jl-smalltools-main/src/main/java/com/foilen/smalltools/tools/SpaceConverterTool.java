@@ -12,7 +12,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * To help converting space values to Long.
- * 
+ *
  * @deprecated use {@link SpaceConverterTools}
  */
 @Deprecated

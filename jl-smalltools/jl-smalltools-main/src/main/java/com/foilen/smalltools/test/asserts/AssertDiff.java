@@ -20,12 +20,12 @@ public class AssertDiff {
         return added;
     }
 
-    public void setAdded(List<Object> added) {
-        this.added = added;
-    }
-
     public List<Object> getRemoved() {
         return removed;
+    }
+
+    public void setAdded(List<Object> added) {
+        this.added = added;
     }
 
     public void setRemoved(List<Object> removed) {

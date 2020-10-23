@@ -20,7 +20,7 @@ import com.google.common.base.Strings;
 
 /**
  * Some methods to validate a form and store errors in the {@link FormResult}.
- * 
+ *
  * <pre>
  * Dependencies:
  * compile "com.google.guava:guava:23.0"
