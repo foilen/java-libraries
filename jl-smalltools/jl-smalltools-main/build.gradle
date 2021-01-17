@@ -18,7 +18,7 @@ dependencies {
   compileOnly 'org.bouncycastle:bcprov-jdk15on:1.58'
   compileOnly 'org.freemarker:freemarker:2.3.23'
   compileOnly 'org.hibernate:hibernate-core:4.3.11.Final'
-  compileOnly 'org.mongodb:mongo-java-driver:3.11.0'
+  compileOnly 'org.mongodb:mongodb-driver-sync:4.1.1'
   compileOnly 'org.yaml:snakeyaml:1.18'
   compileOnly 'org.slf4j:slf4j-api:1.7.25'
   compileOnly 'org.springframework.data:spring-data-commons:1.13.7.RELEASE'
