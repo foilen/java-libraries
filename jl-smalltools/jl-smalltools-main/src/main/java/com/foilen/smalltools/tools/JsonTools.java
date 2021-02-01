@@ -12,6 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -103,6 +107,25 @@ public final class JsonTools {
     }
 
     /**
+     * Serialize to JSON and deserialize back as a new SortedMap with all sub-objects as SortedMap.
+     *
+     * @param <T>
+     *            the class of the object
+     * @param object
+     *            the object to clone
+     * @return the new cloned object
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> SortedMap<String, Object> cloneAsSortedMap(T object) {
+        if (object == null) {
+            return null;
+        }
+        SortedMap<String, Object> sortedMap = JsonTools.clone(object, SortedMap.class);
+        convertAllMapsToSortedMap(sortedMap);
+        return sortedMap;
+    }
+
+    /**
      * Return a compact print JSON String.
      *
      * @param object
@@ -130,6 +153,21 @@ public final class JsonTools {
         } catch (JsonProcessingException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
+    }
+
+    private static void convertAllMapsToSortedMap(SortedMap<String, Object> sortedMap) {
+
+        for (String key : sortedMap.keySet().stream().collect(Collectors.toList())) {
+            Object value = sortedMap.get(key);
+            if (value instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> subMap = (Map<String, Object>) value;
+                SortedMap<String, Object> subSortedMap = new TreeMap<>(subMap);
+                sortedMap.put(key, subSortedMap);
+                convertAllMapsToSortedMap(subSortedMap);
+            }
+        }
+
     }
 
     /**

@@ -1,0 +1,12 @@
+{
+  "a" : "Some text",
+  "b" : 5,
+  "c" : {
+    "a" : "Some text depth 2",
+    "b" : 10,
+    "c" : {
+      "a" : "Some text depth 3",
+      "b" : 15
+    }
+  }
+}

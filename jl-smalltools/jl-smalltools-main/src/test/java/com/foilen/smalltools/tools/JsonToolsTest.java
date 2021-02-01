@@ -14,10 +14,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.foilen.smalltools.test.asserts.AssertTools;
 
 public class JsonToolsTest {
 
@@ -39,6 +42,40 @@ public class JsonToolsTest {
 
         public void setB(int b) {
             this.b = b;
+        }
+
+    }
+
+    public static class TypeDeep {
+        private String a;
+        private int b;
+        private TypeDeep c;
+
+        public String getA() {
+            return a;
+        }
+
+        public int getB() {
+            return b;
+        }
+
+        public TypeDeep getC() {
+            return c;
+        }
+
+        public TypeDeep setA(String a) {
+            this.a = a;
+            return this;
+        }
+
+        public TypeDeep setB(int b) {
+            this.b = b;
+            return this;
+        }
+
+        public TypeDeep setC(TypeDeep c) {
+            this.c = c;
+            return this;
         }
 
     }
@@ -86,6 +123,23 @@ public class JsonToolsTest {
 
         Assert.assertEquals("Some text", cloneMap.get("a"));
         Assert.assertEquals(5, cloneMap.get("b"));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testCloneAsSortedMap() {
+
+        TypeDeep original = new TypeDeep().setA("Some text").setB(5).setC(new TypeDeep() //
+                .setA("Some text depth 2").setB(10).setC(new TypeDeep() //
+                        .setA("Some text depth 3").setB(15)));
+
+        SortedMap<String, Object> clone = JsonTools.cloneAsSortedMap(original);
+
+        AssertTools.assertJsonComparisonWithoutNulls("JsonToolsTest-testCloneAsSortedMap-expected.json", getClass(), clone);
+
+        Assert.assertTrue(clone.get("c") instanceof SortedMap);
+        Assert.assertTrue(((Map<String, Object>) clone.get("c")).get("c") instanceof SortedMap);
+
     }
 
     @Test
