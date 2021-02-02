@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -50,6 +52,8 @@ public class JsonToolsTest {
         private String a;
         private int b;
         private TypeDeep c;
+        private List<TypeDeep> d;
+        private List<String> e;
 
         public String getA() {
             return a;
@@ -61,6 +65,14 @@ public class JsonToolsTest {
 
         public TypeDeep getC() {
             return c;
+        }
+
+        public List<TypeDeep> getD() {
+            return d;
+        }
+
+        public List<String> getE() {
+            return e;
         }
 
         public TypeDeep setA(String a) {
@@ -75,6 +87,16 @@ public class JsonToolsTest {
 
         public TypeDeep setC(TypeDeep c) {
             this.c = c;
+            return this;
+        }
+
+        public TypeDeep setD(List<TypeDeep> d) {
+            this.d = d;
+            return this;
+        }
+
+        public TypeDeep setE(List<String> e) {
+            this.e = e;
             return this;
         }
 
@@ -129,16 +151,24 @@ public class JsonToolsTest {
     @Test
     public void testCloneAsSortedMap() {
 
+        List<TypeDeep> list = new ArrayList<>();
+        list.add(new TypeDeep().setA("first"));
+        list.add(new TypeDeep().setA("second"));
+
         TypeDeep original = new TypeDeep().setA("Some text").setB(5).setC(new TypeDeep() //
-                .setA("Some text depth 2").setB(10).setC(new TypeDeep() //
-                        .setA("Some text depth 3").setB(15)));
+                .setA("Some text depth 2").setB(10).setD(list).setC(new TypeDeep() //
+                        .setA("Some text depth 3").setB(15).setE(Arrays.asList("abc", "def"))));
 
         SortedMap<String, Object> clone = JsonTools.cloneAsSortedMap(original);
 
         AssertTools.assertJsonComparisonWithoutNulls("JsonToolsTest-testCloneAsSortedMap-expected.json", getClass(), clone);
 
+        // Assert
         Assert.assertTrue(clone.get("c") instanceof SortedMap);
-        Assert.assertTrue(((Map<String, Object>) clone.get("c")).get("c") instanceof SortedMap);
+        Map<String, Object> cDepth1 = (Map<String, Object>) clone.get("c");
+        Assert.assertTrue(cDepth1.get("c") instanceof SortedMap);
+        List<Object> clonedList = (List<Object>) cDepth1.get("d");
+        Assert.assertTrue(clonedList.get(0) instanceof SortedMap);
 
     }
 

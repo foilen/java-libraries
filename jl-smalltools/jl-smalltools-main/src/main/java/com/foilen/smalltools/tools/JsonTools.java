@@ -155,16 +155,24 @@ public final class JsonTools {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static void convertAllMapsToSortedMap(SortedMap<String, Object> sortedMap) {
 
         for (String key : sortedMap.keySet().stream().collect(Collectors.toList())) {
             Object value = sortedMap.get(key);
             if (value instanceof Map) {
-                @SuppressWarnings("unchecked")
                 Map<String, Object> subMap = (Map<String, Object>) value;
                 SortedMap<String, Object> subSortedMap = new TreeMap<>(subMap);
                 sortedMap.put(key, subSortedMap);
                 convertAllMapsToSortedMap(subSortedMap);
+            } else if (value instanceof List) {
+                List<Object> subList = (List<Object>) value;
+                for (int i = 0; i < subList.size(); ++i) {
+                    Object item = subList.get(i);
+                    if (item instanceof Map) {
+                        subList.set(i, new TreeMap<>((Map<String, Object>) item));
+                    }
+                }
             }
         }
 
