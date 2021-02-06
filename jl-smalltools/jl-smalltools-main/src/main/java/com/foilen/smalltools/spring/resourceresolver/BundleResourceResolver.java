@@ -131,6 +131,9 @@ public class BundleResourceResolver implements ResourceResolver {
                 for (String resource : resources) {
                     try {
                         StreamsTools.flowStream(ResourceTools.getResourceAsStream(resource), out);
+                        if (appendLineReturnBetweenFiles) {
+                            out.write('\n');
+                        }
                     } catch (SmallToolsException e) {
                         logger.error("Could not retrieve {} for bundle {}", resource, requestPath, e);
                         return null;
@@ -161,6 +164,7 @@ public class BundleResourceResolver implements ResourceResolver {
     private Map<String, List<String>> resourcesByBundleName = new HashMap<>();
     private LoadingCache<String, Resource> cachedResources;
     private boolean generateGzip = false;
+    private boolean appendLineReturnBetweenFiles = false;
 
     public BundleResourceResolver() {
         setCache(false);
@@ -231,6 +235,17 @@ public class BundleResourceResolver implements ResourceResolver {
     }
 
     /**
+     * When you add resources that are minified, they often don't have line return at the end. Concatenating files will continue on the same line and crash when loaded in the browser.
+     *
+     * @param appendLineReturnBetweenFiles
+     *            true to append a line return return this
+     */
+    public BundleResourceResolver setAppendLineReturnBetweenFiles(boolean appendLineReturnBetweenFiles) {
+        this.appendLineReturnBetweenFiles = appendLineReturnBetweenFiles;
+        return this;
+    }
+
+    /**
      * Activate the cache if you know that the file won't change. (E.g in production)
      *
      * @param cache
@@ -257,4 +272,5 @@ public class BundleResourceResolver implements ResourceResolver {
         this.generateGzip = generateGzip;
         return this;
     }
+
 }
