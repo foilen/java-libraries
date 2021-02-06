@@ -1,26 +1,5 @@
-plugins {
-  id "com.jfrog.bintray" version "$bintrayVersion"
-}
-
 apply plugin: 'maven'
-apply plugin: 'maven-publish'
-
-bintray {
-  user = System.getenv('BINTRAY_USER')
-  key = System.getenv('BINTRAY_KEY')
-  
-  publish = true
-  
-  pkg {
-    repo = 'maven'
-    userOrg = 'foilen'
-    name = 'com.foilen:jl-smalltools'
-    licenses = ['MIT']
-    vcsUrl = 'https://github.com/foilen/java-libraries.git'
-  }
-  
-  publications = ['MyPublication'] 
-}
+apply plugin: 'signing'
 
 // To append all the sub-projects in this one
 jar {
@@ -55,39 +34,58 @@ task allJavadocJar(type: Jar, dependsOn: allJavadoc) {
 
 assemble.dependsOn allJavadocJar
 
+artifacts {
+    archives allJavadocJar, allSourcesJar
+}
 
-publishing {
-  publications {
-    MyPublication(MavenPublication) {
-      from components.java
-      artifact allSourcesJar
-      artifact allJavadocJar
-      groupId 'com.foilen'
-      artifactId 'jl-smalltools'
-      
-      pom {
+signing {
+  required { isReleaseVersion && gradle.taskGraph.hasTask(":uploadArchives") }
+  sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: System.getenv('OSSRH_USER'), password: System.getenv('OSSRH_PASS'))
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: System.getenv('OSSRH_USER'), password: System.getenv('OSSRH_PASS'))
+      }
+
+      pom.project {
         name = "JL Smalltools"
-        description = "Some libraries to do simple tasks simply"
-        url = "https://github.com/foilen/java-libraries"
-        
+        packaging 'jar'
+        artifactId 'jl-smalltools'
+        description 'Some libraries to do simple tasks simply'
+        url 'https://github.com/foilen/java-libraries'
+
+        scm {
+          connection = "scm:git:git@github.com:foilen/java-libraries.git"
+          url = "https://github.com/foilen/java-libraries"
+        }
+
         licenses {
           license {
             name = "MIT"
             url = "https://opensource.org/licenses/MIT"
           }
         }
-        
-        scm {
-          connection = "scm:git:git@github.com:foilen/java-libraries.git"
-          url = "https://github.com/foilen/java-libraries"
+
+        developers {
+          developer {
+            id 'foilen'
+            name 'Simon Levesque'
+            email 'simon@foilen.com'
+          }
         }
-        
       }
-      
     }
   }
 }
 
 dependencies {
 }
-

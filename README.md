@@ -59,5 +59,5 @@ Execute:
 ```
 
 You can see releases available:
-- https://bintray.com/foilen/maven/com.foilen%3Ajl-smalltools
-- https://bintray.com/foilen/maven/com.foilen%3Ajl-incubator
+- https://repo1.maven.org/maven2/com/foilen/jl-smalltools
+- https://repo1.maven.org/maven2/com/foilen/jl-incubator
