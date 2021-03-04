@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.reflection;
 
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,6 +19,7 @@ import java.util.Set;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.InvalidPropertyException;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
@@ -96,6 +98,31 @@ public class BeanPropertiesCopierTools {
      */
     public BeanPropertiesCopierTools(Object source, Object destination) {
         init(source, destination);
+    }
+
+    /**
+     * Copy all the properties with the same name on both side.
+     *
+     * @return this
+     */
+    public BeanPropertiesCopierTools copyAllSameProperties() {
+        for (PropertyDescriptor propertyDescriptor : sourceWrapper.getPropertyDescriptors()) {
+            String propertyName = propertyDescriptor.getName();
+            try {
+                PropertyDescriptor destinationPropertyDescriptor = destinationWrapper.getPropertyDescriptor(propertyName);
+                Object propertyValue = sourceWrapper.getPropertyValue(propertyName);
+                if (propertyValue != null) {
+                    // Ensure assignable type
+                    if (!destinationPropertyDescriptor.getPropertyType().isAssignableFrom(propertyValue.getClass())) {
+                        continue;
+                    }
+                }
+                destinationWrapper.setPropertyValue(propertyName, propertyValue);
+            } catch (InvalidPropertyException e) {
+                // Skip
+            }
+        }
+        return this;
     }
 
     /**
