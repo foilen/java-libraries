@@ -12,111 +12,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foilen.smalltools.reflection.model.DestinationBeanPropertiesCopierTools;
+import com.foilen.smalltools.reflection.model.SourceBeanPropertiesCopierTools;
+
 public class BeanPropertiesCopierToolsTest {
-
-    public static class DestinationBeanPropertiesCopierTools {
-        private String text;
-        private String secondText;
-        private int number;
-        private int secondNumber;
-        private Set<String> texts;
-        private Set<String> secondTexts;
-
-        public int getNumber() {
-            return number;
-        }
-
-        public int getSecondNumber() {
-            return secondNumber;
-        }
-
-        public String getSecondText() {
-            return secondText;
-        }
-
-        public Set<String> getSecondTexts() {
-            return secondTexts;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public Set<String> getTexts() {
-            return texts;
-        }
-
-        public void setNumber(int number) {
-            this.number = number;
-        }
-
-        public void setSecondNumber(int secondNumber) {
-            this.secondNumber = secondNumber;
-        }
-
-        public void setSecondText(String secondText) {
-            this.secondText = secondText;
-        }
-
-        public void setSecondTexts(Set<String> secondTexts) {
-            this.secondTexts = secondTexts;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public void setTexts(Set<String> texts) {
-            this.texts = texts;
-        }
-
-    }
-
-    public static class SourceBeanPropertiesCopierTools {
-        private String text;
-        private int number;
-        private List<String> texts;
-        private List<String> secondTexts;
-
-        public int getNumber() {
-            return number;
-        }
-
-        public List<String> getSecondTexts() {
-            return secondTexts;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public List<String> getTexts() {
-            return texts;
-        }
-
-        public void setNumber(int number) {
-            this.number = number;
-        }
-
-        public void setSecondTexts(List<String> secondTexts) {
-            this.secondTexts = secondTexts;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public void setTexts(List<String> texts) {
-            this.texts = texts;
-        }
-
-    }
 
     private void assertCollectionNoOrder(Collection<String> collection, String... values) {
         Assert.assertNotNull(collection);
@@ -132,6 +36,24 @@ public class BeanPropertiesCopierToolsTest {
             result.add(value);
         }
         return result;
+    }
+
+    @Test
+    public void testCopyAllSameProperties() {
+        SourceBeanPropertiesCopierTools source = new SourceBeanPropertiesCopierTools();
+        source.setText("Some text");
+        source.setNumber(45);
+        source.setTexts(Arrays.asList("One", "Two"));
+        source.setDifferent("other text");
+        DestinationBeanPropertiesCopierTools destination = new DestinationBeanPropertiesCopierTools();
+
+        new BeanPropertiesCopierTools(source, destination).copyAllSameProperties();
+
+        Assert.assertEquals("Some text", destination.getText());
+        Assert.assertEquals(45, destination.getNumber());
+        Assert.assertEquals(new HashSet<>(Arrays.asList("One", "Two")), destination.getTexts());
+        Assert.assertNull(destination.getDifferent());
+
     }
 
     @Test

@@ -20,6 +20,7 @@ import java.util.Set;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.InvalidPropertyException;
+import org.springframework.beans.TypeMismatchException;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
@@ -109,16 +110,8 @@ public class BeanPropertiesCopierTools {
         for (PropertyDescriptor propertyDescriptor : sourceWrapper.getPropertyDescriptors()) {
             String propertyName = propertyDescriptor.getName();
             try {
-                PropertyDescriptor destinationPropertyDescriptor = destinationWrapper.getPropertyDescriptor(propertyName);
-                Object propertyValue = sourceWrapper.getPropertyValue(propertyName);
-                if (propertyValue != null) {
-                    // Ensure assignable type
-                    if (!destinationPropertyDescriptor.getPropertyType().isAssignableFrom(propertyValue.getClass())) {
-                        continue;
-                    }
-                }
-                destinationWrapper.setPropertyValue(propertyName, propertyValue);
-            } catch (InvalidPropertyException e) {
+                destinationWrapper.setPropertyValue(propertyName, sourceWrapper.getPropertyValue(propertyName));
+            } catch (InvalidPropertyException | TypeMismatchException e) {
                 // Skip
             }
         }
