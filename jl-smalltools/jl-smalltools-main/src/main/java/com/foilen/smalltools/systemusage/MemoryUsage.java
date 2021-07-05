@@ -8,63 +8,28 @@
  */
 package com.foilen.smalltools.systemusage;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
-import java.lang.reflect.Method;
+import com.foilen.smalltools.JavaEnvironmentValues;
+import com.foilen.smalltools.systemusage.implementations.MemoryUsageOsMxImpl;
+import com.foilen.smalltools.systemusage.implementations.MemoryUsageProcImpl;
+import com.foilen.smalltools.systemusage.implementations.MemoryUsageStrategy;
 
 /**
  * To retrieve the usage of the memory of the system.
  */
 public class MemoryUsage {
 
-    private static OperatingSystemMXBean operatingSystemBean;
-    private static Method systemFreeMemory;
-    private static Method systemTotalMemory;
+    private static MemoryUsageStrategy memoryUsageStrategy;
 
     static {
-        operatingSystemBean = ManagementFactory.getOperatingSystemMXBean();
 
-        // Get the methods if present
-        Class<?> osbClass = operatingSystemBean.getClass();
-        systemFreeMemory = getMethod(osbClass, "getFreePhysicalMemorySize");
-        systemTotalMemory = getMethod(osbClass, "getTotalPhysicalMemorySize");
-
-    }
-
-    /**
-     * Call the method and return its value or null.
-     *
-     * @param method
-     *            the method (also support null)
-     * @return its value or null
-     */
-    private static Object callMethod(Method method) {
-        try {
-            return method.invoke(operatingSystemBean);
-        } catch (Exception e) {
+        if (JavaEnvironmentValues.getJavaClassVersion() <= 52) {
+            memoryUsageStrategy = new MemoryUsageOsMxImpl();
+        } else {
+            if (JavaEnvironmentValues.getOperatingSystem().toLowerCase().startsWith("linux")) {
+                memoryUsageStrategy = new MemoryUsageProcImpl();
+            }
         }
 
-        return null;
-    }
-
-    /**
-     * Return the method or null.
-     *
-     * @param type
-     *            the class type
-     * @param name
-     *            the name of the method
-     * @return the method or null
-     */
-    private static Method getMethod(Class<?> type, String name) {
-        try {
-            Method method = type.getDeclaredMethod(name);
-            method.setAccessible(true);
-            return method;
-        } catch (Exception e) {
-        }
-
-        return null;
     }
 
     /**
@@ -73,11 +38,7 @@ public class MemoryUsage {
      * @return the free memory of the system or null if cannot get it
      */
     public static Long getSystemFreeMemory() {
-        Object result = callMethod(systemFreeMemory);
-        if (result == null) {
-            return null;
-        }
-        return (Long) result;
+        return memoryUsageStrategy.getSystemFreeMemory();
     }
 
     /**
@@ -100,11 +61,7 @@ public class MemoryUsage {
      * @return the total memory of the system or null if cannot get it
      */
     public static Long getSystemTotalMemory() {
-        Object result = callMethod(systemTotalMemory);
-        if (result == null) {
-            return null;
-        }
-        return (Long) result;
+        return memoryUsageStrategy.getSystemTotalMemory();
     }
 
     /**
@@ -113,12 +70,7 @@ public class MemoryUsage {
      * @return the used memory of the system or null if cannot get it
      */
     public static Long getSystemUsedMemory() {
-        Long free = getSystemFreeMemory();
-        Long total = getSystemTotalMemory();
-        if (free == null || total == null) {
-            return null;
-        }
-        return total - free;
+        return memoryUsageStrategy.getSystemUsedMemory();
     }
 
     /**

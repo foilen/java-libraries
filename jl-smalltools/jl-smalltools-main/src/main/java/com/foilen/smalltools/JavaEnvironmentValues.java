@@ -50,6 +50,27 @@ public class JavaEnvironmentValues {
     }
 
     /**
+     * Get the Java class version.
+     *
+     * <ul>
+     * <li>52: Java 8</li>
+     * <li>53: Java 9</li>
+     * <li>54: Java 10</li>
+     * <li>55: Java 11</li>
+     * <li>56: Java 12</li>
+     * <li>57: Java 13</li>
+     * <li>58: Java 14</li>
+     * <li>59: Java 15</li>
+     * <li>60: Java 16</li>
+     * </ul>
+     *
+     * @return the java class version
+     */
+    public static int getJavaClassVersion() {
+        return Float.valueOf(System.getProperty("java.class.version")).intValue();
+    }
+
+    /**
      * Get the name of the operating system like "Linux", "Windows Vista", "Windows 7", etc. This is the system property "os.name".
      *
      * @return the name of the operating system
