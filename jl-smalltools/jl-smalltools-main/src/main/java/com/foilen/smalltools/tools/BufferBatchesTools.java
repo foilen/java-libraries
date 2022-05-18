@@ -10,8 +10,10 @@ package com.foilen.smalltools.tools;
 
 import java.io.Closeable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * A way to provide many items and automatically batch them.
@@ -53,13 +55,25 @@ public class BufferBatchesTools<I> extends AbstractBasics implements Closeable {
         bufferBatchesTools.close();
     }
 
+    public static <I> void autoClose(Collection<I> buffer, int itemsInBatch, Consumer<List<I>> batchExecution, Consumer<BufferBatchesTools<I>> execution) {
+        BufferBatchesTools<I> bufferBatchesTools = new BufferBatchesTools<>(buffer, itemsInBatch, batchExecution);
+        execution.accept(bufferBatchesTools);
+        bufferBatchesTools.close();
+    }
+
     private int itemsInBatch;
 
     private Consumer<List<I>> batchExecution;
 
-    private List<I> buffer = new ArrayList<>();
+    private Collection<I> buffer = new ArrayList<>();
 
     public BufferBatchesTools(int itemsInBatch, Consumer<List<I>> batchExecution) {
+        this.itemsInBatch = itemsInBatch;
+        this.batchExecution = batchExecution;
+    }
+
+    public BufferBatchesTools(Collection<I> buffer, int itemsInBatch, Consumer<List<I>> batchExecution) {
+        this.buffer = buffer;
         this.itemsInBatch = itemsInBatch;
         this.batchExecution = batchExecution;
     }
@@ -88,9 +102,9 @@ public class BufferBatchesTools<I> extends AbstractBasics implements Closeable {
     private void process() {
         int to = Math.min(itemsInBatch, buffer.size());
 
-        List<I> subList = buffer.subList(0, to);
+        List<I> subList = buffer.stream().limit(to).collect(Collectors.toList());
         batchExecution.accept(subList);
-        subList.clear();
+        buffer.removeAll(subList);
 
     }
 
