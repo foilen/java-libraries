@@ -1,10 +1,84 @@
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+group = 'com.foilen'
+version = System.getenv('VERSION') ?: 'master-SNAPSHOT'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+
 dependencies {
-  compileOnly project(':jl-smalltools:jl-smalltools-main')
-  compileOnly 'org.hibernate:hibernate-core:5.2.11.Final'
-  compileOnly 'org.springframework:spring-orm:4.3.11.RELEASE'
-  compileOnly 'org.springframework.boot:spring-boot:1.5.7.RELEASE'
-  
-  testCompile 'com.google.guava:guava:23.0'
-  testCompile 'junit:junit:4.12'
-  testCompile 'org.slf4j:slf4j-api:1.7.25'
+    api project(':jl-smalltools:jl-smalltools-main')
+    api 'org.hibernate:hibernate-core:5.2.11.Final'
+    api 'org.springframework:spring-orm:4.3.11.RELEASE'
+    api 'org.springframework.boot:spring-boot:1.5.7.RELEASE'
+
+    testImplementation 'com.google.guava:guava:23.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.slf4j:slf4j-api:1.7.25'
+}
+
+jar {
+    enabled = true
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    repositories {
+        maven {
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv('OSSRH_USER')
+                password = System.getenv('OSSRH_PASS')
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = "JL Smalltools"
+                description = 'Some libraries to do simple tasks simply'
+                url = 'https://github.com/foilen/java-libraries'
+                from components.java
+
+                scm {
+                    connection = "scm:git:git@github.com:foilen/java-libraries.git"
+                    url = "https://github.com/foilen/java-libraries"
+                }
+
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://opensource.org/licenses/MIT"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'foilen'
+                        name = 'Simon Levesque'
+                        email = 'simon@foilen.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
 }

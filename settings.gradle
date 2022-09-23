@@ -1,4 +1,3 @@
-include 'jl-smalltools'
 include 'jl-smalltools:jl-smalltools-main'
 include 'jl-smalltools:jl-smalltools-hibernate50'
 include 'jl-smalltools:jl-smalltools-hibernate51'

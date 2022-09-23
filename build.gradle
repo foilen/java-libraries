@@ -1,31 +1,3 @@
-allprojects {
-
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
-
-    group = 'com.foilen'
-    version = System.getenv('VERSION')?:'master-SNAPSHOT'
-    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-
-    eclipse {
-        classpath {
-            downloadSources = true
-            downloadJavadoc = true
-        }
-    }
+plugins {
+    id "com.github.ben-manes.versions" version "$versionsVersion"
 }
-
-subprojects {
-	configurations {
-		testCompile.extendsFrom compileOnly
-	}
-}
-
