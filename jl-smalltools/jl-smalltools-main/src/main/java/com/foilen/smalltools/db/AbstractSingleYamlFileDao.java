@@ -126,14 +126,14 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * dao.save(entity);
  *
  * // Use it in a transaction
- * dao.loadInTransaction(entity -> {
+ * dao.loadInTransaction(entity -&gt; {
  *     entity.setNumber(entity.getNumber() + 1);
  * });
  * </pre>
  *
  * <pre>
  * Dependencies:
- * compile 'org.yaml:snakeyaml:1.18'
+ * implementation 'org.yaml:snakeyaml:1.32'
  * </pre>
  *
  */

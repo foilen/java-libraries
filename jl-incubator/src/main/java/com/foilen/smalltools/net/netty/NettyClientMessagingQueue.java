@@ -28,7 +28,7 @@ import io.netty.channel.ChannelException;
  *
  * <pre>
 * Dependencies:
-* compile 'io.netty:netty-all:5.0.0.Alpha2'
+* implementation 'io.netty:netty-all:5.0.0.Alpha2'
  * </pre>
  */
 public class NettyClientMessagingQueue extends Thread {

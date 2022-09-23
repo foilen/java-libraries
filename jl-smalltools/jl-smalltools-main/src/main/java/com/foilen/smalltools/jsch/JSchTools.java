@@ -65,7 +65,7 @@ import com.jcraft.jsch.Session;
  * System.out.println("Err: " + execResult.getStdErrAsString());
  *
  * // Process the output per line
- * execResult.getStdOutAsLines().forEach(line -> {
+ * execResult.getStdOutAsLines().forEach(line -&gt; {
  *     System.out.println("Line: " + line);
  * });
  *
@@ -74,14 +74,14 @@ import com.jcraft.jsch.Session;
  * FileTools.writeFile("hello", file);
  *
  * // Use SFTP
- * l1.createAndUseSftpChannel(sftp -> {
+ * l1.createAndUseSftpChannel(sftp -&gt; {
  *
  *     System.out.println("Sending " + file.getAbsolutePath());
  *     sftp.put(file.getAbsolutePath(), "hello.txt");
  *
  *     System.out.println("Listing: ");
  *     Vector<LsEntry> files = sftp.ls(".");
- *     files.forEach(it -> {
+ *     files.forEach(it -&gt; {
  *         System.out.println("\t" + JsonTools.compactPrint(it));
  *     });
  *
@@ -89,7 +89,7 @@ import com.jcraft.jsch.Session;
  *     sftp.chmod(00644, "hello.txt");
  *
  *     files = sftp.ls("hello.txt");
- *     files.forEach(it -> {
+ *     files.forEach(it -&gt; {
  *         System.out.println("\t" + JsonTools.compactPrint(it));
  *     });
  *
@@ -104,10 +104,10 @@ import com.jcraft.jsch.Session;
  *
  * <pre>
  * Dependencies:
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
- * compile 'com.jcraft:jsch:0.1.54'
- * compile 'org.apache.commons:commons-lang3:3.6'
- * compile 'org.slf4j:slf4j-api:1.7.25'
+ * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+ * implementation 'com.jcraft:jsch:0.1.55'
+ * implementation 'org.apache.commons:commons-lang3:3.12.0'
+ * implementation 'org.slf4j:slf4j-api:2.0.2'
  * </pre>
  */
 public class JSchTools extends AbstractBasics {

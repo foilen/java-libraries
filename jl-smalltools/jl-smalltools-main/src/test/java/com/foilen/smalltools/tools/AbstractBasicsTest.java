@@ -21,7 +21,7 @@ public class AbstractBasicsTest {
         OneBasic aBis = new OneBasic("first", 1);
         OneBasic b = new OneBasic("second", 2);
 
-        Assert.assertEquals("OneBasic[text=first,number=1]", a.toString());
+        Assert.assertEquals("OneBasic[number=1,text=first]", a.toString());
 
         Assert.assertTrue(a.equals(aBis));
         Assert.assertFalse(a.equals(b));

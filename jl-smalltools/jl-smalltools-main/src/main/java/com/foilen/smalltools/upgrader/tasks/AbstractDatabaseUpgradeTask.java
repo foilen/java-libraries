@@ -24,10 +24,10 @@ import com.google.common.base.Strings;
  *
  * <pre>
  * Dependencies:
- * compile 'com.google.guava:guava:23.0'
- * compile 'org.apache.tomcat:tomcat-jdbc:8.5.20'
- * compile 'org.springframework:spring-beans:4.3.11.RELEASE'
- * compile 'org.springframework:spring-orm:4.3.11.RELEASE'
+ * implementation 'com.google.guava:guava:31.1-jre'
+ * implementation 'org.apache.tomcat:tomcat-jdbc:10.1.0-M17'
+ * implementation 'org.springframework:spring-beans:5.3.23'
+ * implementation 'org.springframework:spring-orm:5.3.23'
  * </pre>
  */
 public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {

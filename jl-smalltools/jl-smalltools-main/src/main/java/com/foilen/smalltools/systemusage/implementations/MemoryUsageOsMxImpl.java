@@ -13,7 +13,7 @@ import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Method;
 
 /**
- * For Java < 9, uses OperatingSystemMXBean .
+ * For Java &lt; 9, uses OperatingSystemMXBean .
  */
 public class MemoryUsageOsMxImpl implements MemoryUsageStrategy {
 

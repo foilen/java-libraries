@@ -24,8 +24,8 @@ import com.foilen.smalltools.tools.JsonTools;
  *
  * <pre>
  * Dependencies:
- * compile "org.springframework:spring-core:4.3.11.RELEASE"
- * compile "org.springframework.data:spring-data-commons:1.13.7.RELEASE"
+ * implementation "org.springframework:spring-core:5.3.23"
+ * implementation "org.springframework.data:spring-data-commons:2.7.3"
  * </pre>
  */
 public class PaginationServiceImpl implements PaginationService {

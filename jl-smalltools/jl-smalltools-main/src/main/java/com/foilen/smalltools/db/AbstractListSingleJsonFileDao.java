@@ -135,7 +135,7 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  *
  * <pre>
  * Dependencies:
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
+ * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
  * </pre>
  *
  */

@@ -122,14 +122,14 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * dao.save(entity);
  *
  * // Use it in a transaction
- * dao.loadInTransaction(entity -> {
+ * dao.loadInTransaction(entity -&gt; {
  *     entity.setNumber(entity.getNumber() + 1);
  * });
  * </pre>
  *
  * <pre>
  * Dependencies:
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
+ * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
  * </pre>
  *
  */

@@ -27,7 +27,7 @@ import org.springframework.util.Assert;
  *
  * <pre>
 * Dependencies:
-* compile 'org.springframework:spring-beans:4.3.11.RELEASE'
+* implementation 'org.springframework:spring-beans:5.3.23'
  * </pre>
  */
 public class SpringTools {

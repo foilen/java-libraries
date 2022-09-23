@@ -32,7 +32,7 @@ import com.foilen.smalltools.reflection.ReflectionTools;
  *
  * <pre>
  * Dependencies:
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
+ * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
  * </pre>
  */
 public final class JsonTools {

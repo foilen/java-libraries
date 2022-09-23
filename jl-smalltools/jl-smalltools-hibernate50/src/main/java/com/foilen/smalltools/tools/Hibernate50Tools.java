@@ -51,8 +51,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
  *
  * <pre>
  * Dependencies:
- * compile 'org.hibernate:hibernate-core:5.0.12.Final'
- * compile 'org.springframework:spring-orm:4.3.11.RELEASE'
+ * implementation 'org.hibernate:hibernate-core:5.0.12.Final'
+ * implementation 'org.springframework:spring-orm:5.3.23'
  * </pre>
  */
 public final class Hibernate50Tools {

@@ -17,7 +17,7 @@ import com.foilen.smalltools.restapi.model.AbstractListResultWithPagination;
  *
  * <pre>
  * Dependencies:
- * compile "org.springframework.data:spring-data-commons:1.13.7.RELEASE"
+ * implementation "org.springframework.data:spring-data-commons:2.7.3"
  * </pre>
  */
 public interface PaginationService {

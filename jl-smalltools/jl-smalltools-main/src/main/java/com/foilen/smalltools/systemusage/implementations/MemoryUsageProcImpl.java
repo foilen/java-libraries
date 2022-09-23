@@ -12,7 +12,7 @@ import com.foilen.smalltools.systemusage.ProcUsage;
 import com.foilen.smalltools.systemusage.results.MemoryInfo;
 
 /**
- * For Java > 9 and running on Linux, will read the /proc/ files . Will read max twice per second.
+ * For Java &gt; 9 and running on Linux, will read the /proc/ files . Will read max twice per second.
  */
 public class MemoryUsageProcImpl implements MemoryUsageStrategy {
 

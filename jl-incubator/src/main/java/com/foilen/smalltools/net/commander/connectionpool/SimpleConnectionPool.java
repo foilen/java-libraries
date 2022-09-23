@@ -25,7 +25,7 @@ import com.foilen.smalltools.tools.ThreadTools;
  *
  * <pre>
  * Dependencies:
- * compile 'io.netty:netty-all:5.0.0.Alpha2'
+ * implementation 'io.netty:netty-all:5.0.0.Alpha2'
  * </pre>
  */
 public class SimpleConnectionPool implements ConnectionPool {

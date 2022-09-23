@@ -13,9 +13,9 @@ package com.foilen.smalltools.restapi.model;
  *
  * <pre>
  * Dependencies:
- * compile 'org.apache.commons:commons-lang3:3.6'
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
- * compile 'org.slf4j:slf4j-api:1.7.25'
+ * implementation 'org.apache.commons:commons-lang3:3.12.0'
+ * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+ * implementation 'org.slf4j:slf4j-api:2.0.2'
  * </pre>
  */
 public abstract class AbstractApiBaseWithError extends AbstractApiBase {

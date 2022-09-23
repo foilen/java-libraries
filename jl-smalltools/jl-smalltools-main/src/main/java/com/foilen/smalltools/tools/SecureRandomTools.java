@@ -17,7 +17,7 @@ import javax.xml.bind.DatatypeConverter;
  *
  * <pre>
  * Dependencies:
- * compile "javax.xml.bind:jaxb-api:2.3.1"
+ * implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
  * </pre>
  */
 public class SecureRandomTools {

@@ -47,9 +47,9 @@ import com.foilen.smalltools.tools.AssertTools;
  *
  * <pre>
  * Dependencies:
- * compile 'org.apache.commons:commons-lang3:3.6'
- * compile 'org.slf4j:slf4j-api:1.7.25'
- * compile 'org.springframework:spring-orm:4.3.11.RELEASE'
+ * implementation 'org.apache.commons:commons-lang3:3.12.0'
+ * implementation 'org.slf4j:slf4j-api:2.0.2'
+ * implementation 'org.springframework:spring-orm:5.3.23'
  * </pre>
  */
 public class BeanPropertiesCopierTools {

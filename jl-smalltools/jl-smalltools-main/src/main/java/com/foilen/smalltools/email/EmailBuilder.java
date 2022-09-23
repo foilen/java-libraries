@@ -42,8 +42,8 @@ import com.foilen.smalltools.tools.StreamsTools;
  *
  * <pre>
  * Dependencies:
- * compile 'org.springframework:spring-context-support:4.3.11.RELEASE'
- * compile 'org.freemarker:freemarker:2.3.23' (optional)
+ * implementation 'org.springframework:spring-context-support:5.3.23'
+ * implementation 'org.freemarker:freemarker:2.3.31' (optional)
  * </pre>
  */
 public class EmailBuilder {

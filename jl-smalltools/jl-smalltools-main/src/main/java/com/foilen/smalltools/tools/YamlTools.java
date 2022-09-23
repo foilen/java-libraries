@@ -28,7 +28,7 @@ import com.foilen.smalltools.reflection.ReflectionTools;
  *
  * <pre>
  * Dependencies:
- * compile 'org.yaml:snakeyaml:1.18'
+ * implementation 'org.yaml:snakeyaml:1.32'
  * </pre>
  */
 public final class YamlTools {

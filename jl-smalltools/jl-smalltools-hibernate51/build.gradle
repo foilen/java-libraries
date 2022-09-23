@@ -11,17 +11,17 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
     api 'org.hibernate:hibernate-core:5.1.10.Final'
-    api 'org.springframework:spring-orm:4.3.11.RELEASE'
-    api 'org.springframework.boot:spring-boot:1.5.7.RELEASE'
+    api 'org.springframework:spring-orm:5.3.23'
+    api 'org.springframework.boot:spring-boot:2.7.4'
 
-    testImplementation 'com.google.guava:guava:23.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.slf4j:slf4j-api:1.7.25'
+    testImplementation 'com.google.guava:guava:31.1-jre'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.slf4j:slf4j-api:2.0.2'
 }
 
 jar {

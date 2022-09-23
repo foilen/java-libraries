@@ -27,8 +27,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
  *
  * <pre>
  * Dependencies:
- * compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
- * compile 'org.springframework:spring-webmvc:4.3.11.RELEASE'
+ * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+ * implementation 'org.springframework:spring-webmvc:5.3.23'
  * </pre>
  */
 @Configuration

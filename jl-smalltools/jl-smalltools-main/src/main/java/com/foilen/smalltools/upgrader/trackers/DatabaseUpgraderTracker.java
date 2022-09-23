@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * <pre>
  * Dependencies:
- * compile 'org.springframework:spring-jdbc:4.3.11.RELEASE'
+ * implementation 'org.springframework:spring-jdbc:5.3.23'
  * </pre>
  */
 public class DatabaseUpgraderTracker implements UpgraderTracker {

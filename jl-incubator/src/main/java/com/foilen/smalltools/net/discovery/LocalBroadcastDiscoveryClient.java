@@ -42,7 +42,7 @@ import com.google.common.cache.CacheBuilder;
  *
  * <pre>
  * Dependencies:
- * compile 'com.google.guava:guava:23.0'
+ * implementation 'com.google.guava:guava:31.1-jre'
  * </pre>
  */
 public class LocalBroadcastDiscoveryClient implements Runnable {

@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
  * Usage:
  *
  * <pre>
- * BufferBatchesTools. &lt;String&gt; autoClose(3, items -> {
+ * BufferBatchesTools. &lt;String&gt; autoClose(3, items -&gt; {
  *     batches.add(Joiner.on(",").join(items));
- * }, bufferBatchesTools -> {
+ * }, bufferBatchesTools -&gt; {
  *     bufferBatchesTools.add("1");
  *     bufferBatchesTools.add("2");
  *     bufferBatchesTools.add("3");
@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
  *
  * <pre>
  * Dependencies:
- * compile 'org.apache.commons:commons-lang3:3.6'
- * compile 'org.slf4j:slf4j-api:1.7.25'
+ * implementation 'org.apache.commons:commons-lang3:3.12.0'
+ * implementation 'org.slf4j:slf4j-api:2.0.2'
  * </pre>
  *
  * @param <I>

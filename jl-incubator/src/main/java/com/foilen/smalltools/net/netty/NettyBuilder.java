@@ -44,8 +44,8 @@ import io.netty.channel.ChannelHandler;
  *
  * <pre>
  * Dependencies:
- * compile 'io.netty:netty-all:5.0.0.Alpha2'
- * compile 'org.javassist:javassist:3.20.0-GA' (optional)
+ * implementation 'io.netty:netty-all:5.0.0.Alpha2'
+ * implementation 'org.javassist:javassist:3.20.0-GA' (optional)
  * </pre>
  */
 public class NettyBuilder {

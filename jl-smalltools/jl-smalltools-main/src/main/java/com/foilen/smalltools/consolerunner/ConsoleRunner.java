@@ -51,8 +51,8 @@ import com.foilen.smalltools.tuple.Tuple2;
  *
  * <pre>
  * Dependencies:
- * compile 'com.google.guava:guava:23.0'
- * compile 'org.slf4j:slf4j-api:1.7.25'
+ * implementation 'com.google.guava:guava:31.1-jre'
+ * implementation 'org.slf4j:slf4j-api:2.0.2'
  * </pre>
  */
 public class ConsoleRunner {

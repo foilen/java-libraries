@@ -68,8 +68,8 @@ import com.foilen.smalltools.tools.AssertTools;
  *
  * <pre>
  * Dependencies:
- * compile 'javax.servlet:javax.servlet-api:3.1.0'
- * compile 'org.springframework.security:spring-security-web:4.2.3.RELEASE'
+ * implementation 'javax.servlet:javax.servlet-api:4.0.1'
+ * implementation 'org.springframework.security:spring-security-web:5.7.3'
  * </pre>
  */
 public class CookiesGeneratedCsrfTokenRepository implements CsrfTokenRepository {

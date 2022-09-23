@@ -23,8 +23,8 @@ import com.google.common.base.Strings;
  *
  * <pre>
  * Dependencies:
- * compile "com.google.guava:guava:23.0"
- * compile "commons-validator:commons-validator:1.6"
+ * implementation "com.google.guava:guava:31.1-jre"
+ * implementation "commons-validator:commons-validator:1.7"
  * </pre>
  */
 public class FormValidationTools {

@@ -32,8 +32,8 @@ import com.foilen.smalltools.systemusage.MemoryUsage;
  *
  * <pre>
  * Dependencies:
- * compile 'org.apache.commons:commons-lang3:3.6'
- * compile 'org.slf4j:slf4j-api:1.7.25'
+ * implementation 'org.apache.commons:commons-lang3:3.12.0'
+ * implementation 'org.slf4j:slf4j-api:2.0.2'
  * </pre>
  */
 public class ApplicationResourceUsageTools extends AbstractBasics implements Runnable {

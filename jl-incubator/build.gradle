@@ -11,33 +11,33 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 dependencies {
 
     api project(':jl-smalltools:jl-smalltools-main')
 
-    api 'ch.qos.logback:logback-classic:1.2.3'
-    api 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
-    api 'com.google.guava:guava:23.0'
-    api 'com.madgag.spongycastle:prov:1.54.0.0'
+    api 'ch.qos.logback:logback-classic:1.4.1'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    api 'com.google.guava:guava:31.1-jre'
+    api 'com.madgag.spongycastle:prov:1.58.0.0'
     api 'com.madgag.spongycastle:pkix:1.54.0.0'
     api 'com.madgag.spongycastle:pg:1.54.0.0'
-    api 'com.sun.mail:javax.mail:1.6.0'
+    api 'com.sun.mail:javax.mail:1.6.2'
     api 'io.netty:netty-all:5.0.0.Alpha2'
-    api 'javax.servlet:javax.servlet-api:3.1.0'
-    api 'junit:junit:4.12'
-    api 'org.freemarker:freemarker:2.3.23'
+    api 'javax.servlet:javax.servlet-api:4.0.1'
+    api 'junit:junit:4.13.2'
+    api 'org.freemarker:freemarker:2.3.31'
     api 'org.hibernate:hibernate-core:4.3.11.Final'
-    api 'org.yaml:snakeyaml:1.18'
-    api 'org.slf4j:slf4j-api:1.7.25'
-    api 'org.springframework:spring-context-support:4.3.11.RELEASE'
-    api 'org.springframework:spring-core:4.3.11.RELEASE'
-    api 'org.springframework:spring-orm:4.3.11.RELEASE'
-    api 'org.springframework:spring-webmvc:4.3.11.RELEASE'
-    api 'org.springframework.security:spring-security-web:4.2.3.RELEASE'
+    api 'org.yaml:snakeyaml:1.32'
+    api 'org.slf4j:slf4j-api:2.0.2'
+    api 'org.springframework:spring-context-support:5.3.23'
+    api 'org.springframework:spring-core:5.3.23'
+    api 'org.springframework:spring-orm:5.3.23'
+    api 'org.springframework:spring-webmvc:5.3.23'
+    api 'org.springframework.security:spring-security-web:5.7.3'
 
-    testImplementation 'org.mockito:mockito-core:2.10.0'
+    testImplementation 'org.mockito:mockito-core:4.8.0'
 }
 
 jar {

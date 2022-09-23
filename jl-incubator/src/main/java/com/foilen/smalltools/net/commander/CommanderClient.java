@@ -29,8 +29,8 @@ import com.foilen.smalltools.net.netty.NettyClient;
  *
  * <pre>
  * Dependencies:
- * compile 'io.netty:netty-all:5.0.0.Alpha2'
- * compile 'org.springframework:spring-beans:4.3.11.RELEASE' (optional)
+ * implementation 'io.netty:netty-all:5.0.0.Alpha2'
+ * implementation 'org.springframework:spring-beans:5.3.23' (optional)
  * </pre>
  */
 public class CommanderClient {

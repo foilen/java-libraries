@@ -24,7 +24,7 @@ import com.mongodb.client.model.Filters;
  *
  * <pre>
  * Dependencies:
- * compile 'org.mongodb:mongodb-driver-sync:4.1.1'
+ * implementation 'org.mongodb:mongodb-driver-sync:4.7.1'
  * </pre>
  */
 public class MongoDbUpgraderTracker implements UpgraderTracker {
