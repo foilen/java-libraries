@@ -66,7 +66,7 @@ public class ThreadToolsTest {
 
         // Now time
         state.clear().appendDate(new Date(0)).change();
-        assertThreadName("1969-12-31 19:00:00");
+        assertThreadName(DateTools.formatFull(new Date(0)));
     }
 
     @Test
