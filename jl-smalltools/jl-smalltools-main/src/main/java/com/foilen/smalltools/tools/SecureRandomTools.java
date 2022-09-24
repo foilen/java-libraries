@@ -8,16 +8,17 @@
  */
 package com.foilen.smalltools.tools;
 
-import java.security.SecureRandom;
+import com.google.common.io.BaseEncoding;
 
-import javax.xml.bind.DatatypeConverter;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 /**
  * Some methods to get random values.
  *
  * <pre>
  * Dependencies:
- * implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+ * implementation 'com.google.guava:guava:31.1-jre'
  * </pre>
  */
 public class SecureRandomTools {
@@ -35,7 +36,7 @@ public class SecureRandomTools {
         byte[] bytes = new byte[bytesLength];
         random.nextBytes(bytes);
 
-        String text = DatatypeConverter.printBase64Binary(bytes);
+        String text = Base64.getEncoder().encodeToString(bytes);
         return text.substring(0, length);
     }
 
@@ -52,10 +53,15 @@ public class SecureRandomTools {
         byte[] bytes = new byte[bytesLength];
         random.nextBytes(bytes);
 
-        String text = DatatypeConverter.printHexBinary(bytes);
+        String text = BaseEncoding.base16().upperCase().encode(bytes);
         return text.substring(0, length);
     }
 
     private SecureRandomTools() {
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Base64: " + SecureRandomTools.randomBase64String(20));
+        System.out.println("   Hex: " + SecureRandomTools.randomHexString(20));
     }
 }
