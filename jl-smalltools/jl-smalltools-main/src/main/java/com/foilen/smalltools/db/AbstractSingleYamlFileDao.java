@@ -134,6 +134,7 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * <pre>
  * Dependencies:
  * implementation 'org.yaml:snakeyaml:1.32'
+ * implementation 'javax.annotation:javax.annotation-api:1.3.2'
  * </pre>
  *
  */

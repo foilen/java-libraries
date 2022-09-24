@@ -51,6 +51,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
  *
  * <pre>
  * Dependencies:
+ * implementation 'javax.persistence:javax.persistence-api:2.2'
  * implementation 'org.hibernate:hibernate-core:5.0.12.Final'
  * implementation 'org.springframework:spring-orm:5.3.23'
  * </pre>

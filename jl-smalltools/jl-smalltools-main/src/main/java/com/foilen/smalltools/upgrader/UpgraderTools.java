@@ -32,6 +32,7 @@ import com.foilen.smalltools.upgrader.trackers.UpgraderTracker;
  *
  * <pre>
  * Dependencies:
+ * implementation 'javax.annotation:javax.annotation-api:1.3.2'
  * implementation 'org.slf4j:slf4j-api:2.0.2'
  * </pre>
  */

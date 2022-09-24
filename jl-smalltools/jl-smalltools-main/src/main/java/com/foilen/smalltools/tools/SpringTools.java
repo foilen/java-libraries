@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
  *
  * <pre>
 * Dependencies:
+* implementation 'javax.annotation:javax.annotation-api:1.3.2'
 * implementation 'org.springframework:spring-beans:5.3.23'
  * </pre>
  */
