@@ -22,11 +22,6 @@ import com.google.common.base.Objects;
 
 /**
  * An application's service available on the network. This is to use with the automatic discovery services like {@link LocalBroadcastDiscoveryServer}.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * </pre>
  */
 public class DiscoverableService {
 

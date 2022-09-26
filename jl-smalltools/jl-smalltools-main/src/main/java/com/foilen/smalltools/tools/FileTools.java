@@ -44,12 +44,6 @@ import com.google.common.base.Joiner;
 
 /**
  * Some common methods to manage files.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public final class FileTools {
 

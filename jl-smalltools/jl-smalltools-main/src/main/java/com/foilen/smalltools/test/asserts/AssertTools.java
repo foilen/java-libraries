@@ -31,13 +31,6 @@ import com.foilen.smalltools.tools.SystemTools;
 
 /**
  * Assertions.
- *
- * <pre>
- * Dependencies:
- * testCompile 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * testCompile 'org.yaml:snakeyaml:1.32'
- * testCompile 'junit:junit:4.13.2'
- * </pre>
  */
 public final class AssertTools {
 

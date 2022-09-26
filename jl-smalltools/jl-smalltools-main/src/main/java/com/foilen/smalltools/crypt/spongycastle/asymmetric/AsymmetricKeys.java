@@ -12,13 +12,6 @@ import org.spongycastle.crypto.params.AsymmetricKeyParameter;
 
 /**
  * A public and private key pair. You might not always have both keys since if you are encrypting a message for someone else, you only have his public key.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.madgag.spongycastle:prov:1.58.0.0'
- * implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
- * implementation 'com.madgag.spongycastle:pg:1.54.0.0'
- * </pre>
  */
 public class AsymmetricKeys {
 

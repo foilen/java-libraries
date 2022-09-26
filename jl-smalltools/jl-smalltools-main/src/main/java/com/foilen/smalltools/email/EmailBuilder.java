@@ -39,12 +39,6 @@ import com.foilen.smalltools.tools.StreamsTools;
  * emailBuilder.addInlineAttachmentFromResource(&quot;logo&quot;, &quot;/emails/logo.png&quot;);
  * emailService.sendEmail(emailBuilder);
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'org.springframework:spring-context-support:5.3.23'
- * implementation 'org.freemarker:freemarker:2.3.31' (optional)
- * </pre>
  */
 public class EmailBuilder {
 

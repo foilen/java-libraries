@@ -29,12 +29,6 @@ import com.foilen.smalltools.systemusage.MemoryUsage;
  *         .setShowThreadStackstrace(true) //
  *         .start();
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public class ApplicationResourceUsageTools extends AbstractBasics implements Runnable {
 

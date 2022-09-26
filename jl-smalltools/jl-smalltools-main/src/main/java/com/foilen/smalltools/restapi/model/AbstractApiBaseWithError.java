@@ -10,13 +10,6 @@ package com.foilen.smalltools.restapi.model;
 
 /**
  * A single error field. Good when only needs a success or error.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public abstract class AbstractApiBaseWithError extends AbstractApiBase {
 

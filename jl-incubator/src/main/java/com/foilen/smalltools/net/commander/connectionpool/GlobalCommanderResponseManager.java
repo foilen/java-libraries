@@ -21,11 +21,6 @@ import com.foilen.smalltools.tools.SecureRandomTools;
 
 /**
  * This manager knows where each replies must go through across all the {@link ConnectionPool}.
- *
- * <pre>
- * Dependencies:
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * </pre>
  */
 public class GlobalCommanderResponseManager {
 

@@ -20,13 +20,6 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link BufferedBlockCipher}. This is for symmetric and asymmetric algorithms.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
- * implementation 'org.bouncycastle:bcpg-jdk15on:1.70'
- * implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
- * </pre>
  */
 public abstract class AbstractAsymmetricBlockCipherCrypt {
 

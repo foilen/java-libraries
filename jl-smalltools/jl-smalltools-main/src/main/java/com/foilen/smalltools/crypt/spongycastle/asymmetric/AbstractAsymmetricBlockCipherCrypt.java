@@ -20,13 +20,6 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * An abstract class to put all the common methods and properties to use {@link BufferedBlockCipher}. This is for symmetric and asymmetric algorithms.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.madgag.spongycastle:prov:1.58.0.0'
- * implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
- * implementation 'com.madgag.spongycastle:pg:1.54.0.0'
- * </pre>
  */
 public abstract class AbstractAsymmetricBlockCipherCrypt {
 

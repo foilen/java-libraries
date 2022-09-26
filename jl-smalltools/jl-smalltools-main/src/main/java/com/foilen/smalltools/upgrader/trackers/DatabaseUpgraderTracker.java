@@ -14,11 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * A tracker that stores the successfully executed tasks in a database.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.springframework:spring-jdbc:5.3.23'
- * </pre>
  */
 public class DatabaseUpgraderTracker implements UpgraderTracker {
 

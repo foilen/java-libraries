@@ -21,11 +21,6 @@ import com.mongodb.client.model.Filters;
 
 /**
  * A tracker that stores the successfully executed tasks in a MongoDB Database.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.mongodb:mongodb-driver-sync:4.7.1'
- * </pre>
  */
 public class MongoDbUpgraderTracker implements UpgraderTracker {
 

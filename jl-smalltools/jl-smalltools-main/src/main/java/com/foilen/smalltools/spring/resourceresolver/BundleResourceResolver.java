@@ -101,15 +101,6 @@ import com.google.common.cache.LoadingCache;
  * &lt;link href="&lt;@spring.url'/bundles/all.css'/&gt;" rel="stylesheet"&gt;
  * &lt;script src="&lt;@spring.url'/bundles/all.js'/&gt;"&gt;&lt;/script&gt;
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * implementation 'javax.servlet:javax.servlet-api:4.0.1'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * implementation 'org.springframework:spring-core:5.3.23'
- * implementation 'org.springframework:spring-webmvc:5.3.23'
- * </pre>
  */
 public class BundleResourceResolver implements ResourceResolver {
 

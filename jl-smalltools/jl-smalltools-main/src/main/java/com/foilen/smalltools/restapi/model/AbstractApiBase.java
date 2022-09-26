@@ -16,13 +16,6 @@ import com.foilen.smalltools.tools.AbstractBasics;
 
 /**
  * The most low-level object for a REST object.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = Include.NON_EMPTY, content = Include.NON_NULL)

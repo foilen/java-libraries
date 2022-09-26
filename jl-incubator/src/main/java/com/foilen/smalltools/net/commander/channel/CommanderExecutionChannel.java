@@ -25,12 +25,6 @@ import io.netty.channel.ChannelHandlerContext;
 
 /**
  * A channel that takes a {@link CommandImplementation} and executes it in an executor.
- *
- * <pre>
- * Dependencies:
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * implementation 'org.springframework:spring-beans:5.3.23' (optional)
- * </pre>
  */
 public class CommanderExecutionChannel extends ChannelHandlerAdapter {
 

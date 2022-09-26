@@ -21,12 +21,6 @@ import com.foilen.smalltools.tools.JsonTools;
 
 /**
  * Some methods to convert and store items in an {@link AbstractListResultWithPagination}.
- *
- * <pre>
- * Dependencies:
- * implementation "org.springframework:spring-core:5.3.23"
- * implementation "org.springframework.data:spring-data-commons:2.7.3"
- * </pre>
  */
 public class PaginationServiceImpl implements PaginationService {
 

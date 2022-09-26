@@ -12,13 +12,6 @@ import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 
 /**
  * A public and private key pair. You might not always have both keys since if you are encrypting a message for someone else, you only have his public key.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
- * implementation 'org.bouncycastle:bcpg-jdk15on:1.70'
- * implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
- * </pre>
  */
 public class AsymmetricKeys {
 

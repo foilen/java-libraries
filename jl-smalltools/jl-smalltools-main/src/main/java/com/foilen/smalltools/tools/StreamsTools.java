@@ -30,12 +30,6 @@ import com.google.common.primitives.Ints;
 
 /**
  * Some simple methods to play with streams.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public final class StreamsTools {
 

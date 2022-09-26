@@ -130,13 +130,6 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  *     entity.setNumber(entity.getNumber() + 1);
  * });
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'org.yaml:snakeyaml:1.32'
- * implementation 'javax.annotation:javax.annotation-api:1.3.2'
- * </pre>
- *
  */
 public abstract class AbstractSingleYamlFileDao<T> extends AbstractBasics {
 

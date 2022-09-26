@@ -24,12 +24,6 @@ import org.springframework.util.Assert;
  * - Add this as a bean in your Spring application.
  * - Use SpringTools.configure(yourObject) to configure it with your Spring container.
  * </pre>
- *
- * <pre>
-* Dependencies:
-* implementation 'javax.annotation:javax.annotation-api:1.3.2'
-* implementation 'org.springframework:spring-beans:5.3.23'
- * </pre>
  */
 public class SpringTools {
 

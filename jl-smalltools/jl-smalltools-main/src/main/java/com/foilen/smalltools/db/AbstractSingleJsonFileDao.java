@@ -126,13 +126,6 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  *     entity.setNumber(entity.getNumber() + 1);
  * });
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'javax.annotation:javax.annotation-api:1.3.2'
- * </pre>
- *
  */
 public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
 

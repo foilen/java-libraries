@@ -21,14 +21,6 @@ import com.google.common.base.Strings;
 /**
  *
  * Use this to have some common database helpers for your task.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * implementation 'org.apache.tomcat:tomcat-jdbc:10.1.0-M17'
- * implementation 'org.springframework:spring-beans:5.3.23'
- * implementation 'org.springframework:spring-orm:5.3.23'
- * </pre>
  */
 public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {
 

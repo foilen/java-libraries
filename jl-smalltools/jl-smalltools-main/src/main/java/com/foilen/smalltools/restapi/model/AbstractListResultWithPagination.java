@@ -14,13 +14,6 @@ import java.util.List;
 /**
  * To provide a list of items and pagination. You need to extends to enable deserialization on the client side.
  *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
- *
  * @param <T>
  *            the type of the returned items
  */

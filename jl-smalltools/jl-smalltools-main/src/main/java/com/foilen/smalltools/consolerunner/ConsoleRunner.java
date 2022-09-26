@@ -48,12 +48,6 @@ import com.foilen.smalltools.tuple.Tuple2;
  *
  *         String content = runner.executeForString();
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public class ConsoleRunner {
 

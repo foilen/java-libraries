@@ -24,12 +24,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 /**
  * To configure Spring MVC to render using JSON. Not needed when using @RestController .
- *
- * <pre>
- * Dependencies:
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.springframework:spring-webmvc:5.3.23'
- * </pre>
  */
 @Configuration
 @EnableWebMvc

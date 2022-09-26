@@ -48,14 +48,6 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
  * <li>@OneToMany table name will have the type name in it</li>
  * <li>Some constraints names will change</li>
  * </ul>
- *
- * <pre>
- * Dependencies:
- * implementation 'javax.persistence:javax.persistence-api:2.2'
- * implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
- * implementation 'org.hibernate:hibernate-core:5.0.12.Final'
- * implementation 'org.springframework:spring-orm:5.3.23'
- * </pre>
  */
 public final class Hibernate50Tools {
 

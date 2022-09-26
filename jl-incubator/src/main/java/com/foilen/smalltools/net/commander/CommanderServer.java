@@ -96,12 +96,6 @@ import com.foilen.smalltools.tools.CloseableTools;
  * // Close the connection when done with it
  * commanderClient.closeConnection("localhost", 9999);
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * implementation 'org.springframework:spring-beans:5.3.23' (optional)
- * </pre>
  */
 public class CommanderServer {
 

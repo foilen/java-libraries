@@ -27,12 +27,6 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * - jsonContentSize:int
  * - jsonContent:String
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * </pre>
  */
 public class CommanderEncoder extends MessageToByteEncoder<CommandRequest> {
 

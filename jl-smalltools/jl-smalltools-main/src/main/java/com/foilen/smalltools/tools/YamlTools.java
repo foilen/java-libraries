@@ -25,11 +25,6 @@ import com.foilen.smalltools.reflection.ReflectionTools;
 
 /**
  * A quick tool to serialize/deserialize to Yaml.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.yaml:snakeyaml:1.32'
- * </pre>
  */
 public final class YamlTools {
 

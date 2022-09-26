@@ -39,11 +39,6 @@ import com.google.common.cache.CacheBuilder;
  *     // ...
  * }
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * </pre>
  */
 public class LocalBroadcastDiscoveryClient implements Runnable {
 

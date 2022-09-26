@@ -20,12 +20,6 @@ import com.google.common.base.Strings;
 
 /**
  * Some methods to validate a form and store errors in the {@link FormResult}.
- *
- * <pre>
- * Dependencies:
- * implementation "com.google.guava:guava:31.1-jre"
- * implementation "commons-validator:commons-validator:1.7"
- * </pre>
  */
 public class FormValidationTools {
 

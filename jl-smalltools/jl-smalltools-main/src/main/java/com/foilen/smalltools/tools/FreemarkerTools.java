@@ -19,11 +19,6 @@ import freemarker.template.TemplateExceptionHandler;
 
 /**
  * Use the Freemarker templates easily.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.freemarker:freemarker:2.3.31'
- * </pre>
  */
 public final class FreemarkerTools {
 

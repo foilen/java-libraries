@@ -38,12 +38,6 @@ import java.util.stream.Collectors;
  * "10"
  * </pre>
  *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
- *
  * @param <I>
  *            the type of item
  */

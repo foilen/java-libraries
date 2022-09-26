@@ -15,13 +15,6 @@ import com.foilen.smalltools.tools.SecureRandomTools;
 
 /**
  * An error with some details.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public class ApiError extends AbstractApiBase {
 

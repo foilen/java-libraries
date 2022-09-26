@@ -132,13 +132,6 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  *
  * List&lt;String&gt; ids = dao.findAllAsStream(it -&gt; it.getNumber() &gt;= 2).map(it -&gt; it.getId()).collect(Collectors.toList());
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'javax.annotation:javax.annotation-api:1.3.2'
- * </pre>
- *
  */
 public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics {
 

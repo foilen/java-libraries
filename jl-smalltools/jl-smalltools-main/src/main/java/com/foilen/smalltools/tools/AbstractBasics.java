@@ -23,12 +23,6 @@ import org.slf4j.LoggerFactory;
  * <li>{@link #hashCode()} and {@link #equals(Object)} methods using reflection</li>
  * <li>{@link #toString()} using reflection</li>
  * </ul>
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public abstract class AbstractBasics {
 

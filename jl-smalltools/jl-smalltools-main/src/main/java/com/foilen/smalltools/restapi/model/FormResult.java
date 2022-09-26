@@ -15,14 +15,6 @@ import java.util.Map;
 
 /**
  * To show the results of a form submission including global errors and warnings and errors per field.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
- *
  */
 public class FormResult extends AbstractApiBaseWithError {
 

@@ -44,13 +44,6 @@ import com.foilen.smalltools.tools.AssertTools;
  * // Different property name
  * copierTools.copyProperty("address", "homeAddress");
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * implementation 'org.springframework:spring-orm:5.3.23'
- * </pre>
  */
 public class BeanPropertiesCopierTools {
 

@@ -24,11 +24,6 @@ import com.foilen.smalltools.tuple.Tuple2;
  * <br/>
  *
  * See {@link SyncConfiguration} for more detail.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public final class SyncTools {
 

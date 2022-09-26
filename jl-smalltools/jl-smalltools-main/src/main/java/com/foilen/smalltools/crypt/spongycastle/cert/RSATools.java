@@ -30,13 +30,6 @@ import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * Some tools to help converting from the tools in the library to standard Java.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.madgag.spongycastle:prov:1.58.0.0'
- * implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
- * implementation 'com.madgag.spongycastle:pg:1.54.0.0'
- * </pre>
  */
 public class RSATools {
 

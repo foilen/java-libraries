@@ -26,12 +26,6 @@ import com.foilen.smalltools.net.netty.NettyClient;
 
 /**
  * The client side of the commander system. See {@link CommanderServer} for all the details and sample usage.
- *
- * <pre>
- * Dependencies:
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * implementation 'org.springframework:spring-beans:5.3.23' (optional)
- * </pre>
  */
 public class CommanderClient {
 

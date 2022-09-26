@@ -29,11 +29,6 @@ import com.foilen.smalltools.reflection.ReflectionTools;
 
 /**
  * A quick tool to serialize/deserialize to JSON.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * </pre>
  */
 public final class JsonTools {
 

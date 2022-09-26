@@ -41,12 +41,6 @@ import io.netty.channel.ChannelHandler;
  * nettyBuilder.addChannelHandler(CommanderEncoder.class);
  * NettyClient nettyClient = nettyBuilder.buildClient(host, port);
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * implementation 'org.javassist:javassist:3.20.0-GA' (optional)
- * </pre>
  */
 public class NettyBuilder {
 

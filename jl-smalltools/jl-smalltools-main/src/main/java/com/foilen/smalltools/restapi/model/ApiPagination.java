@@ -12,14 +12,6 @@ import org.springframework.data.domain.Page;
 
 /**
  * Details about pagination. It is zero-based, but you can use the *Ui properties to get the same values in one-based.
- *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * implementation 'org.springframework.data:spring-data-commons:2.7.3' (optional if using the constructor with the {@link Page}.
- * </pre>
  */
 public class ApiPagination extends AbstractApiBase {
 

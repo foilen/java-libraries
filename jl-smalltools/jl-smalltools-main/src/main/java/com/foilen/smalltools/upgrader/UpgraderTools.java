@@ -29,12 +29,6 @@ import com.foilen.smalltools.upgrader.trackers.UpgraderTracker;
  * A tool to help manage upgrade tasks. (E.g: database, file updates, ...)
  *
  * You can choose different backends to keep track of what was already executed.
- *
- * <pre>
- * Dependencies:
- * implementation 'javax.annotation:javax.annotation-api:1.3.2'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public class UpgraderTools {
 

@@ -22,11 +22,6 @@ import com.foilen.smalltools.tools.ThreadTools;
 
 /**
  * Simply keeps 1 connection open per host and sends all the messages in order.
- *
- * <pre>
- * Dependencies:
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * </pre>
  */
 public class SimpleConnectionPool implements ConnectionPool {
 

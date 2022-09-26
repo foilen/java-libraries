@@ -16,11 +16,6 @@ import ch.qos.logback.core.joran.spi.JoranException;
 
 /**
  * Some tools for Logback.
- *
- * <pre>
- * Dependencies:
- * implementation 'ch.qos.logback:logback-classic:1.2.3'
- * </pre>
  */
 public class LogbackTools {
 

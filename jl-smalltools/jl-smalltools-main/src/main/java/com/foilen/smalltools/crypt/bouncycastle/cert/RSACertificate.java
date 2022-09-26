@@ -96,13 +96,6 @@ import com.foilen.smalltools.tools.FileTools;
  * Assert.assertFalse(fakeRootCertificate.isValidSignature(rootCertificate));
  * Assert.assertFalse(fakeRootCertificate.isValidSignature(nodeCertificate));
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'org.bouncycastle:bcpkix-jdk15on:1.70'
- * implementation 'org.bouncycastle:bcpg-jdk15on:1.70'
- * implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
- * </pre>
  */
 public class RSACertificate {
 

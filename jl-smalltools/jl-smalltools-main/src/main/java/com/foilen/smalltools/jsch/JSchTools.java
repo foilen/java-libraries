@@ -101,14 +101,6 @@ import com.jcraft.jsch.Session;
  * // Disconnect
  * l1.disconnect();
  * </pre>
- *
- * <pre>
- * Dependencies:
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'com.jcraft:jsch:0.1.55'
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
  */
 public class JSchTools extends AbstractBasics {
 

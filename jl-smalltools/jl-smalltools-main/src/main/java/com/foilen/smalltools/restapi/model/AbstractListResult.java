@@ -14,14 +14,7 @@ import java.util.List;
 /**
  * To provide a list of items. You need to extends to enable deserialization on the client side. You can add an {@link ApiPagination} if needed.
  *
- * <pre>
- * Dependencies:
- * implementation 'org.apache.commons:commons-lang3:3.12.0'
- * implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * </pre>
- *
- * @param <T>
+ *  @param <T>
  *            the type of the returned items
  */
 public abstract class AbstractListResult<T> extends AbstractApiBaseWithError {

@@ -18,12 +18,6 @@ import com.foilen.smalltools.net.commander.connectionpool.CommanderConnection;
  *
  * @param <R>
  *            the response type
- *
- *
- *            <pre>
- * Dependencies:
- * implementation 'io.netty:netty-all:5.0.0.Alpha2'
- *            </pre>
  */
 public abstract class AbstractCommandImplementationWithResponse<R> implements CommandImplementation, CommandImplementationConnectionAware {
 

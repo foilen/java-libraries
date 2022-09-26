@@ -15,11 +15,6 @@ import java.util.Base64;
 
 /**
  * Some methods to get random values.
- *
- * <pre>
- * Dependencies:
- * implementation 'com.google.guava:guava:31.1-jre'
- * </pre>
  */
 public class SecureRandomTools {
 

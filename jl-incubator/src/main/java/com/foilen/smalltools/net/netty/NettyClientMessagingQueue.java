@@ -25,11 +25,6 @@ import io.netty.channel.ChannelException;
 
 /**
  * This is a queue that manages the messages to send to make sure that it is done in a thread-safe way.
- *
- * <pre>
-* Dependencies:
-* implementation 'io.netty:netty-all:5.0.0.Alpha2'
- * </pre>
  */
 public class NettyClientMessagingQueue extends Thread {
 

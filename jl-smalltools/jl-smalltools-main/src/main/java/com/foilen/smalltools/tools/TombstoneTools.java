@@ -21,12 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * <p>
  * See details <a href="https://youtu.be/29UXzfQWOhQ">in this video</a>
  * </p>
- *
- * <pre>
- * Dependencies:
- * implementation 'org.slf4j:slf4j-api:2.0.2'
- * implementation 'org.springframework.security:spring-security-web:5.7.3' (optional)
- * </pre>
  */
 public final class TombstoneTools {
 
