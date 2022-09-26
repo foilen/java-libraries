@@ -14,15 +14,12 @@ repositories {
 sourceCompatibility = 11
 
 dependencies {
-    implementation project(':jl-smalltools:jl-smalltools-main')
-    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
-    implementation 'org.hibernate:hibernate-core:5.2.11.Final'
-    implementation 'org.springframework:spring-orm:5.3.23'
-    implementation 'org.springframework.boot:spring-boot:2.7.4'
+    api project(':jl-smalltools:jl-smalltools-main')
+    api 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+    api 'org.hibernate:hibernate-core:5.2.11.Final'
+    api 'org.springframework.boot:spring-boot:2.7.4'
 
-    testImplementation 'com.google.guava:guava:31.1-jre'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.slf4j:slf4j-api:2.0.2'
 }
 
 jar {
