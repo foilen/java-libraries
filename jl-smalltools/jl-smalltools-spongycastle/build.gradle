@@ -14,31 +14,12 @@ repositories {
 sourceCompatibility = 11
 
 dependencies {
-
     api project(':jl-smalltools:jl-smalltools-main')
-    api project(':jl-smalltools:jl-smalltools-spongycastle')
-
-    api 'ch.qos.logback:logback-classic:1.4.1'
-    api 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
-    api 'com.google.guava:guava:31.1-jre'
     api 'com.madgag.spongycastle:prov:1.58.0.0'
     api 'com.madgag.spongycastle:pkix:1.54.0.0'
     api 'com.madgag.spongycastle:pg:1.54.0.0'
-    api 'com.sun.mail:javax.mail:1.6.2'
-    api 'io.netty:netty-all:5.0.0.Alpha2'
-    api 'javax.servlet:javax.servlet-api:4.0.1'
-    api 'junit:junit:4.13.2'
-    api 'org.freemarker:freemarker:2.3.31'
-    api 'org.hibernate:hibernate-core:4.3.11.Final'
-    api 'org.yaml:snakeyaml:1.32'
-    api 'org.slf4j:slf4j-api:2.0.2'
-    api 'org.springframework:spring-context-support:5.3.23'
-    api 'org.springframework:spring-core:5.3.23'
-    api 'org.springframework:spring-orm:5.3.23'
-    api 'org.springframework:spring-webmvc:5.3.23'
-    api 'org.springframework.security:spring-security-web:5.7.3'
 
-    testImplementation 'org.mockito:mockito-core:4.8.0'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 jar {
@@ -65,7 +46,7 @@ publishing {
         mavenJava(MavenPublication) {
             pom {
                 name = "JL Smalltools"
-                description = 'Some libraries to do simple tasks simply (experimental)'
+                description = 'Some libraries to do simple tasks simply'
                 url = 'https://github.com/foilen/java-libraries'
                 from components.java
 

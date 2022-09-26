@@ -13,11 +13,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.crypt.spongycastle.cert.CertificateDetails;
 import com.foilen.smalltools.inputstream.ZerosInputStream;
 
 public class ReflectionToolsTest {
@@ -257,7 +257,7 @@ public class ReflectionToolsTest {
 
     @Test
     public void testInstantiateEmptyContructor() {
-        CertificateDetails actual = ReflectionTools.instantiate(CertificateDetails.class);
+        AtomicLong actual = ReflectionTools.instantiate(AtomicLong.class);
         Assert.assertNotNull(actual);
     }
 

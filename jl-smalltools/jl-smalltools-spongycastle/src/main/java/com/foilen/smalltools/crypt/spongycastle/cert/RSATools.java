@@ -21,11 +21,11 @@ import java.security.spec.RSAPublicKeySpec;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.spongycastle.cert.trustmanager.RSATrustManagerFactory;
 import org.spongycastle.crypto.params.RSAKeyParameters;
 import org.spongycastle.crypto.params.RSAPrivateCrtKeyParameters;
 
-import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.spongycastle.cert.trustmanager.RSATrustManagerFactory;
 import com.foilen.smalltools.exception.SmallToolsException;
 
 /**

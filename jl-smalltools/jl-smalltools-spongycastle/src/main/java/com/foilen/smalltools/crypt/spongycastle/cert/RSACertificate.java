@@ -27,6 +27,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSAKeyDetails;
 import org.spongycastle.asn1.ASN1Primitive;
 import org.spongycastle.asn1.ASN1Set;
 import org.spongycastle.asn1.x500.AttributeTypeAndValue;
@@ -53,9 +56,6 @@ import org.spongycastle.util.io.pem.PemObjectGenerator;
 import org.spongycastle.util.io.pem.PemReader;
 import org.spongycastle.util.io.pem.PemWriter;
 
-import com.foilen.smalltools.crypt.spongycastle.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSACrypt;
-import com.foilen.smalltools.crypt.spongycastle.asymmetric.RSAKeyDetails;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.hash.HashSha1;
 import com.foilen.smalltools.tools.AssertTools;
