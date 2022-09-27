@@ -21,10 +21,10 @@ import java.security.spec.RSAPublicKeySpec;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;
 
-import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
 import com.foilen.smalltools.crypt.bouncycastle.cert.trustmanager.RSATrustManagerFactory;
 import com.foilen.smalltools.exception.SmallToolsException;
 

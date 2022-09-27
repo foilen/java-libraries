@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSAKeyDetails;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
@@ -53,9 +55,7 @@ import org.bouncycastle.util.io.pem.PemObjectGenerator;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.bouncycastle.util.io.pem.PemWriter;
 
-import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
 import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
-import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSAKeyDetails;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.hash.HashSha1;
 import com.foilen.smalltools.tools.AssertTools;
