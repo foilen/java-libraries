@@ -47,7 +47,7 @@ import com.foilen.smalltools.tools.AssertTools;
  * import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
  * import org.springframework.security.web.csrf.CsrfTokenRepository;
  *
- * import com.foilen.smalltools.spring.security.CookiesGeneratedCsrfTokenRepository;
+ * import com.foilen.smalltools.security.spring.CookiesGeneratedCsrfTokenRepository;
  *
  * public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
  *

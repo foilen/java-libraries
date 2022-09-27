@@ -15,8 +15,8 @@ sourceCompatibility = 11
 
 dependencies {
 
-    api project(':jl-smalltools:jl-smalltools-main')
     api project(':jl-smalltools:jl-smalltools-spongycastle')
+    api project(':jl-smalltools:jl-smalltools-spring')
 
     api 'ch.qos.logback:logback-classic:1.4.1'
     api 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
