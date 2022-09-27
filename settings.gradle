@@ -1,4 +1,5 @@
 include 'jl-smalltools:jl-smalltools-bouncycastle'
+include 'jl-smalltools:jl-smalltools-database'
 include 'jl-smalltools:jl-smalltools-hibernate50'
 include 'jl-smalltools:jl-smalltools-hibernate51'
 include 'jl-smalltools:jl-smalltools-hibernate52'
