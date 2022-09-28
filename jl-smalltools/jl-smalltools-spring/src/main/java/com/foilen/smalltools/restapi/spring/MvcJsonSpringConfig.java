@@ -8,9 +8,6 @@
  */
 package com.foilen.smalltools.restapi.spring;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,16 +15,19 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * To configure Spring MVC to render using JSON. Not needed when using @RestController .
  */
 @Configuration
 @EnableWebMvc
-public class MvcJsonSpringConfig extends WebMvcConfigurerAdapter {
+public class MvcJsonSpringConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
