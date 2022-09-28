@@ -8,15 +8,13 @@
  */
 package com.foilen.smalltools.restapi.services;
 
-import java.util.regex.Pattern;
-
-import org.apache.commons.validator.routines.EmailValidator;
-
 import com.foilen.smalltools.restapi.model.FormResult;
 import com.foilen.smalltools.tools.CollectionsTools;
 import com.foilen.smalltools.tools.DateTools;
 import com.foilen.smalltools.tools.StringTools;
 import com.google.common.base.Strings;
+
+import java.util.regex.Pattern;
 
 /**
  * Some methods to validate a form and store errors in the {@link FormResult}.
@@ -24,6 +22,7 @@ import com.google.common.base.Strings;
 public class FormValidationTools {
 
     private static final Pattern alphaNum = Pattern.compile("[A-Za-z0-9]*");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
 
     public static void validateAlphaNumExtra(FormResult formResult, String fieldName, String fieldValue) {
 
@@ -76,7 +75,7 @@ public class FormValidationTools {
             return;
         }
 
-        if (!EmailValidator.getInstance().isValid(fieldValue)) {
+        if (!EMAIL_PATTERN.matcher(fieldValue).matches()) {
             CollectionsTools.getOrCreateEmptyArrayList(formResult.getValidationErrorsByField(), fieldName, String.class).add("Is not an email");
         }
     }
