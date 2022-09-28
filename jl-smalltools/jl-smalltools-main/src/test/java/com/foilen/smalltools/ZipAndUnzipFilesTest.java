@@ -8,17 +8,16 @@
  */
 package com.foilen.smalltools;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.foilen.smalltools.compress.UnzipFiles;
 import com.foilen.smalltools.compress.ZipFiles;
 import com.foilen.smalltools.tools.FileTools;
-import com.google.common.io.Files;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 
 /**
  * Test {@link ZipFiles} and {@link UnzipFiles}.
@@ -50,7 +49,7 @@ public class ZipAndUnzipFilesTest {
         zipFiles.close();
 
         // Unzip as is
-        File outputDirectory = Files.createTempDir();
+        File outputDirectory = Files.createTempDirectory("junit").toFile();
         UnzipFiles unzipFiles = new UnzipFiles(zipFile);
         unzipFiles.extractTo(outputDirectory);
 
@@ -60,7 +59,7 @@ public class ZipAndUnzipFilesTest {
         assertFile(outputDirectory, "test/secondInDir.txt", "see me inside 2");
 
         // Unzip ignoring root folder
-        outputDirectory = Files.createTempDir();
+        outputDirectory = Files.createTempDirectory("junit").toFile();
         unzipFiles = new UnzipFiles(zipFile);
         unzipFiles.setIgnoreFirstSubpath(true);
         unzipFiles.extractTo(outputDirectory);

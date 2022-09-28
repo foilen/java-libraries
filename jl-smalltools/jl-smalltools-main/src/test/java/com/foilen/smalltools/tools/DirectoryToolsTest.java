@@ -8,20 +8,15 @@
  */
 package com.foilen.smalltools.tools;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import com.foilen.smalltools.test.asserts.AssertTools;
+import com.google.common.base.Joiner;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.test.asserts.AssertTools;
-import com.google.common.base.Joiner;
-import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.*;
 
 public class DirectoryToolsTest {
 
@@ -60,10 +55,10 @@ public class DirectoryToolsTest {
     }
 
     @Test
-    public void testDeleteEmptySubFolders() {
+    public void testDeleteEmptySubFolders() throws IOException {
 
         // Create files
-        File rootDir = Files.createTempDir();
+        File rootDir = Files.createTempDirectory("junit").toFile();
         createFile(rootDir, "a/a/one.txt");
         createFile(rootDir, "b/b/b/one.txt");
         createFolder(rootDir, "b/b/b/e/e1");
@@ -79,23 +74,23 @@ public class DirectoryToolsTest {
 
         String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
         AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList( //
-                "a/", //
-                "a/a/", //
-                "a/a/one.txt", //
-                "b/", //
-                "b/b/", //
-                "b/b/b/", //
-                "b/b/b/one.txt" //
-        )), //
+                        "a/", //
+                        "a/a/", //
+                        "a/a/one.txt", //
+                        "b/", //
+                        "b/b/", //
+                        "b/b/b/", //
+                        "b/b/b/one.txt" //
+                )), //
                 actual);
     }
 
     @Test
     public void testDeleteFolder() throws IOException {
 
-        File toDelete = Files.createTempDir();
+        File toDelete = Files.createTempDirectory("junit").toFile();
         String toDeletePath = toDelete.getAbsolutePath();
-        File keepSafe = Files.createTempDir();
+        File keepSafe = Files.createTempDirectory("junit").toFile();
         String keepSafePath = keepSafe.getAbsolutePath();
 
         // Create the directories, the files and the symlink
@@ -136,10 +131,10 @@ public class DirectoryToolsTest {
     }
 
     @Test
-    public void testDeleteOlderFilesInDirectory() {
+    public void testDeleteOlderFilesInDirectory() throws IOException {
 
         // Create files
-        File rootDir = Files.createTempDir();
+        File rootDir = Files.createTempDirectory("junit").toFile();
         for (int i = 0; i < 20; ++i) {
             createFile(rootDir, "a/a/" + i + ".txt", DateTools.addDate(Calendar.HOUR, -i));
         }
@@ -158,27 +153,27 @@ public class DirectoryToolsTest {
 
         String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
         AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList( //
-                "a/", //
-                "a/a/", //
-                "a/a/0.txt", //
-                "a/a/1.txt", //
-                "a/a/2.txt", //
-                "a/c/", //
-                "a/c/d/", //
-                "a/c/d/0.txt", //
-                "a/c/d/1.txt", //
-                "a/c/d/2.txt", //
-                "b/", //
-                "b/0.txt", //
-                "b/1.txt", //
-                "b/2.txt" //
-        )), //
+                        "a/", //
+                        "a/a/", //
+                        "a/a/0.txt", //
+                        "a/a/1.txt", //
+                        "a/a/2.txt", //
+                        "a/c/", //
+                        "a/c/d/", //
+                        "a/c/d/0.txt", //
+                        "a/c/d/1.txt", //
+                        "a/c/d/2.txt", //
+                        "b/", //
+                        "b/0.txt", //
+                        "b/1.txt", //
+                        "b/2.txt" //
+                )), //
                 actual);
     }
 
     @Test
     public void testListFilesStartingWith() throws Exception {
-        File directoryFile = Files.createTempDir();
+        File directoryFile = Files.createTempDirectory("junit").toFile();
         String directory = directoryFile.getAbsolutePath();
 
         FileTools.writeFile("#yes", directory + "/exact");

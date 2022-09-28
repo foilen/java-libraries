@@ -8,18 +8,18 @@
  */
 package com.foilen.smalltools.systemusage;
 
-import java.io.File;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.foilen.smalltools.systemusage.results.CpuInfo;
 import com.foilen.smalltools.systemusage.results.MemoryInfo;
 import com.foilen.smalltools.systemusage.results.NetworkInfo;
 import com.foilen.smalltools.tools.JsonTools;
 import com.foilen.smalltools.tools.ResourceTools;
-import com.google.common.io.Files;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
 
 public class ProcUsageTest {
 
@@ -37,9 +37,9 @@ public class ProcUsageTest {
     }
 
     @Test
-    public void testGetMainCpuInfo() {
+    public void testGetMainCpuInfo() throws IOException {
         // Copy file
-        File tmpFolder = Files.createTempDir();
+        File tmpFolder = Files.createTempDirectory("junit").toFile();
         String procStatPath = tmpFolder.getAbsolutePath() + File.separatorChar + "proc-stat";
         ResourceTools.copyToFile("proc-stat", this.getClass(), new File(procStatPath));
 
@@ -61,9 +61,9 @@ public class ProcUsageTest {
     }
 
     @Test
-    public void testGetMainCpuInfo_Big() {
+    public void testGetMainCpuInfo_Big() throws IOException {
         // Copy file
-        File tmpFolder = Files.createTempDir();
+        File tmpFolder = Files.createTempDirectory("junit").toFile();
         String procStatPath = tmpFolder.getAbsolutePath() + File.separatorChar + "proc-stat_big";
         ResourceTools.copyToFile("proc-stat_big", this.getClass(), new File(procStatPath));
 
@@ -85,9 +85,9 @@ public class ProcUsageTest {
     }
 
     @Test
-    public void testGetMemoryInfo() {
+    public void testGetMemoryInfo() throws IOException {
         // Copy file
-        File tmpFolder = Files.createTempDir();
+        File tmpFolder = Files.createTempDirectory("junit").toFile();
         String procMemPath = tmpFolder.getAbsolutePath() + File.separatorChar + "proc-meminfo";
         ResourceTools.copyToFile("proc-meminfo", this.getClass(), new File(procMemPath));
 
@@ -103,9 +103,9 @@ public class ProcUsageTest {
     }
 
     @Test
-    public void testGetNetworkInfos() {
+    public void testGetNetworkInfos() throws IOException {
         // Copy file
-        File tmpFolder = Files.createTempDir();
+        File tmpFolder = Files.createTempDirectory("junit").toFile();
         String procNetDevPath = tmpFolder.getAbsolutePath() + File.separatorChar + "proc-net-dev";
         ResourceTools.copyToFile("proc-net-dev", this.getClass(), new File(procNetDevPath));
 
