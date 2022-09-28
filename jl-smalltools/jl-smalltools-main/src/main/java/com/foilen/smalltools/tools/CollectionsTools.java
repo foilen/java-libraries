@@ -8,15 +8,8 @@
  */
 package com.foilen.smalltools.tools;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -25,7 +18,7 @@ import com.foilen.smalltools.exception.SmallToolsException;
 public final class CollectionsTools {
 
     public static <T> Collector<T, ?, ArrayList<T>> collectToArrayList() {
-        return Collectors.toCollection(() -> new ArrayList<T>());
+        return Collectors.toCollection(ArrayList::new);
     }
 
     /**
@@ -47,7 +40,7 @@ public final class CollectionsTools {
         V value = map.get(key);
         if (value == null) {
             try {
-                value = clazz.newInstance();
+                value = clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 throw new SmallToolsException("Could not create the empty object", e);
             }
@@ -73,13 +66,7 @@ public final class CollectionsTools {
      * @return the value or the new empty value
      */
     public static <K, V> List<V> getOrCreateEmptyArrayList(Map<K, List<V>> map, K key, Class<V> clazz) {
-        List<V> value = map.get(key);
-        if (value == null) {
-            value = new ArrayList<>();
-            map.put(key, value);
-        }
-
-        return value;
+        return map.computeIfAbsent(key, k -> new ArrayList<>());
     }
 
     /**
@@ -98,13 +85,7 @@ public final class CollectionsTools {
      * @return the value or the new empty value
      */
     public static <K, V> Set<V> getOrCreateEmptyHashSet(Map<K, Set<V>> map, K key, Class<V> clazz) {
-        Set<V> value = map.get(key);
-        if (value == null) {
-            value = new HashSet<>();
-            map.put(key, value);
-        }
-
-        return value;
+        return map.computeIfAbsent(key, k -> new HashSet<>());
     }
 
     /**
@@ -122,18 +103,12 @@ public final class CollectionsTools {
      *            type of the value in the list
      * @return the value or the new empty value
      */
-    public static <K, V> Set<V> getOrCreateEmptyTreeSet(Map<K, Set<V>> map, K key, Class<V> clazz) {
-        Set<V> value = map.get(key);
-        if (value == null) {
-            value = new TreeSet<>();
-            map.put(key, value);
-        }
-
-        return value;
+    public static <K, V extends Comparable<V>> Set<V> getOrCreateEmptyTreeSet(Map<K, Set<V>> map, K key, Class<V> clazz) {
+        return map.computeIfAbsent(key, k -> new TreeSet<>());
     }
 
     /**
-     * Is true if all of the items are not null.
+     * Is true if all the items are not null.
      *
      * @param items
      *            the items
@@ -149,7 +124,7 @@ public final class CollectionsTools {
     }
 
     /**
-     * Is true if all of the items are not null.
+     * Is true if all the items are not null.
      *
      * @param items
      *            the items
@@ -165,7 +140,7 @@ public final class CollectionsTools {
     }
 
     /**
-     * Is true if all of the items are not null and not empty.
+     * Is true if all the items are not null and not empty.
      *
      * @param items
      *            the items
@@ -181,7 +156,7 @@ public final class CollectionsTools {
     }
 
     /**
-     * Is true if all of the items are not null and not empty.
+     * Is true if all the items are not null and not empty.
      *
      * @param items
      *            the items
@@ -311,23 +286,12 @@ public final class CollectionsTools {
      *            the type of the value
      */
     public static <K, V> void removeValues(Map<K, V> map, V valueToRemove) {
-        Iterator<Entry<K, V>> iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            if (valueToRemove == iterator.next().getValue()) {
-                iterator.remove();
-            }
-        }
+        map.entrySet().removeIf(kvEntry -> valueToRemove == kvEntry.getValue());
     }
 
     public static <T> ArrayList<T> toArrayList(T[] array) {
         ArrayList<T> list = new ArrayList<>(array.length);
-
-        if (array != null) {
-            for (T i : array) {
-                list.add(i);
-            }
-        }
-
+        list.addAll(Arrays.asList(array));
         return list;
     }
 
