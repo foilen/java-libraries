@@ -18,8 +18,8 @@ dependencies {
     api project(':jl-smalltools:jl-smalltools-spongycastle')
     api project(':jl-smalltools:jl-smalltools-spring')
 
-    api 'ch.qos.logback:logback-classic:1.4.1'
-    api 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    api 'ch.qos.logback:logback-classic:1.4.5'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
     api 'com.google.guava:guava:31.1-jre'
     api 'com.madgag.spongycastle:prov:1.58.0.0'
     api 'com.madgag.spongycastle:pkix:1.54.0.0'
@@ -28,17 +28,17 @@ dependencies {
     api 'io.netty:netty-all:5.0.0.Alpha2'
     api 'javax.servlet:javax.servlet-api:4.0.1'
     api 'junit:junit:4.13.2'
-    api 'org.freemarker:freemarker:2.3.31'
+    api 'org.freemarker:freemarker:2.3.32'
     api 'org.hibernate:hibernate-core:4.3.11.Final'
-    api 'org.yaml:snakeyaml:1.32'
-    api 'org.slf4j:slf4j-api:2.0.2'
-    api 'org.springframework:spring-context-support:5.3.23'
-    api 'org.springframework:spring-core:5.3.23'
-    api 'org.springframework:spring-orm:5.3.23'
-    api 'org.springframework:spring-webmvc:5.3.23'
-    api 'org.springframework.security:spring-security-web:5.7.3'
+    api 'org.yaml:snakeyaml:1.33'
+    api 'org.slf4j:slf4j-api:2.0.6'
+    api 'org.springframework:spring-context-support:5.3.25'
+    api 'org.springframework:spring-core:5.3.25'
+    api 'org.springframework:spring-orm:5.3.25'
+    api 'org.springframework:spring-webmvc:5.3.25'
+    api 'org.springframework.security:spring-security-web:5.8.1'
 
-    testImplementation 'org.mockito:mockito-core:4.8.0'
+    testImplementation 'org.mockito:mockito-core:5.0.0'
 }
 
 jar {

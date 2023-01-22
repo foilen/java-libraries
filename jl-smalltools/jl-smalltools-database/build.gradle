@@ -16,8 +16,8 @@ sourceCompatibility = 11
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
     api 'javax.persistence:javax.persistence-api:2.2'
-    api 'org.apache.tomcat:tomcat-jdbc:10.1.0-M17'
-    api 'org.springframework:spring-orm:5.3.23'
+    api 'org.apache.tomcat:tomcat-jdbc:11.0.0-M1'
+    api 'org.springframework:spring-orm:5.3.25'
 
     testImplementation 'com.h2database:h2:2.1.214'
     testImplementation 'junit:junit:4.13.2'

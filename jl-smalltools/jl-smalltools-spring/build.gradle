@@ -17,11 +17,11 @@ dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
     api 'com.sun.mail:javax.mail:1.6.2'
     api 'javax.servlet:javax.servlet-api:4.0.1'
-    api 'org.springframework.data:spring-data-commons:2.7.3'
-    api 'org.springframework:spring-context-support:5.3.23'
-    api 'org.springframework:spring-core:5.3.23'
-    api 'org.springframework:spring-webmvc:5.3.23'
-    api 'org.springframework.security:spring-security-web:5.7.3'
+    api 'org.springframework.data:spring-data-commons:2.7.7'
+    api 'org.springframework:spring-context-support:5.3.25'
+    api 'org.springframework:spring-core:5.3.25'
+    api 'org.springframework:spring-webmvc:5.3.25'
+    api 'org.springframework.security:spring-security-web:5.8.1'
 
     testImplementation 'junit:junit:4.13.2'
 }

@@ -16,8 +16,8 @@ sourceCompatibility = 11
 dependencies {
     api project(':jl-smalltools:jl-smalltools-database')
     api 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
-    api 'org.hibernate:hibernate-core:5.2.11.Final'
-    api 'org.springframework.boot:spring-boot:2.7.4'
+    api 'org.hibernate:hibernate-core:5.2.18.Final'
+    api 'org.springframework.boot:spring-boot:2.7.8'
 
     testImplementation 'junit:junit:4.13.2'
 }
