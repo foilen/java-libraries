@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 /**
  * This is a way to specify attachments for the {@link EmailBuilder}. Not to use directly.
  */
-class EmailAttachment {
+public class EmailAttachment {
 
     private String id;
     private Resource resource;

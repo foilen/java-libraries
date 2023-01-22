@@ -8,21 +8,20 @@
  */
 package com.foilen.smalltools.email;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.FreemarkerTools;
+import com.foilen.smalltools.tools.ResourceTools;
+import com.foilen.smalltools.tools.StreamsTools;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.FreemarkerTools;
-import com.foilen.smalltools.tools.ResourceTools;
-import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Use this builder to create an email with most of the features: list of TO, CC, BCC, attachments, inline attachments, etc. The text or html body can come from a String, a resource, a file or a
@@ -57,10 +56,8 @@ public class EmailBuilder {
     /**
      * Include an attachment.
      *
-     * @param attachmentFilename
-     *            the filename in the email
-     * @param fileName
-     *            the path of the file
+     * @param attachmentFilename the filename in the email
+     * @param fileName           the path of the file
      * @return this
      */
     public EmailBuilder addAttachmentFromFile(String attachmentFilename, String fileName) {
@@ -71,10 +68,8 @@ public class EmailBuilder {
     /**
      * Include an attachment.
      *
-     * @param attachmentFilename
-     *            the filename in the email
-     * @param resource
-     *            the path of the resource
+     * @param attachmentFilename the filename in the email
+     * @param resource           the path of the resource
      * @return this
      */
     public EmailBuilder addAttachmentFromResource(String attachmentFilename, String resource) {
@@ -85,10 +80,8 @@ public class EmailBuilder {
     /**
      * Include an attachment. Warning, since JavaMail needs a replayable resource, the content of the input stream is first loaded into memory.
      *
-     * @param attachmentFilename
-     *            the filename in the email
-     * @param inputStream
-     *            the input stream
+     * @param attachmentFilename the filename in the email
+     * @param inputStream        the input stream
      * @return this
      */
     public EmailBuilder addAttachmentFromStream(String attachmentFilename, InputStream inputStream) {
@@ -99,8 +92,7 @@ public class EmailBuilder {
     /**
      * Add an invisible recipient.
      *
-     * @param bcc
-     *            the recipient
+     * @param bcc the recipient
      * @return this
      */
     public EmailBuilder addBcc(String bcc) {
@@ -111,8 +103,7 @@ public class EmailBuilder {
     /**
      * Add a recipient in the copy section.
      *
-     * @param cc
-     *            the recipient
+     * @param cc the recipient
      * @return this
      */
     public EmailBuilder addCc(String cc) {
@@ -123,10 +114,8 @@ public class EmailBuilder {
     /**
      * Include an inline attachment. Used with images.
      *
-     * @param contentId
-     *            the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
-     * @param fileName
-     *            the path of the file
+     * @param contentId the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
+     * @param fileName  the path of the file
      * @return this
      */
     public EmailBuilder addInlineAttachmentFromFile(String contentId, String fileName) {
@@ -137,10 +126,8 @@ public class EmailBuilder {
     /**
      * Include an inline attachment. Used with images.
      *
-     * @param contentId
-     *            the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
-     * @param resource
-     *            the path of the resource
+     * @param contentId the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
+     * @param resource  the path of the resource
      * @return this
      */
     public EmailBuilder addInlineAttachmentFromResource(String contentId, String resource) {
@@ -151,10 +138,8 @@ public class EmailBuilder {
     /**
      * Include an inline attachment. Used with images. Warning: the content of the input stream is first loaded into memory since JavaMail needs to be able to replay it.
      *
-     * @param contentId
-     *            the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
-     * @param inputStream
-     *            the input stream
+     * @param contentId   the content id to use. This is the "Content-ID" header in the body part. Can be used in HTML source with src="cid:theId"
+     * @param inputStream the input stream
      * @return this
      */
     public EmailBuilder addInlineAttachmentFromStream(String contentId, InputStream inputStream) {
@@ -165,8 +150,7 @@ public class EmailBuilder {
     /**
      * Add a recipient in the TO section.
      *
-     * @param to
-     *            the recipient
+     * @param to the recipient
      * @return this
      */
     public EmailBuilder addTo(String to) {
@@ -258,8 +242,7 @@ public class EmailBuilder {
     /**
      * Take an html file and use it as the body of the email.
      *
-     * @param filename
-     *            the full path of the file
+     * @param filename the full path of the file
      * @return this
      */
     public EmailBuilder setBodyHtmlFromFile(String filename) {
@@ -273,10 +256,8 @@ public class EmailBuilder {
     /**
      * Take an html Freemarker template and use it as the body of the email.
      *
-     * @param resource
-     *            the absolute resource to open
-     * @param model
-     *            the variables available in the templates
+     * @param resource the absolute resource to open
+     * @param model    the variables available in the templates
      * @return this
      */
     public EmailBuilder setBodyHtmlFromFreemarker(String resource, Map<String, ?> model) {
@@ -286,8 +267,7 @@ public class EmailBuilder {
     /**
      * Take an html resource file and use it as the body of the email.
      *
-     * @param resource
-     *            the absolute resource to open
+     * @param resource the absolute resource to open
      * @return this
      */
     public EmailBuilder setBodyHtmlFromResource(String resource) {
@@ -297,10 +277,8 @@ public class EmailBuilder {
     /**
      * Take an html resource file and use it as the body of the email.
      *
-     * @param resource
-     *            the resource to open
-     * @param context
-     *            the context class to use relative path
+     * @param resource the resource to open
+     * @param context  the context class to use relative path
      * @return this
      */
     public EmailBuilder setBodyHtmlFromResource(String resource, Class<?> context) {
@@ -310,8 +288,7 @@ public class EmailBuilder {
     /**
      * Take an html String and use it as the body of the email.
      *
-     * @param body
-     *            the html text
+     * @param body the html text
      * @return this
      */
     public EmailBuilder setBodyHtmlFromString(String body) {
@@ -323,8 +300,7 @@ public class EmailBuilder {
     /**
      * Take a text file and use it as the body of the email.
      *
-     * @param filename
-     *            the full path of the file
+     * @param filename the full path of the file
      * @return this
      */
     public EmailBuilder setBodyTextFromFile(String filename) {
@@ -338,10 +314,8 @@ public class EmailBuilder {
     /**
      * Take a Freemarker template and use it as the body of the email.
      *
-     * @param resource
-     *            the path of the resource
-     * @param model
-     *            the variables available in the templates
+     * @param resource the path of the resource
+     * @param model    the variables available in the templates
      * @return this
      */
     public EmailBuilder setBodyTextFromFreemarker(String resource, Map<String, ?> model) {
@@ -351,8 +325,7 @@ public class EmailBuilder {
     /**
      * Take a text resource file and use it as the body of the email.
      *
-     * @param resource
-     *            the absolute resource to open
+     * @param resource the absolute resource to open
      * @return this
      */
     public EmailBuilder setBodyTextFromResource(String resource) {
@@ -362,10 +335,8 @@ public class EmailBuilder {
     /**
      * Take a text resource file and use it as the body of the email.
      *
-     * @param resource
-     *            the resource to open
-     * @param context
-     *            the context class to use relative path
+     * @param resource the resource to open
+     * @param context  the context class to use relative path
      * @return this
      */
     public EmailBuilder setBodyTextFromResource(String resource, Class<?> context) {
@@ -375,8 +346,7 @@ public class EmailBuilder {
     /**
      * Take a text String and use it as the body of the email.
      *
-     * @param body
-     *            the text
+     * @param body the text
      * @return this
      */
     public EmailBuilder setBodyTextFromString(String body) {
@@ -388,8 +358,7 @@ public class EmailBuilder {
     /**
      * Set the email sender.
      *
-     * @param from
-     *            the sender
+     * @param from the sender
      * @return this
      */
     public EmailBuilder setFrom(String from) {
@@ -400,8 +369,7 @@ public class EmailBuilder {
     /**
      * Set the subject of the email.
      *
-     * @param subject
-     *            the subject
+     * @param subject the subject
      * @return this
      */
     public EmailBuilder setSubject(String subject) {

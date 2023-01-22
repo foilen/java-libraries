@@ -8,13 +8,13 @@
  */
 package com.foilen.smalltools.email;
 
-import javax.mail.internet.MimeMessage;
-
+import com.foilen.smalltools.exception.SmallToolsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import com.foilen.smalltools.exception.SmallToolsException;
+import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A service to help sending all kinds of email. You can quickly send an html or text email or take the time to use the {@link EmailBuilder} that gives you access to all advanced functionnalities
@@ -30,7 +30,7 @@ public class EmailServiceSpring implements EmailService {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
             helper.setFrom(emailBuilder.getFrom());
             for (String to : emailBuilder.getTos()) {
                 helper.addTo(to);
