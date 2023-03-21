@@ -8,13 +8,13 @@
  */
 package com.foilen.smalltools.tools;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.thread.ThreadList;
+
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.concurrent.ThreadFactory;
 import java.util.function.Consumer;
-
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.thread.ThreadList;
 
 /**
  * Some common methods for threads.
@@ -40,8 +40,7 @@ public final class ThreadTools {
     /**
      * Create a thread factory that is configured as daemon threads.
      *
-     * @param consumer
-     *            the consumer to configure more the thread
+     * @param consumer the consumer to configure more the thread
      * @return the thread factory
      */
     public static ThreadFactory daemonThreadFactory(Consumer<Thread> consumer) {
@@ -59,8 +58,7 @@ public final class ThreadTools {
     /**
      * Check the current stack and return the name of the highest method in the stack from the desired class.
      *
-     * @param onClass
-     *            the class to check.
+     * @param onClass the class to check.
      * @return the method's name
      */
     public static Optional<String> getStackMethodName(Class<?> onClass) {
@@ -90,7 +88,6 @@ public final class ThreadTools {
      * threadNameStateTool.revert();
      * </pre>
      *
-     *
      * @return the thread changer
      */
     public static ThreadNameStateTool nameThread() {
@@ -111,8 +108,7 @@ public final class ThreadTools {
     /**
      * Write the stack trace to STDOUT.
      *
-     * @param stackTraceElements
-     *            the stach
+     * @param stackTraceElements the stach
      */
     public static void printStackTrace(StackTraceElement[] stackTraceElements) {
         for (StackTraceElement stackTraceElement : stackTraceElements) {
@@ -123,8 +119,7 @@ public final class ThreadTools {
     /**
      * Write the stack trace of the requested thread to STDOUT.
      *
-     * @param thread
-     *            the thread to dump
+     * @param thread the thread to dump
      */
     public static void printStackTrace(Thread thread) {
         printStackTrace(thread.getStackTrace());
@@ -133,8 +128,7 @@ public final class ThreadTools {
     /**
      * Wait for the specified amount of time.
      *
-     * @param millis
-     *            time in milliseconds
+     * @param millis time in milliseconds
      */
     public static void sleep(long millis) {
         try {
@@ -144,6 +138,13 @@ public final class ThreadTools {
         }
     }
 
+    /**
+     * Start multiple threads.
+     *
+     * @param isDaemon  if the threads should be daemon
+     * @param runnables the runnables to start
+     * @return the list of threads
+     */
     public static ThreadList startMultipleThreads(boolean isDaemon, Runnable... runnables) {
         ThreadList threadList = new ThreadList();
         threadList.addAll(runnables);

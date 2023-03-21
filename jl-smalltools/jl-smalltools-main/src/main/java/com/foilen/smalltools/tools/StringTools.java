@@ -8,15 +8,16 @@
  */
 package com.foilen.smalltools.tools;
 
+/**
+ * Tools to manipulate Strings.
+ */
 public class StringTools {
 
     /**
      * Compare both Strings, not crashing for nulls..
      *
-     * @param first
-     *            the first string
-     * @param second
-     *            the second string
+     * @param first  the first string
+     * @param second the second string
      * @return the comparison result
      */
     public static int safeComparisonNullFirst(String first, String second) {
@@ -36,10 +37,8 @@ public class StringTools {
     /**
      * Compare both Strings, not crashing for nulls..
      *
-     * @param first
-     *            the first string
-     * @param second
-     *            the second string
+     * @param first  the first string
+     * @param second the second string
      * @return the comparison result
      */
     public static int safeComparisonNullLast(String first, String second) {
@@ -59,10 +58,8 @@ public class StringTools {
     /**
      * Tells if both are equals, not crashing for nulls.
      *
-     * @param first
-     *            the first string
-     * @param second
-     *            the second string
+     * @param first  the first string
+     * @param second the second string
      * @return true if equals
      */
     public static boolean safeEquals(String first, String second) {

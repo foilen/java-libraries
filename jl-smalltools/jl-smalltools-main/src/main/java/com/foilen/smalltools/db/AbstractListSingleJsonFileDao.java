@@ -8,6 +8,14 @@
  */
 package com.foilen.smalltools.db;
 
+import com.foilen.smalltools.hash.HashMd5sum;
+import com.foilen.smalltools.tools.AbstractBasics;
+import com.foilen.smalltools.tools.FileTools;
+import com.foilen.smalltools.tools.JsonTools;
+import com.foilen.smalltools.tools.StringTools;
+import com.foilen.smalltools.trigger.SmoothTrigger;
+import jakarta.annotation.PostConstruct;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,15 +26,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.annotation.PostConstruct;
-
-import com.foilen.smalltools.hash.HashMd5sum;
-import com.foilen.smalltools.tools.AbstractBasics;
-import com.foilen.smalltools.tools.FileTools;
-import com.foilen.smalltools.tools.JsonTools;
-import com.foilen.smalltools.tools.StringTools;
-import com.foilen.smalltools.trigger.SmoothTrigger;
 
 /**
  * <p>
@@ -47,7 +46,7 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * <p>
  * Every actions are done in a cached in-memory list of entities to ensure to not over-use the disk for reading.
  * </p>
- *
+ * <p>
  * Usage:
  * <ol>
  * <li>Create your entity</li>
@@ -138,6 +137,9 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     private String previousMd5sum;
     private List<T> cachedEntities;
 
+    /**
+     * What to do when needing to save to the file.
+     */
     protected Runnable saveToFile = () -> {
 
         String cachedMd5sum = HashMd5sum.hashString(JsonTools.prettyPrint(cachedEntities));
@@ -166,8 +168,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Add multiple entities. Could add an item with the same key as another.
      *
-     * @param entities
-     *            the entities
+     * @param entities the entities
      */
     public synchronized void add(Iterable<T> entities) {
         entities.forEach(it -> add(it));
@@ -176,8 +177,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Add an entity. Could add an item with the same key as another.
      *
-     * @param entity
-     *            the entity
+     * @param entity the entity
      */
     public synchronized void add(T entity) {
         cachedEntities.add(JsonTools.clone(entity));
@@ -196,8 +196,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Delete all the entities with the specified key.
      *
-     * @param key
-     *            the key
+     * @param key the key
      * @return true if at least one was deleted
      */
     public synchronized boolean delete(K key) {
@@ -207,8 +206,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Delete some entities.
      *
-     * @param predicate
-     *            a function that returns true when the entity must be deleted.
+     * @param predicate a function that returns true when the entity must be deleted.
      * @return the deleted count
      */
     public synchronized int delete(Predicate<? super T> predicate) {
@@ -242,8 +240,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Find all entities that satisfies the predicate. All returned entities are clones (modifying them won't change their values in this db).
      *
-     * @param predicate
-     *            the predicate
+     * @param predicate the predicate
      * @return the list
      */
     public synchronized List<T> findAllAsList(Predicate<? super T> predicate) {
@@ -262,8 +259,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Find all entities that satisfies the predicate. All returned entities are clones (modifying them won't change their values in this db).
      *
-     * @param predicate
-     *            the predicate
+     * @param predicate the predicate
      * @return the stream
      */
     public synchronized Stream<T> findAllAsStream(Predicate<? super T> predicate) {
@@ -273,8 +269,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Find one entity that is of the specified key. The returned entity is a clone (modifying it won't change its value in this db).
      *
-     * @param key
-     *            the key
+     * @param key the key
      * @return the entity
      */
     public synchronized Optional<T> findOne(K key) {
@@ -284,8 +279,7 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Find one entity that satisfies the predicate. The returned entity is a clone (modifying it won't change its value in this db).
      *
-     * @param predicate
-     *            the predicate
+     * @param predicate the predicate
      * @return the entity
      */
     public synchronized Optional<T> findOne(Predicate<? super T> predicate) {
@@ -333,10 +327,8 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Tell if an entity's key is the one specified.
      *
-     * @param key
-     *            the key
-     * @param entity
-     *            the entity to check
+     * @param key    the key
+     * @param entity the entity to check
      * @return true if that is the right entity
      */
     protected abstract boolean isEntity(K key, T entity);
@@ -365,10 +357,8 @@ public abstract class AbstractListSingleJsonFileDao<T, K> extends AbstractBasics
     /**
      * Remove all entities with the specified key and add the entity.
      *
-     * @param key
-     *            the key
-     * @param entity
-     *            the entity to add
+     * @param key    the key
+     * @param entity the entity to add
      */
     public synchronized void update(K key, T entity) {
         delete(key);

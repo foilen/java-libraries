@@ -8,6 +8,20 @@
  */
 package com.foilen.smalltools.jsch;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.function.ConsumerWithException;
+import com.foilen.smalltools.shell.ExecResultInFiles;
+import com.foilen.smalltools.shell.ExecResultInMemory;
+import com.foilen.smalltools.shell.ExecResultOnlyExitCode;
+import com.foilen.smalltools.tools.AbstractBasics;
+import com.foilen.smalltools.tools.FileTools;
+import com.foilen.smalltools.tools.StreamsTools;
+import com.foilen.smalltools.tools.ThreadTools;
+import com.jcraft.jsch.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,28 +33,9 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
-
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.function.ConsumerWithException;
-import com.foilen.smalltools.shell.ExecResultInFiles;
-import com.foilen.smalltools.shell.ExecResultInMemory;
-import com.foilen.smalltools.shell.ExecResultOnlyExitCode;
-import com.foilen.smalltools.tools.AbstractBasics;
-import com.foilen.smalltools.tools.FileTools;
-import com.foilen.smalltools.tools.StreamsTools;
-import com.foilen.smalltools.tools.ThreadTools;
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
-
 /**
  * A tool to help executing SSH commands and use SFTP.
- *
+ * <p>
  * Some usage:
  *
  * <pre>
@@ -80,7 +75,7 @@ import com.jcraft.jsch.Session;
  *     sftp.put(file.getAbsolutePath(), "hello.txt");
  *
  *     System.out.println("Listing: ");
- *     Vector<LsEntry> files = sftp.ls(".");
+ *     Vector&lt;LsEntry&gt; files = sftp.ls(".");
  *     files.forEach(it -&gt; {
  *         System.out.println("\t" + JsonTools.compactPrint(it));
  *     });
@@ -111,8 +106,7 @@ public class JSchTools extends AbstractBasics {
     /**
      * Check if it is possible to log on the remote machine.
      *
-     * @param sshLogin
-     *            the parameters when logging in
+     * @param sshLogin the parameters when logging in
      * @return true if can log in
      */
     public static boolean canLogin(SshLogin sshLogin) {
@@ -145,14 +139,11 @@ public class JSchTools extends AbstractBasics {
     /**
      * Get hold of any Channel. When done, it will be disconnected automatically.
      *
-     * @param channelType
-     *            the type of the channel. You can view the list in {@link Channel}
-     * @param channelClass
-     *            the class of the channel
-     * @param configureChannel
-     *            any configuration needed before connecting the channel
-     * @param consumer
-     *            the SFTP Channel consumer on which you can do operations
+     * @param channelType      the type of the channel. You can view the list in {@link Channel}
+     * @param channelClass     the class of the channel
+     * @param configureChannel any configuration needed before connecting the channel
+     * @param consumer         the SFTP Channel consumer on which you can do operations
+     * @param <C>              the type of the channel
      */
     @SuppressWarnings("unchecked")
     public <C extends Channel> void createAndUseChannel(String channelType, Class<C> channelClass, Consumer<C> configureChannel, ConsumerWithException<C, Exception> consumer) {
@@ -179,8 +170,7 @@ public class JSchTools extends AbstractBasics {
     /**
      * Get hold of an SFTP Channel. When done, it will be disconnected automatically.
      *
-     * @param consumer
-     *            the SFTP Channel consumer on which you can do operations
+     * @param consumer the SFTP Channel consumer on which you can do operations
      */
     public void createAndUseSftpChannel(ConsumerWithException<ChannelSftp, Exception> consumer) {
         createAndUseChannel("sftp", ChannelSftp.class, channel -> {
@@ -227,8 +217,7 @@ public class JSchTools extends AbstractBasics {
      * Execute a command and store the stdout and stderr in files. This is good if the output is expected to be big. Then, better stream per line or use the input stream (not retrieving the full
      * String else it will be loaded in memory)
      *
-     * @param command
-     *            the command and arguments
+     * @param command the command and arguments
      * @return the execution's result
      */
     public ExecResultInFiles executeInFile(String command) {
@@ -256,8 +245,7 @@ public class JSchTools extends AbstractBasics {
     /**
      * Execute a command and display the stdout and stderr in the logs.
      *
-     * @param command
-     *            the command and arguments
+     * @param command the command and arguments
      * @return the execution's result, but only the exit code is retrievable
      */
     public ExecResultOnlyExitCode executeInLogger(String command) {
@@ -273,8 +261,7 @@ public class JSchTools extends AbstractBasics {
     /**
      * Execute a command and store the stdout and stderr in memory. This is good if the output is expected to be small.
      *
-     * @param command
-     *            the command and arguments
+     * @param command the command and arguments
      * @return the execution's result
      */
     public ExecResultInMemory executeInMemory(String command) {
@@ -289,8 +276,9 @@ public class JSchTools extends AbstractBasics {
     /**
      * Execute a command and send the stdout and stderr in output streams.
      *
-     * @param command
-     *            the command and arguments
+     * @param command the command and arguments
+     * @param out     the output stream for stdout
+     * @param err     the output stream for stderr
      * @return the execution's result, but only the exit code is retrievable
      */
     public ExecResultOnlyExitCode executeOutputStreams(String command, OutputStream out, OutputStream err) {
@@ -302,8 +290,7 @@ public class JSchTools extends AbstractBasics {
     /**
      * Disconnect any previous connection and log on the remote machine.
      *
-     * @param sshLogin
-     *            the parameters when logging in
+     * @param sshLogin the parameters when logging in
      * @return this
      */
     public JSchTools login(SshLogin sshLogin) {

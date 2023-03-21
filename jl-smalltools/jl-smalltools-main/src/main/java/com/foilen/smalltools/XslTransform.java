@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -26,7 +27,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
-import com.foilen.smalltools.tools.CharsetTools;
 
 /**
  * To transform an XML using XSL.
@@ -118,7 +118,7 @@ public class XslTransform {
      * @return this
      */
     public XslTransform fromText(String xmlContent) {
-        return fromInputStream(new ByteArrayInputStream(xmlContent.getBytes(CharsetTools.UTF_8)));
+        return fromInputStream(new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8)));
     }
 
     /**
@@ -299,7 +299,7 @@ public class XslTransform {
      * @return this
      */
     public XslTransform usingText(String xslContent) {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(xslContent.getBytes(CharsetTools.UTF_8));
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(xslContent.getBytes(StandardCharsets.UTF_8));
         return usingInputStream(inputStream);
     }
 

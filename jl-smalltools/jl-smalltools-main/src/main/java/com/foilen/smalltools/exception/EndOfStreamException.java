@@ -17,16 +17,35 @@ public class EndOfStreamException extends RuntimeException {
 
     private boolean corrupted;
 
+    /**
+     * Construct.
+     *
+     * @param corrupted if the stream was corrupted
+     * @param message   the message
+     */
     public EndOfStreamException(boolean corrupted, String message) {
         super(message);
         this.corrupted = corrupted;
     }
 
+    /**
+     * Construct.
+     *
+     * @param corrupted if the stream was corrupted
+     * @param message   the message
+     * @param cause     the cause
+     */
     public EndOfStreamException(boolean corrupted, String message, Throwable cause) {
         super(message, cause);
         this.corrupted = corrupted;
     }
 
+    /**
+     * Construct.
+     *
+     * @param corrupted if the stream was corrupted
+     * @param cause     the cause
+     */
     public EndOfStreamException(boolean corrupted, Throwable cause) {
         super(cause);
         this.corrupted = corrupted;

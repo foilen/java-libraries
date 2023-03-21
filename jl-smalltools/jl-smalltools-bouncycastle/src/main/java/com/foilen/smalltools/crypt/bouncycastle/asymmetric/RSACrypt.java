@@ -54,7 +54,7 @@ import com.foilen.smalltools.tools.CollectionsTools;
  * <pre>
  * // Prepare the message
  * String message = &quot;Hello World&quot;;
- * byte[] data = message.getBytes(CharsetTools.UTF_8);
+ * byte[] data = message.getBytes(StandardCharsets.UTF_8);
  *
  * // Encrypt
  * AsymmetricKeys keyPair = crypt.generateKeyPair(2048);
@@ -66,6 +66,9 @@ import com.foilen.smalltools.tools.CollectionsTools;
  */
 public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
 
+    /**
+     * An instance of the crypt.
+     */
     public static final RSACrypt RSA_CRYPT = new RSACrypt();
 
     @Override

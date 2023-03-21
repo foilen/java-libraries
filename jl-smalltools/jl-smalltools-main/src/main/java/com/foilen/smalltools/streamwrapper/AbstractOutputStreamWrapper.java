@@ -16,8 +16,16 @@ import java.io.OutputStream;
  */
 public abstract class AbstractOutputStreamWrapper extends OutputStream {
 
+    /**
+     * The wrapped output stream.
+     */
     protected OutputStream wrappedOutputStream;
 
+    /**
+     * Wrap an output stream to modify its behavior.
+     *
+     * @param wrappedOutputStream the wrapped output stream
+     */
     public AbstractOutputStreamWrapper(OutputStream wrappedOutputStream) {
         this.wrappedOutputStream = wrappedOutputStream;
     }

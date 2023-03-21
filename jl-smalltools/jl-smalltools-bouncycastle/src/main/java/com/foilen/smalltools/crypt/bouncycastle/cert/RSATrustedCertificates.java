@@ -8,23 +8,16 @@
  */
 package com.foilen.smalltools.crypt.bouncycastle.cert;
 
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.CloseableTools;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.CloseableTools;
+import java.io.FileReader;
+import java.util.*;
 
 /**
  * List multiple certificates from different sources that you trust and use the validation to check a certificate. All the certificates must be valid in time.
@@ -49,6 +42,12 @@ public class RSATrustedCertificates {
     private Map<X500Name, List<RSACertificate>> trustedCertificatesBySubject = new HashMap<>();
     private Map<X500Name, List<RSACertificate>> intermediateCertificatesBySubject = new HashMap<>();
 
+    /**
+     * Add a trusted intermediate certificate.
+     *
+     * @param certificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addIntermediateCertificate(Certificate... certificates) {
         for (Certificate certificate : certificates) {
             addIntermediateRsaCertificate(new RSACertificate(new X509CertificateHolder(certificate)));
@@ -56,6 +55,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted intermediate certificate.
+     *
+     * @param certificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addIntermediateCertificate(Collection<Certificate> certificates) {
         for (Certificate certificate : certificates) {
             addIntermediateRsaCertificate(new RSACertificate(new X509CertificateHolder(certificate)));
@@ -63,6 +68,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted intermediate certificate.
+     *
+     * @param x509CertificateHolders the certificates
+     * @return this
+     */
     public RSATrustedCertificates addIntermediateCertificateHolder(Collection<X509CertificateHolder> x509CertificateHolders) {
         for (X509CertificateHolder x509CertificateHolder : x509CertificateHolders) {
             addIntermediateRsaCertificate(new RSACertificate(x509CertificateHolder));
@@ -70,6 +81,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted intermediate certificate.
+     *
+     * @param x509CertificateHolders the certificates
+     * @return this
+     */
     public RSATrustedCertificates addIntermediateCertificateHolder(X509CertificateHolder... x509CertificateHolders) {
         for (X509CertificateHolder x509CertificateHolder : x509CertificateHolders) {
             addIntermediateRsaCertificate(new RSACertificate(x509CertificateHolder));
@@ -80,8 +97,7 @@ public class RSATrustedCertificates {
     /**
      * Load all the certificates from a pem file.
      *
-     * @param filePath
-     *            the full path to the file
+     * @param filePath the full path to the file
      * @return this
      */
     public RSATrustedCertificates addIntermediateFromPemFile(String filePath) {
@@ -89,6 +105,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted intermediate certificate.
+     *
+     * @param rsaCertificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addIntermediateRsaCertificate(Collection<RSACertificate> rsaCertificates) {
         for (RSACertificate rsaCertificate : rsaCertificates) {
             addToList(intermediateCertificatesBySubject, rsaCertificate);
@@ -97,6 +119,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted intermediate certificate.
+     *
+     * @param rsaCertificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addIntermediateRsaCertificate(RSACertificate... rsaCertificates) {
         for (RSACertificate rsaCertificate : rsaCertificates) {
             addToList(intermediateCertificatesBySubject, rsaCertificate);
@@ -140,6 +168,12 @@ public class RSATrustedCertificates {
 
     }
 
+    /**
+     * Add a trusted certificate.
+     *
+     * @param certificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addTrustedCertificate(Certificate... certificates) {
         for (Certificate certificate : certificates) {
             addTrustedRsaCertificate(new RSACertificate(new X509CertificateHolder(certificate)));
@@ -147,6 +181,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted certificate.
+     *
+     * @param certificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addTrustedCertificate(Collection<Certificate> certificates) {
         for (Certificate certificate : certificates) {
             addTrustedRsaCertificate(new RSACertificate(new X509CertificateHolder(certificate)));
@@ -154,6 +194,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted certificate.
+     *
+     * @param x509CertificateHolders the certificates
+     * @return this
+     */
     public RSATrustedCertificates addTrustedCertificateHolder(Collection<X509CertificateHolder> x509CertificateHolders) {
         for (X509CertificateHolder x509CertificateHolder : x509CertificateHolders) {
             addTrustedRsaCertificate(new RSACertificate(x509CertificateHolder));
@@ -161,6 +207,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted certificate.
+     *
+     * @param x509CertificateHolders the certificates
+     * @return this
+     */
     public RSATrustedCertificates addTrustedCertificateHolder(X509CertificateHolder... x509CertificateHolders) {
         for (X509CertificateHolder x509CertificateHolder : x509CertificateHolders) {
             addTrustedRsaCertificate(new RSACertificate(x509CertificateHolder));
@@ -171,8 +223,7 @@ public class RSATrustedCertificates {
     /**
      * Load all the certificates from a pem file.
      *
-     * @param filePath
-     *            the full path to the file
+     * @param filePath the full path to the file
      * @return this
      */
     public RSATrustedCertificates addTrustedFromPemFile(String filePath) {
@@ -180,6 +231,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted certificate.
+     *
+     * @param rsaCertificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addTrustedRsaCertificate(Collection<RSACertificate> rsaCertificates) {
         for (RSACertificate rsaCertificate : rsaCertificates) {
             addToList(trustedCertificatesBySubject, rsaCertificate);
@@ -188,6 +245,12 @@ public class RSATrustedCertificates {
         return this;
     }
 
+    /**
+     * Add a trusted certificate.
+     *
+     * @param rsaCertificates the certificates
+     * @return this
+     */
     public RSATrustedCertificates addTrustedRsaCertificate(RSACertificate... rsaCertificates) {
         for (RSACertificate rsaCertificate : rsaCertificates) {
             addToList(trustedCertificatesBySubject, rsaCertificate);
@@ -199,10 +262,8 @@ public class RSATrustedCertificates {
     /**
      * Find the certificate that signed the certificate.
      *
-     * @param signedCertificate
-     *            the certificate that should be signed by it
-     * @param potentialSigners
-     *            the certificates that might be the signers
+     * @param signedCertificate the certificate that should be signed by it
+     * @param potentialSigners  the certificates that might be the signers
      * @return the certificate that signed or null if none
      */
     private RSACertificate findValidSignature(RSACertificate signedCertificate, Collection<RSACertificate> potentialSigners) {
@@ -251,8 +312,7 @@ public class RSATrustedCertificates {
     /**
      * Check that the certificate has a path to any Trusted certificate (using the intermediates certificates if necessary). All the certificates must be in the valid time range.
      *
-     * @param rsaCertificate
-     *            the certificate to validate
+     * @param rsaCertificate the certificate to validate
      * @return true if is trusted
      */
     public boolean isTrusted(RSACertificate rsaCertificate) {
@@ -263,10 +323,8 @@ public class RSATrustedCertificates {
     /**
      * Check that the certificate has a path to any Trusted certificate (using the intermediates certificates if necessary). All the certificates must be in the valid time range.
      *
-     * @param rsaCertificate
-     *            the certificate to validate
-     * @param moreIntermediateCertificates
-     *            more intermediate certificates to use only to validate this one
+     * @param rsaCertificate               the certificate to validate
+     * @param moreIntermediateCertificates more intermediate certificates to use only to validate this one
      * @return true if is trusted
      */
     public boolean isTrusted(RSACertificate rsaCertificate, Collection<RSACertificate> moreIntermediateCertificates) {
@@ -302,10 +360,8 @@ public class RSATrustedCertificates {
     /**
      * Check that the certificate has a path to any Trusted certificate (using the intermediates certificates if necessary). All the certificates must be in the valid time range.
      *
-     * @param certificate
-     *            the certificate to validate
-     * @param moreIntermediateCertificates
-     *            more intermediate certificates to use only to validate this one
+     * @param certificate                  the certificate to validate
+     * @param moreIntermediateCertificates more intermediate certificates to use only to validate this one
      * @return true if is trusted
      */
     public boolean isTrusted(RSACertificate certificate, RSACertificate... moreIntermediateCertificates) {

@@ -8,22 +8,17 @@
  */
 package com.foilen.smalltools.db;
 
+import com.foilen.smalltools.hash.HashMd5sum;
+import com.foilen.smalltools.reflection.ReflectionTools;
+import com.foilen.smalltools.streamwrapper.RenamingOnCloseOutputStreamWrapper;
+import com.foilen.smalltools.tools.*;
+import com.foilen.smalltools.trigger.SmoothTrigger;
+import jakarta.annotation.PostConstruct;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
-
-import javax.annotation.PostConstruct;
-
-import com.foilen.smalltools.hash.HashMd5sum;
-import com.foilen.smalltools.reflection.ReflectionTools;
-import com.foilen.smalltools.streamwrapper.RenamingOnCloseOutputStreamWrapper;
-import com.foilen.smalltools.tools.AbstractBasics;
-import com.foilen.smalltools.tools.AssertTools;
-import com.foilen.smalltools.tools.FileTools;
-import com.foilen.smalltools.tools.JsonTools;
-import com.foilen.smalltools.tools.StringTools;
-import com.foilen.smalltools.trigger.SmoothTrigger;
 
 /**
  * <p>
@@ -43,7 +38,7 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * <p>
  * Every actions are done in a cached in-memory entity to ensure to not over-use the disk for reading.
  * </p>
- *
+ * <p>
  * Usage:
  * <ol>
  * <li>Create your entity</li>
@@ -134,6 +129,9 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
 
     private ReentrantLock transactionLock = new ReentrantLock();
 
+    /**
+     * What to do when needing to save to the file.
+     */
     protected Runnable saveToFile = () -> {
 
         String cachedMd5sum = HashMd5sum.hashString(JsonTools.prettyPrint(cached));
@@ -238,8 +236,7 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
     /**
      * Get the last saved entity and keep a lock on it for the execution block. Once the execution completed, it will save the entity unless an exception is thrown.
      *
-     * @param execution
-     *            what to execute in the transaction. It gets the entity as its parameter
+     * @param execution what to execute in the transaction. It gets the entity as its parameter
      */
     public void loadInTransaction(Consumer<T> execution) {
 
@@ -258,8 +255,7 @@ public abstract class AbstractSingleJsonFileDao<T> extends AbstractBasics {
     /**
      * Persist the entity.
      *
-     * @param entity
-     *            the entity
+     * @param entity the entity
      */
     public void save(T entity) {
         transactionLock.lock();

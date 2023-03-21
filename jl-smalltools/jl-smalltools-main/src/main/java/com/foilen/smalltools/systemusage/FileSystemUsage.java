@@ -21,10 +21,20 @@ public class FileSystemUsage {
     public static class FileSystemInfo {
         private File file;
 
+        /**
+         * The file system information of the partition.
+         *
+         * @param file the partition
+         */
         public FileSystemInfo(File file) {
             this.file = file;
         }
 
+        /**
+         * The file for that partition.
+         *
+         * @return the file
+         */
         public File getFile() {
             return file;
         }
@@ -100,6 +110,11 @@ public class FileSystemUsage {
         return result;
     }
 
+    /**
+     * To test the class.
+     *
+     * @param args ignored
+     */
     public static void main(String[] args) {
         for (FileSystemInfo fsi : getRootFileSystemInfos()) {
             System.out.println("Path: " + fsi.getFile().getAbsolutePath());

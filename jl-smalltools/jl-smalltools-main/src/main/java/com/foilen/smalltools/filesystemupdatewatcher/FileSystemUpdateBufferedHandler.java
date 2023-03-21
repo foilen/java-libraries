@@ -8,17 +8,17 @@
  */
 package com.foilen.smalltools.filesystemupdatewatcher;
 
+import com.foilen.smalltools.trigger.SmoothTrigger;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.foilen.smalltools.trigger.SmoothTrigger;
-
 /**
  * This is an handler that will get the notifications for a few seconds and then trigger back a summary (e.g if a file is changed 10 times in 1 second, you will be notified only once instead of 10
  * times).
- *
+ * <p>
  * The buffering:
  * <ul>
  * <li>When an event is received, 2 timers start: the total and the one from last event.</li>
@@ -26,9 +26,9 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * <li>When the timer from last event reached delayAfterLastEventMs, the summary is fired.</li>
  * <li>If there are continuously new events, when the total timer reaches maxDelayMs, the summary is fired.</li>
  * </ul>
- *
+ * <p>
  * To be more efficient, the summaries are not necessarily fired in the same order for different files.
- *
+ * <p>
  * The summary about the same file:
  * <ul>
  * <li>Many times the same event = once that event</li>
@@ -37,7 +37,6 @@ import com.foilen.smalltools.trigger.SmoothTrigger;
  * <li>X Modified + 1 Deleted = 1 Deleted</li>
  * <li>1 Deleted + 1 Created = 1 Modified</li>
  * </ul>
- *
  */
 public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler {
 
@@ -56,14 +55,21 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
 
     }
 
-    private static FileState[] matrixExisted = { FileState.MODIFIED, FileState.MODIFIED, FileState.DELETED };
-    private static FileState[] matrixNotExisted = { FileState.CREATED, FileState.CREATED, null };
+    private static FileState[] matrixExisted = {FileState.MODIFIED, FileState.MODIFIED, FileState.DELETED};
+    private static FileState[] matrixNotExisted = {FileState.CREATED, FileState.CREATED, null};
 
     // Running state
     private SmoothTrigger smoothTrigger;
     private Object lock = new Object();
     private Map<File, FileStatus> buffer = new HashMap<>();
 
+    /**
+     * Create a buffered handler.
+     *
+     * @param wrappedHandler        the handler to wrap
+     * @param delayAfterLastEventMs the delay after the last event to trigger the handler
+     * @param maxDelayMs            the maximum delay to trigger the handler
+     */
     public FileSystemUpdateBufferedHandler(FileSystemUpdateHandler wrappedHandler, long delayAfterLastEventMs, long maxDelayMs) {
 
         smoothTrigger = new SmoothTrigger(() -> {
@@ -91,17 +97,17 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
                 }
 
                 switch (fileState) {
-                case CREATED:
-                    wrappedHandler.created(file);
-                    break;
-                case DELETED:
-                    wrappedHandler.deleted(file);
-                    break;
-                case MODIFIED:
-                    wrappedHandler.modified(file);
-                    break;
-                default:
-                    break;
+                    case CREATED:
+                        wrappedHandler.created(file);
+                        break;
+                    case DELETED:
+                        wrappedHandler.deleted(file);
+                        break;
+                    case MODIFIED:
+                        wrappedHandler.modified(file);
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -140,7 +146,6 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
     @Override
     public void deleted(File file) {
         bufferEvent(file, true, FileState.DELETED);
-
     }
 
     @Override

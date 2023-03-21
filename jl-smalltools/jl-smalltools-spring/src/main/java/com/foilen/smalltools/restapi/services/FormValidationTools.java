@@ -24,7 +24,14 @@ public class FormValidationTools {
     private static final Pattern alphaNum = Pattern.compile("[A-Za-z0-9]*");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$");
 
-    public static void validateAlphaNumExtra(FormResult formResult, String fieldName, String fieldValue) {
+    /**
+     * Validate that the value is alphanumeric.
+     *
+     * @param formResult the result to add errors to
+     * @param fieldName  the name of the field
+     * @param fieldValue the value of the field
+     */
+    public static void validateAlphaNum(FormResult formResult, String fieldName, String fieldValue) {
 
         if (Strings.isNullOrEmpty(fieldValue)) {
             return;
@@ -36,6 +43,13 @@ public class FormValidationTools {
 
     }
 
+    /**
+     * Validate that at least one of the values is not null or empty.
+     *
+     * @param formResult  the result to add errors to
+     * @param fieldNames  the names of the fields
+     * @param fieldValues the values of the fields
+     */
     public static void validateAtLeastOneManadatory(FormResult formResult, String[] fieldNames, String[] fieldValues) {
 
         for (String fieldValue : fieldValues) {
@@ -50,6 +64,13 @@ public class FormValidationTools {
 
     }
 
+    /**
+     * Validate that the value is a date.
+     *
+     * @param formResult the result to add errors to
+     * @param fieldName  the name of the field
+     * @param date       the value of the field
+     */
     public static void validateDateOnly(FormResult formResult, String fieldName, String date) {
 
         if (Strings.isNullOrEmpty(date)) {
@@ -69,6 +90,13 @@ public class FormValidationTools {
 
     }
 
+    /**
+     * Validate that the value is an email.
+     *
+     * @param formResult the result to add errors to
+     * @param fieldName  the name of the field
+     * @param fieldValue the value of the field
+     */
     public static void validateEmail(FormResult formResult, String fieldName, String fieldValue) {
 
         if (Strings.isNullOrEmpty(fieldValue)) {
@@ -80,6 +108,13 @@ public class FormValidationTools {
         }
     }
 
+    /**
+     * Validate that the value is present.
+     *
+     * @param formResult the result to add errors to
+     * @param fieldName  the name of the field
+     * @param fieldValue the value of the field
+     */
     public static void validateMandatory(FormResult formResult, String fieldName, String fieldValue) {
 
         if (Strings.isNullOrEmpty(fieldValue)) {

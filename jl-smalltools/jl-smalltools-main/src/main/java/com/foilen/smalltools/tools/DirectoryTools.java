@@ -11,6 +11,7 @@ package com.foilen.smalltools.tools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -477,7 +478,7 @@ public final class DirectoryTools {
         }
 
         // Get the bytes
-        byte[] startBytes = startText.getBytes(CharsetTools.UTF_8);
+        byte[] startBytes = startText.getBytes(StandardCharsets.UTF_8);
 
         // Scan the directory
         List<String> result = new ArrayList<>();

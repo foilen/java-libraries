@@ -16,9 +16,18 @@ public class Tuple2<A, B> {
     private A a;
     private B b;
 
+    /**
+     * Create empty.
+     */
     public Tuple2() {
     }
 
+    /**
+     * Create with values.
+     *
+     * @param a the first value
+     * @param b the second value
+     */
     public Tuple2(A a, B b) {
         this.a = a;
         this.b = b;
@@ -54,10 +63,20 @@ public class Tuple2<A, B> {
         return true;
     }
 
+    /**
+     * Get the first value.
+     *
+     * @return the first value
+     */
     public A getA() {
         return a;
     }
 
+    /**
+     * Get the second value.
+     *
+     * @return the second value
+     */
     public B getB() {
         return b;
     }
@@ -71,10 +90,20 @@ public class Tuple2<A, B> {
         return result;
     }
 
+    /**
+     * Set the first value.
+     *
+     * @param a the first value
+     */
     public void setA(A a) {
         this.a = a;
     }
 
+    /**
+     * Set the second value.
+     *
+     * @param b the second value
+     */
     public void setB(B b) {
         this.b = b;
     }

@@ -10,6 +10,8 @@ package com.foilen.smalltools.tools;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Some tools to execute commands in the console.
  */
@@ -76,7 +78,7 @@ public final class ConsoleTools {
             StreamsTools.flowStreamNonBlocking(process.getErrorStream(), System.err);
 
             // Send load
-            process.getOutputStream().write(inputText.getBytes(CharsetTools.UTF_8));
+            process.getOutputStream().write(inputText.getBytes(StandardCharsets.UTF_8));
             process.getOutputStream().close();
 
             process.waitFor();

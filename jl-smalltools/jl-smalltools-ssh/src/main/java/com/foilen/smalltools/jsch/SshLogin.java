@@ -8,13 +8,6 @@
  */
 package com.foilen.smalltools.jsch;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-
 import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AbstractBasics;
@@ -24,6 +17,16 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+
+/**
+ * A class to help login to a SSH server.
+ */
 public class SshLogin extends AbstractBasics {
 
     private String hostname;
@@ -40,6 +43,12 @@ public class SshLogin extends AbstractBasics {
     private List<Consumer<JSch>> configureJschHooks = new ArrayList<>();
     private List<Consumer<Session>> configureSessionHooks = new ArrayList<>();
 
+    /**
+     * Where to log in.
+     *
+     * @param hostname the hostname
+     * @param username the username
+     */
     public SshLogin(String hostname, String username) {
         this.hostname = hostname;
         this.username = username;
@@ -56,8 +65,7 @@ public class SshLogin extends AbstractBasics {
     /**
      * Add a hook for configuring JSch.
      *
-     * @param hook
-     *            the hook
+     * @param hook the hook
      * @return this
      */
     public SshLogin addConfigureJschHook(Consumer<JSch> hook) {
@@ -68,8 +76,7 @@ public class SshLogin extends AbstractBasics {
     /**
      * Add a hook for configuring the session.
      *
-     * @param hook
-     *            the hook
+     * @param hook the hook
      * @return this
      */
     public SshLogin addConfigureSessionHook(Consumer<Session> hook) {
@@ -90,8 +97,7 @@ public class SshLogin extends AbstractBasics {
     /**
      * Configure before getting a session.
      *
-     * @param jSch
-     *            the jsch instance
+     * @param jSch the jsch instance
      */
     public void configure(JSch jSch) {
 
@@ -119,8 +125,7 @@ public class SshLogin extends AbstractBasics {
     /**
      * Configure before connecting the session.
      *
-     * @param session
-     *            the session instance
+     * @param session the session instance
      */
     public void configure(Session session) {
 
@@ -141,14 +146,29 @@ public class SshLogin extends AbstractBasics {
         configureSessionHooks.forEach(hook -> hook.accept(session));
     }
 
+    /**
+     * Get the hostname to connect to.
+     *
+     * @return the hostname
+     */
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * Get the port to connect to.
+     *
+     * @return the port
+     */
     public int getPort() {
         return port;
     }
 
+    /**
+     * Get the username to connect with.
+     *
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
@@ -163,11 +183,23 @@ public class SshLogin extends AbstractBasics {
         return this;
     }
 
+    /**
+     * Choose the hostname to connect to.
+     *
+     * @param hostname the hostname
+     * @return this
+     */
     public SshLogin setHostname(String hostname) {
         this.hostname = hostname;
         return this;
     }
 
+    /**
+     * Choose the username to connect with.
+     *
+     * @param username the username
+     * @return this
+     */
     public SshLogin setUsername(String username) {
         this.username = username;
         return this;
@@ -176,8 +208,7 @@ public class SshLogin extends AbstractBasics {
     /**
      * Choose the file with the known hosts keys.
      *
-     * @param knownHostsFile
-     *            the file
+     * @param knownHostsFile the file
      * @return this
      */
     public SshLogin useKnownHostsFile(String knownHostsFile) {
@@ -185,6 +216,12 @@ public class SshLogin extends AbstractBasics {
         return this;
     }
 
+    /**
+     * Choose the port to connect to.
+     *
+     * @param port the port
+     * @return this
+     */
     public SshLogin usePort(int port) {
         this.port = port;
         return this;
@@ -193,8 +230,7 @@ public class SshLogin extends AbstractBasics {
     /**
      * Set a password to use if no private key are working.
      *
-     * @param password
-     *            the password
+     * @param password the password
      * @return this
      */
     public SshLogin withPassword(String password) {
@@ -205,8 +241,7 @@ public class SshLogin extends AbstractBasics {
     /**
      * Add a keyfile to the list of available ones.
      *
-     * @param keyfile
-     *            the private key file
+     * @param keyfile the private key file
      * @return this
      */
     public SshLogin withPrivateKey(String keyfile) {

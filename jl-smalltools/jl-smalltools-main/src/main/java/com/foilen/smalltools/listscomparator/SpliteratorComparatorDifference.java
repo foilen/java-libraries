@@ -8,6 +8,10 @@
  */
 package com.foilen.smalltools.listscomparator;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AbstractBasics;
+import com.foilen.smalltools.tools.ExecutorsTools;
+
 import java.util.Comparator;
 import java.util.Spliterator;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -16,10 +20,11 @@ import java.util.concurrent.Semaphore;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.AbstractBasics;
-import com.foilen.smalltools.tools.ExecutorsTools;
-
+/**
+ * A spliterator that will compare two streams and return the differences.
+ *
+ * @param <T> the type of the objects
+ */
 public class SpliteratorComparatorDifference<T extends Comparable<T>> extends AbstractBasics implements Spliterator<ListsComparatorDifference<T>>, Runnable {
 
     private BlockingQueue<ListsComparatorDifference<T>> queue = new ArrayBlockingQueue<>(50);
@@ -30,6 +35,12 @@ public class SpliteratorComparatorDifference<T extends Comparable<T>> extends Ab
     private Stream<T> lefts;
     private Stream<T> rights;
 
+    /**
+     * Constructor.
+     *
+     * @param lefts  the left stream
+     * @param rights the right stream
+     */
     public SpliteratorComparatorDifference(Stream<T> lefts, Stream<T> rights) {
         this.lefts = lefts;
         this.rights = rights;

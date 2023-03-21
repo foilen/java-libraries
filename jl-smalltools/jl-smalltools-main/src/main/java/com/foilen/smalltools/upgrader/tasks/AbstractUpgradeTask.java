@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractUpgradeTask implements UpgradeTask {
 
+    /**
+     * The logger.
+     */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 }

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -29,7 +28,7 @@ public class EmailServiceSpring implements EmailService {
     public void sendEmail(EmailBuilder emailBuilder) {
 
         try {
-            MimeMessage message = mailSender.createMimeMessage();
+            var message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
             helper.setFrom(emailBuilder.getFrom());
             for (String to : emailBuilder.getTos()) {
@@ -64,7 +63,7 @@ public class EmailServiceSpring implements EmailService {
     public void sendHtmlEmail(String from, String to, String subject, String html) {
 
         try {
-            MimeMessage message = mailSender.createMimeMessage();
+            var message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(from);
             helper.setTo(to);
@@ -81,7 +80,7 @@ public class EmailServiceSpring implements EmailService {
     public void sendTextEmail(String from, String to, String subject, String text) {
 
         try {
-            MimeMessage message = mailSender.createMimeMessage();
+            var message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(from);
             helper.setTo(to);

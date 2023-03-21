@@ -21,6 +21,9 @@ public class MemoryUsageOsMxImpl implements MemoryUsageStrategy {
     private Method systemFreeMemory;
     private Method systemTotalMemory;
 
+    /**
+     * Constructor.
+     */
     public MemoryUsageOsMxImpl() {
         operatingSystemBean = ManagementFactory.getOperatingSystemMXBean();
 
@@ -33,8 +36,7 @@ public class MemoryUsageOsMxImpl implements MemoryUsageStrategy {
     /**
      * Call the method and return its value or null.
      *
-     * @param method
-     *            the method (also support null)
+     * @param method the method (also support null)
      * @return its value or null
      */
     private Object callMethod(Method method) {
@@ -49,10 +51,8 @@ public class MemoryUsageOsMxImpl implements MemoryUsageStrategy {
     /**
      * Return the method or null.
      *
-     * @param type
-     *            the class type
-     * @param name
-     *            the name of the method
+     * @param type the class type
+     * @param name the name of the method
      * @return the method or null
      */
     private Method getMethod(Class<?> type, String name) {

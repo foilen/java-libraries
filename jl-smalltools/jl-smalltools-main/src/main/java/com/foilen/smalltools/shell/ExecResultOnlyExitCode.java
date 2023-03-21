@@ -8,15 +8,23 @@
  */
 package com.foilen.smalltools.shell;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+
 import java.io.InputStream;
 import java.util.stream.Stream;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-
+/**
+ * An implementation of {@link ExecResult} that only stores the exit code.
+ */
 public class ExecResultOnlyExitCode implements ExecResult {
 
     private int exitCode;
 
+    /**
+     * Constructor.
+     *
+     * @param exitCode the exit code
+     */
     public ExecResultOnlyExitCode(int exitCode) {
         this.exitCode = exitCode;
     }

@@ -8,16 +8,16 @@
  */
 package com.foilen.smalltools.tools;
 
+import com.foilen.smalltools.systemusage.MemoryUsage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.foilen.smalltools.systemusage.MemoryUsage;
-
 /**
  * This class displays in the logs some information about the application usage of the resources.
- *
+ * <p>
  * Usage:
  *
  * <pre>
@@ -32,6 +32,11 @@ import com.foilen.smalltools.systemusage.MemoryUsage;
  */
 public class ApplicationResourceUsageTools extends AbstractBasics implements Runnable {
 
+    /**
+     * To test.
+     *
+     * @param args ignored
+     */
     public static void main(String[] args) {
 
         new ApplicationResourceUsageTools() //
@@ -44,7 +49,7 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
 
         // Use more and more memory
         List<String> keep = new ArrayList<>();
-        for (;;) {
+        for (; ; ) {
             keep.add(SecureRandomTools.randomHexString(100));
         }
 
@@ -57,22 +62,47 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
     private boolean showThreadCount = true;
     private boolean showThreadStackstrace = true;
 
+    /**
+     * Get the delay between each output.
+     *
+     * @return the delay in ms
+     */
     public long getDelayBetweenOutputInMs() {
         return delayBetweenOutputInMs;
     }
 
+    /**
+     * Tell if it will show the JVM memory.
+     *
+     * @return true if showing
+     */
     public boolean isShowJvmMemory() {
         return showJvmMemory;
     }
 
+    /**
+     * Tell if it will show the system memory.
+     *
+     * @return true if showing
+     */
     public boolean isShowSystemMemory() {
         return showSystemMemory;
     }
 
+    /**
+     * Tell if it will show the thread count.
+     *
+     * @return true if showing
+     */
     public boolean isShowThreadCount() {
         return showThreadCount;
     }
 
+    /**
+     * Tell if it will show the thread stackstrace.
+     *
+     * @return true if showing
+     */
     public boolean isShowThreadStackstrace() {
         return showThreadStackstrace;
     }
@@ -82,7 +112,7 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
 
         long lastCheckedTime = 0;
 
-        for (;;) {
+        for (; ; ) {
             try {
 
                 // Wait for the next time to execute
@@ -153,26 +183,56 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
         }
     }
 
+    /**
+     * Set the delay between each output.
+     *
+     * @param delayBetweenOutputInMs the delay in ms
+     * @return this
+     */
     public ApplicationResourceUsageTools setDelayBetweenOutputInMs(long delayBetweenOutputInMs) {
         this.delayBetweenOutputInMs = delayBetweenOutputInMs;
         return this;
     }
 
+    /**
+     * Set if it will show the JVM memory.
+     *
+     * @param showJvmMemory true to show
+     * @return this
+     */
     public ApplicationResourceUsageTools setShowJvmMemory(boolean showJvmMemory) {
         this.showJvmMemory = showJvmMemory;
         return this;
     }
 
+    /**
+     * Set if it will show the system memory.
+     *
+     * @param showSystemMemory true to show
+     * @return this
+     */
     public ApplicationResourceUsageTools setShowSystemMemory(boolean showSystemMemory) {
         this.showSystemMemory = showSystemMemory;
         return this;
     }
 
+    /**
+     * Set if it will show the thread count.
+     *
+     * @param showThreadCount true to show
+     * @return this
+     */
     public ApplicationResourceUsageTools setShowThreadCount(boolean showThreadCount) {
         this.showThreadCount = showThreadCount;
         return this;
     }
 
+    /**
+     * Set if it will show the thread stackstrace.
+     *
+     * @param showThreadStackstrace true to show
+     * @return this
+     */
     public ApplicationResourceUsageTools setShowThreadStackstrace(boolean showThreadStackstrace) {
         this.showThreadStackstrace = showThreadStackstrace;
         return this;
@@ -180,6 +240,8 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
 
     /**
      * Start logging at the fixed rate.
+     *
+     * @return this
      */
     public ApplicationResourceUsageTools start() {
         ExecutorsTools.getCachedDaemonThreadPool().submit(this);

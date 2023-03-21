@@ -8,6 +8,9 @@
  */
 package com.foilen.smalltools.tools;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -16,9 +19,9 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+/**
+ * Tools to deal with the internet.
+ */
 public class InternetTools {
 
     private final static Logger logger = LoggerFactory.getLogger(InternetTools.class);
@@ -83,14 +86,18 @@ public class InternetTools {
     /**
      * Tells if the ip is a 127.X.X.X, fe80:X:X:X:X:X:X:X or 0:0:0:0:0:0:0:1 address.
      *
-     * @param ip
-     *            the ip to check
+     * @param ip the ip to check
      * @return true if is local
      */
     public static boolean isIpLocalLoop(String ip) {
         return ip.startsWith(LOOPBACK_START_IP_V4) || ip.toLowerCase().startsWith(LOOPBACK_START_IP_V6_1) || ip.equals(LOOPBACK_START_IP_V6_2);
     }
 
+    /**
+     * Main to test.
+     *
+     * @param args ignored
+     */
     public static void main(String[] args) {
         System.out.println("Public Internet IP");
         System.out.println("\t[" + getPublicIp() + "]");

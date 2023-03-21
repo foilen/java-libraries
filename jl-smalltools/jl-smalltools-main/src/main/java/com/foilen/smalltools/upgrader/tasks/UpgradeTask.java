@@ -13,6 +13,9 @@ package com.foilen.smalltools.upgrader.tasks;
  */
 public interface UpgradeTask {
 
+    /**
+     * The default tracker to use.
+     */
     public static final String DEFAULT_TRACKER = "____";
 
     /**

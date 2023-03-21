@@ -8,26 +8,41 @@
  */
 package com.foilen.smalltools.shell;
 
+import com.foilen.smalltools.iterable.FileLinesIterable;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.foilen.smalltools.iterable.FileLinesIterable;
-
+/**
+ * An implementation of {@link ExecResult} that stores the output in memory.
+ */
 public class ExecResultInMemory implements ExecResult {
 
     private ByteArrayOutputStream out;
     private ByteArrayOutputStream err;
     private int exitCode;
 
+    /**
+     * Create an empty result.
+     *
+     * @param out      the output
+     * @param err      the error
+     * @param exitCode the exit code
+     */
     public ExecResultInMemory(ByteArrayOutputStream out, ByteArrayOutputStream err, int exitCode) {
         this.out = out;
         this.err = err;
         this.exitCode = exitCode;
     }
 
+    /**
+     * Get the std error.
+     *
+     * @return the std error
+     */
     public ByteArrayOutputStream getErr() {
         return err;
     }
@@ -37,6 +52,11 @@ public class ExecResultInMemory implements ExecResult {
         return exitCode;
     }
 
+    /**
+     * Get the std output.
+     *
+     * @return the std output
+     */
     public ByteArrayOutputStream getOut() {
         return out;
     }

@@ -18,12 +18,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
-import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.StreamsTools;
 
 /**
@@ -200,7 +200,7 @@ public class ZipFiles {
      *            the content of the file text
      */
     public void addTextFile(String filename, String content) {
-        addFileFromStream(filename, new ByteArrayInputStream(content.getBytes(CharsetTools.UTF_8)));
+        addFileFromStream(filename, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
     }
 
     /**

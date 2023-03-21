@@ -8,28 +8,43 @@
  */
 package com.foilen.smalltools.shell;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.FileTools;
+import com.foilen.smalltools.tools.StreamsTools;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.stream.Stream;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.FileTools;
-import com.foilen.smalltools.tools.StreamsTools;
-
+/**
+ * The result of an execution. The output and error are in files.
+ */
 public class ExecResultInFiles implements ExecResult {
 
     private File out;
     private File err;
     private int exitCode;
 
+    /**
+     * Constructor.
+     *
+     * @param out      the output file
+     * @param err      the error file
+     * @param exitCode the exit code
+     */
     public ExecResultInFiles(File out, File err, int exitCode) {
         this.out = out;
         this.err = err;
         this.exitCode = exitCode;
     }
 
+    /**
+     * Get the error file.
+     *
+     * @return the file
+     */
     public File getErr() {
         return err;
     }
@@ -39,6 +54,11 @@ public class ExecResultInFiles implements ExecResult {
         return exitCode;
     }
 
+    /**
+     * Get the output file.
+     *
+     * @return the file
+     */
     public File getOut() {
         return out;
     }

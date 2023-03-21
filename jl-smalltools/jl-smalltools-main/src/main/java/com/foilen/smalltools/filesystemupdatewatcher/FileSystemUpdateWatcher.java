@@ -8,39 +8,30 @@
  */
 package com.foilen.smalltools.filesystemupdatewatcher;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.ClosedWatchServiceException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.CloseableTools;
 import com.foilen.smalltools.tools.ThreadTools;
 
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * This class is looking at any changes made to any file in the directory and their sub-directory if needed.
- *
+ * <p>
  * On initialization, it creates a separate thread that will call the observers when new events are ready.
- *
+ * <p>
  * Default:
  * <ul>
  * <li>recursive = false</li>
  * </ul>
- *
+ * <p>
  * Usage:
  *
  * <pre>
@@ -63,6 +54,11 @@ import com.foilen.smalltools.tools.ThreadTools;
  */
 public class FileSystemUpdateWatcher implements Closeable {
 
+    /**
+     * Main for testing.
+     *
+     * @param args ignored
+     */
     public static void main(String[] args) {
 
         // Start
@@ -94,14 +90,29 @@ public class FileSystemUpdateWatcher implements Closeable {
 
     private Map<WatchKey, Path> pathByKey = new HashMap<WatchKey, Path>();
 
+    /**
+     * Register the directory.
+     *
+     * @param basePath the directory
+     */
     public FileSystemUpdateWatcher(File basePath) {
         this.basePath = basePath.toPath();
     }
 
+    /**
+     * Register the directory.
+     *
+     * @param basePath the directory
+     */
     public FileSystemUpdateWatcher(Path basePath) {
         this.basePath = basePath;
     }
 
+    /**
+     * Register the directory.
+     *
+     * @param basePath the directory
+     */
     public FileSystemUpdateWatcher(String basePath) {
         this.basePath = Paths.get(basePath);
     }
@@ -109,8 +120,7 @@ public class FileSystemUpdateWatcher implements Closeable {
     /**
      * Add an handler.
      *
-     * @param fileSystemUpdateHandler
-     *            the handler
+     * @param fileSystemUpdateHandler the handler
      * @return this
      */
     public FileSystemUpdateWatcher addHandler(FileSystemUpdateHandler fileSystemUpdateHandler) {
@@ -151,7 +161,7 @@ public class FileSystemUpdateWatcher implements Closeable {
                     .appendObjectText("Folder") //
                     .appendObjectText(basePath).change();
 
-            for (;;) {
+            for (; ; ) {
 
                 // Wait for the next event
                 WatchKey key;
@@ -223,8 +233,7 @@ public class FileSystemUpdateWatcher implements Closeable {
     /**
      * Register a new path to check.
      *
-     * @param path
-     *            the path
+     * @param path the path
      */
     protected void register(Path path) {
         File directory = path.toFile();
@@ -241,8 +250,7 @@ public class FileSystemUpdateWatcher implements Closeable {
     /**
      * Register a new path to check and all its children if it is set recursive.
      *
-     * @param path
-     *            the path
+     * @param path the path
      */
     private void registerRecursively(Path path) {
 
@@ -263,8 +271,7 @@ public class FileSystemUpdateWatcher implements Closeable {
     /**
      * Change the recursive parameter.
      *
-     * @param recursive
-     *            true to watch the subfolders as well
+     * @param recursive true to watch the subfolders as well
      * @return this
      */
     public FileSystemUpdateWatcher setRecursive(boolean recursive) {

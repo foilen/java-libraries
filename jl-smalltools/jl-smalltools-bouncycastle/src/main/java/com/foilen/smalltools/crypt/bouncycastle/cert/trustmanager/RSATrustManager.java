@@ -8,6 +8,10 @@
  */
 package com.foilen.smalltools.crypt.bouncycastle.cert.trustmanager;
 
+import com.foilen.smalltools.crypt.bouncycastle.cert.RSACertificate;
+import com.foilen.smalltools.crypt.bouncycastle.cert.RSATrustedCertificates;
+
+import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -15,16 +19,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.net.ssl.X509TrustManager;
-
-import com.foilen.smalltools.crypt.bouncycastle.cert.RSACertificate;
-import com.foilen.smalltools.crypt.bouncycastle.cert.RSATrustedCertificates;
-
+/**
+ * A trust manager that will check if the certificate is trusted.
+ */
 public class RSATrustManager implements X509TrustManager {
 
     private RSATrustedCertificates rsaTrustedCertificates;
     private X509Certificate[] acceptedIssuers;
 
+    /**
+     * The trusted certificates.
+     * @param rsaTrustedCertificates the trusted certificates
+     */
     public RSATrustManager(RSATrustedCertificates rsaTrustedCertificates) {
         this.rsaTrustedCertificates = rsaTrustedCertificates;
         acceptedIssuers = rsaTrustedCertificates.getTrustedCertificates().stream().map(it -> it.getCertificate()).collect(Collectors.toList()).toArray(new X509Certificate[0]);

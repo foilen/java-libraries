@@ -8,19 +8,14 @@
  */
 package com.foilen.smalltools.compress;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.DirectoryTools;
 import com.foilen.smalltools.tools.StreamsTools;
+
+import java.io.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Take a zip file and extract the content
@@ -33,8 +28,7 @@ public class UnzipFiles {
     /**
      * Open a zipped file.
      *
-     * @param zipFile
-     *            the zipped file
+     * @param zipFile the zipped file
      */
     public UnzipFiles(File zipFile) {
         try {
@@ -47,8 +41,7 @@ public class UnzipFiles {
     /**
      * Open a stream.
      *
-     * @param inputStream
-     *            the zipped stream
+     * @param inputStream the zipped stream
      */
     public UnzipFiles(InputStream inputStream) {
         zis = new ZipInputStream(inputStream);
@@ -57,8 +50,7 @@ public class UnzipFiles {
     /**
      * Remove the first folder if {@link #isIgnoreFirstSubpath()}.
      *
-     * @param name
-     *            the path and name of the zip entry
+     * @param name the path and name of the zip entry
      * @return the name cleaned
      */
     private String cleanZipName(String name) {
@@ -74,8 +66,7 @@ public class UnzipFiles {
     /**
      * Extract all the files in the specified existing directory.
      *
-     * @param destinationDirectory
-     *            the directory
+     * @param destinationDirectory the directory
      */
     public void extractTo(File destinationDirectory) {
 
@@ -116,13 +107,17 @@ public class UnzipFiles {
     /**
      * Extract all the files in the specified existing directory.
      *
-     * @param destinationDirectory
-     *            the directory
+     * @param destinationDirectory the directory
      */
     public void extractTo(String destinationDirectory) {
         extractTo(new File(destinationDirectory));
     }
 
+    /**
+     * Get if the first folder in the zip will be skipped. Good when a zip has a single root folder with the name and version of an application.
+     *
+     * @return true to skip the first folder in the zip
+     */
     public boolean isIgnoreFirstSubpath() {
         return ignoreFirstSubpath;
     }
@@ -130,8 +125,7 @@ public class UnzipFiles {
     /**
      * Set to true to skip the first folder in the zip. Good when a zip has a single root folder with the name and version of an application.
      *
-     * @param ignoreFirstSubpath
-     *            skip the first folder in the zip
+     * @param ignoreFirstSubpath skip the first folder in the zip
      */
     public void setIgnoreFirstSubpath(boolean ignoreFirstSubpath) {
         this.ignoreFirstSubpath = ignoreFirstSubpath;

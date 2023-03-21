@@ -106,6 +106,13 @@ public class JavaEnvironmentValues {
         return System.getProperty("user.dir");
     }
 
+    /**
+     * Print the environment and properties.
+     *
+     * @param args not used
+     * @throws IOException          if an error occurs
+     * @throws InterruptedException if an error occurs
+     */
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("----[ Environment ]----");
         for (Entry<String, String> entry : System.getenv().entrySet()) {

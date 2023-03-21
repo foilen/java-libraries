@@ -8,15 +8,24 @@
  */
 package com.foilen.smalltools.tools;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-
+/**
+ * Tools to work with collections.
+ */
 public final class CollectionsTools {
 
+    /**
+     * A collector that will collect to an {@link ArrayList} (to be modifiable).
+     *
+     * @param <T> the type of the elements
+     * @return the collector
+     */
     public static <T> Collector<T, ?, ArrayList<T>> collectToArrayList() {
         return Collectors.toCollection(ArrayList::new);
     }
@@ -24,16 +33,11 @@ public final class CollectionsTools {
     /**
      * Get a value from a map or insert an empty object for that value.
      *
-     * @param map
-     *            the map
-     * @param key
-     *            the key
-     * @param clazz
-     *            the class to instantiate to create an empty object
-     * @param <K>
-     *            type of the key
-     * @param <V>
-     *            type of the value
+     * @param map   the map
+     * @param key   the key
+     * @param clazz the class to instantiate to create an empty object
+     * @param <K>   type of the key
+     * @param <V>   type of the value
      * @return the value or the new empty value
      */
     public static <K, V> V getOrCreateEmpty(Map<K, V> map, K key, Class<V> clazz) {
@@ -53,16 +57,11 @@ public final class CollectionsTools {
     /**
      * Get a value from a map or insert an empty {@link ArrayList} for that value.
      *
-     * @param map
-     *            the map
-     * @param key
-     *            the key
-     * @param clazz
-     *            the class of the values in the list
-     * @param <K>
-     *            type of the key
-     * @param <V>
-     *            type of the value in the list
+     * @param map   the map
+     * @param key   the key
+     * @param clazz the class of the values in the list
+     * @param <K>   type of the key
+     * @param <V>   type of the value in the list
      * @return the value or the new empty value
      */
     public static <K, V> List<V> getOrCreateEmptyArrayList(Map<K, List<V>> map, K key, Class<V> clazz) {
@@ -72,16 +71,11 @@ public final class CollectionsTools {
     /**
      * Get a value from a map or insert an empty {@link HashSet} for that value.
      *
-     * @param map
-     *            the map
-     * @param key
-     *            the key
-     * @param clazz
-     *            the class of the values in the list
-     * @param <K>
-     *            type of the key
-     * @param <V>
-     *            type of the value in the list
+     * @param map   the map
+     * @param key   the key
+     * @param clazz the class of the values in the list
+     * @param <K>   type of the key
+     * @param <V>   type of the value in the list
      * @return the value or the new empty value
      */
     public static <K, V> Set<V> getOrCreateEmptyHashSet(Map<K, Set<V>> map, K key, Class<V> clazz) {
@@ -91,16 +85,11 @@ public final class CollectionsTools {
     /**
      * Get a value from a map or insert an empty {@link TreeSet} for that value.
      *
-     * @param map
-     *            the map
-     * @param key
-     *            the key
-     * @param clazz
-     *            the class of the values in the list
-     * @param <K>
-     *            type of the key
-     * @param <V>
-     *            type of the value in the list
+     * @param map   the map
+     * @param key   the key
+     * @param clazz the class of the values in the list
+     * @param <K>   type of the key
+     * @param <V>   type of the value in the list
      * @return the value or the new empty value
      */
     public static <K, V extends Comparable<V>> Set<V> getOrCreateEmptyTreeSet(Map<K, Set<V>> map, K key, Class<V> clazz) {
@@ -110,8 +99,7 @@ public final class CollectionsTools {
     /**
      * Is true if all the items are not null.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if all are not null
      */
     public static boolean isAllItemNotNull(Collection<?> items) {
@@ -126,8 +114,7 @@ public final class CollectionsTools {
     /**
      * Is true if all the items are not null.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if all are not null
      */
     public static boolean isAllItemNotNull(Object... items) {
@@ -142,8 +129,7 @@ public final class CollectionsTools {
     /**
      * Is true if all the items are not null and not empty.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if all are not null and not empty
      */
     public static boolean isAllItemNotNullOrEmpty(Collection<String> items) {
@@ -158,8 +144,7 @@ public final class CollectionsTools {
     /**
      * Is true if all the items are not null and not empty.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if all are not null and not empty
      */
     public static boolean isAllItemNotNullOrEmpty(String... items) {
@@ -174,8 +159,7 @@ public final class CollectionsTools {
     /**
      * Is true if any of the items is not null.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if any is not null
      */
     public static boolean isAnyItemNotNull(Collection<?> items) {
@@ -190,8 +174,7 @@ public final class CollectionsTools {
     /**
      * Is true if any of the items is not null.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if any is not null
      */
     public static boolean isAnyItemNotNull(Object... items) {
@@ -206,8 +189,7 @@ public final class CollectionsTools {
     /**
      * Is true if any of the items is not null and not empty.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if any is not null and not empty
      */
     public static boolean isAnyItemNotNullOrEmpty(Collection<String> items) {
@@ -222,8 +204,7 @@ public final class CollectionsTools {
     /**
      * Is true if any of the items is not null and not empty.
      *
-     * @param items
-     *            the items
+     * @param items the items
      * @return true if any is not null and not empty
      */
     public static boolean isAnyItemNotNullOrEmpty(String... items) {
@@ -238,8 +219,7 @@ public final class CollectionsTools {
     /**
      * Tells if the collection is null or empty.
      *
-     * @param collection
-     *            the collection to check
+     * @param collection the collection to check
      * @return true if is null or empty
      */
     public static boolean isNullOrEmpty(Collection<?> collection) {
@@ -249,14 +229,10 @@ public final class CollectionsTools {
     /**
      * Remove the first entry with the specified value in the map.
      *
-     * @param map
-     *            the map
-     * @param valueToRemove
-     *            the value to remove the entry
-     * @param <K>
-     *            the type of the key
-     * @param <V>
-     *            the type of the value
+     * @param map           the map
+     * @param valueToRemove the value to remove the entry
+     * @param <K>           the type of the key
+     * @param <V>           the type of the value
      * @return the removed key or null if not found
      */
     public static <K, V> K removeValue(Map<K, V> map, V valueToRemove) {
@@ -276,23 +252,13 @@ public final class CollectionsTools {
     /**
      * Remove the entries with the specified value in the map.
      *
-     * @param map
-     *            the map
-     * @param valueToRemove
-     *            the value to remove the entries
-     * @param <K>
-     *            the type of the key
-     * @param <V>
-     *            the type of the value
+     * @param map           the map
+     * @param valueToRemove the value to remove the entries
+     * @param <K>           the type of the key
+     * @param <V>           the type of the value
      */
     public static <K, V> void removeValues(Map<K, V> map, V valueToRemove) {
         map.entrySet().removeIf(kvEntry -> valueToRemove == kvEntry.getValue());
-    }
-
-    public static <T> ArrayList<T> toArrayList(T[] array) {
-        ArrayList<T> list = new ArrayList<>(array.length);
-        list.addAll(Arrays.asList(array));
-        return list;
     }
 
     private CollectionsTools() {

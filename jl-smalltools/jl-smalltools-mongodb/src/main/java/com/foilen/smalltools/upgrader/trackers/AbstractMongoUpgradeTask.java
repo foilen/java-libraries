@@ -24,6 +24,9 @@ import org.springframework.data.mongodb.core.MongoOperations;
 
 import java.util.List;
 
+/**
+ * Tasks with helpers to manage a mongodb database.
+ */
 public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements UpgradeTask {
 
     @Autowired
@@ -34,6 +37,11 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
     @Value("${spring.data.mongodb.database}")
     protected String databaseName;
 
+    /**
+     * Add a collection if it does not exist.
+     *
+     * @param collectionName the name of the collection
+     */
     protected void addCollection(String collectionName) {
         MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
 
@@ -47,6 +55,13 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
         }
     }
 
+    /**
+     * Add an index if it does not exist.
+     *
+     * @param collectionName the name of the collection
+     * @param indexOptions   the options for the index
+     * @param keys           the keys to index
+     */
     @SafeVarargs
     protected final void addIndex(String collectionName, IndexOptions indexOptions, Tuple2<String, Object>... keys) {
         MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
@@ -60,6 +75,12 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
         collection.createIndex(keysDocument, indexOptions);
     }
 
+    /**
+     * Add an index if it does not exist.
+     *
+     * @param collectionName the name of the collection
+     * @param keys           the keys to index
+     */
     @SafeVarargs
     protected final void addIndex(String collectionName, Tuple2<String, Object>... keys) {
         MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
@@ -73,6 +94,13 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
         collection.createIndex(keysDocument);
     }
 
+    /**
+     * Add a view if it does not exist.
+     *
+     * @param viewName the name of the view
+     * @param viewOn   the collection to view
+     * @param pipeline the pipeline to apply
+     */
     protected void addView(String viewName, String viewOn, List<? extends Bson> pipeline) {
         MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
 
@@ -86,6 +114,11 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
         }
     }
 
+    /**
+     * Drop a collection if it exists.
+     *
+     * @param collectionName the name of the collection
+     */
     protected void dropCollection(String collectionName) {
         MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
 
@@ -94,18 +127,38 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
         collection.drop();
     }
 
+    /**
+     * Get the database name.
+     *
+     * @return the database name
+     */
     public String getDatabaseName() {
         return databaseName;
     }
 
+    /**
+     * Get the mongo client.
+     *
+     * @return the mongo client
+     */
     public MongoClient getMongoClient() {
         return mongoClient;
     }
 
+    /**
+     * Set the database name.
+     *
+     * @param databaseName the database name
+     */
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
     }
 
+    /**
+     * Set the mongo client.
+     *
+     * @param mongoClient the mongo client
+     */
     public void setMongoClient(MongoClient mongoClient) {
         this.mongoClient = mongoClient;
     }

@@ -8,13 +8,13 @@
  */
 package com.foilen.smalltools.tools.sync;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.foilen.smalltools.exception.SmallToolsException;
 
 /**
  * <p>
@@ -53,13 +53,9 @@ import com.foilen.smalltools.exception.SmallToolsException;
  * <li>deleteHandler to delete the entities with the specified ids to the destination</li>
  * </ul>
  *
- *
- * @param <I>
- *            the id type
- * @param <E>
- *            the entity type
- * @param <P>
- *            the partial entity type
+ * @param <I> the id type
+ * @param <E> the entity type
+ * @param <P> the partial entity type
  */
 public class SyncConfiguration<I, E, P> {
 
@@ -95,91 +91,201 @@ public class SyncConfiguration<I, E, P> {
         throw new SmallToolsException("deleteHandler not provided");
     });
 
+    /**
+     * The way to add entities.
+     *
+     * @return the handler
+     */
     public Consumer<List<E>> getAddHandler() {
         return addHandler;
     }
 
+    /**
+     * The way to compare 2 ids.
+     *
+     * @return the handler
+     */
     public BiFunction<I, I, Integer> getCompareId() {
         return compareId;
     }
 
+    /**
+     * The way to delete entities.
+     *
+     * @return the handler
+     */
     public Consumer<List<I>> getDeleteHandler() {
         return deleteHandler;
     }
 
+    /**
+     * The way to retrieve the slice from the destination.
+     *
+     * @return the handler
+     */
     public SyncConfigurationRetrieveSlice<I, P> getDestinationSlice() {
         return destinationSlice;
     }
 
+    /**
+     * The way to retrieve the id from the entity.
+     *
+     * @return the handler
+     */
     public Function<E, I> getIdFromEntity() {
         return idFromEntity;
     }
 
+    /**
+     * The way to retrieve the id from the partial entity.
+     *
+     * @return the handler
+     */
     public Function<P, I> getIdFromPartial() {
         return idFromPartial;
     }
 
+    /**
+     * The maximum size of a slice.
+     *
+     * @return the size
+     */
     public long getMaxSliceSize() {
         return maxSliceSize;
     }
 
+    /**
+     * The way to check if an entity needs to be updated.
+     *
+     * @return the handler
+     */
     public SyncConfigurationCheckUpdate<E, P> getNeedsUpdate() {
         return needsUpdate;
     }
 
+    /**
+     * The way to retrieve the slice from the source.
+     *
+     * @return the handler
+     */
     public SyncConfigurationRetrieveSlice<I, E> getSourceSlice() {
         return sourceSlice;
     }
 
+    /**
+     * The way to update entities.
+     *
+     * @return the handler
+     */
     public Consumer<List<E>> getUpdateHandler() {
         return updateHandler;
     }
 
+    /**
+     * Set the way to add entities.
+     *
+     * @param addHandler the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setAddHandler(Consumer<List<E>> addHandler) {
         this.addHandler = addHandler;
         return this;
     }
 
+    /**
+     * Set the way to compare 2 ids.
+     *
+     * @param compareId the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setCompareId(BiFunction<I, I, Integer> compareId) {
         this.compareId = compareId;
         return this;
     }
 
+    /**
+     * Set the way to delete entities.
+     *
+     * @param deleteHandler the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setDeleteHandler(Consumer<List<I>> deleteHandler) {
         this.deleteHandler = deleteHandler;
         return this;
     }
 
+    /**
+     * Set the way to retrieve the slice from the destination.
+     *
+     * @param destinationSlice the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setDestinationSlice(SyncConfigurationRetrieveSlice<I, P> destinationSlice) {
         this.destinationSlice = destinationSlice;
         return this;
     }
 
+    /**
+     * Set the way to retrieve the id from the entity.
+     *
+     * @param idFromEntity the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setIdFromEntity(Function<E, I> idFromEntity) {
         this.idFromEntity = idFromEntity;
         return this;
     }
 
+    /**
+     * Set the way to retrieve the id from the partial entity.
+     *
+     * @param idFromPartial the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setIdFromPartial(Function<P, I> idFromPartial) {
         this.idFromPartial = idFromPartial;
         return this;
     }
 
+    /**
+     * Set the maximum size of a slice.
+     *
+     * @param maxSliceSize the size
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setMaxSliceSize(long maxSliceSize) {
         this.maxSliceSize = maxSliceSize;
         return this;
     }
 
+    /**
+     * Set the way to check if an entity needs to be updated.
+     *
+     * @param needsUpdate the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setNeedsUpdate(SyncConfigurationCheckUpdate<E, P> needsUpdate) {
         this.needsUpdate = needsUpdate;
         return this;
     }
 
+    /**
+     * Set the way to retrieve the slice from the source.
+     *
+     * @param sourceSlice the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setSourceSlice(SyncConfigurationRetrieveSlice<I, E> sourceSlice) {
         this.sourceSlice = sourceSlice;
         return this;
     }
 
+    /**
+     * Set the way to update entities.
+     *
+     * @param updateHandler the handler
+     * @return this
+     */
     public SyncConfiguration<I, E, P> setUpdateHandler(Consumer<List<E>> updateHandler) {
         this.updateHandler = updateHandler;
         return this;

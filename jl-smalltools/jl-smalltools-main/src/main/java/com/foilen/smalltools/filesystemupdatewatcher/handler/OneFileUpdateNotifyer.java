@@ -8,18 +8,18 @@
  */
 package com.foilen.smalltools.filesystemupdatewatcher.handler;
 
-import java.io.Closeable;
-import java.io.File;
-
 import com.foilen.smalltools.filesystemupdatewatcher.FileSystemUpdateBufferedHandler;
 import com.foilen.smalltools.filesystemupdatewatcher.FileSystemUpdateHandler;
 import com.foilen.smalltools.filesystemupdatewatcher.FileSystemUpdateWatcher;
 import com.foilen.smalltools.tools.CloseableTools;
 
+import java.io.Closeable;
+import java.io.File;
+
 /**
  * Use this class to track a file modification (e.g a config file that you want to reload when changed). If the file changes multiple times quickly, you will get a notification 2 seconds after the
  * last change or max 10 seconds after the first change.
- *
+ * <p>
  * Don't forget to call {@link #initAutoUpdateSystem()} when you are ready to get the notifications
  */
 public class OneFileUpdateNotifyer implements Closeable, FileSystemUpdateHandler {
@@ -29,6 +29,10 @@ public class OneFileUpdateNotifyer implements Closeable, FileSystemUpdateHandler
     private OneFileUpdateNotifyerHandler handler;
     private FileSystemUpdateWatcher fileSystemUpdateWatcher;
 
+    /**
+     * @param fileToWatch the file to watch
+     * @param handler     the handler to call when the file is updated
+     */
     public OneFileUpdateNotifyer(String fileToWatch, OneFileUpdateNotifyerHandler handler) {
         this.fileToWatch = fileToWatch;
         fileToWatchFile = new File(fileToWatch);

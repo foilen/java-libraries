@@ -26,6 +26,9 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractBasics {
 
+    /**
+     * The logger.
+     */
     protected final transient Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override

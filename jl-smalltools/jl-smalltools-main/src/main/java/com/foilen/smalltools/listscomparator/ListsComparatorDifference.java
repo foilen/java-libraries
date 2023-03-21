@@ -11,8 +11,7 @@ package com.foilen.smalltools.listscomparator;
 /**
  * A difference made by {@link ListsComparator}.
  *
- * @param <T>
- *            the type of objects being compared
+ * @param <T> the type of objects being compared
  */
 public class ListsComparatorDifference<T> {
 
@@ -20,9 +19,20 @@ public class ListsComparatorDifference<T> {
 
     private int side;
 
+    /**
+     * Default constructor.
+     */
     public ListsComparatorDifference() {
     }
 
+    /**
+     * Full constructor.
+     *
+     * @param object
+     *            the object that is different
+     * @param side
+     *            -1 means that this object is only on the left side; 1 means that this object is only on the right side
+     */
     public ListsComparatorDifference(T object, int side) {
         this.object = object;
         this.side = side;

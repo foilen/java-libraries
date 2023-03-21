@@ -1,0 +1,82 @@
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+group = 'com.foilen'
+version = System.getenv('VERSION') ?: 'master-SNAPSHOT'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceCompatibility = 17
+
+dependencies {
+    api project(':jl-smalltools:jl-smalltools-database')
+    api 'org.hibernate.orm:hibernate-ant:6.1.7.Final'
+    api 'org.hibernate.orm:hibernate-core:6.1.7.Final'
+    api 'org.springframework.boot:spring-boot:3.0.4'
+
+    testImplementation 'junit:junit:4.13.2'
+}
+
+jar {
+    enabled = true
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    repositories {
+        maven {
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv('OSSRH_USER')
+                password = System.getenv('OSSRH_PASS')
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = "JL Smalltools"
+                description = 'Some libraries to do simple tasks simply'
+                url = 'https://github.com/foilen/java-libraries'
+                from components.java
+
+                scm {
+                    connection = "scm:git:git@github.com:foilen/java-libraries.git"
+                    url = "https://github.com/foilen/java-libraries"
+                }
+
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://opensource.org/licenses/MIT"
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'foilen'
+                        name = 'Simon Levesque'
+                        email = 'simon@foilen.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}

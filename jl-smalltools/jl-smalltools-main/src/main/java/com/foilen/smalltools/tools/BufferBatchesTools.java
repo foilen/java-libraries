@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * A way to provide many items and automatically batch them.
- *
+ * <p>
  * Usage:
  *
  * <pre>
@@ -38,17 +38,33 @@ import java.util.stream.Collectors;
  * "10"
  * </pre>
  *
- * @param <I>
- *            the type of item
+ * @param <I> the type of item
  */
 public class BufferBatchesTools<I> extends AbstractBasics implements Closeable {
 
+    /**
+     * Create a new instance and automatically close it.
+     *
+     * @param itemsInBatch   the number of items to batch
+     * @param batchExecution the execution to do with the batch
+     * @param execution      the execution to do with the instance
+     * @param <I>            the type of item
+     */
     public static <I> void autoClose(int itemsInBatch, Consumer<List<I>> batchExecution, Consumer<BufferBatchesTools<I>> execution) {
         BufferBatchesTools<I> bufferBatchesTools = new BufferBatchesTools<>(itemsInBatch, batchExecution);
         execution.accept(bufferBatchesTools);
         bufferBatchesTools.close();
     }
 
+    /**
+     * Create a new instance and automatically close it.
+     *
+     * @param buffer         the buffer to use
+     * @param itemsInBatch   the number of items to batch
+     * @param batchExecution the execution to do with the batch
+     * @param execution      the execution to do with the instance
+     * @param <I>            the type of item
+     */
     public static <I> void autoClose(Collection<I> buffer, int itemsInBatch, Consumer<List<I>> batchExecution, Consumer<BufferBatchesTools<I>> execution) {
         BufferBatchesTools<I> bufferBatchesTools = new BufferBatchesTools<>(buffer, itemsInBatch, batchExecution);
         execution.accept(bufferBatchesTools);
@@ -61,17 +77,35 @@ public class BufferBatchesTools<I> extends AbstractBasics implements Closeable {
 
     private Collection<I> buffer = new ArrayList<>();
 
+    /**
+     * Create with parameters.
+     *
+     * @param itemsInBatch   the number of items to batch
+     * @param batchExecution the execution to do with the batch
+     */
     public BufferBatchesTools(int itemsInBatch, Consumer<List<I>> batchExecution) {
         this.itemsInBatch = itemsInBatch;
         this.batchExecution = batchExecution;
     }
 
+    /**
+     * Create with parameters.
+     *
+     * @param buffer         the buffer to use
+     * @param itemsInBatch   the number of items to batch
+     * @param batchExecution the execution to do with the batch
+     */
     public BufferBatchesTools(Collection<I> buffer, int itemsInBatch, Consumer<List<I>> batchExecution) {
         this.buffer = buffer;
         this.itemsInBatch = itemsInBatch;
         this.batchExecution = batchExecution;
     }
 
+    /**
+     * Add an item and process the batch if needed.
+     *
+     * @param item the item to add
+     */
     public void add(I item) {
         buffer.add(item);
         while (buffer.size() >= itemsInBatch) {
@@ -79,6 +113,11 @@ public class BufferBatchesTools<I> extends AbstractBasics implements Closeable {
         }
     }
 
+    /**
+     * Add items and process the batch if needed.
+     *
+     * @param items the items to add
+     */
     public void add(List<I> items) {
         buffer.addAll(items);
         while (buffer.size() >= itemsInBatch) {

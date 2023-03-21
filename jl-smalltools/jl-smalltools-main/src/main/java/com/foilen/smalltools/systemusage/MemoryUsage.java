@@ -86,6 +86,11 @@ public class MemoryUsage {
         return 100.0 - freePercent;
     }
 
+    /**
+     * To test.
+     *
+     * @param args ignored
+     */
     public static void main(String[] args) {
         System.out.println("getSystemFreeMemory: " + getSystemFreeMemory() + " " + getSystemFreeMemoryPercent() + "%");
         System.out.println("getSystemUsedMemory: " + getSystemUsedMemory() + " " + getSystemUsedMemoryPercent() + "%");

@@ -15,21 +15,44 @@ import com.foilen.smalltools.exception.SmallToolsException;
  */
 public class SpaceConverterTools {
 
+    /**
+     * 1 KB = 1000 bytes
+     */
     static public long KB = 1000L;
-    static public long MB = 1000 * 1000L;
-    static public long GB = 1000 * 1000 * 1000L;
-    static public long TB = 1000 * 1000 * 1000 * 1000L;
+    /**
+     * 1 MB = 1000 KB
+     */
+    static public long MB = 1000 * KB;
+    /**
+     * 1 GB = 1000 MB
+     */
+    static public long GB = 1000 * MB;
+    /**
+     * 1 TB = 1000 GB
+     */
+    static public long TB = 1000 * GB;
 
+    /**
+     * 1 KiB = 1024 bytes
+     */
     static public long KIB = 1024L;
-    static public long MIB = 1024 * 1024L;
-    static public long GIB = 1024 * 1024 * 1024L;
-    static public long TIB = 1024 * 1024 * 1024 * 1024L;
+    /**
+     * 1 MiB = 1024 KiB
+     */
+    static public long MIB = 1024 * KIB;
+    /**
+     * 1 GiB = 1024 MiB
+     */
+    static public long GIB = 1024 * MIB;
+    /**
+     * 1 TiB = 1024 GiB
+     */
+    static public long TIB = 1024 * GIB;
 
     /**
      * Convert the value to its biggest unit with 2 decimals. (e.g: 123000 will become 123K ; 1230000 will become 1.23M)
      *
-     * @param bytes
-     *            the amount of bytes
+     * @param bytes the amount of bytes
      * @return the value with its unit
      */
     static public String convertToBiggestBUnit(Long bytes) {
@@ -82,8 +105,7 @@ public class SpaceConverterTools {
      * <li>It is case insensitive, that's why it will never give bits, but always bytes</li>
      * </ul>
      *
-     * @param space
-     *            the text space
+     * @param space the text space
      * @return the amount of bytes
      */
     static public long convertToBytes(String space) {
@@ -117,45 +139,45 @@ public class SpaceConverterTools {
         try {
             double value = Double.parseDouble(numeric);
             switch (unit) {
-            case "":
-            case "b":
-                break;
-            case "k":
-            case "kb":
-                value *= KB;
-                break;
-            case "m":
-            case "mb":
-                value *= MB;
-                break;
-            case "g":
-            case "gb":
-                value *= GB;
-                break;
-            case "t":
-            case "tb":
-                value *= TB;
-                break;
+                case "":
+                case "b":
+                    break;
+                case "k":
+                case "kb":
+                    value *= KB;
+                    break;
+                case "m":
+                case "mb":
+                    value *= MB;
+                    break;
+                case "g":
+                case "gb":
+                    value *= GB;
+                    break;
+                case "t":
+                case "tb":
+                    value *= TB;
+                    break;
 
-            case "ki":
-            case "kib":
-                value *= KIB;
-                break;
-            case "mi":
-            case "mib":
-                value *= MIB;
-                break;
-            case "gi":
-            case "gib":
-                value *= GIB;
-                break;
-            case "ti":
-            case "tib":
-                value *= TIB;
-                break;
+                case "ki":
+                case "kib":
+                    value *= KIB;
+                    break;
+                case "mi":
+                case "mib":
+                    value *= MIB;
+                    break;
+                case "gi":
+                case "gib":
+                    value *= GIB;
+                    break;
+                case "ti":
+                case "tib":
+                    value *= TIB;
+                    break;
 
-            default:
-                throw new SmallToolsException(space + " is an invalid space");
+                default:
+                    throw new SmallToolsException(space + " is an invalid space");
             }
             return (long) value;
         } catch (SmallToolsException e) {

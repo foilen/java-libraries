@@ -8,27 +8,12 @@
  */
 package com.foilen.smalltools.crypt.bouncycastle.cert;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.io.Writer;
-import java.math.BigInteger;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Security;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
 import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSAKeyDetails;
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.hash.HashSha1;
+import com.foilen.smalltools.tools.*;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1Set;
 import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
@@ -55,14 +40,15 @@ import org.bouncycastle.util.io.pem.PemObjectGenerator;
 import org.bouncycastle.util.io.pem.PemReader;
 import org.bouncycastle.util.io.pem.PemWriter;
 
-import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.hash.HashSha1;
-import com.foilen.smalltools.tools.AssertTools;
-import com.foilen.smalltools.tools.CloseableTools;
-import com.foilen.smalltools.tools.CollectionsTools;
-import com.foilen.smalltools.tools.DateTools;
-import com.foilen.smalltools.tools.FileTools;
+import java.io.*;
+import java.math.BigInteger;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPublicKey;
+import java.util.*;
 
 /**
  * To create self-signed certificates and to sign other certificates.
@@ -112,8 +98,7 @@ public class RSACertificate {
     /**
      * Load the certificate and keys (if present in the file).
      *
-     * @param fileName
-     *            the full path of the file
+     * @param fileName the full path of the file
      * @return the certificate
      */
     public static RSACertificate loadPemFromFile(String fileName) {
@@ -124,8 +109,7 @@ public class RSACertificate {
     /**
      * Load the certificate and keys (if present in the strings).
      *
-     * @param pems
-     *            the pems (some can be null)
+     * @param pems the pems (some can be null)
      * @return the certificate
      */
     public static RSACertificate loadPemFromString(String... pems) {
@@ -162,21 +146,26 @@ public class RSACertificate {
 
     private AsymmetricKeys keysForSigning;
 
+    /**
+     * Create an empty holder.
+     */
     public RSACertificate() {
     }
 
+    /**
+     * Create a holder with the keys to sign.
+     *
+     * @param keysForSigning the keys to sign
+     */
     public RSACertificate(AsymmetricKeys keysForSigning) {
         this.keysForSigning = keysForSigning;
     }
 
-    public RSACertificate(javax.security.cert.X509Certificate certificate) {
-        try {
-            this.certificateHolder = new X509CertificateHolder(certificate.getEncoded());
-        } catch (Exception e) {
-            throw new SmallToolsException("Problem setting the certificate", e);
-        }
-    }
-
+    /**
+     * Create a holder with the certificate.
+     *
+     * @param certificate the certificate
+     */
     public RSACertificate(X509Certificate certificate) {
         try {
             this.certificateHolder = new X509CertificateHolder(certificate.getEncoded());
@@ -185,10 +174,21 @@ public class RSACertificate {
         }
     }
 
+    /**
+     * Create a holder with the certificate.
+     *
+     * @param certificateHolder the certificate
+     */
     public RSACertificate(X509CertificateHolder certificateHolder) {
         this.certificateHolder = certificateHolder;
     }
 
+    /**
+     * Create a holder with the certificate and the keys to sign.
+     *
+     * @param certificateHolder the certificate
+     * @param keysForSigning    the keys to sign
+     */
     public RSACertificate(X509CertificateHolder certificateHolder, AsymmetricKeys keysForSigning) {
         this.certificateHolder = certificateHolder;
         this.keysForSigning = keysForSigning;
@@ -208,6 +208,11 @@ public class RSACertificate {
         }
     }
 
+    /**
+     * Get the certificate holder.
+     *
+     * @return the certificate holder
+     */
     public X509CertificateHolder getCertificateHolder() {
         return certificateHolder;
     }
@@ -263,6 +268,11 @@ public class RSACertificate {
         return certificateHolder.getNotAfter();
     }
 
+    /**
+     * Get the keys to sign.
+     *
+     * @return the keys to sign
+     */
     public AsymmetricKeys getKeysForSigning() {
         // Fill the public key if missing
         if (certificateHolder != null) {
@@ -345,8 +355,7 @@ public class RSACertificate {
     /**
      * Check if the specified time is in the certificate dates range.
      *
-     * @param date
-     *            the time to check
+     * @param date the time to check
      * @return true if valid
      */
     public boolean isValidDate(Date date) {
@@ -357,8 +366,7 @@ public class RSACertificate {
     /**
      * Check if the certificate was signed by the specified public key.
      *
-     * @param signerPublicKey
-     *            the signer's public key
+     * @param signerPublicKey the signer's public key
      * @return true if signed by it
      */
     public boolean isValidSignature(AsymmetricKeyParameter signerPublicKey) {
@@ -373,8 +381,7 @@ public class RSACertificate {
     /**
      * Check if the certificate was signed by the specified public key.
      *
-     * @param signerPublicKey
-     *            the signer's pair of keys that contains the public key
+     * @param signerPublicKey the signer's pair of keys that contains the public key
      * @return true if signed by it
      */
     public boolean isValidSignature(AsymmetricKeys signerPublicKey) {
@@ -389,8 +396,7 @@ public class RSACertificate {
     /**
      * Check if the certificate was signed by the specified certificate.
      *
-     * @param signerCertificate
-     *            the signer's certificate
+     * @param signerCertificate the signer's certificate
      * @return true if signed by it
      */
     public boolean isValidSignature(RSACertificate signerCertificate) {
@@ -405,8 +411,7 @@ public class RSACertificate {
     /**
      * Save the certificate in a PEM file.
      *
-     * @param fileName
-     *            the full path to the file
+     * @param fileName the full path to the file
      */
     public void saveCertificatePem(String fileName) {
         try {
@@ -419,8 +424,7 @@ public class RSACertificate {
     /**
      * Save the certificate in a PEM writer.
      *
-     * @param writer
-     *            the writer. Will be closed at the end
+     * @param writer the writer. Will be closed at the end
      */
     public void saveCertificatePem(Writer writer) {
         AssertTools.assertNotNull(certificateHolder, "The certificate is not set");
@@ -450,8 +454,7 @@ public class RSACertificate {
     /**
      * Sign the {@link #setKeysForSigning(AsymmetricKeys)} with itself and put it in certificateHolder.
      *
-     * @param certificateDetails
-     *            some information to store in the certificate
+     * @param certificateDetails some information to store in the certificate
      * @return this
      */
     public RSACertificate selfSign(CertificateDetails certificateDetails) {
@@ -493,11 +496,23 @@ public class RSACertificate {
         }
     }
 
+    /**
+     * Set the certificate holder.
+     *
+     * @param certificateHolder the certificate holder
+     * @return this
+     */
     public RSACertificate setCertificateHolder(X509CertificateHolder certificateHolder) {
         this.certificateHolder = certificateHolder;
         return this;
     }
 
+    /**
+     * Set the keys to use for signing.
+     *
+     * @param keysForSigning the keys to use for signing
+     * @return this
+     */
     public RSACertificate setKeysForSigning(AsymmetricKeys keysForSigning) {
         this.keysForSigning = keysForSigning;
         return this;
@@ -506,10 +521,8 @@ public class RSACertificate {
     /**
      * Sign another public key.
      *
-     * @param publicKeyToSign
-     *            the public key to sign
-     * @param certificateDetails
-     *            some information to store in the certificate
+     * @param publicKeyToSign    the public key to sign
+     * @param certificateDetails some information to store in the certificate
      * @return the new certificate
      */
     public RSACertificate signPublicKey(AsymmetricKeys publicKeyToSign, CertificateDetails certificateDetails) {

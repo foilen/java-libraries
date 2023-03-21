@@ -17,9 +17,19 @@ public class Tuple3<A, B, C> {
     private B b;
     private C c;
 
+    /**
+     * Create empty.
+     */
     public Tuple3() {
     }
 
+    /**
+     * Create with values.
+     *
+     * @param a the first value
+     * @param b the second value
+     * @param c the third value
+     */
     public Tuple3(A a, B b, C c) {
         this.a = a;
         this.b = b;
@@ -63,14 +73,29 @@ public class Tuple3<A, B, C> {
         return true;
     }
 
+    /**
+     * Get the first value.
+     *
+     * @return the value
+     */
     public A getA() {
         return a;
     }
 
+    /**
+     * Get the second value.
+     *
+     * @return the value
+     */
     public B getB() {
         return b;
     }
 
+    /**
+     * Get the third value.
+     *
+     * @return the value
+     */
     public C getC() {
         return c;
     }
@@ -85,14 +110,29 @@ public class Tuple3<A, B, C> {
         return result;
     }
 
+    /**
+     * Set the first value.
+     *
+     * @param a the value
+     */
     public void setA(A a) {
         this.a = a;
     }
 
+    /**
+     * Set the second value.
+     *
+     * @param b the value
+     */
     public void setB(B b) {
         this.b = b;
     }
 
+    /**
+     * Set the third value.
+     *
+     * @param c the value
+     */
     public void setC(C c) {
         this.c = c;
     }

@@ -15,6 +15,11 @@ import java.io.InputStream;
  */
 public class NoneInputStreamWrapper extends AbstractInputStreamWrapper {
 
+    /**
+     * Constructor.
+     *
+     * @param wrappedInputStream the stream to wrap
+     */
     public NoneInputStreamWrapper(InputStream wrappedInputStream) {
         super(wrappedInputStream);
     }

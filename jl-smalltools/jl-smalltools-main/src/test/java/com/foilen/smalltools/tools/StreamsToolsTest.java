@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.Assert;
@@ -54,9 +55,9 @@ public class StreamsToolsTest {
         Logger outputLogger = mock(Logger.class);
 
         OutputStream out = StreamsTools.createLoggerOutputStream(outputLogger, Level.INFO);
-        out.write("hello".getBytes(CharsetTools.UTF_8));
-        out.write(" world\n".getBytes(CharsetTools.UTF_8));
-        out.write("yay\n".getBytes(CharsetTools.UTF_8));
+        out.write("hello".getBytes(StandardCharsets.UTF_8));
+        out.write(" world\n".getBytes(StandardCharsets.UTF_8));
+        out.write("yay\n".getBytes(StandardCharsets.UTF_8));
 
         ThreadTools.sleep(3000);
 
@@ -84,12 +85,12 @@ public class StreamsToolsTest {
 
         // Send slowly
         out.write(Ints.toByteArray(11));
-        out.write("Hello ".getBytes(CharsetTools.UTF_8));
+        out.write("Hello ".getBytes(StandardCharsets.UTF_8));
         out.flush();
 
         ThreadTools.sleep(2000);
 
-        out.write("World".getBytes(CharsetTools.UTF_8));
+        out.write("World".getBytes(StandardCharsets.UTF_8));
         out.flush();
 
         countDownLatch.await();
@@ -145,7 +146,7 @@ public class StreamsToolsTest {
         StreamsTools.write(out, 10);
         StreamsTools.write(out, "Hello World");
         out.write(Ints.toByteArray(11)); // Len of "Hello World"
-        out.write("Hello".getBytes(CharsetTools.UTF_8));
+        out.write("Hello".getBytes(StandardCharsets.UTF_8));
         out.close();
 
         InputStream in = new FileInputStream(tmpFile);

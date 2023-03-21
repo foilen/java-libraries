@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -151,7 +152,7 @@ public class FileToolsTest {
         Assert.assertFalse(finalFile.exists());
 
         // Put some data
-        outputStream.write("yay".getBytes(CharsetTools.UTF_8));
+        outputStream.write("yay".getBytes(StandardCharsets.UTF_8));
         Assert.assertTrue(stagingFile.exists());
         Assert.assertFalse(finalFile.exists());
 
@@ -323,7 +324,7 @@ public class FileToolsTest {
         }).start();
 
         PipedOutputStream outputStream = pipes.getB();
-        outputStream.write("Test".getBytes(CharsetTools.UTF_8));
+        outputStream.write("Test".getBytes(StandardCharsets.UTF_8));
         CloseableTools.close(outputStream);
 
         countDownLatch.await();

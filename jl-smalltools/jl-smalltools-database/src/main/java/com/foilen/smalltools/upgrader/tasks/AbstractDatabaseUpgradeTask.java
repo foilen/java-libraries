@@ -8,31 +8,40 @@
  */
 package com.foilen.smalltools.upgrader.tasks;
 
-import java.util.Collections;
-import java.util.List;
-
+import com.foilen.smalltools.tools.ResourceTools;
+import com.google.common.base.Strings;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.foilen.smalltools.tools.ResourceTools;
-import com.google.common.base.Strings;
+import java.util.Collections;
+import java.util.List;
 
 /**
- *
  * Use this to have some common database helpers for your task.
  */
 public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {
 
+    /**
+     * The jdbc template to use.
+     */
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    /**
+     * Find all the tables in the database.
+     *
+     * @return the list of tables
+     */
     protected List<String> mysqlTablesFindAll() {
         List<String> tableNames = jdbcTemplate.queryForList("SHOW TABLES", String.class);
         Collections.sort(tableNames);
         return tableNames;
     }
 
+    /**
+     * Purge the connections in the pool.
+     */
     protected void purgeConnections() {
         javax.sql.DataSource dataSource = jdbcTemplate.getDataSource();
         if (dataSource instanceof DataSource) {
@@ -46,8 +55,7 @@ public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {
     /**
      * Take a resource file and execute all the queries in it.
      *
-     * @param resourceName
-     *            the name of the resource relative to this class
+     * @param resourceName the name of the resource relative to this class
      */
     protected void updateFromResource(String resourceName) {
         updateFromResource(resourceName, this.getClass());
@@ -56,10 +64,8 @@ public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {
     /**
      * Take a resource file and execute all the queries in it.
      *
-     * @param resourceName
-     *            the name of the resource relative to the context class
-     * @param resourceCtx
-     *            the context class
+     * @param resourceName the name of the resource relative to the context class
+     * @param resourceCtx  the context class
      */
     protected void updateFromResource(String resourceName, Class<?> resourceCtx) {
         String fullSql = ResourceTools.getResourceAsString(resourceName, resourceCtx);
@@ -71,6 +77,11 @@ public abstract class AbstractDatabaseUpgradeTask extends AbstractUpgradeTask {
         }
     }
 
+    /**
+     * Tells the tracker name to use.
+     *
+     * @return the name
+     */
     @Override
     public String useTracker() {
         return "db";

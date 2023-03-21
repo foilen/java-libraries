@@ -8,18 +8,11 @@
  */
 package com.foilen.smalltools.tools;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.google.common.base.Strings;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * To get an execution path that works with the provided dependencies. Will throw an exception if it is circular. Also note that the order will always be the same since each items on the same level
@@ -60,10 +53,8 @@ public class MultiDependenciesResolverTools {
     /**
      * Add a dependency.
      *
-     * @param item
-     *            the item that depends on another one
-     * @param dependsOnItem
-     *            the item it depends on (could be null or empty to specify that it depends on nothing)
+     * @param item          the item that depends on another one
+     * @param dependsOnItem the item it depends on (could be null or empty to specify that it depends on nothing)
      * @return this
      */
     public MultiDependenciesResolverTools addDependency(String item, String dependsOnItem) {
@@ -82,6 +73,11 @@ public class MultiDependenciesResolverTools {
         return this;
     }
 
+    /**
+     * Add items.
+     *
+     * @param items the items to add
+     */
     public void addItems(String... items) {
         for (String item : items) {
             if (Strings.isNullOrEmpty(item)) {
@@ -97,8 +93,7 @@ public class MultiDependenciesResolverTools {
      * To retrieve the execution plan.
      *
      * @return the excution plan
-     * @throws SmallToolsException
-     *             if it is a circular dependency
+     * @throws SmallToolsException if it is a circular dependency
      */
     public List<String> getExecution() {
 

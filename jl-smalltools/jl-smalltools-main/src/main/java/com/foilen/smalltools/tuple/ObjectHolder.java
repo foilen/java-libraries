@@ -15,9 +15,17 @@ public class ObjectHolder<O> {
 
     private O object;
 
+    /**
+     * Default constructor.
+     */
     public ObjectHolder() {
     }
 
+    /**
+     * Constructor with the object.
+     *
+     * @param object the object
+     */
     public ObjectHolder(O object) {
         this.object = object;
     }
@@ -45,6 +53,11 @@ public class ObjectHolder<O> {
         return true;
     }
 
+    /**
+     * Get the object.
+     *
+     * @return the object
+     */
     public O get() {
         return object;
     }
@@ -57,6 +70,12 @@ public class ObjectHolder<O> {
         return result;
     }
 
+    /**
+     * Set the object.
+     *
+     * @param object the object
+     * @return this
+     */
     public ObjectHolder<O> set(O object) {
         this.object = object;
         return this;

@@ -8,37 +8,36 @@
  */
 package com.foilen.smalltools.spring.messagesource;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.FileTools;
+import com.foilen.smalltools.trigger.SmoothTrigger;
+import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.CharsetTools;
-import com.foilen.smalltools.tools.FileTools;
-import com.foilen.smalltools.trigger.SmoothTrigger;
-import com.google.common.base.Joiner;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
+/**
+ * A message source that will monitor the usage of the codes and add them to the files if missing.
+ */
 public class UsageMonitoringMessageSource implements MessageSource {
 
     private static final Logger logger = LoggerFactory.getLogger(UsageMonitoringMessageSource.class);
 
+    /**
+     * Format the value with the args.
+     *
+     * @param value the value to format
+     * @param args  the args to use
+     * @return the formatted value
+     */
     static protected String format(String value, Object[] args) {
         if (args != null) {
             for (int i = 0; i < args.length; ++i) {
@@ -67,6 +66,11 @@ public class UsageMonitoringMessageSource implements MessageSource {
     // Known used codes
     private Set<String> knownUsedCodes = new HashSet<>();
 
+    /**
+     * Constructor.
+     *
+     * @param basename the basename of the files. Example: /home/user/messages/messages
+     */
     public UsageMonitoringMessageSource(String basename) {
         this.basename = basename;
 
@@ -158,7 +162,7 @@ public class UsageMonitoringMessageSource implements MessageSource {
             // Load the file
             Properties properties = new Properties();
             try (FileInputStream inputStream = new FileInputStream(file)) {
-                properties.load(new InputStreamReader(inputStream, CharsetTools.UTF_8));
+                properties.load(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             } catch (IOException e) {
                 logger.error("Problem reading the property file {}", file.getAbsoluteFile(), e);
                 throw new SmallToolsException("Problem reading the file", e);
@@ -210,7 +214,7 @@ public class UsageMonitoringMessageSource implements MessageSource {
                 for (Entry<Locale, File> entry : filePerLocale.entrySet()) {
                     Map<String, String> messages = messagesPerLocale.get(entry.getKey());
 
-                    try (PrintWriter printWriter = new PrintWriter(entry.getValue(), CharsetTools.UTF_8.toString())) {
+                    try (PrintWriter printWriter = new PrintWriter(entry.getValue(), StandardCharsets.UTF_8.toString())) {
 
                         // Save the known used (sorted) at the top
                         for (String code : knownUsedCodes.stream().sorted(String.CASE_INSENSITIVE_ORDER).collect(Collectors.toList())) {

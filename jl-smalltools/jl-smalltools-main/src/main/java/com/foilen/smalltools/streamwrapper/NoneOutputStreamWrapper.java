@@ -15,6 +15,11 @@ import java.io.OutputStream;
  */
 public class NoneOutputStreamWrapper extends AbstractOutputStreamWrapper {
 
+    /**
+     * Create a new wrapper.
+     *
+     * @param wrappedOutputStream the stream to wrap
+     */
     public NoneOutputStreamWrapper(OutputStream wrappedOutputStream) {
         super(wrappedOutputStream);
     }

@@ -10,15 +10,16 @@ package com.foilen.smalltools.tools;
 
 import java.util.stream.Stream;
 
+/**
+ * Tools to work with streams.
+ */
 public class StreamTools {
 
     /**
      * Concat multiple streams together.
      *
-     * @param <E>
-     *            the type of elements in the stream
-     * @param streams
-     *            the streams
+     * @param <E>     the type of elements in the stream
+     * @param streams the streams
      * @return the concatenated stream
      */
     @SafeVarargs

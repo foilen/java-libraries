@@ -8,13 +8,13 @@
  */
 package com.foilen.smalltools.upgrader.trackers;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.JsonTools;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A tracker that stores the successfully executed tasks in a {@link Set} and stores it in a file.
@@ -25,6 +25,11 @@ public class JsonFileUpgraderTracker implements UpgraderTracker {
 
     private Set<String> successfulTasks = new HashSet<>();
 
+    /**
+     * The file name to use.
+     *
+     * @param fileName the file name
+     */
     public JsonFileUpgraderTracker(String fileName) {
         this.fileName = fileName;
     }

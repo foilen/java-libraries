@@ -8,6 +8,14 @@
  */
 package com.foilen.smalltools.consolerunner;
 
+import com.foilen.smalltools.TimeoutHandler;
+import com.foilen.smalltools.iterable.FileLinesIterable;
+import com.foilen.smalltools.tools.StreamsTools;
+import com.foilen.smalltools.tuple.Tuple2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,15 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
-
-import com.foilen.smalltools.TimeoutHandler;
-import com.foilen.smalltools.iterable.FileLinesIterable;
-import com.foilen.smalltools.tools.StreamsTools;
-import com.foilen.smalltools.tuple.Tuple2;
 
 /**
  * An helper to run any applications.
@@ -75,8 +74,7 @@ public class ConsoleRunner {
     /**
      * Add arguments to the command.
      *
-     * @param arguments
-     *            the arguments
+     * @param arguments the arguments
      * @return this
      */
     public ConsoleRunner addArguments(List<String> arguments) {
@@ -87,8 +85,7 @@ public class ConsoleRunner {
     /**
      * Add arguments to the command.
      *
-     * @param arguments
-     *            the arguments
+     * @param arguments the arguments
      * @return this
      */
     public ConsoleRunner addArguments(String... arguments) {
@@ -101,10 +98,8 @@ public class ConsoleRunner {
     /**
      * Add environment to the command.
      *
-     * @param name
-     *            the environment name
-     * @param value
-     *            the environment value
+     * @param name  the environment name
+     * @param value the environment value
      * @return this
      */
     public ConsoleRunner addEnvironment(String name, String value) {
@@ -202,10 +197,8 @@ public class ConsoleRunner {
     /**
      * Execute the command using all the configured console input/error and display the output stream using the logger line by line.
      *
-     * @param outputLogger
-     *            the logger to use
-     * @param level
-     *            the level to use on the logger
+     * @param outputLogger the logger to use
+     * @param level        the level to use on the logger
      * @return the status code
      */
     public int executeWithLogger(Logger outputLogger, Level level) {
@@ -217,54 +210,119 @@ public class ConsoleRunner {
         return execute();
     }
 
+    /**
+     * Get the arguments.
+     *
+     * @return the arguments
+     */
     public List<String> getArguments() {
         return arguments;
     }
 
+    /**
+     * Get the command.
+     *
+     * @return the command
+     */
     public String getCommand() {
         return command;
     }
 
+    /**
+     * Get the console error.
+     *
+     * @return the console error
+     */
     public OutputStream getConsoleError() {
         return consoleError;
     }
 
+    /**
+     * Get the console input.
+     *
+     * @return the console input
+     */
     public InputStream getConsoleInput() {
         return consoleInput;
     }
 
+    /**
+     * Get the console output.
+     *
+     * @return the console output
+     */
     public OutputStream getConsoleOutput() {
         return consoleOutput;
     }
 
+    /**
+     * Get the environments.
+     *
+     * @return the environments
+     */
     public Map<String, String> getEnvironments() {
         return environments;
     }
 
+    /**
+     * Get the status code.
+     *
+     * @return the status code
+     */
     public int getStatusCode() {
         return statusCode;
     }
 
+    /**
+     * Get the timeout in milliseconds.
+     *
+     * @return the timeout in milliseconds
+     */
     public Long getTimeoutInMilliseconds() {
         return timeoutInMilliseconds;
     }
 
+    /**
+     * Get the working directory.
+     *
+     * @return the working directory
+     */
     public String getWorkingDirectory() {
         return workingDirectory;
     }
 
+    /**
+     * Tell if the stderr is closed when the process starts.
+     *
+     * @return state
+     */
     public boolean isCloseConsoleError() {
         return closeConsoleError;
     }
 
+    /**
+     * Tell if the stdout is closed when the process starts.
+     *
+     * @return state
+     */
     public boolean isCloseConsoleOutput() {
         return closeConsoleOutput;
     }
 
+    /**
+     * Tell if the environment variables are overridden.
+     *
+     * @return state
+     */
     public boolean isOverrideEnvironment() {
         return overrideEnvironment;
     }
 
+    /**
+     * Tell if the stderr is redirected to stdout.
+     *
+     * @return state
+     */
     public boolean isRedirectErrorStream() {
         return redirectErrorStream;
     }
@@ -272,8 +330,7 @@ public class ConsoleRunner {
     /**
      * Set all the arguments (overriding any previously set).
      *
-     * @param arguments
-     *            the list
+     * @param arguments the list
      * @return this
      */
     public ConsoleRunner setArguments(List<String> arguments) {
@@ -284,8 +341,7 @@ public class ConsoleRunner {
     /**
      * True to close the console error stream set by {@link #setConsoleError(OutputStream)} when the process ends.
      *
-     * @param closeConsoleError
-     *            true to close
+     * @param closeConsoleError true to close
      * @return this
      */
     public ConsoleRunner setCloseConsoleError(boolean closeConsoleError) {
@@ -296,8 +352,7 @@ public class ConsoleRunner {
     /**
      * True to close the console output stream set by {@link #setConsoleOutput(OutputStream)} when the process ends.
      *
-     * @param closeConsoleOutput
-     *            true to close
+     * @param closeConsoleOutput true to close
      * @return this
      */
     public ConsoleRunner setCloseConsoleOutput(boolean closeConsoleOutput) {
@@ -308,8 +363,7 @@ public class ConsoleRunner {
     /**
      * Set the command to run.
      *
-     * @param command
-     *            the command
+     * @param command the command
      * @return this
      */
     public ConsoleRunner setCommand(String command) {
@@ -320,8 +374,7 @@ public class ConsoleRunner {
     /**
      * Set where to send the STD error stream. Default {@link System#err}
      *
-     * @param consoleError
-     *            the stream
+     * @param consoleError the stream
      * @return this
      */
     public ConsoleRunner setConsoleError(OutputStream consoleError) {
@@ -332,8 +385,7 @@ public class ConsoleRunner {
     /**
      * Set where to get the STD in from. Default none
      *
-     * @param consoleInput
-     *            the stream
+     * @param consoleInput the stream
      * @return this
      */
     public ConsoleRunner setConsoleInput(InputStream consoleInput) {
@@ -344,8 +396,7 @@ public class ConsoleRunner {
     /**
      * Set where to send the STD out stream. Default {@link System#out}
      *
-     * @param consoleOutput
-     *            the stream
+     * @param consoleOutput the stream
      * @return this
      */
     public ConsoleRunner setConsoleOutput(OutputStream consoleOutput) {
@@ -356,8 +407,7 @@ public class ConsoleRunner {
     /**
      * Set all the environments (overriding any previously set).
      *
-     * @param environments
-     *            the new environments
+     * @param environments the new environments
      * @return this
      */
     public ConsoleRunner setEnvironments(Map<String, String> environments) {
@@ -368,8 +418,7 @@ public class ConsoleRunner {
     /**
      * Tells if the environments should be cleared before adding the one configured with {@link #addEnvironment(String, String)}.
      *
-     * @param overrideEnvironment
-     *            true to override
+     * @param overrideEnvironment true to override
      * @return this
      */
     public ConsoleRunner setOverrideEnvironment(boolean overrideEnvironment) {
@@ -380,8 +429,7 @@ public class ConsoleRunner {
     /**
      * Merge the STD error stream to STD output stream.
      *
-     * @param redirectErrorStream
-     *            true to redirect
+     * @param redirectErrorStream true to redirect
      * @return this
      */
     public ConsoleRunner setRedirectErrorStream(boolean redirectErrorStream) {
@@ -392,8 +440,7 @@ public class ConsoleRunner {
     /**
      * Set a timeout. Default null (none)
      *
-     * @param timeoutInMilliseconds
-     *            how many milliseconds or null for none
+     * @param timeoutInMilliseconds how many milliseconds or null for none
      * @return this
      */
     public ConsoleRunner setTimeoutInMilliseconds(Long timeoutInMilliseconds) {
@@ -404,8 +451,7 @@ public class ConsoleRunner {
     /**
      * Set the working directory.
      *
-     * @param workingDirectory
-     *            the working directory
+     * @param workingDirectory the working directory
      * @return this
      */
     public ConsoleRunner setWorkingDirectory(String workingDirectory) {
@@ -413,6 +459,9 @@ public class ConsoleRunner {
         return this;
     }
 
+    /**
+     * Request to stop the process.
+     */
     public void stopRequested() {
         if (consoleTimeoutHandlerRunnable != null) {
             cancelled = true;

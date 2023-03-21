@@ -9,6 +9,7 @@
 package com.foilen.smalltools.tools;
 
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import com.foilen.smalltools.exception.SmallToolsException;
@@ -27,7 +28,7 @@ public final class FreemarkerTools {
     static {
         freemarkerConfiguration = new Configuration(Configuration.VERSION_2_3_22);
         freemarkerConfiguration.setClassForTemplateLoading(FreemarkerTools.class, "/");
-        freemarkerConfiguration.setDefaultEncoding(CharsetTools.UTF_8.name());
+        freemarkerConfiguration.setDefaultEncoding(StandardCharsets.UTF_8.name());
         freemarkerConfiguration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
     }
 

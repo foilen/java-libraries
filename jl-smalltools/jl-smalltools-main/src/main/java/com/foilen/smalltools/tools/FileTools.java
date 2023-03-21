@@ -8,39 +8,24 @@
  */
 package com.foilen.smalltools.tools;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.attribute.GroupPrincipal;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFileAttributes;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.UserPrincipal;
-import java.nio.file.attribute.UserPrincipalLookupService;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.hash.HashMd5sum;
 import com.foilen.smalltools.iterable.FileLinesIterable;
 import com.foilen.smalltools.streamwrapper.RenamingOnCloseOutputStreamWrapper;
 import com.google.common.base.Joiner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.attribute.*;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Some common methods to manage files.
@@ -55,16 +40,14 @@ public final class FileTools {
     /**
      * Append a line to a file. Create it if missing.
      *
-     * @param file
-     *            the file
-     * @param line
-     *            the line to add
+     * @param file the file
+     * @param line the line to add
      */
     public static void appendLine(File file, String line) {
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(file, true);
-            out.write((line + "\n").getBytes(CharsetTools.UTF_8));
+            out.write((line + "\n").getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new SmallToolsException("Problem writing to file", e);
         } finally {
@@ -75,10 +58,8 @@ public final class FileTools {
     /**
      * Append a line to a file. Create it if missing.
      *
-     * @param path
-     *            the path to the file
-     * @param line
-     *            the line to add
+     * @param path the path to the file
+     * @param line the line to add
      */
     public static void appendLine(String path, String line) {
         appendLine(new File(path), line);
@@ -87,10 +68,8 @@ public final class FileTools {
     /**
      * Check if the file does not contain the line and append it if missing.
      *
-     * @param path
-     *            the path to the file
-     * @param line
-     *            the line to add
+     * @param path the path to the file
+     * @param line the line to add
      */
     public static void appendLineIfMissing(String path, String line) {
         // Search
@@ -130,9 +109,9 @@ public final class FileTools {
         // Write
         try {
             if (endsWithEmptyLine) {
-                out.write((line + "\n").getBytes(CharsetTools.UTF_8));
+                out.write((line + "\n").getBytes(StandardCharsets.UTF_8));
             } else {
-                out.write(("\n" + line + "\n").getBytes(CharsetTools.UTF_8));
+                out.write(("\n" + line + "\n").getBytes(StandardCharsets.UTF_8));
             }
         } catch (Exception e) {
             throw new SmallToolsException("Problem writing to file", e);
@@ -144,14 +123,10 @@ public final class FileTools {
     /**
      * Change the owner and group of the specified file or directory.
      *
-     * @param fileOrDirectory
-     *            the file or directory to modify the owners
-     * @param recursive
-     *            true to change to all files and directories
-     * @param owner
-     *            the owner
-     * @param group
-     *            the group
+     * @param fileOrDirectory the file or directory to modify the owners
+     * @param recursive       true to change to all files and directories
+     * @param owner           the owner
+     * @param group           the group
      */
     public static void changeOwnerAndGroup(File fileOrDirectory, boolean recursive, UserPrincipal owner, GroupPrincipal group) {
 
@@ -181,14 +156,10 @@ public final class FileTools {
     /**
      * Change the owner and group of the specified file or directory.
      *
-     * @param fileOrDirectory
-     *            the file or directory to modify the owners
-     * @param recursive
-     *            true to change to all files and directories
-     * @param owner
-     *            the owner
-     * @param group
-     *            the group
+     * @param fileOrDirectory the file or directory to modify the owners
+     * @param recursive       true to change to all files and directories
+     * @param owner           the owner
+     * @param group           the group
      */
     public static void changeOwnerAndGroup(String fileOrDirectory, boolean recursive, String owner, String group) {
         try {
@@ -207,12 +178,9 @@ public final class FileTools {
     /**
      * Change the POSIX permissions of the specified file or directory.
      *
-     * @param fileOrDirectory
-     *            the file or directory to modify the permissions
-     * @param recursive
-     *            true to change to all files and directories
-     * @param permissions
-     *            the list of permissions
+     * @param fileOrDirectory the file or directory to modify the permissions
+     * @param recursive       true to change to all files and directories
+     * @param permissions     the list of permissions
      */
     public static void changePermissions(File fileOrDirectory, boolean recursive, Set<PosixFilePermission> permissions) {
 
@@ -241,12 +209,9 @@ public final class FileTools {
     /**
      * Change the POSIX permissions of the specified file or directory.
      *
-     * @param fileOrDirectory
-     *            the file or directory to modify the permissions
-     * @param recursive
-     *            true to change to all files and directories
-     * @param permissions
-     *            the numeric permissions (e.g "777")
+     * @param fileOrDirectory the file or directory to modify the permissions
+     * @param recursive       true to change to all files and directories
+     * @param permissions     the numeric permissions (e.g "777")
      */
     public static void changePermissions(String fileOrDirectory, boolean recursive, String permissions) {
         File file = new File(fileOrDirectory);
@@ -303,8 +268,7 @@ public final class FileTools {
     /**
      * Create an empty file or empty an existing one.
      *
-     * @param file
-     *            the file to clear
+     * @param file the file to clear
      */
     public static void clearFile(File file) {
         try {
@@ -317,13 +281,18 @@ public final class FileTools {
     /**
      * Create an empty file or empty an existing one.
      *
-     * @param path
-     *            the path to the file
+     * @param path the path to the file
      */
     public static void clearFile(String path) {
         clearFile(new File(path));
     }
 
+    /**
+     * Concat the path parts.
+     *
+     * @param pathParts the path parts
+     * @return the concatenated path
+     */
     protected static String concatPath(String... pathParts) {
         StringBuilder sb = new StringBuilder();
         for (String pathPart : pathParts) {
@@ -336,10 +305,8 @@ public final class FileTools {
     /**
      * Take the parent directory owner and group and copy them to the specified file or directory.
      *
-     * @param fileOrDirectory
-     *            the file or directory to modify the owners
-     * @param recursive
-     *            true to copy to all files and directories
+     * @param fileOrDirectory the file or directory to modify the owners
+     * @param recursive       true to copy to all files and directories
      */
     public static void copyOwnerAndGroupFromParentDir(File fileOrDirectory, boolean recursive) {
         Path fileOrDirectoryPath = fileOrDirectory.toPath();
@@ -365,10 +332,8 @@ public final class FileTools {
     /**
      * Take the parent directory owner and group and copy them to the specified file or directory.
      *
-     * @param fileOrDirectory
-     *            the file or directory to modify the owners
-     * @param recursive
-     *            true to copy to all files and directories
+     * @param fileOrDirectory the file or directory to modify the owners
+     * @param recursive       true to copy to all files and directories
      */
     public static void copyOwnerAndGroupFromParentDir(String fileOrDirectory, boolean recursive) {
         copyOwnerAndGroupFromParentDir(new File(fileOrDirectory), recursive);
@@ -377,10 +342,8 @@ public final class FileTools {
     /**
      * Create a staging file to write to and when you will close it, it will rename to its final destination.
      *
-     * @param stagingFile
-     *            the file to write to temporarily
-     * @param finalFile
-     *            when closing, rename the staging file to this file
+     * @param stagingFile the file to write to temporarily
+     * @param finalFile   when closing, rename the staging file to this file
      * @return the outputstream to write to the staging file and that needs to be closed to rename
      */
     public static RenamingOnCloseOutputStreamWrapper createStagingFile(File stagingFile, File finalFile) {
@@ -395,12 +358,9 @@ public final class FileTools {
     /**
      * Create a staging file to write to and when you will close it, it will rename to its final destination.
      *
-     * @param stagingFile
-     *            the file to write to temporarily
-     * @param finalFile
-     *            when closing, rename the staging file to this file
-     * @param deleteOnClose
-     *            will delete the file instead of renaming it (good to confirm full write)
+     * @param stagingFile   the file to write to temporarily
+     * @param finalFile     when closing, rename the staging file to this file
+     * @param deleteOnClose will delete the file instead of renaming it (good to confirm full write)
      * @return the outputstream to write to the staging file and that needs to be closed to rename
      */
     public static RenamingOnCloseOutputStreamWrapper createStagingFile(File stagingFile, File finalFile, boolean deleteOnClose) {
@@ -415,10 +375,8 @@ public final class FileTools {
     /**
      * Create a staging file to write to and when you will close it, it will rename to its final destination.
      *
-     * @param stagingFileName
-     *            the file to write to temporarily
-     * @param finalFileName
-     *            when closing, rename the staging file to this file
+     * @param stagingFileName the file to write to temporarily
+     * @param finalFileName   when closing, rename the staging file to this file
      * @return the outputstream to write to the staging file and that needs to be closed to rename
      */
     public static RenamingOnCloseOutputStreamWrapper createStagingFile(String stagingFileName, String finalFileName) {
@@ -428,12 +386,9 @@ public final class FileTools {
     /**
      * Create a staging file to write to and when you will close it, it will rename to its final destination.
      *
-     * @param stagingFileName
-     *            the file to write to temporarily
-     * @param finalFileName
-     *            when closing, rename the staging file to this file
-     * @param deleteOnClose
-     *            will delete the file instead of renaming it (good to confirm full write)
+     * @param stagingFileName the file to write to temporarily
+     * @param finalFileName   when closing, rename the staging file to this file
+     * @param deleteOnClose   will delete the file instead of renaming it (good to confirm full write)
      * @return the outputstream to write to the staging file and that needs to be closed to rename
      */
     public static RenamingOnCloseOutputStreamWrapper createStagingFile(String stagingFileName, String finalFileName, boolean deleteOnClose) {
@@ -443,8 +398,7 @@ public final class FileTools {
     /**
      * Delete the file.
      *
-     * @param path
-     *            the path to the file
+     * @param path the path to the file
      * @return true if the file was removed
      */
     public static boolean deleteFile(String path) {
@@ -454,8 +408,7 @@ public final class FileTools {
     /**
      * Tells if the file exists.
      *
-     * @param file
-     *            the file path
+     * @param file the file path
      * @return true if exists
      */
     public static boolean exists(String file) {
@@ -465,10 +418,8 @@ public final class FileTools {
     /**
      * Gives an absolute path. If the path is relative, the absolute will be composed of the working directory and the file.
      *
-     * @param workingDirectory
-     *            the working directory if filePath is relative. It can end with the path separator or not.
-     * @param filePath
-     *            the path of the file (absolute or relative)
+     * @param workingDirectory the working directory if filePath is relative. It can end with the path separator or not.
+     * @param filePath         the path of the file (absolute or relative)
      * @return the absolute path
      */
     public static String getAbsolutePath(String workingDirectory, String filePath) {
@@ -518,8 +469,7 @@ public final class FileTools {
     /**
      * Retrieve the extension of the file name.
      *
-     * @param fileName
-     *            the file name
+     * @param fileName the file name
      * @return the extension (e.g: "css") ; null if no extension
      */
     public static String getExtension(String fileName) {
@@ -548,8 +498,7 @@ public final class FileTools {
     /**
      * File as an array of bytes.
      *
-     * @param file
-     *            the file to open
+     * @param file the file to open
      * @return the bytes
      */
     public static byte[] getFileAsBytes(File file) {
@@ -563,8 +512,7 @@ public final class FileTools {
     /**
      * Load a file as a String.
      *
-     * @param file
-     *            the file to open
+     * @param file the file to open
      * @return the string
      */
     public static String getFileAsString(File file) {
@@ -578,8 +526,7 @@ public final class FileTools {
     /**
      * Load a file as a String.
      *
-     * @param fileName
-     *            the file path to open
+     * @param fileName the file path to open
      * @return the string
      */
     public static String getFileAsString(String fileName) {
@@ -593,8 +540,7 @@ public final class FileTools {
     /**
      * Retrieve the owner of the file or directory.
      *
-     * @param file
-     *            the file or directory to get the owner
+     * @param file the file or directory to get the owner
      * @return the owner
      */
     public static String getOwner(File file) {
@@ -610,8 +556,7 @@ public final class FileTools {
     /**
      * Retrieve the owner of the file or directory.
      *
-     * @param file
-     *            the file or directory to get the owner
+     * @param file the file or directory to get the owner
      * @return the owner
      */
     public static String getOwner(String file) {
@@ -621,8 +566,7 @@ public final class FileTools {
     /**
      * Get the unix permissions of a file or directory.
      *
-     * @param file
-     *            the file or directory
+     * @param file the file or directory
      * @return the permissions in numeric format. E.g: "750"
      */
     public static String getPermissions(String file) {
@@ -634,33 +578,33 @@ public final class FileTools {
 
             for (PosixFilePermission permission : permissions) {
                 switch (permission) {
-                case GROUP_EXECUTE:
-                    group += 1;
-                    break;
-                case GROUP_READ:
-                    group += 4;
-                    break;
-                case GROUP_WRITE:
-                    group += 2;
-                    break;
-                case OTHERS_EXECUTE:
-                    others += 1;
-                    break;
-                case OTHERS_READ:
-                    others += 4;
-                    break;
-                case OTHERS_WRITE:
-                    others += 2;
-                    break;
-                case OWNER_EXECUTE:
-                    owner += 1;
-                    break;
-                case OWNER_READ:
-                    owner += 4;
-                    break;
-                case OWNER_WRITE:
-                    owner += 2;
-                    break;
+                    case GROUP_EXECUTE:
+                        group += 1;
+                        break;
+                    case GROUP_READ:
+                        group += 4;
+                        break;
+                    case GROUP_WRITE:
+                        group += 2;
+                        break;
+                    case OTHERS_EXECUTE:
+                        others += 1;
+                        break;
+                    case OTHERS_READ:
+                        others += 4;
+                        break;
+                    case OTHERS_WRITE:
+                        others += 2;
+                        break;
+                    case OWNER_EXECUTE:
+                        owner += 1;
+                        break;
+                    case OWNER_READ:
+                        owner += 4;
+                        break;
+                    case OWNER_WRITE:
+                        owner += 2;
+                        break;
                 }
             }
 
@@ -685,8 +629,7 @@ public final class FileTools {
     /**
      * Tells if the path is an absolute Windows one.
      *
-     * @param path
-     *            the path
+     * @param path the path
      * @return true if it is an absolute Windows one
      */
     public static boolean isWindowsStartPath(String path) {
@@ -697,11 +640,9 @@ public final class FileTools {
     /**
      * Opens a file and iterates over all the lines.
      *
-     * @param file
-     *            the file
+     * @param file the file
      * @return an iterable
-     * @throws FileNotFoundException
-     *             FileNotFoundException
+     * @throws FileNotFoundException FileNotFoundException
      */
     public static FileLinesIterable readFileLinesIteration(File file) throws FileNotFoundException {
         FileLinesIterable result = new FileLinesIterable();
@@ -712,8 +653,7 @@ public final class FileTools {
     /**
      * Opens a file and iterates over all the lines.
      *
-     * @param filePath
-     *            the absolute file path
+     * @param filePath the absolute file path
      * @return an iterable
      */
     public static FileLinesIterable readFileLinesIteration(String filePath) {
@@ -727,8 +667,7 @@ public final class FileTools {
     /**
      * Opens a file and iterates over all the lines using a stream.
      *
-     * @param file
-     *            the file
+     * @param file the file
      * @return a stream of all the lines
      */
     public static Stream<String> readFileLinesStream(File file) {
@@ -742,8 +681,7 @@ public final class FileTools {
     /**
      * Opens a file and iterates over all the lines using a stream.
      *
-     * @param filePath
-     *            the absolute file path
+     * @param filePath the absolute file path
      * @return a stream of all the lines
      */
     public static Stream<String> readFileLinesStream(String filePath) {
@@ -753,10 +691,8 @@ public final class FileTools {
     /**
      * Save some bytes to a file.
      *
-     * @param content
-     *            the content to write
-     * @param file
-     *            the file to write into
+     * @param content the content to write
+     * @param file    the file to write into
      * @return true if it worked
      */
     public static boolean writeFile(byte[] content, File file) {
@@ -773,10 +709,8 @@ public final class FileTools {
     /**
      * Save some bytes to a file.
      *
-     * @param content
-     *            the content to write
-     * @param path
-     *            the path to the file
+     * @param content the content to write
+     * @param path    the path to the file
      */
     public static void writeFile(byte[] content, String path) {
         writeFile(content, new File(path));
@@ -785,10 +719,8 @@ public final class FileTools {
     /**
      * Save the stream to a file.
      *
-     * @param inputStream
-     *            the content to write
-     * @param file
-     *            the file to write into
+     * @param inputStream the content to write
+     * @param file        the file to write into
      * @return true if it worked
      */
     public static boolean writeFile(InputStream inputStream, File file) {
@@ -805,12 +737,9 @@ public final class FileTools {
     /**
      * Save the stream to a file.
      *
-     * @param inputStream
-     *            the content to write
-     * @param file
-     *            the file to write into
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param inputStream the content to write
+     * @param file        the file to write into
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if it worked
      */
     public static boolean writeFile(InputStream inputStream, File file, String permissions) {
@@ -832,16 +761,11 @@ public final class FileTools {
     /**
      * Save the stream to a file.
      *
-     * @param inputStream
-     *            the content to write
-     * @param file
-     *            the file to write into
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param inputStream the content to write
+     * @param file        the file to write into
+     * @param owner       the owner of the file
+     * @param group       the group of the file
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if it worked
      */
     public static boolean writeFile(InputStream inputStream, File file, String owner, String group, String permissions) {
@@ -864,16 +788,14 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param content
-     *            the content to write
-     * @param file
-     *            the file to write into
+     * @param content the content to write
+     * @param file    the file to write into
      * @return true if it worked
      */
     public static boolean writeFile(String content, File file) {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(content.getBytes(CharsetTools.UTF_8));
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
             fos.close();
             return true;
         } catch (IOException e) {
@@ -884,18 +806,15 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param content
-     *            the content to write
-     * @param file
-     *            the file to write into
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param content     the content to write
+     * @param file        the file to write into
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if it worked
      */
     public static boolean writeFile(String content, File file, String permissions) {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(content.getBytes(CharsetTools.UTF_8));
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
             fos.close();
 
             // Update permissions
@@ -911,22 +830,17 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param content
-     *            the content to write
-     * @param file
-     *            the file to write into
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param content     the content to write
+     * @param file        the file to write into
+     * @param owner       the owner of the file
+     * @param group       the group of the file
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if it worked
      */
     public static boolean writeFile(String content, File file, String owner, String group, String permissions) {
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(content.getBytes(CharsetTools.UTF_8));
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
             fos.close();
 
             // Update owners and permissions
@@ -943,10 +857,8 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param content
-     *            the content to write
-     * @param path
-     *            the path to the file
+     * @param content the content to write
+     * @param path    the path to the file
      */
     public static void writeFile(String content, String path) {
         writeFile(content, new File(path));
@@ -955,10 +867,8 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param path
-     *            the path to the file
-     * @param contentLines
-     *            all the lines of text
+     * @param path         the path to the file
+     * @param contentLines all the lines of text
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String path, List<String> contentLines) {
@@ -968,12 +878,9 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param path
-     *            the path to the file
-     * @param contentLines
-     *            all the lines of text
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param path         the path to the file
+     * @param contentLines all the lines of text
+     * @param permissions  the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String path, List<String> contentLines, String permissions) {
@@ -989,16 +896,11 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param path
-     *            the path to the file
-     * @param contentLines
-     *            all the lines of text
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param path         the path to the file
+     * @param contentLines all the lines of text
+     * @param owner        the owner of the file
+     * @param group        the group of the file
+     * @param permissions  the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String path, List<String> contentLines, String owner, String group, String permissions) {
@@ -1015,10 +917,8 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param path
-     *            the path to the file
-     * @param content
-     *            the text content
+     * @param path    the path to the file
+     * @param content the text content
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String path, String content) {
@@ -1055,12 +955,9 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param path
-     *            the path to the file
-     * @param content
-     *            the text content
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param path        the path to the file
+     * @param content     the text content
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String path, String content, String permissions) {
@@ -1075,16 +972,11 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param path
-     *            the path to the file
-     * @param content
-     *            the text content
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param path        the path to the file
+     * @param content     the text content
+     * @param owner       the owner of the file
+     * @param group       the group of the file
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String path, String content, String owner, String group, String permissions) {
@@ -1100,12 +992,9 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param pathParts
-     *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
-     * @param contentLines
-     *            all the lines of text
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param pathParts    the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
+     * @param contentLines all the lines of text
+     * @param permissions  the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String[] pathParts, List<String> contentLines, String permissions) {
@@ -1115,16 +1004,11 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param pathParts
-     *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
-     * @param contentLines
-     *            all the lines of text
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param pathParts    the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
+     * @param contentLines all the lines of text
+     * @param owner        the owner of the file
+     * @param group        the group of the file
+     * @param permissions  the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String[] pathParts, List<String> contentLines, String owner, String group, String permissions) {
@@ -1134,12 +1018,9 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param pathParts
-     *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
-     * @param content
-     *            the text content
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param pathParts   the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
+     * @param content     the text content
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String[] pathParts, String content, String permissions) {
@@ -1149,16 +1030,11 @@ public final class FileTools {
     /**
      * Save some texts to a file.
      *
-     * @param pathParts
-     *            the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
-     * @param content
-     *            the text content
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param pathParts   the path to the file (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir/.Archives" })
+     * @param content     the text content
+     * @param owner       the owner of the file
+     * @param group       the group of the file
+     * @param permissions the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if the file was created or the content is different
      */
     public static boolean writeFileWithContentCheck(String[] pathParts, String content, String owner, String group, String permissions) {

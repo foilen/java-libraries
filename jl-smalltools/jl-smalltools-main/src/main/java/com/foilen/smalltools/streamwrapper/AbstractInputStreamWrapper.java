@@ -16,8 +16,16 @@ import java.io.InputStream;
  */
 public abstract class AbstractInputStreamWrapper extends InputStream {
 
+    /**
+     * The wrapped input stream.
+     */
     protected InputStream wrappedInputStream;
 
+    /**
+     * Wrap an input stream to modify its behavior.
+     *
+     * @param wrappedInputStream the wrapped input stream
+     */
     public AbstractInputStreamWrapper(InputStream wrappedInputStream) {
         this.wrappedInputStream = wrappedInputStream;
     }

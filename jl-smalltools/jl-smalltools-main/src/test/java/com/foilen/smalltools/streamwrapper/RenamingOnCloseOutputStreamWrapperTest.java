@@ -10,11 +10,11 @@ package com.foilen.smalltools.streamwrapper;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.FileTools;
 
 /**
@@ -37,7 +37,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the discarding
@@ -61,7 +61,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it, change state and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.setDeleteOnClose(false);
         renamingOnCloseOutputStreamWrapper.close();
 
@@ -88,7 +88,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
         renamingOnCloseOutputStreamWrapper.close();
 
@@ -113,7 +113,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the renaming
@@ -140,7 +140,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it, change state and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.setDeleteOnClose(true);
         renamingOnCloseOutputStreamWrapper.close();
 
@@ -165,7 +165,7 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         Assert.assertFalse(renameDst.exists());
 
         // Send some data to it and close
-        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(CharsetTools.UTF_8));
+        renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
         renamingOnCloseOutputStreamWrapper.close();
 

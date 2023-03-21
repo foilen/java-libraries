@@ -8,12 +8,15 @@
  */
 package com.foilen.smalltools.tools;
 
+import com.google.common.base.Joiner;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.common.base.Joiner;
-
+/**
+ * To help manage the thread name.
+ */
 public class ThreadNameStateTool {
 
     private List<String> previousName;
@@ -21,6 +24,9 @@ public class ThreadNameStateTool {
     private List<String> nextName;
     private String separator = "";
 
+    /**
+     * Create a new instance.
+     */
     public ThreadNameStateTool() {
         previousName = new ArrayList<>();
         previousName.add(Thread.currentThread().getName());
@@ -43,8 +49,7 @@ public class ThreadNameStateTool {
     /**
      * Append the full date and time.
      *
-     * @param date
-     *            the date
+     * @param date the date
      * @return this
      */
     public ThreadNameStateTool appendDate(Date date) {
@@ -59,8 +64,7 @@ public class ThreadNameStateTool {
     /**
      * Append an object as a compact JSON.
      *
-     * @param object
-     *            the object
+     * @param object the object
      * @return this
      */
     public ThreadNameStateTool appendJson(Object object) {
@@ -75,8 +79,7 @@ public class ThreadNameStateTool {
     /**
      * Append the class name.
      *
-     * @param object
-     *            the object
+     * @param object the object
      * @return this
      */
     public ThreadNameStateTool appendObjectClass(Object object) {
@@ -91,8 +94,7 @@ public class ThreadNameStateTool {
     /**
      * Append the simple class name.
      *
-     * @param object
-     *            the object
+     * @param object the object
      * @return this
      */
     public ThreadNameStateTool appendObjectClassSimple(Object object) {
@@ -108,8 +110,7 @@ public class ThreadNameStateTool {
     /**
      * Append an object {@link #toString()}.
      *
-     * @param object
-     *            the object
+     * @param object the object
      * @return this
      */
     public ThreadNameStateTool appendObjectText(Object object) {
@@ -124,8 +125,7 @@ public class ThreadNameStateTool {
     /**
      * Append some text.
      *
-     * @param text
-     *            the text
+     * @param text the text
      * @return this
      */
     public ThreadNameStateTool appendText(String text) {
@@ -181,6 +181,12 @@ public class ThreadNameStateTool {
         return this;
     }
 
+    /**
+     * Set the separator to use between each part.
+     *
+     * @param separator the separator
+     * @return this
+     */
     public ThreadNameStateTool setSeparator(String separator) {
         this.separator = separator;
         return this;

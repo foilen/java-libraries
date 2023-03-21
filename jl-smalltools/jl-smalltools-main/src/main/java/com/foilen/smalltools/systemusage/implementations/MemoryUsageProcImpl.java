@@ -21,9 +21,17 @@ public class MemoryUsageProcImpl implements MemoryUsageStrategy {
     private long lastCheck;
     private MemoryInfo lastMemoryInfo;
 
+    /**
+     * Default constructor.
+     */
     public MemoryUsageProcImpl() {
     }
 
+    /**
+     * Constructor with the path to the /proc/meminfo file.
+     *
+     * @param procMemPath the path to the /proc/meminfo file
+     */
     public MemoryUsageProcImpl(String procMemPath) {
         this.procMemPath = procMemPath;
     }

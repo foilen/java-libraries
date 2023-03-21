@@ -8,6 +8,9 @@
  */
 package com.foilen.smalltools.crypt.bouncycastle.asymmetric;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
+
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -16,9 +19,6 @@ import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
-
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * Contains the details of the RSA key. Given by the method {@link RSACrypt#retrieveKeyDetails(AsymmetricKeys)}.
@@ -35,18 +35,18 @@ public class RSAKeyDetails {
     private BigInteger primeExponentQ;
     private BigInteger crtCoefficient;
 
+    /**
+     * Create the key details with no values.
+     */
     public RSAKeyDetails() {
     }
 
     /**
      * Create the key details with values.
      *
-     * @param modulus
-     *            the modulus
-     * @param publicExponent
-     *            (optional) the public exponent
-     * @param privateExponent
-     *            (optional) the private exponent
+     * @param modulus         the modulus
+     * @param publicExponent  (optional) the public exponent
+     * @param privateExponent (optional) the private exponent
      */
     public RSAKeyDetails(BigInteger modulus, BigInteger publicExponent, BigInteger privateExponent) {
         this.modulus = modulus;
@@ -54,6 +54,18 @@ public class RSAKeyDetails {
         this.privateExponent = privateExponent;
     }
 
+    /**
+     * Create the key details with values.
+     *
+     * @param modulus         the modulus
+     * @param publicExponent  (optional) the public exponent
+     * @param privateExponent (optional) the private exponent
+     * @param p               (optional) the primeP
+     * @param q               (optional) the primeQ
+     * @param dP              (optional) the primeExponentP
+     * @param dQ              (optional) the primeExponentQ
+     * @param qInv            (optional) the crtCoefficient
+     */
     public RSAKeyDetails(BigInteger modulus, BigInteger publicExponent, BigInteger privateExponent, BigInteger p, BigInteger q, BigInteger dP, BigInteger dQ, BigInteger qInv) {
         this.modulus = modulus;
         this.publicExponent = publicExponent;
@@ -66,6 +78,11 @@ public class RSAKeyDetails {
         isCrt = true;
     }
 
+    /**
+     * Get the crt Coefficient
+     *
+     * @return the crt Coefficient
+     */
     public BigInteger getCrtCoefficient() {
         return crtCoefficient;
     }
@@ -125,18 +142,38 @@ public class RSAKeyDetails {
         return modulus;
     }
 
+    /**
+     * Get the primeExponentP
+     *
+     * @return the primeExponentP
+     */
     public BigInteger getPrimeExponentP() {
         return primeExponentP;
     }
 
+    /**
+     * Get the primeExponentQ
+     *
+     * @return the primeExponentQ
+     */
     public BigInteger getPrimeExponentQ() {
         return primeExponentQ;
     }
 
+    /**
+     * Get the primeP
+     *
+     * @return the primeP
+     */
     public BigInteger getPrimeP() {
         return primeP;
     }
 
+    /**
+     * Get the primeQ
+     *
+     * @return the primeQ
+     */
     public BigInteger getPrimeQ() {
         return primeQ;
     }
@@ -155,53 +192,91 @@ public class RSAKeyDetails {
         return publicExponent;
     }
 
+    /**
+     * Is this a CRT key?
+     *
+     * @return true if CRT
+     */
     public boolean isCrt() {
         return isCrt;
     }
 
+    /**
+     * Set the CRT flag
+     *
+     * @param isCrt true if CRT
+     */
     public void setCrt(boolean isCrt) {
         this.isCrt = isCrt;
     }
 
+    /**
+     * Set the crt Coefficient
+     *
+     * @param crtCoefficient the crt Coefficient
+     */
     public void setCrtCoefficient(BigInteger crtCoefficient) {
         this.crtCoefficient = crtCoefficient;
     }
 
     /**
-     * @param modulus
-     *            the modulus to set
+     * Set the modulus
+     *
+     * @param modulus the modulus to set
      */
     public void setModulus(BigInteger modulus) {
         this.modulus = modulus;
     }
 
+    /**
+     * Set the primeExponentP
+     *
+     * @param primeExponentP the primeExponentP to set
+     */
     public void setPrimeExponentP(BigInteger primeExponentP) {
         this.primeExponentP = primeExponentP;
     }
 
+    /**
+     * Set the primeExponentQ
+     *
+     * @param primeExponentQ the primeExponentQ to set
+     */
     public void setPrimeExponentQ(BigInteger primeExponentQ) {
         this.primeExponentQ = primeExponentQ;
     }
 
+    /**
+     * Set the primeP
+     *
+     * @param primeP the primeP to set
+     */
     public void setPrimeP(BigInteger primeP) {
         this.primeP = primeP;
     }
 
+    /**
+     * Set the primeQ
+     *
+     * @param primeQ the primeQ to set
+     */
     public void setPrimeQ(BigInteger primeQ) {
         this.primeQ = primeQ;
     }
 
     /**
-     * @param privateExponent
-     *            the privateExponent to set
+     * Set the privateExponent
+     *
+     * @param privateExponent the privateExponent to set
      */
     public void setPrivateExponent(BigInteger privateExponent) {
         this.privateExponent = privateExponent;
     }
 
     /**
-     * @param publicExponent
-     *            the publicExponent to set
+     * Set the publicExponent
+     *
+     * @param publicExponent the publicExponent to set
      */
     public void setPublicExponent(BigInteger publicExponent) {
         this.publicExponent = publicExponent;

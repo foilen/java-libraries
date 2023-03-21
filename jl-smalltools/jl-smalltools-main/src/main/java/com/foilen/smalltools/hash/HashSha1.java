@@ -12,9 +12,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 
 import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.CharsetTools;
 
 /**
  * To create hashes with SHA-512.
@@ -68,7 +68,7 @@ public final class HashSha1 {
      * @return the hash in hex
      */
     public static String hashString(String in) {
-        return HashUtils.hashInputStream(ALGORITHM, new ByteArrayInputStream(in.getBytes(CharsetTools.UTF_8)));
+        return HashUtils.hashInputStream(ALGORITHM, new ByteArrayInputStream(in.getBytes(StandardCharsets.UTF_8)));
     }
 
     private HashSha1() {

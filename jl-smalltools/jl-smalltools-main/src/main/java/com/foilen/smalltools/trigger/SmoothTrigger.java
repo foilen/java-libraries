@@ -13,7 +13,7 @@ import com.foilen.smalltools.tools.AssertTools;
 
 /**
  * The goal of a {@link SmoothTrigger} is to easily manipulate the frequency of running a requested action when it can be requested multiple times.
- *
+ * <p>
  * Options are:
  * <ul>
  * <li>cancellable: when cancelled, it goes in idle state.</li>
@@ -22,7 +22,7 @@ import com.foilen.smalltools.tools.AssertTools;
  * <li>maxDelayAfterFirstRequestMs: when a request comes in, it will wait max for this delay before triggering. It will bypass the delayAfterLastTriggerMs to make sure that it won't wait forever.</li>
  * <li>isFirstPassThrough: when a request comes in, if nothing is pending, the action is triggered and it goes in cooldown state for delayAfterLastTriggerMs time.</li>
  * </ul>
- *
+ * <p>
  * The states are:
  * <ul>
  * <li>Idle: No request is done</li>
@@ -30,7 +30,6 @@ import com.foilen.smalltools.tools.AssertTools;
  * idling.</li>
  * <li>Warmup: When a request is made, it is in pending state. After the action is triggered, it goes in cooldown. The max amount of time in this state is managed by maxDelayAfterFirstRequest.</li>
  * </ul>
- *
  */
 public class SmoothTrigger {
 
@@ -48,14 +47,10 @@ public class SmoothTrigger {
     /**
      * Create a {@link SmoothTrigger}.
      *
-     * @param delayAfterLastTriggerMs
-     *            how long to wait between a request and the action executions when multiple requests are done quickly.
-     * @param maxDelayAfterFirstRequestMs
-     *            the max amount of time to wait before executing the action when the warmup is always reseting (due to too many quick requests) . To disable, set it to {@link Long#MAX_VALUE}.
-     * @param isFirstPassThrough
-     *            true to trigger the event right away and go in cooldown state
-     * @param action
-     *            the action to execute
+     * @param delayAfterLastTriggerMs     how long to wait between a request and the action executions when multiple requests are done quickly.
+     * @param maxDelayAfterFirstRequestMs the max amount of time to wait before executing the action when the warmup is always reseting (due to too many quick requests) . To disable, set it to {@link Long#MAX_VALUE}.
+     * @param isFirstPassThrough          true to trigger the event right away and go in cooldown state
+     * @param action                      the action to execute
      */
     public SmoothTrigger(long delayAfterLastTriggerMs, long maxDelayAfterFirstRequestMs, boolean isFirstPassThrough, Runnable action) {
         this.delayAfterLastTriggerMs = delayAfterLastTriggerMs;
@@ -67,8 +62,7 @@ public class SmoothTrigger {
     /**
      * Create a {@link SmoothTrigger} with a warmup time of 1s and a max wait of 10s.
      *
-     * @param action
-     *            the action to execute
+     * @param action the action to execute
      */
     public SmoothTrigger(Runnable action) {
         this.delayAfterLastTriggerMs = 1000;
@@ -77,24 +71,47 @@ public class SmoothTrigger {
         this.action = action;
     }
 
+    /**
+     * Cancel any pending request.
+     */
     public void cancelPending() {
         AssertTools.assertNotNull(smoothTriggerRunnable, "Not running");
         smoothTriggerRunnable.cancelPending();
         smoothTriggerThread.interrupt();
     }
 
+    /**
+     * Get the action to execute.
+     *
+     * @return the action
+     */
     public Runnable getAction() {
         return action;
     }
 
+    /**
+     * Get the delay after the last trigger.
+     *
+     * @return the delay in ms
+     */
     public long getDelayAfterLastTriggerMs() {
         return delayAfterLastTriggerMs;
     }
 
+    /**
+     * Get the max delay after the first request.
+     *
+     * @return the delay in ms
+     */
     public long getMaxDelayAfterFirstRequestMs() {
         return maxDelayAfterFirstRequestMs;
     }
 
+    /**
+     * Tells if the first request will trigger the action.
+     *
+     * @return true if it will trigger
+     */
     public boolean isFirstPassThrough() {
         return isFirstPassThrough;
     }
@@ -109,30 +126,59 @@ public class SmoothTrigger {
         smoothTriggerThread.interrupt();
     }
 
+    /**
+     * Set the action to execute.
+     *
+     * @param action the action
+     * @return this
+     */
     public SmoothTrigger setAction(Runnable action) {
         AssertTools.assertNull(smoothTriggerRunnable, "Cannot change while running");
         this.action = action;
         return this;
     }
 
+    /**
+     * Set the delay after the last trigger.
+     *
+     * @param delayAfterLastTriggerMs the delay in ms
+     * @return this
+     */
     public SmoothTrigger setDelayAfterLastTriggerMs(long delayAfterLastTriggerMs) {
         AssertTools.assertNull(smoothTriggerRunnable, "Cannot change while running");
         this.delayAfterLastTriggerMs = delayAfterLastTriggerMs;
         return this;
     }
 
+    /**
+     * Set if the first request will trigger the action.
+     *
+     * @param isFirstPassThrough true if it will trigger
+     * @return this
+     */
     public SmoothTrigger setFirstPassThrough(boolean isFirstPassThrough) {
         AssertTools.assertNull(smoothTriggerRunnable, "Cannot change while running");
         this.isFirstPassThrough = isFirstPassThrough;
         return this;
     }
 
+    /**
+     * Set the max delay after the first request.
+     *
+     * @param maxDelayAfterFirstRequestMs the delay in ms
+     * @return this
+     */
     public SmoothTrigger setMaxDelayAfterFirstRequestMs(long maxDelayAfterFirstRequestMs) {
         AssertTools.assertNull(smoothTriggerRunnable, "Cannot change while running");
         this.maxDelayAfterFirstRequestMs = maxDelayAfterFirstRequestMs;
         return this;
     }
 
+    /**
+     * Start the smooth trigger system.
+     *
+     * @return this
+     */
     public SmoothTrigger start() {
 
         // Start thread
@@ -154,8 +200,7 @@ public class SmoothTrigger {
     /**
      * Stop the smooth trigger system. It returns when stopped and the action execution completed (if needed).
      *
-     * @param executeActionIfPending
-     *            if true and in the warmup state, will trigger the action
+     * @param executeActionIfPending if true and in the warmup state, will trigger the action
      */
     public void stop(boolean executeActionIfPending) {
 

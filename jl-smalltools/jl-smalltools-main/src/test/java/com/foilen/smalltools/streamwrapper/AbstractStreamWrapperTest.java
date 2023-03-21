@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -24,7 +25,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
-import com.foilen.smalltools.tools.CharsetTools;
 import com.foilen.smalltools.tools.StreamsTools;
 
 /**
@@ -95,7 +95,7 @@ public abstract class AbstractStreamWrapperTest {
 
     @Test
     public void testWriteAndReadFullArray() throws IOException {
-        byte[] b = "Hello World".getBytes(CharsetTools.UTF_8);
+        byte[] b = "Hello World".getBytes(StandardCharsets.UTF_8);
         byte[] actual = new byte[1024];
         outputStream.write(b);
         outputStream.flush();
@@ -109,7 +109,7 @@ public abstract class AbstractStreamWrapperTest {
 
     @Test
     public void testWriteAndReadPartial() throws IOException {
-        byte[] b = "Hello World".getBytes(CharsetTools.UTF_8);
+        byte[] b = "Hello World".getBytes(StandardCharsets.UTF_8);
         byte[] actual = new byte[1024];
         outputStream.write(b, 6, 3);
         outputStream.flush();

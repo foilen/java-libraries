@@ -19,41 +19,84 @@ public class ThreadList {
 
     private List<Thread> threads = new ArrayList<>();
 
+    /**
+     * Create a new instance.
+     */
     public ThreadList() {
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param threads the threads to manage
+     */
     public ThreadList(List<Thread> threads) {
         this.threads = threads;
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param runnables the runnables to manage
+     */
     public ThreadList(Runnable... runnables) {
         addAll(runnables);
     }
 
+    /**
+     * Create a new instance.
+     *
+     * @param threads the threads to manage
+     */
     public ThreadList(Thread... threads) {
         addAll(threads);
     }
 
+    /**
+     * Add a new thread.
+     *
+     * @param runnable the runnable to execute
+     */
     public void add(Runnable runnable) {
         threads.add(new Thread(runnable));
     }
 
+    /**
+     * Add a new thread.
+     *
+     * @param thread the thread to manage
+     */
     public void add(Thread thread) {
         threads.add(thread);
     }
 
+    /**
+     * Add all the threads.
+     *
+     * @param runnables the runnables to execute
+     */
     public void addAll(Collection<Runnable> runnables) {
         for (Runnable runnable : runnables) {
             add(runnable);
         }
     }
 
+    /**
+     * Add all the threads.
+     *
+     * @param runnables the runnables to execute
+     */
     public void addAll(Runnable... runnables) {
         for (Runnable runnable : runnables) {
             add(runnable);
         }
     }
 
+    /**
+     * Add all the threads.
+     *
+     * @param threads the threads to manage
+     */
     public void addAll(Thread... threads) {
         for (Thread thread : threads) {
             add(thread);
@@ -89,6 +132,11 @@ public class ThreadList {
         return count;
     }
 
+    /**
+     * Get the threads.
+     *
+     * @return the threads
+     */
     public List<Thread> getThreads() {
         return threads;
     }
@@ -120,8 +168,7 @@ public class ThreadList {
     /**
      * Join all threads.
      *
-     * @exception InterruptedException
-     *                if interrupted
+     * @throws InterruptedException if interrupted
      */
     public void join() throws InterruptedException {
         for (Thread thread : threads) {
@@ -132,11 +179,8 @@ public class ThreadList {
     /**
      * Join all threads.
      *
-     * @param millis
-     *            the time to wait in milliseconds for all of them to be completed
-     *
-     * @exception InterruptedException
-     *                if interrupted
+     * @param millis the time to wait in milliseconds for all of them to be completed
+     * @throws InterruptedException if interrupted
      */
     public void join(long millis) throws InterruptedException {
         long timeoutAt = System.currentTimeMillis() + millis;
@@ -152,8 +196,7 @@ public class ThreadList {
     /**
      * Set all threads as daemon or not.
      *
-     * @param isDaemon
-     *            true if must be daemon
+     * @param isDaemon true if must be daemon
      */
     public void setDaemon(boolean isDaemon) {
         threads.forEach(it -> {
@@ -161,6 +204,11 @@ public class ThreadList {
         });
     }
 
+    /**
+     * Set the threads to manage.
+     *
+     * @param threads the threads to manage
+     */
     public void setThreads(List<Thread> threads) {
         this.threads = threads;
     }

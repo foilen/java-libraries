@@ -11,6 +11,9 @@ package com.foilen.smalltools.jsch;
 import com.foilen.smalltools.tools.AbstractBasics;
 import com.jcraft.jsch.UserInfo;
 
+/**
+ * A {@link UserInfo} that will auto approve the server certificate.
+ */
 public class AutoApproveUserinfo extends AbstractBasics implements UserInfo {
 
     private <T> T ask(String forWhat, String message, T returnedValue) {

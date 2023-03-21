@@ -8,17 +8,17 @@
  */
 package com.foilen.smalltools.tools;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.google.common.base.Joiner;
+
 import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.google.common.base.Joiner;
 
 /**
  * To help manipulating jdbc uri.
@@ -32,6 +32,11 @@ public class JdbcUriTools {
     private String database;
     private Map<String, String> options = new TreeMap<>();
 
+    /**
+     * Create a new instance from a uri.
+     *
+     * @param uriText the uri
+     */
     public JdbcUriTools(String uriText) {
 
         if (!uriText.startsWith("jdbc:")) {
@@ -78,71 +83,128 @@ public class JdbcUriTools {
         }
     }
 
+    /**
+     * Get the database name.
+     *
+     * @return the database name
+     */
     public String getDatabase() {
         return database;
     }
 
+    /**
+     * Get the options.
+     *
+     * @return the options
+     */
     public Map<String, String> getOptions() {
         return options;
     }
 
+    /**
+     * Get the password.
+     *
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Get the schema.
+     *
+     * @return the schema
+     */
     public String getSchema() {
         return schema;
     }
 
+    /**
+     * Get the server.
+     *
+     * @return the server
+     */
     public String getServer() {
         return server;
     }
 
+    /**
+     * Get the username.
+     *
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Set the database name.
+     *
+     * @param database the database name
+     */
     public void setDatabase(String database) {
         this.database = database;
     }
 
+    /**
+     * Set the options.
+     *
+     * @param options the options
+     */
     public void setOptions(Map<String, String> options) {
         this.options = options;
     }
 
+    /**
+     * Set the password.
+     *
+     * @param password the password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Set the schema.
+     *
+     * @param schema the schema
+     */
     public void setSchema(String schema) {
         this.schema = schema;
     }
 
+    /**
+     * Set the server.
+     *
+     * @param server the server
+     */
     public void setServer(String server) {
         this.server = server;
     }
 
+    /**
+     * Set the username.
+     *
+     * @param username the username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Get the uri.
+     *
+     * @return the uri
+     */
     public String toUri() {
         StringBuilder sb = new StringBuilder();
         sb.append("jdbc:").append(schema).append("://");
 
         if (username != null) {
-            try {
-                sb.append(URLEncoder.encode(username, CharsetTools.UTF_8.name()));
-            } catch (UnsupportedEncodingException e) {
-                throw new SmallToolsException(e);
-            }
+            sb.append(URLEncoder.encode(username, StandardCharsets.UTF_8));
             if (password != null) {
                 sb.append(":");
-                try {
-                    sb.append(URLEncoder.encode(password, CharsetTools.UTF_8.name()));
-                } catch (UnsupportedEncodingException e) {
-                    throw new SmallToolsException(e);
-                }
+                sb.append(URLEncoder.encode(password, StandardCharsets.UTF_8));
             }
             sb.append("@");
         }

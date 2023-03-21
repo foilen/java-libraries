@@ -21,6 +21,12 @@ public class TimeoutRunnableHandler {
 
     private RuntimeException thrownException;
 
+    /**
+     * The constructor.
+     *
+     * @param timeoutInMilliseconds the timeout in milliseconds
+     * @param runnable              the runnable to execute
+     */
     public TimeoutRunnableHandler(long timeoutInMilliseconds, Runnable runnable) {
         this.timeoutInMilliseconds = timeoutInMilliseconds;
         this.runnable = runnable;
@@ -29,8 +35,7 @@ public class TimeoutRunnableHandler {
     /**
      * Call this method to execute the runnable. This call is waiting for the end of the execution or the timeout to occur.
      *
-     * @throws SmallToolsException
-     *             if the timeout occurs
+     * @throws SmallToolsException if the timeout occurs
      */
     public void run() {
 
