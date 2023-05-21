@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.reflection.ReflectionTools;
 
@@ -42,18 +43,22 @@ public final class JsonTools {
         PRETTY_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         PRETTY_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         PRETTY_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
+        PRETTY_OBJECT_MAPPER.registerModule(new JavaTimeModule());
 
         PRETTY_SKIPNULL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         PRETTY_SKIPNULL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         PRETTY_SKIPNULL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
         PRETTY_SKIPNULL_OBJECT_MAPPER.setSerializationInclusion(Include.NON_NULL);
+        PRETTY_SKIPNULL_OBJECT_MAPPER.registerModule(new JavaTimeModule());
 
         COMPACT_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         COMPACT_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
+        COMPACT_OBJECT_MAPPER.registerModule(new JavaTimeModule());
 
         COMPACT_SKIPNULL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         COMPACT_SKIPNULL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
         COMPACT_SKIPNULL_OBJECT_MAPPER.setSerializationInclusion(Include.NON_NULL);
+        COMPACT_SKIPNULL_OBJECT_MAPPER.registerModule(new JavaTimeModule());
 
         NON_FAIL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         NON_FAIL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
@@ -61,17 +66,15 @@ public final class JsonTools {
         NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
         NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         NON_FAIL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
+        NON_FAIL_OBJECT_MAPPER.registerModule(new JavaTimeModule());
     }
 
     /**
      * Serialize to JSON and deserialize back as a new object of the specified class.
      *
-     * @param object
-     *            the object to clone
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param object the object to clone
+     * @param clazz  the type of the final object
+     * @param <T>    the type of the final object
      * @return the new cloned object
      */
     public static <T> T clone(Object object, Class<T> clazz) {
@@ -85,10 +88,8 @@ public final class JsonTools {
     /**
      * Serialize to JSON and deserialize back as a new object.
      *
-     * @param <T>
-     *            the class of the object
-     * @param object
-     *            the object to clone
+     * @param <T>    the class of the object
+     * @param object the object to clone
      * @return the new cloned object
      */
     @SuppressWarnings("unchecked")
@@ -104,10 +105,8 @@ public final class JsonTools {
     /**
      * Serialize to JSON and deserialize back as a new SortedMap with all sub-objects as SortedMap.
      *
-     * @param <T>
-     *            the class of the object
-     * @param object
-     *            the object to clone
+     * @param <T>    the class of the object
+     * @param object the object to clone
      * @return the new cloned object
      */
     @SuppressWarnings("unchecked")
@@ -123,8 +122,7 @@ public final class JsonTools {
     /**
      * Return a compact print JSON String.
      *
-     * @param object
-     *            the object to serialize
+     * @param object the object to serialize
      * @return the JSON String
      */
     public static String compactPrint(Object object) {
@@ -138,8 +136,7 @@ public final class JsonTools {
     /**
      * Return a compact print JSON String and ignore all null values.
      *
-     * @param object
-     *            the object to serialize
+     * @param object the object to serialize
      * @return the JSON String
      */
     public static String compactPrintWithoutNulls(Object object) {
@@ -176,8 +173,7 @@ public final class JsonTools {
     /**
      * Return a pretty print JSON String.
      *
-     * @param object
-     *            the object to serialize
+     * @param object the object to serialize
      * @return the JSON String
      */
     public static String prettyPrint(Object object) {
@@ -191,8 +187,7 @@ public final class JsonTools {
     /**
      * Return a pretty print JSON String and ignore all null values.
      *
-     * @param object
-     *            the object to serialize
+     * @param object the object to serialize
      * @return the JSON String
      */
     public static String prettyPrintWithoutNulls(Object object) {
@@ -206,12 +201,9 @@ public final class JsonTools {
     /**
      * Read the JSON file.
      *
-     * @param file
-     *            the file
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param file  the file
+     * @param clazz the type of the final object
+     * @param <T>   the type of the final object
      * @return the object
      */
     public static <T> T readFromFile(File file, Class<T> clazz) {
@@ -225,10 +217,8 @@ public final class JsonTools {
     /**
      * Read the JSON file inside an already existing object.
      *
-     * @param file
-     *            the file
-     * @param target
-     *            the already existing object
+     * @param file   the file
+     * @param target the already existing object
      */
     public static void readFromFile(File file, Object target) {
         Object readObject = readFromFile(file, target.getClass());
@@ -238,12 +228,9 @@ public final class JsonTools {
     /**
      * Read the JSON file.
      *
-     * @param fileName
-     *            the full path to the file
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param fileName the full path to the file
+     * @param clazz    the type of the final object
+     * @param <T>      the type of the final object
      * @return the object
      */
     public static <T> T readFromFile(String fileName, Class<T> clazz) {
@@ -253,10 +240,8 @@ public final class JsonTools {
     /**
      * Read the JSON file inside an already existing object.
      *
-     * @param fileName
-     *            the full path to the file
-     * @param target
-     *            the already existing object
+     * @param fileName the full path to the file
+     * @param target   the already existing object
      */
     public static void readFromFile(String fileName, Object target) {
         readFromFile(new File(fileName), target);
@@ -265,12 +250,9 @@ public final class JsonTools {
     /**
      * Read the JSON file.
      *
-     * @param file
-     *            the file
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param file  the file
+     * @param clazz the type of the final object
+     * @param <T>   the type of the final object
      * @return the list of objects
      */
     public static <T> List<T> readFromFileAsList(File file, Class<T> clazz) {
@@ -285,12 +267,9 @@ public final class JsonTools {
     /**
      * Read the JSON file.
      *
-     * @param fileName
-     *            the full path to the file
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param fileName the full path to the file
+     * @param clazz    the type of the final object
+     * @param <T>      the type of the final object
      * @return the list of objects
      */
     public static <T> List<T> readFromFileAsList(String fileName, Class<T> clazz) {
@@ -300,12 +279,9 @@ public final class JsonTools {
     /**
      * Read the JSON file ignoring some failures.
      *
-     * @param file
-     *            the file
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param file  the file
+     * @param clazz the type of the final object
+     * @param <T>   the type of the final object
      * @return the object
      */
     public static <T> T readFromFileIgnoreFail(File file, Class<T> clazz) {
@@ -319,10 +295,8 @@ public final class JsonTools {
     /**
      * Read the JSON file, ignoring some failures, inside an already existing object.
      *
-     * @param file
-     *            the file
-     * @param target
-     *            the already existing object
+     * @param file   the file
+     * @param target the already existing object
      */
     public static void readFromFileIgnoreFail(File file, Object target) {
         Object readObject = readFromFileIgnoreFail(file, target.getClass());
@@ -332,10 +306,8 @@ public final class JsonTools {
     /**
      * Read the JSON file, ignoring some failures, inside an already existing object.
      *
-     * @param fileName
-     *            the full path to the file
-     * @param target
-     *            the already existing object
+     * @param fileName the full path to the file
+     * @param target   the already existing object
      */
     public static void readFromFileIgnoreFail(String fileName, Object target) {
         readFromFileIgnoreFail(new File(fileName), target);
@@ -344,12 +316,9 @@ public final class JsonTools {
     /**
      * Read the JSON resource.
      *
-     * @param resource
-     *            the resource to open
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param resource the resource to open
+     * @param clazz    the type of the final object
+     * @param <T>      the type of the final object
      * @return the object
      */
     public static <T> T readFromResource(String resource, Class<T> clazz) {
@@ -359,14 +328,10 @@ public final class JsonTools {
     /**
      * Read the JSON resource.
      *
-     * @param resource
-     *            the resource to open
-     * @param clazz
-     *            the type of the final object
-     * @param context
-     *            the context class to use relative path
-     * @param <T>
-     *            the type of the final object
+     * @param resource the resource to open
+     * @param clazz    the type of the final object
+     * @param context  the context class to use relative path
+     * @param <T>      the type of the final object
      * @return the object
      */
     public static <T> T readFromResource(String resource, Class<T> clazz, Class<?> context) {
@@ -380,12 +345,9 @@ public final class JsonTools {
     /**
      * Read the JSON resource.
      *
-     * @param resource
-     *            the resource to open
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param resource the resource to open
+     * @param clazz    the type of the final object
+     * @param <T>      the type of the final object
      * @return the list of objects
      */
     public static <T> List<T> readFromResourceAsList(String resource, Class<T> clazz) {
@@ -395,14 +357,10 @@ public final class JsonTools {
     /**
      * Read the JSON resource.
      *
-     * @param resource
-     *            the resource to open
-     * @param clazz
-     *            the type of the final object
-     * @param context
-     *            the context class to use relative path
-     * @param <T>
-     *            the type of the final object
+     * @param resource the resource to open
+     * @param clazz    the type of the final object
+     * @param context  the context class to use relative path
+     * @param <T>      the type of the final object
      * @return the list of objects
      */
     public static <T> List<T> readFromResourceAsList(String resource, Class<T> clazz, Class<?> context) {
@@ -417,12 +375,9 @@ public final class JsonTools {
     /**
      * Read the JSON String.
      *
-     * @param text
-     *            the json content
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param text  the json content
+     * @param clazz the type of the final object
+     * @param <T>   the type of the final object
      * @return the object
      */
     public static <T> T readFromString(String text, Class<T> clazz) {
@@ -436,12 +391,9 @@ public final class JsonTools {
     /**
      * Read the JSON String.
      *
-     * @param text
-     *            the json content
-     * @param clazz
-     *            the type of the final object
-     * @param <T>
-     *            the type of the final object
+     * @param text  the json content
+     * @param clazz the type of the final object
+     * @param <T>   the type of the final object
      * @return the list of objects
      */
     public static <T> List<T> readFromStringAsList(String text, Class<T> clazz) {
@@ -456,10 +408,8 @@ public final class JsonTools {
     /**
      * Write the JSON to the file.
      *
-     * @param file
-     *            the file
-     * @param object
-     *            the object to serialize
+     * @param file   the file
+     * @param object the object to serialize
      */
     public static void writeToFile(File file, Object object) {
         try {
@@ -472,10 +422,8 @@ public final class JsonTools {
     /**
      * Write the JSON to the file.
      *
-     * @param fileName
-     *            the full path to the file
-     * @param object
-     *            the object to serialize
+     * @param fileName the full path to the file
+     * @param object   the object to serialize
      */
     public static void writeToFile(String fileName, Object object) {
         writeToFile(new File(fileName), object);
@@ -484,10 +432,8 @@ public final class JsonTools {
     /**
      * Write the JSON to the stream. The stream will not be closed.
      *
-     * @param stream
-     *            the stream
-     * @param object
-     *            the object to serialize
+     * @param stream the stream
+     * @param object the object to serialize
      */
     public static void writeToStream(OutputStream stream, Object object) {
         try {
@@ -500,8 +446,7 @@ public final class JsonTools {
     /**
      * Write the JSON to a String.
      *
-     * @param object
-     *            the object to serialize
+     * @param object the object to serialize
      * @return the JSON string
      */
     public static String writeToString(Object object) {
