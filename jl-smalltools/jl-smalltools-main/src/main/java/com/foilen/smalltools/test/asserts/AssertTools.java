@@ -37,12 +37,9 @@ public final class AssertTools {
     /**
      * Diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump).
      *
-     * @param expected
-     *            the expected object to compare
-     * @param initialItems
-     *            the initial items
-     * @param finalItems
-     *            the final items
+     * @param expected     the expected object to compare
+     * @param initialItems the initial items
+     * @param finalItems   the final items
      */
     public static void assertDiffJsonComparison(AssertDiff expected, List<?> initialItems, List<?> finalItems) {
         assertJsonComparison(expected, diffLists(initialItems, finalItems));
@@ -50,18 +47,14 @@ public final class AssertTools {
 
     /**
      * Load an expected object from a JSON resource file and diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump).
+     * <p>
+     * <p>
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" or some part of the path to let the tool update the file with the "actual" json.
      *
-     *
-     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
-     *
-     * @param expectedResource
-     *            the filename of the resource
-     * @param expectedContext
-     *            the class in which the resource file is
-     * @param initialItems
-     *            the initial items
-     * @param finalItems
-     *            the final items
+     * @param expectedResource the filename of the resource
+     * @param expectedContext  the class in which the resource file is
+     * @param initialItems     the initial items
+     * @param finalItems       the final items
      */
     public static void assertDiffJsonComparison(String expectedResource, Class<?> expectedContext, List<?> initialItems, List<?> finalItems) {
         assertJsonComparison(expectedResource, expectedContext, diffLists(initialItems, finalItems));
@@ -70,12 +63,9 @@ public final class AssertTools {
     /**
      * Diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump ignoring nulls).
      *
-     * @param expected
-     *            the expected object to compare
-     * @param initialItems
-     *            the initial items
-     * @param finalItems
-     *            the final items
+     * @param expected     the expected object to compare
+     * @param initialItems the initial items
+     * @param finalItems   the final items
      */
     public static void assertDiffJsonComparisonWithoutNulls(Object expected, List<?> initialItems, List<?> finalItems) {
         assertJsonComparisonWithoutNulls(expected, diffLists(initialItems, finalItems));
@@ -83,17 +73,13 @@ public final class AssertTools {
 
     /**
      * Load an expected object from a JSON resource file and diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump ignoring nulls).
+     * <p>
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" or some part of the path to let the tool update the file with the "actual" json.
      *
-     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
-     *
-     * @param expectedResource
-     *            the filename of the resource
-     * @param expectedContext
-     *            the class in which the resource file is
-     * @param initialItems
-     *            the initial items
-     * @param finalItems
-     *            the final items
+     * @param expectedResource the filename of the resource
+     * @param expectedContext  the class in which the resource file is
+     * @param initialItems     the initial items
+     * @param finalItems       the final items
      */
     public static void assertDiffJsonComparisonWithoutNulls(String expectedResource, Class<?> expectedContext, List<?> initialItems, List<?> finalItems) {
         assertJsonComparisonWithoutNulls(expectedResource, expectedContext, diffLists(initialItems, finalItems));
@@ -102,12 +88,9 @@ public final class AssertTools {
     /**
      * Assert expected - delta &lt;= actual &lt;= expected + delta .
      *
-     * @param expected
-     *            the center of the expected value
-     * @param actual
-     *            the actual value to assert
-     * @param delta
-     *            the delta between the expected value
+     * @param expected the center of the expected value
+     * @param actual   the actual value to assert
+     * @param delta    the delta between the expected value
      */
     public static void assertEqualsDelta(int expected, int actual, int delta) {
         if (Math.abs(expected - actual) > delta) {
@@ -120,12 +103,9 @@ public final class AssertTools {
     /**
      * Assert expected - delta &lt;= actual &lt;= expected + delta .
      *
-     * @param expected
-     *            the center of the expected value
-     * @param actual
-     *            the actual value to assert
-     * @param delta
-     *            the delta between the expected value
+     * @param expected the center of the expected value
+     * @param actual   the actual value to assert
+     * @param delta    the delta between the expected value
      */
     public static void assertEqualsDelta(long expected, long actual, long delta) {
         if (Math.abs(expected - actual) > delta) {
@@ -164,10 +144,8 @@ public final class AssertTools {
     /**
      * Compare the expected object to the actual object (by their JSON dump).
      *
-     * @param expected
-     *            the expected object to compare
-     * @param actual
-     *            the actual object to compare to
+     * @param expected the expected object to compare
+     * @param actual   the actual object to compare to
      */
     public static void assertJsonComparison(Object expected, Object actual) {
         String expectedJson = JsonTools.prettyPrint(expected);
@@ -178,16 +156,13 @@ public final class AssertTools {
 
     /**
      * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump).
+     * <p>
+     * <p>
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" or some part of the path to let the tool update the file with the "actual" json.
      *
-     *
-     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
-     *
-     * @param expectedResource
-     *            the filename of the resource
-     * @param expectedContext
-     *            the class in which the resource file is
-     * @param actual
-     *            the actual object to compare to
+     * @param expectedResource the filename of the resource
+     * @param expectedContext  the class in which the resource file is
+     * @param actual           the actual object to compare to
      */
     public static void assertJsonComparison(String expectedResource, Class<?> expectedContext, Object actual) {
         String actualJson = JsonTools.prettyPrint(actual);
@@ -201,10 +176,8 @@ public final class AssertTools {
     /**
      * Compare the expected object to the actual object (by their JSON dump ignoring nulls).
      *
-     * @param expected
-     *            the expected object to compare
-     * @param actual
-     *            the actual object to compare to
+     * @param expected the expected object to compare
+     * @param actual   the actual object to compare to
      */
     public static void assertJsonComparisonWithoutNulls(Object expected, Object actual) {
         String expectedJson = JsonTools.prettyPrintWithoutNulls(expected);
@@ -215,15 +188,12 @@ public final class AssertTools {
 
     /**
      * Load an expected object from a JSON resource file and compare it to the actual object (by their JSON dump ignoring nulls).
+     * <p>
+     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" or some part of the path to let the tool update the file with the "actual" json.
      *
-     * You can set the system property "ASSERT_TOOLS_UPDATE_EXPECTED_FILE" to "true" to let the tool update the file with the "actual" json.
-     *
-     * @param expectedResource
-     *            the filename of the resource
-     * @param expectedContext
-     *            the class in which the resource file is
-     * @param actual
-     *            the actual object to compare to
+     * @param expectedResource the filename of the resource
+     * @param expectedContext  the class in which the resource file is
+     * @param actual           the actual object to compare to
      */
     public static void assertJsonComparisonWithoutNulls(String expectedResource, Class<?> expectedContext, Object actual) {
         String actualJson = JsonTools.prettyPrintWithoutNulls(actual);
@@ -273,10 +243,8 @@ public final class AssertTools {
     /**
      * Compare the expected object to the actual object (by their Yaml dump).
      *
-     * @param expected
-     *            the expected object to compare
-     * @param actual
-     *            the actual object to compare to
+     * @param expected the expected object to compare
+     * @param actual   the actual object to compare to
      */
     public static void assertYamlComparison(Object expected, Object actual) {
         DumperOptions dumperOptions = new DumperOptions();
@@ -291,12 +259,9 @@ public final class AssertTools {
     /**
      * Load an expected object from a Yaml resource file and compare it to the actual object (by their Yaml dump).
      *
-     * @param expectedResource
-     *            the filename of the resource
-     * @param expectedContext
-     *            the class in which the resource file is
-     * @param actual
-     *            the actual object to compare to
+     * @param expectedResource the filename of the resource
+     * @param expectedContext  the class in which the resource file is
+     * @param actual           the actual object to compare to
      */
     public static void assertYamlComparison(String expectedResource, Class<?> expectedContext, Object actual) {
         Yaml yaml = new Yaml();
@@ -308,10 +273,10 @@ public final class AssertTools {
 
         // Transform items to json
         List<String> initialJson = initialItems.stream() //
-                .map(i -> JsonTools.prettyPrint(i)) //
+                .map(JsonTools::prettyPrint) //
                 .collect(CollectionsTools.collectToArrayList());
         List<String> finalJson = finalItems.stream() //
-                .map(i -> JsonTools.prettyPrint(i)) //
+                .map(JsonTools::prettyPrint) //
                 .collect(CollectionsTools.collectToArrayList());
 
         // Diff
@@ -334,28 +299,37 @@ public final class AssertTools {
     /**
      * Update the resource file if requested.
      *
-     * @param expectedResource
-     *            the expected resource
-     * @param expectedContext
-     *            the expected class
-     * @param actualJson
-     *            the actual
+     * @param expectedResource the expected resource
+     * @param expectedContext  the expected class
+     * @param actualJson       the actual
      * @return true if should assert (when no need to update the resource file)
      */
     private static boolean updateFileIfRequested(String expectedResource, Class<?> expectedContext, String actualJson) {
-        if ("true".equals(SystemTools.getPropertyOrEnvironment("ASSERT_TOOLS_UPDATE_EXPECTED_FILE", "false"))) {
+        String updateExpectedFileContains = SystemTools.getPropertyOrEnvironment("ASSERT_TOOLS_UPDATE_EXPECTED_FILE", "false");
+        if (!"false".equals(updateExpectedFileContains)) {
             URL url = expectedContext.getResource(expectedResource);
             if (url == null) {
                 Assert.fail("The file must already exists (you can create an empty file)");
             } else {
                 String filename = url.toString().substring(5);
                 String filePart = new File(filename).getName();
-                List<String> availableFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true).stream() //
-                        .filter(it -> it.endsWith(filePart) && !it.equals(filename)) //
+                List<String> availableFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true).stream()
+                        .filter(it -> it.endsWith(filePart) && !it.equals(filename))
+                        .filter(it -> it.contains(updateExpectedFileContains))
                         .collect(Collectors.toList());
 
-                Assert.assertEquals("Must have exactly one candidate", 1, availableFiles.size());
-                FileTools.writeFile(actualJson, availableFiles.get(0));
+                if (availableFiles.isEmpty()) {
+                    Assert.fail("No file found for " + filePart);
+                }
+                if (availableFiles.size() > 1) {
+                    System.out.println("Too many files found for " + filePart + ":");
+                    availableFiles.forEach(System.out::println);
+                    System.out.println("You can configure ASSERT_TOOLS_UPDATE_EXPECTED_FILE to filter the path containing that value");
+                    Assert.fail("Too many files found for " + filePart);
+                }
+                String fileToUpdate = availableFiles.get(0);
+                System.out.println("Updating " + fileToUpdate);
+                FileTools.writeFile(actualJson, fileToUpdate);
             }
             return false;
         }
