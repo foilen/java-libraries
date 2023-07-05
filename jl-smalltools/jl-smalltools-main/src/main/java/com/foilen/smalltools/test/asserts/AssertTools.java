@@ -315,7 +315,7 @@ public final class AssertTools {
                 String filePart = new File(filename).getName();
                 List<String> availableFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true).stream()
                         .filter(it -> it.endsWith(filePart) && !it.equals(filename))
-                        .filter(it -> it.contains(updateExpectedFileContains))
+                        .filter(it ->"true".equals(updateExpectedFileContains) || it.contains(updateExpectedFileContains))
                         .collect(Collectors.toList());
 
                 if (availableFiles.isEmpty()) {
