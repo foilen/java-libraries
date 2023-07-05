@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
 
@@ -308,7 +307,7 @@ public final class AssertTools {
                 String filePart = new File(filename).getName();
                 List<String> availableFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true).stream()
                         .filter(it -> it.endsWith(filePart) && !it.equals(filename))
-                        .filter(it -> it.contains(updateExpectedFileContains))
+                        .filter(it -> "true".equals(updateExpectedFileContains) || it.contains(updateExpectedFileContains))
                         .toList();
 
                 if (availableFiles.isEmpty()) {
