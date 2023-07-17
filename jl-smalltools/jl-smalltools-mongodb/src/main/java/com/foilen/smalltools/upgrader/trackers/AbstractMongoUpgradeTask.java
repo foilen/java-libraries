@@ -9,12 +9,16 @@
 package com.foilen.smalltools.upgrader.trackers;
 
 import com.foilen.smalltools.tools.AbstractBasics;
+import com.foilen.smalltools.tools.BufferBatchesTools;
+import com.foilen.smalltools.tools.ResourceTools;
 import com.foilen.smalltools.tuple.Tuple2;
 import com.foilen.smalltools.upgrader.tasks.UpgradeTask;
 import com.mongodb.MongoCommandException;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -22,7 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
 
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Tasks with helpers to manage a mongodb database.
@@ -112,6 +119,66 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
                 throw e;
             }
         }
+    }
+
+    protected void insertInCollection(String collectionName, String resourceName, Class<?> resourceClass) {
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
+
+        logger.info("Insert in collection {}", collectionName);
+        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
+
+        BufferBatchesTools.<Document>autoClose(100, collection::insertMany, documents -> {
+            ResourceTools.readResourceLinesIteration(resourceName, resourceClass).forEach(line -> {
+                logger.info("Batching line {}", line);
+                Document document = Document.parse(line);
+                documents.add(document);
+            });
+        });
+
+    }
+
+    protected void insertOrUpdateInCollection(String collectionName, String resourceName, Class<?> resourceClass) {
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
+
+        logger.info("Insert or update in collection {}", collectionName);
+        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
+
+        ResourceTools.readResourceLinesIteration(resourceName, resourceClass).forEach(line -> {
+            logger.info("Line {}", line);
+            Document document = Document.parse(line);
+
+            // Check if exists
+            if (collection.find(Filters.eq("_id", document.get("_id"))).first() == null) {
+                logger.info("Inserting {}", line);
+                collection.insertOne(document);
+            } else {
+                logger.info("Updating {}", line);
+                collection.replaceOne(Filters.eq("_id", document.get("_id")), document);
+            }
+
+        });
+
+    }
+
+    protected void exportFromCollection(String fileName, String collectionName, Bson filter, Consumer<FindIterable<Document>> findConsumer) {
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
+
+        logger.info("Export from collection {} to file {}", collectionName, fileName);
+        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
+
+        var findIterator = collection.find(filter);
+        findConsumer.accept(findIterator);
+
+        try (PrintWriter out = new PrintWriter(fileName, StandardCharsets.UTF_8)) {
+            findIterator.forEach(document -> {
+                String line = document.toJson();
+                logger.info("Exporting {}", line);
+                out.println(line);
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("Problem exporting", e);
+        }
+
     }
 
     /**
