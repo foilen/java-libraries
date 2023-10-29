@@ -1,0 +1,42 @@
+addCollection("col1");
+addIndex("col1",
+  new IndexOptions().name("field1_1"),
+  new Tuple2<>("field1", 1)
+);
+addIndex("col1",
+  new IndexOptions().name("field1_1_field2_1"),
+  new Tuple2<>("field1", 1),
+  new Tuple2<>("field2", 1)
+);
+
+addCollection("col2");
+addIndex("col2",
+  new IndexOptions().name("u1_1_u2_1").unique(true),
+  new Tuple2<>("u1", 1),
+  new Tuple2<>("u2", 1)
+);
+addIndex("col2",
+  new IndexOptions().name("s1_1").sparse(true),
+  new Tuple2<>("s1", 1)
+);
+addIndex("col2",
+  new IndexOptions().name("ttlTime_1").expireAfter(36000, TimeUnit.SECONDS),
+  new Tuple2<>("ttlTime", 1)
+);
+
+addCollection("col3");
+addIndex("col3",
+  new IndexOptions().defaultLanguage("english").name("comment_text").languageOverride("language").textVersion(3).weights(new Document("comment", 1)),
+  new Tuple2<>("_fts", text),
+  new Tuple2<>("_ftsx", 1)
+);
+
+addCollection("col4", new CreateCollectionOptions().capped(true).maxDocuments(100).sizeInBytes(1000));
+
+addView("view1", "col1",
+  List.of(
+    new Document("$match", new Document("status", "A")),
+    new Document("$group", new Document("_id", "$cust_id"))
+  )
+);
+
