@@ -15,8 +15,8 @@ sourceCompatibility = 17
 
 dependencies {
     api project(':jl-smalltools:jl-smalltools-spring')
-    api 'org.mongodb:mongodb-driver-sync:4.9.0'
-    api 'org.springframework.data:spring-data-mongodb:4.0.3'
+    api 'org.mongodb:mongodb-driver-sync:4.11.0'
+    api 'org.springframework.data:spring-data-mongodb:4.1.5'
 }
 
 jar {

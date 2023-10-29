@@ -1,6 +1,8 @@
+rootProject.name = 'jl-smalltools'
 include 'jl-smalltools:jl-smalltools-bouncycastle'
 include 'jl-smalltools:jl-smalltools-database'
 include 'jl-smalltools:jl-smalltools-hibernate61'
+include 'jl-smalltools:jl-smalltools-hibernate63'
 include 'jl-smalltools:jl-smalltools-main'
 include 'jl-smalltools:jl-smalltools-mongodb'
 include 'jl-smalltools:jl-smalltools-spring'

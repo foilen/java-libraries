@@ -15,12 +15,12 @@ sourceCompatibility = 17
 
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
-    api 'jakarta.mail:jakarta.mail-api:2.1.1'
-    api 'org.springframework.data:spring-data-commons:3.0.3'
-    api 'org.springframework:spring-context-support:6.0.6'
-    api 'org.springframework:spring-core:6.0.6'
-    api 'org.springframework:spring-webmvc:6.0.6'
-    api 'org.springframework.security:spring-security-web:6.0.2'
+    api 'jakarta.mail:jakarta.mail-api:2.1.2'
+    api 'org.springframework.data:spring-data-commons:3.1.5'
+    api 'org.springframework:spring-context-support:6.0.13'
+    api 'org.springframework:spring-core:6.0.13'
+    api 'org.springframework:spring-webmvc:6.0.13'
+    api 'org.springframework.security:spring-security-web:6.1.5'
 
     testImplementation 'junit:junit:4.13.2'
 }

@@ -15,9 +15,9 @@ sourceCompatibility = 17
 
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
-    api 'org.bouncycastle:bcpkix-jdk18on:1.72'
-    api 'org.bouncycastle:bcpg-jdk18on:1.72.2'
-    api 'org.bouncycastle:bcprov-jdk18on:1.72'
+    api 'org.bouncycastle:bcpkix-jdk18on:1.76'
+    api 'org.bouncycastle:bcpg-jdk18on:1.76'
+    api 'org.bouncycastle:bcprov-jdk18on:1.76'
 
     testImplementation 'junit:junit:4.13.2'
 }

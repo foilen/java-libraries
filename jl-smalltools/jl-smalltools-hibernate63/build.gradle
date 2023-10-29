@@ -14,12 +14,11 @@ repositories {
 sourceCompatibility = 17
 
 dependencies {
-    api project(':jl-smalltools:jl-smalltools-main')
-    api 'jakarta.persistence:jakarta.persistence-api:3.1.0'
-    api 'org.apache.tomcat:tomcat-jdbc:11.0.0-M13'
-    api 'org.springframework:spring-orm:6.0.13'
+    api project(':jl-smalltools:jl-smalltools-database')
+    api 'org.hibernate.orm:hibernate-ant:6.3.1.Final'
+    api 'org.hibernate.orm:hibernate-core:6.3.1.Final'
+    api 'org.springframework.boot:spring-boot:3.1.5'
 
-    testImplementation 'com.h2database:h2:2.2.224'
     testImplementation 'junit:junit:4.13.2'
 }
 
