@@ -8,7 +8,9 @@
  */
 package com.foilen.smalltools.tools;
 
+import java.util.Spliterator;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Tools to work with streams.
@@ -41,6 +43,17 @@ public class StreamTools {
 
         return totalStream;
 
+    }
+
+    /**
+     * Convert a spliterator to a stream.
+     *
+     * @param spliterator the spliterator
+     * @param <E>         the type of elements in the stream
+     * @return the stream
+     */
+    public static <E> Stream<E> toStream(Spliterator<E> spliterator) {
+        return StreamSupport.stream(spliterator, false);
     }
 
 }

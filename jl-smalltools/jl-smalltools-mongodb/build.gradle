@@ -17,6 +17,14 @@ dependencies {
     api project(':jl-smalltools:jl-smalltools-spring')
     api 'org.mongodb:mongodb-driver-sync:4.11.0'
     api 'org.springframework.data:spring-data-mongodb:4.1.5'
+
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {
