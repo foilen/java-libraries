@@ -8,10 +8,12 @@
  */
 package com.foilen.smalltools.tuple;
 
+import com.google.common.collect.ComparisonChain;
+
 /**
  * A tuple of two values.
  */
-public class Tuple2<A, B> {
+public class Tuple2<A, B> implements Comparable<Tuple2<A, B>> {
 
     private A a;
     private B b;
@@ -79,6 +81,14 @@ public class Tuple2<A, B> {
      */
     public B getB() {
         return b;
+    }
+
+    @Override
+    public int compareTo(Tuple2<A, B> o) {
+        return ComparisonChain.start()
+                .compare(a, o.a, TupleTools::nullComparator)
+                .compare(b, o.b, TupleTools::nullComparator)
+                .result();
     }
 
     @Override
