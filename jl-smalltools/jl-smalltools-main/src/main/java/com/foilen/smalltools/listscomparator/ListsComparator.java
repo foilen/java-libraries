@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -22,18 +22,12 @@ public final class ListsComparator {
     /**
      * Compare two ordered lists for differences.
      *
-     * @param lefts
-     *            ordered list
-     * @param rights
-     *            ordered list
-     * @param itemsComparator
-     *            the way to compare both items
-     * @param listComparatorHandler
-     *            the change handler
-     * @param <L>
-     *            the type of the left items
-     * @param <R>
-     *            the type of the right items
+     * @param lefts                 ordered list
+     * @param rights                ordered list
+     * @param itemsComparator       the way to compare both items
+     * @param listComparatorHandler the change handler
+     * @param <L>                   the type of the left items
+     * @param <R>                   the type of the right items
      */
     public static <L, R> void compareLists(List<L> lefts, List<R> rights, ItemsComparator<L, R> itemsComparator, ListComparatorHandler<L, R> listComparatorHandler) {
         int posLeft = 0;
@@ -82,12 +76,9 @@ public final class ListsComparator {
     /**
      * Compare two ordered lists for differences.
      *
-     * @param lefts
-     *            ordered list
-     * @param rights
-     *            ordered list
-     * @param <T>
-     *            the type of the items
+     * @param lefts  ordered list
+     * @param rights ordered list
+     * @param <T>    the type of the items
      * @return the comparison
      */
     public static <T extends Comparable<T>> List<ListsComparatorDifference<T>> compareLists(List<T> lefts, List<T> rights) {
@@ -115,14 +106,10 @@ public final class ListsComparator {
     /**
      * Compare two ordered lists for differences.
      *
-     * @param lefts
-     *            ordered list
-     * @param rights
-     *            ordered list
-     * @param listComparatorHandler
-     *            the change handler
-     * @param <T>
-     *            the type of the items
+     * @param lefts                 ordered list
+     * @param rights                ordered list
+     * @param listComparatorHandler the change handler
+     * @param <T>                   the type of the items
      */
     public static <T extends Comparable<T>> void compareLists(List<T> lefts, List<T> rights, ListComparatorHandler<T, T> listComparatorHandler) {
         compareLists(lefts, rights, (left, right) -> left.compareTo(right), listComparatorHandler);
@@ -131,18 +118,12 @@ public final class ListsComparator {
     /**
      * Compare two ordered streams for differences.
      *
-     * @param lefts
-     *            ordered stream
-     * @param rights
-     *            ordered stream
-     * @param itemsComparator
-     *            the way to compare both items
-     * @param listComparatorHandler
-     *            the change handler
-     * @param <L>
-     *            the type of the left items
-     * @param <R>
-     *            the type of the right items
+     * @param lefts                 ordered stream
+     * @param rights                ordered stream
+     * @param itemsComparator       the way to compare both items
+     * @param listComparatorHandler the change handler
+     * @param <L>                   the type of the left items
+     * @param <R>                   the type of the right items
      */
     public static <L, R> void compareStreams(Stream<L> lefts, Stream<R> rights, ItemsComparator<L, R> itemsComparator, ListComparatorHandler<L, R> listComparatorHandler) {
 
@@ -186,12 +167,9 @@ public final class ListsComparator {
     /**
      * Compare two ordered streams for differences.
      *
-     * @param lefts
-     *            ordered stream
-     * @param rights
-     *            ordered stream
-     * @param <T>
-     *            the type of the items
+     * @param lefts  ordered stream
+     * @param rights ordered stream
+     * @param <T>    the type of the items
      * @return the comparison
      */
     public static <T extends Comparable<T>> Stream<ListsComparatorDifference<T>> compareStreams(Stream<T> lefts, Stream<T> rights) {
@@ -201,14 +179,10 @@ public final class ListsComparator {
     /**
      * Compare two ordered streams for differences.
      *
-     * @param lefts
-     *            ordered stream
-     * @param rights
-     *            ordered stream
-     * @param listComparatorHandler
-     *            the change handler
-     * @param <T>
-     *            the type of the items
+     * @param lefts                 ordered stream
+     * @param rights                ordered stream
+     * @param listComparatorHandler the change handler
+     * @param <T>                   the type of the items
      */
     public static <T extends Comparable<T>> void compareStreams(Stream<T> lefts, Stream<T> rights, ListComparatorHandler<T, T> listComparatorHandler) {
         compareStreams(lefts, rights, (left, right) -> left.compareTo(right), listComparatorHandler);

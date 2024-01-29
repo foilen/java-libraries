@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -19,10 +19,8 @@ public class DirectoriesFileFilter implements FilenameFilter {
     /**
      * Accept only directories.
      *
-     * @param dir
-     *            the directory in which the file was found.
-     * @param name
-     *            the name of the file.
+     * @param dir  the directory in which the file was found.
+     * @param name the name of the file.
      * @return true if is a directory
      */
     @Override

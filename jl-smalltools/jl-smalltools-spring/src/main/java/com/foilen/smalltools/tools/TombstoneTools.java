@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -29,10 +29,8 @@ public final class TombstoneTools {
     /**
      * Add a warning log entry.
      *
-     * @param id
-     *            the id to output in the log (should be unique to know which one was used)
-     * @param time
-     *            the time when you added that entry (could be a date or the version number)
+     * @param id   the id to output in the log (should be unique to know which one was used)
+     * @param time the time when you added that entry (could be a date or the version number)
      */
     public static void log(String id, String time) {
         logger.warn("{}", id);
@@ -41,10 +39,8 @@ public final class TombstoneTools {
     /**
      * Add a warning log entry telling which user in Spring Security is using it.
      *
-     * @param id
-     *            the id to output in the log (should be unique to know which one was used)
-     * @param time
-     *            the time when you added that entry (could be a date or the version number)
+     * @param id   the id to output in the log (should be unique to know which one was used)
+     * @param time the time when you added that entry (could be a date or the version number)
      */
     public static void logWithUser(String id, String time) {
 

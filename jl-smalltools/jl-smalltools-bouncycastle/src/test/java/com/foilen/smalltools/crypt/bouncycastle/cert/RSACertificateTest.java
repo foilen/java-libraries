@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -53,18 +53,18 @@ public class RSACertificateTest {
         AsymmetricKeyParameter rootPublicKey = rootKeys.getPublicKey();
         RSACertificate rootCertificate = new RSACertificate(rootKeys);
         rootCertificate.selfSign(new CertificateDetails().setCommonName("CA root").addSanDns("CA root SAN 1", "CA root SAN 2"));
-        assertCommonNamesAndSans(rootCertificate, new String[] { "CA root" }, new String[] { "CA root SAN 1", "CA root SAN 2" });
+        assertCommonNamesAndSans(rootCertificate, new String[]{"CA root"}, new String[]{"CA root SAN 1", "CA root SAN 2"});
 
         // Node
         AsymmetricKeys nodeKeys = rsaCrypt.generateKeyPair(2048);
         AsymmetricKeyParameter nodePublicKey = nodeKeys.getPublicKey();
         RSACertificate nodeCertificate = rootCertificate.signPublicKey(nodeKeys, new CertificateDetails().setCommonName("p001.node.foilen.org").addSanDns("P SAN 1", "P SAN 2"));
-        assertCommonNamesAndSans(nodeCertificate, new String[] { "p001.node.foilen.org" }, new String[] { "P SAN 1", "P SAN 2" });
+        assertCommonNamesAndSans(nodeCertificate, new String[]{"p001.node.foilen.org"}, new String[]{"P SAN 1", "P SAN 2"});
 
         // Node without san
         AsymmetricKeys nodeNoSanKeys = rsaCrypt.generateKeyPair(2048);
         RSACertificate nodeNoSanCertificate = rootCertificate.signPublicKey(nodeNoSanKeys, new CertificateDetails().setCommonName("p002.node.foilen.org"));
-        assertCommonNamesAndSans(nodeNoSanCertificate, new String[] { "p002.node.foilen.org" }, new String[] {});
+        assertCommonNamesAndSans(nodeNoSanCertificate, new String[]{"p002.node.foilen.org"}, new String[]{});
 
         // Fake Root
         AsymmetricKeys fakeRootKeys = rsaCrypt.generateKeyPair(2048);

@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -19,18 +19,15 @@ public interface UpgraderTracker {
     /**
      * Called before each task.
      *
-     * @param taskSimpleName
-     *            the task simple class name
+     * @param taskSimpleName the task simple class name
      */
     void executionBegin(String taskSimpleName);
 
     /**
      * Called after each task.
      *
-     * @param taskSimpleName
-     *            the task simple class name
-     * @param isSuccessful
-     *            true if was successful
+     * @param taskSimpleName the task simple class name
+     * @param isSuccessful   true if was successful
      */
     void executionEnd(String taskSimpleName, boolean isSuccessful);
 
@@ -47,8 +44,7 @@ public interface UpgraderTracker {
     /**
      * Tells if a task was already executed successfully.
      *
-     * @param taskSimpleName
-     *            the task simple class name
+     * @param taskSimpleName the task simple class name
      * @return true if was executed
      */
     boolean wasExecutedSuccessfully(String taskSimpleName);

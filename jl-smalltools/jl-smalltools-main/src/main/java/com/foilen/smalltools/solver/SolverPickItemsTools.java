@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -50,10 +50,7 @@ import java.util.function.Function;
  *
  * </pre>
  *
- *
- * @param <T>
- *            item type
- *
+ * @param <T> item type
  */
 public class SolverPickItemsTools<T> {
 
@@ -63,8 +60,7 @@ public class SolverPickItemsTools<T> {
     /**
      * Provide the list of items.
      *
-     * @param items
-     *            the items to choose from
+     * @param items the items to choose from
      */
     public SolverPickItemsTools(List<T> items) {
         this.items = items;
@@ -88,16 +84,16 @@ public class SolverPickItemsTools<T> {
             possibility.add(items.get(nextPos));
 
             switch (solver.apply((List<T>) possibility)) {
-            case NO_ADDMORE:
-                positions.add(nextPos);
-                addOneAndCheck(results, solver, positions, possibility);
-                positions.removeLast();
-                break;
-            case NO_WONTBE:
-                break;
-            case YES:
-                results.add(new ArrayList<>(possibility));
-                break;
+                case NO_ADDMORE:
+                    positions.add(nextPos);
+                    addOneAndCheck(results, solver, positions, possibility);
+                    positions.removeLast();
+                    break;
+                case NO_WONTBE:
+                    break;
+                case YES:
+                    results.add(new ArrayList<>(possibility));
+                    break;
             }
 
             possibility.removeLast();
@@ -117,8 +113,7 @@ public class SolverPickItemsTools<T> {
     /**
      * Choose if can reuse the same item multiple times in a solution.
      *
-     * @param canReuse
-     *            true to reuse
+     * @param canReuse true to reuse
      */
     public void setCanReuse(boolean canReuse) {
         this.canReuse = canReuse;
@@ -127,8 +122,7 @@ public class SolverPickItemsTools<T> {
     /**
      * Try all the possibilities and ask the solver if it is good, if it should go deeper or if it should give up that path.
      *
-     * @param solver
-     *            the solver
+     * @param solver the solver
      * @return the list of solutions
      */
     public List<List<T>> solve(Function<List<T>, SolveState> solver) {

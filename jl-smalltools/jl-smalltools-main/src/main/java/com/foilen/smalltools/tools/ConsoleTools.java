@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -20,8 +20,7 @@ public final class ConsoleTools {
     /**
      * Execute the command, display the outputs to the screen while waiting for it to complete.
      *
-     * @param command
-     *            the full command with arguments to run
+     * @param command the full command with arguments to run
      * @return the exit value
      */
     public static int executeAndWait(String command) {
@@ -42,8 +41,7 @@ public final class ConsoleTools {
     /**
      * Execute the command, display the outputs to the screen while waiting for it to complete.
      *
-     * @param arguments
-     *            the command and then its arguments
+     * @param arguments the command and then its arguments
      * @return the exit value
      */
     public static int executeAndWait(String[] arguments) {
@@ -64,10 +62,8 @@ public final class ConsoleTools {
     /**
      * Execute the command, display the outputs to the screen while waiting for it to complete.
      *
-     * @param arguments
-     *            the command and then its arguments
-     * @param inputText
-     *            some text to send to STDIN
+     * @param arguments the command and then its arguments
+     * @param inputText some text to send to STDIN
      * @return the exit value
      */
     public static int executeAndWait(String[] arguments, String inputText) {

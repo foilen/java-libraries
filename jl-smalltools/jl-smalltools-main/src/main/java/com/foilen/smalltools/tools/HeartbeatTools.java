@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -18,12 +18,9 @@ public class HeartbeatTools extends AbstractBasics {
     /**
      * Execute the main action and execute in another thread the ping action continuously.
      *
-     * @param timeBetweenPingsInMs
-     *            the time before the first ping and between them
-     * @param pingAction
-     *            the action to execute frequently while the mainAction is running
-     * @param mainAction
-     *            the main action to execute
+     * @param timeBetweenPingsInMs the time before the first ping and between them
+     * @param pingAction           the action to execute frequently while the mainAction is running
+     * @param mainAction           the main action to execute
      */
     public static void execute(long timeBetweenPingsInMs, Runnable pingAction, Runnable mainAction) {
 

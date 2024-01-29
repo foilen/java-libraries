@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -28,8 +28,7 @@ public final class ProcUsage {
     /**
      * Check the main CPU. (If multiple CPUs, this is the sum of all of them)
      *
-     * @param procStatPath
-     *            the path to the stat file. (E.g /proc/stat)
+     * @param procStatPath the path to the stat file. (E.g /proc/stat)
      * @return the cpu infos
      */
     public static CpuInfo getMainCpuInfo(String procStatPath) {
@@ -72,8 +71,7 @@ public final class ProcUsage {
     /**
      * Get the memory informations.
      *
-     * @param procMemPath
-     *            the path to the memory file. (E.g /proc/meminfo)
+     * @param procMemPath the path to the memory file. (E.g /proc/meminfo)
      * @return the memory infos
      */
     public static MemoryInfo getMemoryInfo(String procMemPath) {
@@ -94,19 +92,19 @@ public final class ProcUsage {
                 String name = parts[0];
                 String size = parts[1];
                 switch (name) {
-                case "MemTotal:":
-                    memTotal = SpaceConverterTools.convertToBytes(size);
-                    memoryInfo.setPhysicalTotal(memTotal);
-                    break;
-                case "MemAvailable:":
-                    memAvailable = SpaceConverterTools.convertToBytes(size);
-                    break;
-                case "SwapTotal:":
-                    swapTotal = SpaceConverterTools.convertToBytes(size);
-                    memoryInfo.setSwapTotal(swapTotal);
-                case "SwapFree:":
-                    swapFree = SpaceConverterTools.convertToBytes(size);
-                    break;
+                    case "MemTotal:":
+                        memTotal = SpaceConverterTools.convertToBytes(size);
+                        memoryInfo.setPhysicalTotal(memTotal);
+                        break;
+                    case "MemAvailable:":
+                        memAvailable = SpaceConverterTools.convertToBytes(size);
+                        break;
+                    case "SwapTotal:":
+                        swapTotal = SpaceConverterTools.convertToBytes(size);
+                        memoryInfo.setSwapTotal(swapTotal);
+                    case "SwapFree:":
+                        swapFree = SpaceConverterTools.convertToBytes(size);
+                        break;
                 }
             } catch (Exception e) {
                 throw new SmallToolsException("Problem reading the proc meminfo file", e);
@@ -126,8 +124,7 @@ public final class ProcUsage {
     /**
      * Check the network interfaces.
      *
-     * @param procNetDevPath
-     *            the path to the netfile. (E.g /proc/net/dev)
+     * @param procNetDevPath the path to the netfile. (E.g /proc/net/dev)
      * @return the networks infos
      */
     public static List<NetworkInfo> getNetworkInfos(String procNetDevPath) {

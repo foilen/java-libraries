@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -20,8 +20,7 @@ public final class SocketTools {
     /**
      * Tells if the throwable or any cause of it is a disconnection from a socket.
      *
-     * @param t
-     *            the throwable
+     * @param t the throwable
      * @return true if is a disconnection from a socket
      */
     public static boolean isADisconnectionException(Throwable t) {

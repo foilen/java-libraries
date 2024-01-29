@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -37,8 +37,7 @@ public class DarkLaunchingDisabledFeatures {
     /**
      * Tells if the specified features are all currently disabled.
      *
-     * @param featureNames
-     *            all the needed features names
+     * @param featureNames all the needed features names
      * @return true if all the features are disabled
      */
     public boolean isAllFeaturesDisabled(String... featureNames) {
@@ -60,8 +59,7 @@ public class DarkLaunchingDisabledFeatures {
     /**
      * Tells if the specified features are all currently enabled.
      *
-     * @param featureNames
-     *            all the needed features names
+     * @param featureNames all the needed features names
      * @return true if all the features are enabled
      */
     public boolean isAllFeaturesEnabled(String... featureNames) {
@@ -83,8 +81,7 @@ public class DarkLaunchingDisabledFeatures {
     /**
      * Tells if any of the specified features is currently disabled.
      *
-     * @param featureNames
-     *            features names
+     * @param featureNames features names
      * @return true if any the features is disabled
      */
     public boolean isAnyFeaturesDisabled(String... featureNames) {
@@ -106,8 +103,7 @@ public class DarkLaunchingDisabledFeatures {
     /**
      * Tells if any of the specified features is currently enabled.
      *
-     * @param featureNames
-     *            features names
+     * @param featureNames features names
      * @return true if any the features is enabled
      */
     public boolean isAnyFeaturesEnabled(String... featureNames) {
@@ -129,8 +125,7 @@ public class DarkLaunchingDisabledFeatures {
     /**
      * Provide all the features names that are disabled.
      *
-     * @param disabledFeatures
-     *            provide a list
+     * @param disabledFeatures provide a list
      */
     public void setDisabledFeatures(List<String> disabledFeatures) {
         this.disabledFeatures = disabledFeatures;
@@ -139,8 +134,7 @@ public class DarkLaunchingDisabledFeatures {
     /**
      * Provide all the features names that are disabled.
      *
-     * @param disabledFeatures
-     *            provide a comma separated String. Eg: CREATE_USER,LOGIN_ADMIN
+     * @param disabledFeatures provide a comma separated String. Eg: CREATE_USER,LOGIN_ADMIN
      */
     public void setDisabledFeatures(String disabledFeatures) {
         // Null or empty
@@ -160,8 +154,7 @@ public class DarkLaunchingDisabledFeatures {
     /**
      * Provide all the features names that are disabled.
      *
-     * @param disabledFeatures
-     *            provide an array
+     * @param disabledFeatures provide an array
      */
     public void setDisabledFeatures(String... disabledFeatures) {
         this.disabledFeatures = Arrays.asList(disabledFeatures);

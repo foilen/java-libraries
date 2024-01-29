@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -29,10 +29,8 @@ public final class UrlTools {
      * - It will not resume a download, always restart it.
      * </pre>
      *
-     * @param url
-     *            the url to read
-     * @param outFile
-     *            the destination file
+     * @param url     the url to read
+     * @param outFile the destination file
      */
     public static void saveToFile(String url, File outFile) {
         try {
@@ -51,10 +49,8 @@ public final class UrlTools {
      * - It will not resume a download, always restart it.
      * </pre>
      *
-     * @param url
-     *            the url to read
-     * @param outFile
-     *            the destination file
+     * @param url     the url to read
+     * @param outFile the destination file
      */
     public static void saveToFile(URL url, File outFile) {
         try {

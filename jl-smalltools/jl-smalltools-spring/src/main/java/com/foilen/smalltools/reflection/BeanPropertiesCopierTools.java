@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -53,10 +53,8 @@ public class BeanPropertiesCopierTools {
     /**
      * Provide the bean wrappers.
      *
-     * @param sourceWrapper
-     *            the source
-     * @param destinationWrapper
-     *            the destination
+     * @param sourceWrapper      the source
+     * @param destinationWrapper the destination
      */
     public BeanPropertiesCopierTools(BeanWrapper sourceWrapper, BeanWrapper destinationWrapper) {
         AssertTools.assertNotNull(sourceWrapper, "The sourceWrapper cannot be null");
@@ -71,10 +69,8 @@ public class BeanPropertiesCopierTools {
     /**
      * Provide the source object and the destination class to instantiate. You can then retrieve the destination with {@link #getDestination()}.
      *
-     * @param source
-     *            the source
-     * @param destinationClass
-     *            the class to instantiate for the destination
+     * @param source           the source
+     * @param destinationClass the class to instantiate for the destination
      */
     public BeanPropertiesCopierTools(Object source, Class<?> destinationClass) {
         AssertTools.assertNotNull(destinationClass, "The destinationClass cannot be null");
@@ -85,10 +81,8 @@ public class BeanPropertiesCopierTools {
     /**
      * Provide the objects.
      *
-     * @param source
-     *            the source
-     * @param destination
-     *            the destination
+     * @param source      the source
+     * @param destination the destination
      */
     public BeanPropertiesCopierTools(Object source, Object destination) {
         init(source, destination);
@@ -114,8 +108,7 @@ public class BeanPropertiesCopierTools {
     /**
      * Copy the property.
      *
-     * @param propertyName
-     *            the name of the source's and destination's property
+     * @param propertyName the name of the source's and destination's property
      * @return this
      */
     public BeanPropertiesCopierTools copyProperty(String propertyName) {
@@ -125,10 +118,8 @@ public class BeanPropertiesCopierTools {
     /**
      * Copy the property.
      *
-     * @param sourcePropertyName
-     *            the name of the source's property
-     * @param destinationPropertyName
-     *            the name of the destination's property
+     * @param sourcePropertyName      the name of the source's property
+     * @param destinationPropertyName the name of the destination's property
      * @return this
      */
     public BeanPropertiesCopierTools copyProperty(String sourcePropertyName, String destinationPropertyName) {
@@ -148,12 +139,9 @@ public class BeanPropertiesCopierTools {
     /**
      * Get the property's value from the source.
      *
-     * @param <T>
-     *            the return type
-     * @param propertyName
-     *            the name of the property
-     * @param type
-     *            the type to return
+     * @param <T>          the return type
+     * @param propertyName the name of the property
+     * @param type         the type to return
      * @return the value
      */
     @SuppressWarnings("unchecked")
@@ -175,10 +163,8 @@ public class BeanPropertiesCopierTools {
     /**
      * Set a value on the destination.
      *
-     * @param propertyName
-     *            the name of the property
-     * @param value
-     *            the value to set
+     * @param propertyName the name of the property
+     * @param value        the value to set
      */
     public void setDestinationProperty(String propertyName, Object value) {
         destinationWrapper.setPropertyValue(propertyName, value);
@@ -270,8 +256,7 @@ public class BeanPropertiesCopierTools {
      * Take or create the collection on the destination and update with the source. This is useful when the destination collection could be a wrapper of the collection to keep track of it (e.g when
      * using Hibernate)
      *
-     * @param propertyName
-     *            the name of the source's and destination's property
+     * @param propertyName the name of the source's and destination's property
      * @return this
      */
     public BeanPropertiesCopierTools updateCollection(String propertyName) {
@@ -282,10 +267,8 @@ public class BeanPropertiesCopierTools {
      * Take or create the collection on the destination and update with the source. This is useful when the destination collection could be a wrapper of the collection to keep track of it (e.g when
      * using Hibernate)
      *
-     * @param sourcePropertyName
-     *            the name of the source's property
-     * @param destinationPropertyName
-     *            the name of the destination's property
+     * @param sourcePropertyName      the name of the source's property
+     * @param destinationPropertyName the name of the destination's property
      * @return this
      */
     public BeanPropertiesCopierTools updateCollection(String sourcePropertyName, String destinationPropertyName) {

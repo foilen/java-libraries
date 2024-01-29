@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -22,8 +22,7 @@ public class LogbackTools {
     /**
      * Reset the loggers with the new resource config.
      *
-     * @param configResourceName
-     *            the name of the config file
+     * @param configResourceName the name of the config file
      */
     public static void changeConfig(String configResourceName) {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();

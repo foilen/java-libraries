@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -22,8 +22,7 @@ public class TimeConverterTools {
     /**
      * Take an amount of milliseconds and transform them to text up to weeks.
      *
-     * @param totalInMs
-     *            the time to convert
+     * @param totalInMs the time to convert
      * @return the time like "24s 34ms" or "34w 5d 16h 1m 15s 856ms"
      * @deprecated use {@link #convertToTextFromMs(Long)}
      */
@@ -35,8 +34,7 @@ public class TimeConverterTools {
     /**
      * Take an amount of minutes and transform them to text up to weeks.
      *
-     * @param totalInMin
-     *            the time to convert
+     * @param totalInMin the time to convert
      * @return the time like "24s" or "34w 5d 16h 1m"
      */
     static public String convertToTextFromMin(Long totalInMin) {
@@ -64,8 +62,7 @@ public class TimeConverterTools {
     /**
      * Take an amount of milliseconds and transform them to text up to weeks.
      *
-     * @param totalInMs
-     *            the time to convert
+     * @param totalInMs the time to convert
      * @return the time like "24s 34ms" or "34w 5d 16h 1m 15s 856ms"
      */
     static public String convertToTextFromMs(Long totalInMs) {
@@ -94,8 +91,7 @@ public class TimeConverterTools {
     /**
      * Take an amount of seconds and transform them to text up to weeks.
      *
-     * @param totalInSec
-     *            the time to convert
+     * @param totalInSec the time to convert
      * @return the time like "24s" or "34w 5d 16h 1m 15s"
      */
     static public String convertToTextFromSec(Long totalInSec) {

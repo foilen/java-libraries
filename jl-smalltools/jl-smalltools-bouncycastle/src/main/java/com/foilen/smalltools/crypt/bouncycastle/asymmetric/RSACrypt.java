@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -41,14 +41,14 @@ import com.foilen.smalltools.tools.CollectionsTools;
 
 /**
  * RSA cryptography.
- *
+ * <p>
  * Default:
  * <ul>
  * <li>RSA: The cipher</li>
  * <li>ECB: Electronic Codebook Mode</li>
  * <li>PKCS1Padding: The padding algorithm</li>
  * </ul>
- *
+ * <p>
  * Usage:
  *
  * <pre>
@@ -142,29 +142,29 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
                 PemObject pemObject;
                 while ((pemObject = reader.readPemObject()) != null) {
                     switch (pemObject.getType()) {
-                    case "RSA PRIVATE KEY":
-                        RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pemObject.getContent());
-                        keyDetails.setModulus(rsaPrivateKey.getModulus());
-                        keyDetails.setPrivateExponent(rsaPrivateKey.getPrivateExponent());
-                        keyDetails.setPublicExponent(rsaPrivateKey.getPublicExponent());
+                        case "RSA PRIVATE KEY":
+                            RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pemObject.getContent());
+                            keyDetails.setModulus(rsaPrivateKey.getModulus());
+                            keyDetails.setPrivateExponent(rsaPrivateKey.getPrivateExponent());
+                            keyDetails.setPublicExponent(rsaPrivateKey.getPublicExponent());
 
-                        if (CollectionsTools.isAnyItemNotNull(rsaPrivateKey.getPrime1(), rsaPrivateKey.getPrime2(), rsaPrivateKey.getExponent1(), rsaPrivateKey.getExponent2(),
-                                rsaPrivateKey.getCoefficient())) {
-                            keyDetails.setCrt(true);
-                            keyDetails.setPrimeP(rsaPrivateKey.getPrime1());
-                            keyDetails.setPrimeQ(rsaPrivateKey.getPrime2());
-                            keyDetails.setPrimeExponentP(rsaPrivateKey.getExponent1());
-                            keyDetails.setPrimeExponentQ(rsaPrivateKey.getExponent2());
-                            keyDetails.setCrtCoefficient(rsaPrivateKey.getCoefficient());
-                        }
-                        break;
-                    case "PUBLIC KEY":
-                        KeyFactory kf = KeyFactory.getInstance("RSA");
-                        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pemObject.getContent());
-                        RSAPublicKey rsaPublicKey = (RSAPublicKey) kf.generatePublic(keySpec);
-                        keyDetails.setModulus(rsaPublicKey.getModulus());
-                        keyDetails.setPublicExponent(rsaPublicKey.getPublicExponent());
-                        break;
+                            if (CollectionsTools.isAnyItemNotNull(rsaPrivateKey.getPrime1(), rsaPrivateKey.getPrime2(), rsaPrivateKey.getExponent1(), rsaPrivateKey.getExponent2(),
+                                    rsaPrivateKey.getCoefficient())) {
+                                keyDetails.setCrt(true);
+                                keyDetails.setPrimeP(rsaPrivateKey.getPrime1());
+                                keyDetails.setPrimeQ(rsaPrivateKey.getPrime2());
+                                keyDetails.setPrimeExponentP(rsaPrivateKey.getExponent1());
+                                keyDetails.setPrimeExponentQ(rsaPrivateKey.getExponent2());
+                                keyDetails.setCrtCoefficient(rsaPrivateKey.getCoefficient());
+                            }
+                            break;
+                        case "PUBLIC KEY":
+                            KeyFactory kf = KeyFactory.getInstance("RSA");
+                            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pemObject.getContent());
+                            RSAPublicKey rsaPublicKey = (RSAPublicKey) kf.generatePublic(keySpec);
+                            keyDetails.setModulus(rsaPublicKey.getModulus());
+                            keyDetails.setPublicExponent(rsaPublicKey.getPublicExponent());
+                            break;
                     }
                 }
             }

@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -28,7 +28,7 @@ import com.foilen.smalltools.tools.StreamsTools;
 
 /**
  * Create a zip file with multiple files.
- *
+ * <p>
  * Usage:
  *
  * <pre>
@@ -56,8 +56,7 @@ public class ZipFiles {
     /**
      * Create a ZIP by specifying a file to send it to.
      *
-     * @param zipFile
-     *            the file to write to
+     * @param zipFile the file to write to
      */
     public ZipFiles(File zipFile) {
         try {
@@ -70,8 +69,7 @@ public class ZipFiles {
     /**
      * Create a ZIP by specifying a stream to send it to.
      *
-     * @param outputStream
-     *            the stream to write to
+     * @param outputStream the stream to write to
      */
     public ZipFiles(OutputStream outputStream) {
         zos = new ZipOutputStream(outputStream);
@@ -80,10 +78,8 @@ public class ZipFiles {
     /**
      * Add all the files and subdirectories in the zip.
      *
-     * @param directoryName
-     *            the directory name inside the ZIP (E.g: "foo/bar/")
-     * @param directory
-     *            the local directory to zip
+     * @param directoryName the directory name inside the ZIP (E.g: "foo/bar/")
+     * @param directory     the local directory to zip
      */
     public void addDirectory(String directoryName, File directory) {
 
@@ -109,10 +105,8 @@ public class ZipFiles {
     /**
      * Create a file.
      *
-     * @param filename
-     *            the filename inside the ZIP (E.g: "foo/bar.txt")
-     * @param file
-     *            the local file to zip
+     * @param filename the filename inside the ZIP (E.g: "foo/bar.txt")
+     * @param file     the local file to zip
      */
     public void addFile(String filename, File file) {
         try {
@@ -125,10 +119,8 @@ public class ZipFiles {
     /**
      * Create a file.
      *
-     * @param filename
-     *            the filename inside the ZIP (E.g: "foo/bar.txt")
-     * @param resource
-     *            the content of the file
+     * @param filename the filename inside the ZIP (E.g: "foo/bar.txt")
+     * @param resource the content of the file
      */
     public void addFileFromResource(String filename, String resource) {
         addFileFromStream(filename, ZipFiles.class.getResourceAsStream(resource));
@@ -137,10 +129,8 @@ public class ZipFiles {
     /**
      * Create a file.
      *
-     * @param filename
-     *            the filename inside the ZIP (E.g: "foo/bar.txt")
-     * @param inputStream
-     *            the content of the file. Is closed at the end
+     * @param filename    the filename inside the ZIP (E.g: "foo/bar.txt")
+     * @param inputStream the content of the file. Is closed at the end
      */
     public void addFileFromStream(String filename, InputStream inputStream) {
         try {
@@ -162,10 +152,8 @@ public class ZipFiles {
     /**
      * Create a file.
      *
-     * @param filename
-     *            the filename inside the ZIP (E.g: "foo/bar.txt")
-     * @param url
-     *            the content of the file
+     * @param filename the filename inside the ZIP (E.g: "foo/bar.txt")
+     * @param url      the content of the file
      */
     public void addFileFromUrl(String filename, String url) {
         try {
@@ -178,10 +166,8 @@ public class ZipFiles {
     /**
      * Create a file.
      *
-     * @param filename
-     *            the filename inside the ZIP (E.g: "foo/bar.txt")
-     * @param url
-     *            the content of the file
+     * @param filename the filename inside the ZIP (E.g: "foo/bar.txt")
+     * @param url      the content of the file
      */
     public void addFileFromUrl(String filename, URL url) {
         try {
@@ -194,10 +180,8 @@ public class ZipFiles {
     /**
      * Create a text file.
      *
-     * @param filename
-     *            the filename inside the ZIP (E.g: "foo/bar.txt")
-     * @param content
-     *            the content of the file text
+     * @param filename the filename inside the ZIP (E.g: "foo/bar.txt")
+     * @param content  the content of the file text
      */
     public void addTextFile(String filename, String content) {
         addFileFromStream(filename, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
@@ -217,8 +201,7 @@ public class ZipFiles {
     /**
      * Change the compression level for the following files.
      *
-     * @param level
-     *            from 0 for none - 9 for best
+     * @param level from 0 for none - 9 for best
      */
     public void setCompressionLevel(int level) {
         zos.setLevel(level);

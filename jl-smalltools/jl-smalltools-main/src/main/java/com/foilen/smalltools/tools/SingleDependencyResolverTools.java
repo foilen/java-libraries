@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -49,13 +49,10 @@ public class SingleDependencyResolverTools {
     /**
      * Add a dependency.
      *
-     * @param item
-     *            the item that depends on another one
-     * @param dependsOnItem
-     *            the item it depends on (could be null or empty to specify that it depends on nothing)
+     * @param item          the item that depends on another one
+     * @param dependsOnItem the item it depends on (could be null or empty to specify that it depends on nothing)
      * @return this
-     * @throws SmallToolsException
-     *             if "item" was already provided
+     * @throws SmallToolsException if "item" was already provided
      */
     public SingleDependencyResolverTools addDependency(String item, String dependsOnItem) {
         if (hasDependency.contains(item)) {
@@ -101,8 +98,7 @@ public class SingleDependencyResolverTools {
      * To retrieve the execution plan.
      *
      * @return the excution plan
-     * @throws SmallToolsException
-     *             if it is a circular dependency
+     * @throws SmallToolsException if it is a circular dependency
      */
     public List<String> getExecution() {
 

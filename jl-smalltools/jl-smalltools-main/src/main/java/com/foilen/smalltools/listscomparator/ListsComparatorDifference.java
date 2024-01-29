@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -28,10 +28,8 @@ public class ListsComparatorDifference<T> {
     /**
      * Full constructor.
      *
-     * @param object
-     *            the object that is different
-     * @param side
-     *            -1 means that this object is only on the left side; 1 means that this object is only on the right side
+     * @param object the object that is different
+     * @param side   -1 means that this object is only on the left side; 1 means that this object is only on the right side
      */
     public ListsComparatorDifference(T object, int side) {
         this.object = object;

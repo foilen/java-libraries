@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -38,7 +38,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
  * System.setProperty("hibernate.dialect.storage_engine", "innodb");
  * Hibernate5Tools.generateSqlSchema(MySQL5InnoDBDialect.class, "sql/mysql.sql", true, "com.foilen.confignui.db.domain");
  * </pre>
- *
+ * <p>
  * WARNING: Some hibernate naming changed from 4 to 5:
  * <ul>
  * <li>@ElementCollection will generate xxxxx_id instead of only xxxxx</li>
@@ -51,14 +51,10 @@ public final class Hibernate63Tools {
     /**
      * Generate the SQL file. This is based on the code in {@link LocalSessionFactoryBuilder#scanPackages(String...)}
      *
-     * @param dialect
-     *            the dialect (e.g: org.hibernate.dialect.MySQL5InnoDBDialect )
-     * @param outputSqlFile
-     *            where to put the generated SQL file
-     * @param useUnderscore
-     *            true: to have tables names like "employe_manager" ; false: to have tables names like "employeManager"
-     * @param packagesToScan
-     *            the packages where your entities are
+     * @param dialect        the dialect (e.g: org.hibernate.dialect.MySQL5InnoDBDialect )
+     * @param outputSqlFile  where to put the generated SQL file
+     * @param useUnderscore  true: to have tables names like "employe_manager" ; false: to have tables names like "employeManager"
+     * @param packagesToScan the packages where your entities are
      */
     public static void generateSqlSchema(Class<? extends Dialect> dialect, String outputSqlFile, boolean useUnderscore, String... packagesToScan) {
 

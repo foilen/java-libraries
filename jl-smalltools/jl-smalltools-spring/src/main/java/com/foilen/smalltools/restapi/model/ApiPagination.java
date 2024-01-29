@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -78,8 +78,7 @@ public class ApiPagination extends AbstractApiBase {
     /**
      * Set the current page.
      *
-     * @param currentPage
-     *            0 to (getTotalPages - 1)
+     * @param currentPage 0 to (getTotalPages - 1)
      * @return this
      */
     public ApiPagination setCurrentPage(long currentPage) {
@@ -90,8 +89,7 @@ public class ApiPagination extends AbstractApiBase {
     /**
      * Set the current page.
      *
-     * @param currentPageUi
-     *            1 to (getTotalPages)
+     * @param currentPageUi 1 to (getTotalPages)
      * @return this
      */
     public ApiPagination setCurrentPageUi(long currentPageUi) {

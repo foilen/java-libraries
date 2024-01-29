@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -16,10 +16,10 @@ public class UsageMonitoringMessageSourceTest {
     @Test
     public void testFormat() {
         Assert.assertEquals("This is a test", UsageMonitoringMessageSource.format("This is a test", null));
-        Assert.assertEquals("This is a test", UsageMonitoringMessageSource.format("This is a test", new Object[] {}));
-        Assert.assertEquals("This is a test", UsageMonitoringMessageSource.format("This is a test", new Object[] { "param1" }));
-        Assert.assertEquals("This is a test: param1, param2, param3", UsageMonitoringMessageSource.format("This is a test: {0}, {1}, {2}", new Object[] { "param1", "param2", "param3" }));
-        Assert.assertEquals("This is a test: param1, null, param3", UsageMonitoringMessageSource.format("This is a test: {0}, {1}, {2}", new Object[] { "param1", null, "param3" }));
+        Assert.assertEquals("This is a test", UsageMonitoringMessageSource.format("This is a test", new Object[]{}));
+        Assert.assertEquals("This is a test", UsageMonitoringMessageSource.format("This is a test", new Object[]{"param1"}));
+        Assert.assertEquals("This is a test: param1, param2, param3", UsageMonitoringMessageSource.format("This is a test: {0}, {1}, {2}", new Object[]{"param1", "param2", "param3"}));
+        Assert.assertEquals("This is a test: param1, null, param3", UsageMonitoringMessageSource.format("This is a test: {0}, {1}, {2}", new Object[]{"param1", null, "param3"}));
     }
 
 }

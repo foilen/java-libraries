@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -59,8 +59,7 @@ public class XslTransform {
     /**
      * Set the XML to transform.
      *
-     * @param xmlFile
-     *            the XML file
+     * @param xmlFile the XML file
      * @return this
      */
     public XslTransform fromFile(File xmlFile) {
@@ -75,8 +74,7 @@ public class XslTransform {
     /**
      * Set the XML to transform.
      *
-     * @param xmlPathName
-     *            the XML file path
+     * @param xmlPathName the XML file path
      * @return this
      */
     public XslTransform fromFile(String xmlPathName) {
@@ -90,8 +88,7 @@ public class XslTransform {
     /**
      * Set the XML to transform.
      *
-     * @param xmlInputStream
-     *            the XML as a stream
+     * @param xmlInputStream the XML as a stream
      * @return this
      */
     public XslTransform fromInputStream(InputStream xmlInputStream) {
@@ -102,8 +99,7 @@ public class XslTransform {
     /**
      * Set the XML to transform.
      *
-     * @param xmlResourcePath
-     *            the XML absolute resource path
+     * @param xmlResourcePath the XML absolute resource path
      * @return this
      */
     public XslTransform fromResource(String xmlResourcePath) {
@@ -113,8 +109,7 @@ public class XslTransform {
     /**
      * Set the XML to transform.
      *
-     * @param xmlContent
-     *            the XML content as a String
+     * @param xmlContent the XML content as a String
      * @return this
      */
     public XslTransform fromText(String xmlContent) {
@@ -124,8 +119,7 @@ public class XslTransform {
     /**
      * Set the XML to transform.
      *
-     * @param xmlUrl
-     *            the URL to the XML file
+     * @param xmlUrl the URL to the XML file
      * @return this
      */
     public XslTransform fromUrl(String xmlUrl) {
@@ -140,8 +134,7 @@ public class XslTransform {
     /**
      * Transform and store.
      *
-     * @param xmlFile
-     *            the destination file
+     * @param xmlFile the destination file
      */
     public void toFile(File xmlFile) {
         assertFields();
@@ -156,8 +149,7 @@ public class XslTransform {
     /**
      * Transform and store.
      *
-     * @param xmlPathName
-     *            the destination file path
+     * @param xmlPathName the destination file path
      */
     public void toFile(String xmlPathName) {
         assertFields();
@@ -171,8 +163,7 @@ public class XslTransform {
     /**
      * Transform and store.
      *
-     * @param xmlOutputStream
-     *            the destination as a stream
+     * @param xmlOutputStream the destination as a stream
      */
     public void toOutputStream(OutputStream xmlOutputStream) {
         assertFields();
@@ -203,8 +194,7 @@ public class XslTransform {
     /**
      * Transform and store.
      *
-     * @param xmlWriter
-     *            the destination as a writer
+     * @param xmlWriter the destination as a writer
      */
     public void toWriter(Writer xmlWriter) {
         assertFields();
@@ -219,8 +209,7 @@ public class XslTransform {
     /**
      * Set the XSL to use.
      *
-     * @param xslFile
-     *            the XSL file
+     * @param xslFile the XSL file
      * @return this
      */
     public XslTransform usingFile(File xslFile) {
@@ -235,8 +224,7 @@ public class XslTransform {
     /**
      * Set the XSL to use.
      *
-     * @param xslPathName
-     *            the XSL file path
+     * @param xslPathName the XSL file path
      * @return this
      */
     public XslTransform usingFile(String xslPathName) {
@@ -251,8 +239,7 @@ public class XslTransform {
     /**
      * Set the XSL to use.
      *
-     * @param xslInputStream
-     *            the xsl input stream
+     * @param xslInputStream the xsl input stream
      * @return this
      */
     public XslTransform usingInputStream(InputStream xslInputStream) {
@@ -267,8 +254,7 @@ public class XslTransform {
     /**
      * Set the XSL to use.
      *
-     * @param xslReader
-     *            the xsl reader
+     * @param xslReader the xsl reader
      * @return this
      */
     public XslTransform usingReader(Reader xslReader) {
@@ -283,8 +269,7 @@ public class XslTransform {
     /**
      * Set the XSL to use.
      *
-     * @param xslResourcePath
-     *            the XSL absolute resource path
+     * @param xslResourcePath the XSL absolute resource path
      * @return this
      */
     public XslTransform usingResource(String xslResourcePath) {
@@ -294,8 +279,7 @@ public class XslTransform {
     /**
      * Set the XSL to use.
      *
-     * @param xslContent
-     *            the XSL full content as a String
+     * @param xslContent the XSL full content as a String
      * @return this
      */
     public XslTransform usingText(String xslContent) {
@@ -306,8 +290,7 @@ public class XslTransform {
     /**
      * Set the XSL to use.
      *
-     * @param xslUrl
-     *            the URL to the XSL file
+     * @param xslUrl the URL to the XSL file
      * @return this
      */
     public XslTransform usingUrl(String xslUrl) {

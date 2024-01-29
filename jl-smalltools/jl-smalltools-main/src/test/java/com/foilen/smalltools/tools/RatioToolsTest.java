@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -66,7 +66,7 @@ public class RatioToolsTest {
     public void testGetDownScaleByMaxHeight_reduce() {
         // Initially 200x400
         // Max height 300 (reduce the 400 -> 150x300)
-        Assert.assertEquals( 0.75f, RatioTools.getDownScaleByMaxHeight(200, 400, 300), 0.0001f);
+        Assert.assertEquals(0.75f, RatioTools.getDownScaleByMaxHeight(200, 400, 300), 0.0001f);
     }
 
     @Test

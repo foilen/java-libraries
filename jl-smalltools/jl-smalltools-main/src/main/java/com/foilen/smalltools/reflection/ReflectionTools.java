@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -32,8 +32,7 @@ public final class ReflectionTools {
     /**
      * Find all the fields on the type and super-types.
      *
-     * @param clazz
-     *            the class to get the fields
+     * @param clazz the class to get the fields
      * @return the fields
      */
     public static List<Field> allFields(Class<?> clazz) {
@@ -52,10 +51,8 @@ public final class ReflectionTools {
     /**
      * Find all the fields on the type and super-types that has the specified annotation.
      *
-     * @param clazz
-     *            the class to get the fields
-     * @param annotationClass
-     *            the desired annotation on the field
+     * @param clazz           the class to get the fields
+     * @param annotationClass the desired annotation on the field
      * @return the fields with the specified annotation
      */
     public static List<Field> allFieldsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotationClass) {
@@ -74,8 +71,7 @@ public final class ReflectionTools {
     /**
      * Find all the methods on the type and super-types.
      *
-     * @param clazz
-     *            the class to get the fields
+     * @param clazz the class to get the fields
      * @return the methods
      */
     public static List<Method> allMethods(Class<?> clazz) {
@@ -94,10 +90,8 @@ public final class ReflectionTools {
     /**
      * Find all the methods on the type and super-types that has the specified annotation.
      *
-     * @param clazz
-     *            the class to get the fields
-     * @param annotationClass
-     *            the desired annotation on the field
+     * @param clazz           the class to get the fields
+     * @param annotationClass the desired annotation on the field
      * @return the methods with the specified annotation
      */
     public static List<Method> allMethodsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotationClass) {
@@ -116,8 +110,7 @@ public final class ReflectionTools {
     /**
      * Find all the the type and super-types.
      *
-     * @param clazz
-     *            the class
+     * @param clazz the class
      * @return all the types and super-types (including the specified one)
      */
     public static List<Class<?>> allTypes(Class<?> clazz) {
@@ -130,10 +123,8 @@ public final class ReflectionTools {
     /**
      * Find all the the type and super-types.
      *
-     * @param classes
-     *            the list that will be filled with the current class and the super ones
-     * @param clazz
-     *            the class
+     * @param classes the list that will be filled with the current class and the super ones
+     * @param clazz   the class
      */
     private static void allTypes(List<Class<?>> classes, Class<?> clazz) {
         AssertTools.assertNotNull(clazz, "The class cannot be null");
@@ -156,10 +147,8 @@ public final class ReflectionTools {
     /**
      * Copy all the bean's properties. Useful for Transfer Objects and Forms.
      *
-     * @param from
-     *            the object to copy from
-     * @param to
-     *            the object to copy to
+     * @param from the object to copy from
+     * @param to   the object to copy to
      */
     public static void copyAllProperties(Object from, Object to) {
 
@@ -213,14 +202,10 @@ public final class ReflectionTools {
     /**
      * Find the annotation set on the class and the field.
      *
-     * @param <T>
-     *            the type of the annotation
-     * @param clazz
-     *            the class to get the field
-     * @param fieldName
-     *            the name of the field
-     * @param annotationClass
-     *            the desired annotation on the field
+     * @param <T>             the type of the annotation
+     * @param clazz           the class to get the field
+     * @param fieldName       the name of the field
+     * @param annotationClass the desired annotation on the field
      * @return the annotation or null
      */
     public static <T extends Annotation> T findAnnotationByFieldNameAndAnnotation(Class<?> clazz, String fieldName, Class<T> annotationClass) {
@@ -243,12 +228,9 @@ public final class ReflectionTools {
     /**
      * Create an instance of the specified class or throw an exception if there is an issue.
      *
-     * @param clazz
-     *            the type
-     * @param contructorParams
-     *            the parameters of the constructor
-     * @param <T>
-     *            the type of the object
+     * @param clazz            the type
+     * @param contructorParams the parameters of the constructor
+     * @param <T>              the type of the object
      * @return the object
      */
     @SuppressWarnings("unchecked")
@@ -268,7 +250,8 @@ public final class ReflectionTools {
         if (constructors.length == 1) {
             try {
                 return (T) constructors[0].newInstance(contructorParams);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
+                     InvocationTargetException e) {
                 throw new SmallToolsException("Could not instanciate the class " + clazz.getName(), e);
             }
         }
@@ -302,7 +285,8 @@ public final class ReflectionTools {
             // Good one
             try {
                 return (T) constructor.newInstance(contructorParams);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException |
+                     InvocationTargetException e) {
                 throw new SmallToolsException("Could not instanciate the class " + clazz.getName(), e);
             }
         }
@@ -314,8 +298,7 @@ public final class ReflectionTools {
     /**
      * Get the class of the specified type if it exists or null.
      *
-     * @param className
-     *            the full package + class name
+     * @param className the full package + class name
      * @return the class or null
      */
     public static Class<?> safelyGetClass(String className) {
@@ -333,10 +316,8 @@ public final class ReflectionTools {
     /**
      * Visit all the fields of an object.
      *
-     * @param object
-     *            the object to visit
-     * @param visitField
-     *            the method to execute on each field
+     * @param object     the object to visit
+     * @param visitField the method to execute on each field
      */
     public static void visitAllFields(Object object, VisitField visitField) {
         AssertTools.assertNotNull(object, "You must set an object");
@@ -350,10 +331,8 @@ public final class ReflectionTools {
     /**
      * Visit all the fields of all the objects.
      *
-     * @param objects
-     *            the objects to visit
-     * @param visitField
-     *            the method to execute on each field
+     * @param objects    the objects to visit
+     * @param visitField the method to execute on each field
      */
     public static void visitAllFields(Object[] objects, VisitField visitField) {
         AssertTools.assertNotNull(objects, "You must set an objects array");

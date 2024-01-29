@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -35,10 +35,8 @@ public final class FreemarkerTools {
     /**
      * Take a Freemarker template and get a String from it.
      *
-     * @param resource
-     *            the path of the resource
-     * @param model
-     *            the variables available in the templates
+     * @param resource the path of the resource
+     * @param model    the variables available in the templates
      * @return this
      */
     public static String processTemplate(String resource, Map<String, ?> model) {

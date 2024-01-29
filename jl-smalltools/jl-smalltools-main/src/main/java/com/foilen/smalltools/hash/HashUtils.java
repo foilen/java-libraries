@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -25,10 +25,8 @@ public final class HashUtils {
     /**
      * Take an {@link InputStream} and get its hash.
      *
-     * @param algorithm
-     *            the algorithm to use
-     * @param in
-     *            the input stream with the content
+     * @param algorithm the algorithm to use
+     * @param in        the input stream with the content
      * @return the hash in hex
      */
     public static String hashInputStream(String algorithm, InputStream in) {

@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -35,25 +35,22 @@ public class RSATools {
 
     /**
      * Create a {@link KeyManagerFactory} from a {@link RSACertificate}.
-     *
+     * <p>
      * The key password will be "123".
      *
-     * @param rsaCertificate
-     *            the certificate
+     * @param rsaCertificate the certificate
      * @return the key manager factory
      */
     public static KeyManagerFactory createKeyManagerFactory(RSACertificate rsaCertificate) {
-        char[] keyPassword = new char[] { '1', '2', '3' };
+        char[] keyPassword = new char[]{'1', '2', '3'};
         return createKeyManagerFactory(rsaCertificate, keyPassword);
     }
 
     /**
      * Create a {@link KeyManagerFactory} from a {@link RSACertificate}.
      *
-     * @param rsaCertificate
-     *            the certificate
-     * @param keyPassword
-     *            the password for the key
+     * @param rsaCertificate the certificate
+     * @param keyPassword    the password for the key
      * @return the key manager factory
      */
     public static KeyManagerFactory createKeyManagerFactory(RSACertificate rsaCertificate, char[] keyPassword) {
@@ -69,8 +66,7 @@ public class RSATools {
     /**
      * Create a {@link KeyPair} from the {@link AsymmetricKeys}.
      *
-     * @param asymmetricKeys
-     *            the asymmetric keys
+     * @param asymmetricKeys the asymmetric keys
      * @return the Java keyPair
      */
     public static KeyPair createKeyPair(AsymmetricKeys asymmetricKeys) {
@@ -81,25 +77,22 @@ public class RSATools {
 
     /**
      * Create a {@link KeyStore} from a {@link RSACertificate}. This is for the private key.
-     *
+     * <p>
      * The key password will be "123".
      *
-     * @param rsaCertificate
-     *            the certificate
+     * @param rsaCertificate the certificate
      * @return the keystore
      */
     public static KeyStore createKeyStore(RSACertificate rsaCertificate) {
-        char[] keyPassword = new char[] { '1', '2', '3' };
+        char[] keyPassword = new char[]{'1', '2', '3'};
         return createKeyStore(rsaCertificate, keyPassword);
     }
 
     /**
      * Create a {@link KeyStore} from a {@link RSACertificate}. This is for the private key.
      *
-     * @param rsaCertificate
-     *            the certificate
-     * @param keyPassword
-     *            the password for the key
+     * @param rsaCertificate the certificate
+     * @param keyPassword    the password for the key
      * @return the keystore
      */
     public static KeyStore createKeyStore(RSACertificate rsaCertificate, char[] keyPassword) {
@@ -113,7 +106,7 @@ public class RSATools {
             Certificate certificate = rsaCertificate.getCertificate();
             keyStore.setCertificateEntry(alias, certificate);
             Key key = createPrivateKey(rsaCertificate.getKeysForSigning());
-            keyStore.setKeyEntry(alias, key, keyPassword, new Certificate[] { certificate });
+            keyStore.setKeyEntry(alias, key, keyPassword, new Certificate[]{certificate});
             return keyStore;
         } catch (Exception e) {
             throw new SmallToolsException("Problem creating the keystore", e);
@@ -122,11 +115,10 @@ public class RSATools {
 
     /**
      * Create a {@link KeyStore} from a {@link RSATrustedCertificates}. It is taking only the trusted certificates ; not the intermediates ones.
-     *
+     * <p>
      * The aliases will be the certificate's thumbprint to make sure they are unique.
      *
-     * @param rsaTrustedCertificates
-     *            the certificates that are trusted
+     * @param rsaTrustedCertificates the certificates that are trusted
      * @return the keystore
      */
     static public KeyStore createKeyStore(RSATrustedCertificates rsaTrustedCertificates) {
@@ -150,8 +142,7 @@ public class RSATools {
     /**
      * Create a {@link Key} from the private {@link AsymmetricKeys}.
      *
-     * @param asymmetricKeys
-     *            the asymmetric keys
+     * @param asymmetricKeys the asymmetric keys
      * @return the Java key
      */
     public static PrivateKey createPrivateKey(AsymmetricKeys asymmetricKeys) {
@@ -169,8 +160,7 @@ public class RSATools {
     /**
      * Create a {@link Key} from the public {@link AsymmetricKeys}.
      *
-     * @param asymmetricKeys
-     *            the asymmetric keys
+     * @param asymmetricKeys the asymmetric keys
      * @return the Java key
      */
     public static PublicKey createPublicKey(AsymmetricKeys asymmetricKeys) {
@@ -187,8 +177,7 @@ public class RSATools {
     /**
      * Create a {@link TrustManagerFactory} from a {@link KeyStore}.
      *
-     * @param keyStore
-     *            the keyStore
+     * @param keyStore the keyStore
      * @return the trust manager factory
      */
     static public TrustManagerFactory createTrustManagerFactory(KeyStore keyStore) {
@@ -204,8 +193,7 @@ public class RSATools {
     /**
      * Create a {@link TrustManagerFactory} from a {@link RSATrustedCertificates}.
      *
-     * @param rsaTrustedCertificates
-     *            the certificates that are trusted
+     * @param rsaTrustedCertificates the certificates that are trusted
      * @return the trust manager factory
      */
     static public RSATrustManagerFactory createTrustManagerFactory(RSATrustedCertificates rsaTrustedCertificates) {

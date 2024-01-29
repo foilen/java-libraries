@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -39,8 +39,7 @@ public final class DirectoryTools {
     /**
      * Remove the . and .. from a path
      *
-     * @param path
-     *            the path
+     * @param path the path
      * @return the path cleaned up
      */
     public static String cleanupDots(String path) {
@@ -76,8 +75,7 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed.
      *
-     * @param directory
-     *            the directory
+     * @param directory the directory
      * @return true if well created or already exists
      */
     public static boolean createPath(File directory) {
@@ -90,8 +88,7 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed.
      *
-     * @param directoryPath
-     *            the full path
+     * @param directoryPath the full path
      * @return true if well created or already exists
      */
     public static boolean createPath(String directoryPath) {
@@ -101,14 +98,10 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed. Only the final folder will have the owner, group and permissions.
      *
-     * @param directoryPath
-     *            the path to the directory
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param directoryPath the path to the directory
+     * @param owner         the owner of the file
+     * @param group         the group of the file
+     * @param permissions   the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if well created or already exists
      */
     public static boolean createPath(String directoryPath, String owner, String group, String permissions) {
@@ -129,8 +122,7 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed.
      *
-     * @param directoryPathParts
-     *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
+     * @param directoryPathParts the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
      * @return true if well created or already exists
      */
     public static boolean createPath(String[] directoryPathParts) {
@@ -140,14 +132,10 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed. Only the final folder will have the owner, group and permissions.
      *
-     * @param directoryPathParts
-     *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
-     * @param owner
-     *            the owner of the file
-     * @param group
-     *            the group of the file
-     * @param permissions
-     *            the posix permissions of the file ; the numeric permissions (e.g "777")
+     * @param directoryPathParts the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
+     * @param owner              the owner of the file
+     * @param group              the group of the file
+     * @param permissions        the posix permissions of the file ; the numeric permissions (e.g "777")
      * @return true if well created or already exists
      */
     public static boolean createPath(String[] directoryPathParts, String owner, String group, String permissions) {
@@ -157,8 +145,7 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed. They will all have the owner and group of the first existing parent.
      *
-     * @param directory
-     *            the directory
+     * @param directory the directory
      * @return true if well created or already exists
      */
     public static boolean createPathAndCopyOwnerAndGroupFromParent(File directory) {
@@ -185,8 +172,7 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed. They will all have the owner and group of the first existing parent.
      *
-     * @param directoryPath
-     *            the full path
+     * @param directoryPath the full path
      * @return true if well created or already exists
      */
     public static boolean createPathAndCopyOwnerAndGroupFromParent(String directoryPath) {
@@ -196,8 +182,7 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed. They will all have the owner and group of the first existing parent.
      *
-     * @param directoryPathParts
-     *            the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
+     * @param directoryPathParts the path to the directory (e.g new String[] { "/var/vmail/", domain, "/", from, "/Maildir" })
      * @return true if well created or already exists
      */
     public static boolean createPathAndCopyOwnerAndGroupFromParent(String[] directoryPathParts) {
@@ -207,8 +192,7 @@ public final class DirectoryTools {
     /**
      * Create the directory and all the parent ones if needed to get to that file.
      *
-     * @param filePath
-     *            the full path
+     * @param filePath the full path
      * @return true if well created or already exists
      */
     public static boolean createPathToFile(String filePath) {
@@ -229,8 +213,7 @@ public final class DirectoryTools {
     /**
      * Delete all the sub-folders that are empty.
      *
-     * @param rootFolder
-     *            the folder
+     * @param rootFolder the folder
      * @return the amount of folders removed
      */
     public static int deleteEmptySubFolders(File rootFolder) {
@@ -253,8 +236,7 @@ public final class DirectoryTools {
     /**
      * Delete all the sub-folders that are empty.
      *
-     * @param rootFolder
-     *            the folder
+     * @param rootFolder the folder
      * @return the amount of folders removed
      */
     public static int deleteEmptySubFolders(String rootFolder) {
@@ -263,11 +245,10 @@ public final class DirectoryTools {
 
     /**
      * Delete the folder and everything inside it. Will not follow symbolic links, but will delete them.
-     *
+     * <p>
      * WARNING: If you have hard links, it will follow them. (but not symbolic links)
      *
-     * @param folder
-     *            the folder
+     * @param folder the folder
      */
     public static void deleteFolder(File folder) {
         logger.info("Delete folder {}", folder.getAbsolutePath());
@@ -289,11 +270,10 @@ public final class DirectoryTools {
 
     /**
      * Delete the folder and everything inside it. Will not follow symbolic links, but will delete them.
-     *
+     * <p>
      * WARNING: If you have hard links, it will follow them. (but not symbolic links)
      *
-     * @param folderPath
-     *            the folder
+     * @param folderPath the folder
      */
     public static void deleteFolder(String folderPath) {
         deleteFolder(new File(folderPath));
@@ -302,10 +282,8 @@ public final class DirectoryTools {
     /**
      * Delete all the files that are older (modified time) than the specified date in the folder and sub-folders.
      *
-     * @param rootFolder
-     *            the folder
-     * @param beforeDate
-     *            the date of the modified time
+     * @param rootFolder the folder
+     * @param beforeDate the date of the modified time
      * @return the amount of files removed
      */
     public static int deleteOlderFilesInDirectory(File rootFolder, Date beforeDate) {
@@ -329,10 +307,8 @@ public final class DirectoryTools {
     /**
      * Delete all the files that are older (modified time) than the specified date in the folder and sub-folders.
      *
-     * @param rootFolder
-     *            the folder
-     * @param beforeDate
-     *            the date of the modified time
+     * @param rootFolder the folder
+     * @param beforeDate the date of the modified time
      * @return the amount of files removed
      */
     public static int deleteOlderFilesInDirectory(String rootFolder, Date beforeDate) {
@@ -359,22 +335,20 @@ public final class DirectoryTools {
 
     /**
      * List files and directories recursively. It can list the absolute or relative paths.
-     *
+     * <p>
      * Directories will end with a trailing slash.
-     *
-     *
+     * <p>
+     * <p>
      * Ex:
      * <ul>
      * <li>foo/bar/aFile</li>
      * <li>foo/bar/aDirectory/</li>
      * </ul>
-     *
+     * <p>
      * WARNING: It will follow symbolic links.
      *
-     * @param directory
-     *            the directory
-     * @param absolute
-     *            true to get the absolute paths
+     * @param directory the directory
+     * @param absolute  true to get the absolute paths
      * @return the names of the files (sorted)
      */
     public static List<String> listFilesAndFoldersRecursively(File directory, boolean absolute) {
@@ -395,22 +369,20 @@ public final class DirectoryTools {
 
     /**
      * List files and directories recursively. It can list the absolute or relative paths.
-     *
+     * <p>
      * Directories will end with a trailing slash.
-     *
-     *
+     * <p>
+     * <p>
      * Ex:
      * <ul>
      * <li>foo/bar/aFile</li>
      * <li>foo/bar/aDirectory/</li>
      * </ul>
-     *
+     * <p>
      * WARNING: It will follow symbolic links.
      *
-     * @param directory
-     *            the directory
-     * @param absolute
-     *            true to get the absolute paths
+     * @param directory the directory
+     * @param absolute  true to get the absolute paths
      * @return the names of the files (sorted)
      */
     private static List<String> listFilesAndFoldersRecursively(File directory, boolean absolute, int relativeStartPos) {
@@ -440,21 +412,19 @@ public final class DirectoryTools {
 
     /**
      * List files and directories recursively. It can list the absolute or relative paths.
-     *
+     * <p>
      * Directories will end with a trailing slash.
-     *
+     * <p>
      * Ex:
      * <ul>
      * <li>foo/bar/aFile</li>
      * <li>foo/bar/aDirectory/</li>
      * </ul>
-     *
+     * <p>
      * WARNING: It will follow symbolic links.
      *
-     * @param path
-     *            the full path to the directory
-     * @param absolute
-     *            true to get the absolute paths
+     * @param path     the full path to the directory
+     * @param absolute true to get the absolute paths
      * @return the names of the files (sorted)
      */
     public static List<String> listFilesAndFoldersRecursively(String path, boolean absolute) {
@@ -464,10 +434,8 @@ public final class DirectoryTools {
     /**
      * List the names of the files that the content starts with the specified text.
      *
-     * @param path
-     *            the full path to the directory
-     * @param startText
-     *            the text that the files must start with
+     * @param path      the full path to the directory
+     * @param startText the text that the files must start with
      * @return the names of the files (sorted)
      */
     public static List<String> listFilesStartingWith(String path, String startText) {
@@ -506,8 +474,7 @@ public final class DirectoryTools {
     /**
      * List only the files that are in a directory (not anything else like directories).
      *
-     * @param directory
-     *            the full path to the directory
+     * @param directory the full path to the directory
      * @return the sorted list of file names
      */
     public static List<String> listOnlyFileNames(String directory) {
@@ -521,8 +488,7 @@ public final class DirectoryTools {
     /**
      * Make sure the path ends with a trailing slash.
      *
-     * @param path
-     *            the path to check
+     * @param path the path to check
      * @return the path with a trailing slash
      */
     public static String pathTrailingSlash(String path) {
@@ -536,22 +502,19 @@ public final class DirectoryTools {
     /**
      * List the content of the directory. Does not return null, but an empty list.
      *
-     * @param directory
-     *            the directory to list
+     * @param directory the directory to list
      * @return the list of files or empty list if null
      */
     public static File[] safeListFiles(File directory) {
         File[] files = directory.listFiles();
-        return files == null ? new File[] {} : files;
+        return files == null ? new File[]{} : files;
     }
 
     /**
      * Visit all the files and folders in sub-directories. When visiting a folder, will do it after visiting everything inside it.
      *
-     * @param directory
-     *            the directory
-     * @param fileAction
-     *            the action to execute on each file
+     * @param directory  the directory
+     * @param fileAction the action to execute on each file
      */
     public static void visitFilesAndFoldersRecursively(File directory, Consumer<File> fileAction) {
 
@@ -577,10 +540,8 @@ public final class DirectoryTools {
     /**
      * Visit all the files and folders in sub-directories. Will do it in depth-first order.
      *
-     * @param directory
-     *            the directory
-     * @param fileAction
-     *            the action to execute on each file
+     * @param directory  the directory
+     * @param fileAction the action to execute on each file
      */
     public static void visitFilesAndFoldersRecursively(String directory, Consumer<File> fileAction) {
         visitFilesAndFoldersRecursively(new File(directory), fileAction);

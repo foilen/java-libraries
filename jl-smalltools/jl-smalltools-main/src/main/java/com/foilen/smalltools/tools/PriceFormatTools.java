@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -19,8 +19,7 @@ public class PriceFormatTools {
     /**
      * Convert a long in the form AAABB to a text AAA.BB .
      *
-     * @param price
-     *            the price
+     * @param price the price
      * @return the formatted price
      */
     public static String toDigit(long price) {
@@ -38,8 +37,7 @@ public class PriceFormatTools {
     /**
      * Given a price in the format AAA.BB , convert it to a long value of AAABB .
      *
-     * @param text
-     *            the text
+     * @param text the text
      * @return the long
      */
     public static long toLong(String text) {

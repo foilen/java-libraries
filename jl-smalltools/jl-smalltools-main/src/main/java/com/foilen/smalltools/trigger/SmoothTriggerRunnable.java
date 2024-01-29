@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -40,14 +40,14 @@ class SmoothTriggerRunnable implements Runnable {
         logger.debug("Cancelling pending. Current state [{}]", state);
 
         switch (state) {
-        case COOLDOWN:
-            break;
-        case IDLE:
-            break;
-        case WARMUP:
-            requestMade = 0;
-            state = SmoothTriggerState.COOLDOWN;
-            break;
+            case COOLDOWN:
+                break;
+            case IDLE:
+                break;
+            case WARMUP:
+                requestMade = 0;
+                state = SmoothTriggerState.COOLDOWN;
+                break;
         }
 
         logger.debug("Ending state [{}]", state);
@@ -144,18 +144,18 @@ class SmoothTriggerRunnable implements Runnable {
             // Check what action to do
             logger.debug("State [{}] ; now [{}] ; nextWarmupFinished [{}] ; nextMaxFinished [{}]", state, now, nextWarmupFinished, nextMaxFinished);
             switch (state) {
-            case COOLDOWN:
-                break;
-            case IDLE:
-                break;
-            case WARMUP:
-                if (nextWarmupFinished <= now || nextMaxFinished <= now) {
-                    executeActionIfPending(false);
-                    nextWarmupFinished += smoothTrigger.getDelayAfterLastTriggerMs();
-                    nextMaxFinished = -1;
-                }
+                case COOLDOWN:
+                    break;
+                case IDLE:
+                    break;
+                case WARMUP:
+                    if (nextWarmupFinished <= now || nextMaxFinished <= now) {
+                        executeActionIfPending(false);
+                        nextWarmupFinished += smoothTrigger.getDelayAfterLastTriggerMs();
+                        nextMaxFinished = -1;
+                    }
 
-                break;
+                    break;
 
             }
 
@@ -170,23 +170,23 @@ class SmoothTriggerRunnable implements Runnable {
 
             // Go to sleep
             switch (state) {
-            case COOLDOWN:
-            case IDLE:
-                try {
-                    Thread.sleep(120000); // 2 mins (will be interrupted if needed)
-                } catch (InterruptedException e) {
-                }
-                break;
-            case WARMUP:
-                long sooner = Math.min(nextMaxFinished, nextWarmupFinished);
-                long delta = sooner - now;
-                if (delta > 0) {
+                case COOLDOWN:
+                case IDLE:
                     try {
-                        Thread.sleep(delta);
+                        Thread.sleep(120000); // 2 mins (will be interrupted if needed)
                     } catch (InterruptedException e) {
                     }
-                }
-                break;
+                    break;
+                case WARMUP:
+                    long sooner = Math.min(nextMaxFinished, nextWarmupFinished);
+                    long delta = sooner - now;
+                    if (delta > 0) {
+                        try {
+                            Thread.sleep(delta);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                    break;
 
             }
 

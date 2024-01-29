@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -26,8 +26,7 @@ public final class HashMd5sum {
     /**
      * Take bytes and get its hash.
      *
-     * @param in
-     *            the content
+     * @param in the content
      * @return the hash in hex
      */
     public static String hashBytes(byte[] in) {
@@ -37,8 +36,7 @@ public final class HashMd5sum {
     /**
      * Take a file and get its hash.
      *
-     * @param file
-     *            the file
+     * @param file the file
      * @return the hash of the file in hex
      */
     public static String hashFile(File file) {
@@ -52,8 +50,7 @@ public final class HashMd5sum {
     /**
      * Take a file and get its hash.
      *
-     * @param filePath
-     *            the path of the file
+     * @param filePath the path of the file
      * @return the hash of the file in hex
      */
     public static String hashFile(String filePath) {
@@ -63,8 +60,7 @@ public final class HashMd5sum {
     /**
      * Take a {@link String} and get its hash.
      *
-     * @param in
-     *            the content
+     * @param in the content
      * @return the hash in hex
      */
     public static String hashString(String in) {

@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -18,8 +18,7 @@ public final class AssertTools {
     /**
      * Check that the value is false.
      *
-     * @param actual
-     *            the value
+     * @param actual the value
      */
     public static void assertFalse(boolean actual) {
         assertFalse(actual, "Value must be false");
@@ -28,10 +27,8 @@ public final class AssertTools {
     /**
      * Check that the value is false.
      *
-     * @param actual
-     *            the value
-     * @param message
-     *            the error message to throw
+     * @param actual  the value
+     * @param message the error message to throw
      */
     public static void assertFalse(boolean actual, String message) {
         if (actual) {
@@ -42,8 +39,7 @@ public final class AssertTools {
     /**
      * Check that the value is not null.
      *
-     * @param actual
-     *            the value
+     * @param actual the value
      */
     public static void assertNotNull(Object actual) {
         assertNotNull(actual, "Value must not be null");
@@ -52,10 +48,8 @@ public final class AssertTools {
     /**
      * Check that the value is not null.
      *
-     * @param actual
-     *            the value
-     * @param message
-     *            the error message to throw
+     * @param actual  the value
+     * @param message the error message to throw
      */
     public static void assertNotNull(Object actual, String message) {
         if (actual == null) {
@@ -66,8 +60,7 @@ public final class AssertTools {
     /**
      * Check that the value is null.
      *
-     * @param actual
-     *            the value
+     * @param actual the value
      */
     public static void assertNull(Object actual) {
         assertNull(actual, "Value must be null");
@@ -76,10 +69,8 @@ public final class AssertTools {
     /**
      * Check that the value is null.
      *
-     * @param actual
-     *            the value
-     * @param message
-     *            the error message to throw
+     * @param actual  the value
+     * @param message the error message to throw
      */
     public static void assertNull(Object actual, String message) {
         if (actual != null) {
@@ -90,10 +81,8 @@ public final class AssertTools {
     /**
      * Check that one and only one item is not null.
      *
-     * @param message
-     *            the error message to throw
-     * @param items
-     *            the items to check
+     * @param message the error message to throw
+     * @param items   the items to check
      */
     public static void assertOnlyOneNotNull(String message, Object... items) {
         int notNullCount = 0;
@@ -114,8 +103,7 @@ public final class AssertTools {
     /**
      * Check that the value is true.
      *
-     * @param actual
-     *            the value
+     * @param actual the value
      */
     public static void assertTrue(boolean actual) {
         assertTrue(actual, "Value must be true");
@@ -124,10 +112,8 @@ public final class AssertTools {
     /**
      * Check that the value is true.
      *
-     * @param actual
-     *            the value
-     * @param message
-     *            the error message to throw
+     * @param actual  the value
+     * @param message the error message to throw
      */
     public static void assertTrue(boolean actual, String message) {
         if (!actual) {

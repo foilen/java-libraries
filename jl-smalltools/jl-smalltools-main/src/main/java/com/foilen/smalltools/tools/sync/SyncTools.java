@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -22,7 +22,7 @@ import com.foilen.smalltools.tuple.Tuple2;
  * To help sync 2 datastores by adding entities that are not in the destination (per id), delete extra entities in the destination (per id) and possibly update the destination if you consider it
  * changed (per id and your defined subset to check for change). <br/>
  * <br/>
- *
+ * <p>
  * See {@link SyncConfiguration} for more detail.
  */
 public final class SyncTools {
@@ -90,14 +90,10 @@ public final class SyncTools {
     /**
      * Execute the sync.
      *
-     * @param syncConfiguration
-     *            all the methods to sync
-     * @param <E>
-     *            the entity type
-     * @param <I>
-     *            the id type
-     * @param <P>
-     *            the partial entity type
+     * @param syncConfiguration all the methods to sync
+     * @param <E>               the entity type
+     * @param <I>               the id type
+     * @param <P>               the partial entity type
      * @return the added, updated and deleted counts
      */
     public static final <E, I, P> SyncChanges sync(SyncConfiguration<I, E, P> syncConfiguration) {
@@ -107,16 +103,11 @@ public final class SyncTools {
     /**
      * Execute the sync.
      *
-     * @param syncConfiguration
-     *            all the methods to sync
-     * @param slice
-     *            to specify a range of update
-     * @param <E>
-     *            the entity type
-     * @param <I>
-     *            the id type
-     * @param <P>
-     *            the partial entity type
+     * @param syncConfiguration all the methods to sync
+     * @param slice             to specify a range of update
+     * @param <E>               the entity type
+     * @param <I>               the id type
+     * @param <P>               the partial entity type
      * @return the added, updated and deleted counts
      */
     public static final <E, I, P> SyncChanges sync(SyncConfiguration<I, E, P> syncConfiguration, SyncSlice<I> slice) {

@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2023 Foilen (https://foilen.com)
+    Copyright (c) 2015-2024 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -58,10 +58,8 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
     /**
      * The file to open.
      *
-     * @param file
-     *            the file
-     * @throws FileNotFoundException
-     *             FileNotFoundException
+     * @param file the file
+     * @throws FileNotFoundException FileNotFoundException
      */
     public void openFile(File file) throws FileNotFoundException {
         bufferedReader = new BufferedReader(new FileReader(file));
@@ -71,8 +69,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
     /**
      * The stream to use.
      *
-     * @param inputStream
-     *            the stream to read
+     * @param inputStream the stream to read
      */
     public void openStream(InputStream inputStream) {
         bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -82,8 +79,7 @@ public class FileLinesIterable implements Iterable<String>, Iterator<String> {
     /**
      * The String to use.
      *
-     * @param text
-     *            the text to read
+     * @param text the text to read
      */
     public void openString(String text) {
         openStream(new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8)));
