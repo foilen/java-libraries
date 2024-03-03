@@ -34,5 +34,5 @@ echo '- close it (wait for it to be closed)'
 echo '- release it'
 echo 
 echo Then, can see published items on 
-echo https://repo1.maven.org/maven2/com/foilen/jl-smalltools/
+echo https://repo1.maven.org/maven2/com/foilen/jl-smalltools-main/
 echo You can send the tag: git push --tags
