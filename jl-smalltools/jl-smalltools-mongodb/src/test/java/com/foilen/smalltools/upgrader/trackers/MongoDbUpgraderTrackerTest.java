@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.upgrader.trackers;
 
+import com.foilen.smalltools.mongodb.AbstractEmbeddedMongoDbTest;
 import com.foilen.smalltools.tools.StreamTools;
 import com.foilen.smalltools.upgrader.UpgraderTools;
 import com.foilen.smalltools.upgrader.tasks.UpgradeTask;

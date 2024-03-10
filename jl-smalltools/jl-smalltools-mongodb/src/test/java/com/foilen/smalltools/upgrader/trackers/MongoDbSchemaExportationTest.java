@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.upgrader.trackers;
 
+import com.foilen.smalltools.mongodb.AbstractEmbeddedMongoDbTest;
 import com.foilen.smalltools.test.asserts.AssertTools;
 import com.foilen.smalltools.tools.ResourceTools;
 import com.foilen.smalltools.upgrader.UpgraderTools;
