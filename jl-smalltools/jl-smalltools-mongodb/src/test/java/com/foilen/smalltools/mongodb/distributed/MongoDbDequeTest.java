@@ -12,6 +12,7 @@ import com.foilen.smalltools.mongodb.AbstractEmbeddedMongoDbTest;
 import com.foilen.smalltools.tools.ExecutorsTools;
 import com.foilen.smalltools.tools.SecureRandomTools;
 import com.foilen.smalltools.tools.ThreadTools;
+import com.foilen.smalltools.tools.TimeExecutionTools;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.junit.jupiter.api.Assertions;
@@ -24,6 +25,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
 
 public class MongoDbDequeTest extends AbstractEmbeddedMongoDbTest {
 
@@ -633,6 +635,23 @@ public class MongoDbDequeTest extends AbstractEmbeddedMongoDbTest {
             Assertions.assertTrue(deque.isEmpty());
         }
 
+    }
+
+    @Test
+    public void testWaitingAndEnding() {
+        String collectionName = SecureRandomTools.randomHexString(10);
+        MongoCollection<Document> mongoCollection = mongoClient.getDatabase("test").getCollection(collectionName);
+        var deque = getDeque(mongoCollection);
+
+        var executionTimeInMs = TimeExecutionTools.measureInMs(() -> {
+            try {
+                deque.pollFirst(2, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Assertions.assertTrue(executionTimeInMs > 2000 && executionTimeInMs < 2500);
     }
 
     private static MongoDbDeque<Integer> getDeque(MongoCollection<Document> mongoCollection) {

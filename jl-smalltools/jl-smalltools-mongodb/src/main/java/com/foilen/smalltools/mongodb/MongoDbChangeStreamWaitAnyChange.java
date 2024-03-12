@@ -17,16 +17,22 @@ import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.changestream.FullDocument;
 import org.bson.Document;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class MongoDbChangeStreamDelayedPoller extends AbstractBasics {
-
+/**
+ * Uses MongoDB Change Streams to wait for any changes instead of polling. The threads can call {@link #waitForChange(long)} and will be woken up when a requested change type happens.
+ * <p>
+ * If no thread is waiting, the change stream will stop after a specific time.
+ */
+public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
 
     private final MongoCollection<Document> mongoCollection;
     private final long stopAfterNoThreadWaitedInMs;
+    private final List<String> changeTypes;
 
     private final Semaphore semaphore = new Semaphore(0);
 
@@ -34,15 +40,18 @@ public class MongoDbChangeStreamDelayedPoller extends AbstractBasics {
     private Thread thread;
     private ChangeStreamIterable<Document> changeStream;
 
-    public MongoDbChangeStreamDelayedPoller(MongoCollection<Document> mongoCollection, long stopAfterNoThreadWaitedInMs) {
+    public MongoDbChangeStreamWaitAnyChange(MongoCollection<Document> mongoCollection, long stopAfterNoThreadWaitedInMs, String firstChangeType, String... changeTypes) {
         this.mongoCollection = mongoCollection;
         this.stopAfterNoThreadWaitedInMs = stopAfterNoThreadWaitedInMs;
+        this.changeTypes = new ArrayList<>();
+        this.changeTypes.add(firstChangeType);
+        this.changeTypes.addAll(Arrays.asList(changeTypes));
     }
 
-    public void waitForIncreaseChange(long timeout, TimeUnit unit) throws InterruptedException {
+    public void waitForChange(long timeInMs) throws InterruptedException {
         startIfNeeded();
         stopAfter = System.currentTimeMillis() + stopAfterNoThreadWaitedInMs;
-        semaphore.tryAcquire(timeout, unit);
+        semaphore.tryAcquire(timeInMs, TimeUnit.MILLISECONDS);
         stopAfter = System.currentTimeMillis() + stopAfterNoThreadWaitedInMs;
     }
 
@@ -60,7 +69,7 @@ public class MongoDbChangeStreamDelayedPoller extends AbstractBasics {
                         // Start the stream for add and delete without the document details
                         logger.info("Starting change stream");
                         changeStream = mongoCollection.watch(List.of(
-                                        Aggregates.match(new Document("operationType", new Document("$in", Arrays.asList("insert")))),
+                                        Aggregates.match(new Document("operationType", new Document("$in", changeTypes))),
                                         Aggregates.project(new Document("fullDocument", 0))
                                 ))
                                 .fullDocument(FullDocument.DEFAULT);

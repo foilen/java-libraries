@@ -9,7 +9,7 @@
 package com.foilen.smalltools.mongodb.distributed;
 
 import com.foilen.smalltools.hash.HashSha1;
-import com.foilen.smalltools.mongodb.MongoDbChangeStreamDelayedPoller;
+import com.foilen.smalltools.mongodb.MongoDbChangeStreamWaitAnyChange;
 import com.foilen.smalltools.mongodb.MongoDbManageCollectionTools;
 import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.BufferBatchesTools;
@@ -46,7 +46,7 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
     private final MongoCollection<Document> mongoCollection;
     private final long stopChangeStreamAfterNoThreadWaitedInMs;
 
-    private MongoDbChangeStreamDelayedPoller mongoDbChangeStreamDelayedPoller;
+    private MongoDbChangeStreamWaitAnyChange mongoDbChangeStreamWaitAnyChange;
 
     public MongoDbDeque(Class<E> entityType, MongoClient mongoClient, MongoCollection<Document> mongoCollection) {
         this(entityType, mongoClient, mongoCollection, 10 * 60000);
@@ -340,19 +340,19 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
             waitUntil = Long.MAX_VALUE;
         }
         while (value == null && System.currentTimeMillis() < waitUntil) {
-            waitForChange(timeout, unit);
+            waitForChange(waitUntil - System.currentTimeMillis());
             value = pollFirst();
         }
         return value;
     }
 
-    private void waitForChange(long timeout, TimeUnit unit) throws InterruptedException {
+    private void waitForChange(long timeInMs) throws InterruptedException {
         synchronized (this) {
-            if (mongoDbChangeStreamDelayedPoller == null) {
-                mongoDbChangeStreamDelayedPoller = new MongoDbChangeStreamDelayedPoller(mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs);
+            if (mongoDbChangeStreamWaitAnyChange == null) {
+                mongoDbChangeStreamWaitAnyChange = new MongoDbChangeStreamWaitAnyChange(mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs, "insert");
             }
         }
-        mongoDbChangeStreamDelayedPoller.waitForIncreaseChange(timeout, unit);
+        mongoDbChangeStreamWaitAnyChange.waitForChange(timeInMs);
     }
 
     @Override
@@ -381,7 +381,7 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
             waitUntil = Long.MAX_VALUE;
         }
         while (value == null && System.currentTimeMillis() < waitUntil) {
-            waitForChange(timeout, unit);
+            waitForChange(waitUntil - System.currentTimeMillis());
             value = pollLast();
         }
         return value;
