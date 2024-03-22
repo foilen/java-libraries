@@ -15,11 +15,14 @@ import com.mongodb.client.ChangeStreamIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.changestream.FullDocument;
+import org.bson.BsonString;
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +38,7 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
     private final List<String> changeTypes;
 
     private final Semaphore semaphore = new Semaphore(0);
+    private final ConcurrentMap<Object, Semaphore> semaphoreById = new ConcurrentHashMap<>();
 
     private long stopAfter;
     private Thread thread;
@@ -49,9 +53,19 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
     }
 
     public void waitForChange(long timeInMs) throws InterruptedException {
-        startIfNeeded();
         stopAfter = System.currentTimeMillis() + stopAfterNoThreadWaitedInMs;
+        startIfNeeded();
+        logger.debug("Waiting for change");
         semaphore.tryAcquire(timeInMs, TimeUnit.MILLISECONDS);
+        stopAfter = System.currentTimeMillis() + stopAfterNoThreadWaitedInMs;
+    }
+
+    public void waitForChange(String id, long timeInMs) throws InterruptedException {
+        stopAfter = System.currentTimeMillis() + stopAfterNoThreadWaitedInMs;
+        semaphoreById.computeIfAbsent(id, k -> new Semaphore(0));
+        startIfNeeded();
+        logger.debug("Waiting for change for {}", id);
+        semaphoreById.computeIfAbsent(id, k -> new Semaphore(0)).tryAcquire(timeInMs, TimeUnit.MILLISECONDS);
         stopAfter = System.currentTimeMillis() + stopAfterNoThreadWaitedInMs;
     }
 
@@ -61,12 +75,7 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
             if (thread == null) {
                 thread = new Thread(() -> {
                     try {
-                        new DelayedEvent(2000, () -> {
-                            semaphore.drainPermits();
-                            semaphore.release((int) mongoCollection.estimatedDocumentCount());
-                        });
-
-                        // Start the stream for add and delete without the document details
+                        // Start the stream
                         logger.info("Starting change stream");
                         changeStream = mongoCollection.watch(List.of(
                                         Aggregates.match(new Document("operationType", new Document("$in", changeTypes))),
@@ -74,7 +83,26 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
                                 ))
                                 .fullDocument(FullDocument.DEFAULT);
 
-                        changeStream.forEach(change -> semaphore.release());
+                        // Releasing all permits on all semaphores since it is the first pass
+                        semaphore.release(semaphore.getQueueLength());
+                        semaphoreById.values().forEach(s -> s.release(s.getQueueLength()));
+
+                        // Look for changes
+                        changeStream.forEach(change -> {
+                            // By id
+                            Object id = change.getDocumentKey().get("_id");
+                            if (id instanceof BsonString) {
+                                id = ((BsonString) id).getValue();
+                            }
+                            logger.debug("Change {} for {} - {}", change.getOperationTypeString(), mongoCollection.getNamespace(), id);
+                            var semaphoreForId = semaphoreById.get(id);
+                            if (semaphoreForId != null) {
+                                semaphoreForId.release();
+                            }
+
+                            // Global
+                            semaphore.release();
+                        });
 
                     } catch (Exception e) {
                         logger.error("Problem with change stream", e);
@@ -102,7 +130,10 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
 
         new DelayedEvent(delay, () -> {
             if (System.currentTimeMillis() > stopAfter) {
-                if (semaphore.hasQueuedThreads()) {
+                // Remove all the semaphores without threads
+                semaphoreById.entrySet().removeIf(entry -> entry.getValue().hasQueuedThreads());
+
+                if (semaphore.hasQueuedThreads() || !semaphoreById.isEmpty()) {
                     logger.info("Some threads are waiting. Will wait more");
                     stopAfter = System.currentTimeMillis() + stopAfterNoThreadWaitedInMs;
                 } else {
