@@ -18,6 +18,7 @@ import com.foilen.smalltools.tools.RetryTools;
 import com.foilen.smalltools.tuple.Tuple2;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndDeleteOptions;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Sorts;
@@ -36,10 +37,6 @@ import java.util.stream.StreamSupport;
  * @param <E> the type of elements in this queue
  */
 public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> {
-
-    private static final String FIELD_ID = "_id";
-    private static final String FIELD_JSON_VALUE = "jsonValue";
-    private static final String FIELD_HASH_JSON_VALUE = "hashJsonValue";
 
     private final Class<E> entityType;
     private final MongoClient mongoClient;
@@ -61,7 +58,7 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
         MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
                 "hashJsonValue_id", new Tuple2<>(
-                        new Document().append(FIELD_HASH_JSON_VALUE, 1).append(FIELD_ID, 1),
+                        new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
                         new IndexOptions()
                 )
         ));
@@ -78,16 +75,16 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         RetryTools.retryBetween(3, 200, () ->
                 mongoClient.startSession().withTransaction(() -> {
                     var nextEntry = mongoCollection.find()
-                            .sort(Sorts.ascending(FIELD_ID))
-                            .projection(new Document().append(FIELD_ID, 1))
+                            .sort(Sorts.ascending(MongoDbDistributedConstants.FIELD_ID))
+                            .projection(new Document().append(MongoDbDistributedConstants.FIELD_ID, 1))
                             .first();
-                    long order = nextEntry == null ? 0 : nextEntry.getLong(FIELD_ID) - 1;
+                    long order = nextEntry == null ? 0 : nextEntry.getLong(MongoDbDistributedConstants.FIELD_ID) - 1;
 
                     String jsonValue = JsonTools.compactPrintWithoutNulls(e);
                     mongoCollection.insertOne(new Document()
-                            .append(FIELD_ID, order)
-                            .append(FIELD_JSON_VALUE, jsonValue)
-                            .append(FIELD_HASH_JSON_VALUE, HashSha1.hashString(jsonValue))
+                            .append(MongoDbDistributedConstants.FIELD_ID, order)
+                            .append(MongoDbDistributedConstants.FIELD_JSON_VALUE, jsonValue)
+                            .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, HashSha1.hashString(jsonValue))
                     );
                     return null;
                 })
@@ -107,16 +104,16 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         RetryTools.retryBetween(3, 200, () -> {
             mongoClient.startSession().withTransaction(() -> {
                 var nextEntry = mongoCollection.find()
-                        .projection(new Document().append(FIELD_ID, 1))
-                        .sort(Sorts.descending(FIELD_ID))
+                        .projection(new Document().append(MongoDbDistributedConstants.FIELD_ID, 1))
+                        .sort(Sorts.descending(MongoDbDistributedConstants.FIELD_ID))
                         .first();
-                long order = nextEntry == null ? 0 : nextEntry.getLong(FIELD_ID) + 1;
+                long order = nextEntry == null ? 0 : nextEntry.getLong(MongoDbDistributedConstants.FIELD_ID) + 1;
 
                 String jsonValue = JsonTools.compactPrintWithoutNulls(e);
                 mongoCollection.insertOne(new Document()
-                        .append(FIELD_ID, order)
-                        .append(FIELD_JSON_VALUE, jsonValue)
-                        .append(FIELD_HASH_JSON_VALUE, HashSha1.hashString(jsonValue))
+                        .append(MongoDbDistributedConstants.FIELD_ID, order)
+                        .append(MongoDbDistributedConstants.FIELD_JSON_VALUE, jsonValue)
+                        .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, HashSha1.hashString(jsonValue))
                 );
                 return null;
             });
@@ -134,10 +131,10 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
             RetryTools.retryBetween(3, 200, () ->
                     mongoClient.startSession().withTransaction(() -> {
                         var nextEntry = mongoCollection.find()
-                                .projection(new Document().append(FIELD_ID, 1))
-                                .sort(Sorts.descending(FIELD_ID))
+                                .projection(new Document().append(MongoDbDistributedConstants.FIELD_ID, 1))
+                                .sort(Sorts.descending(MongoDbDistributedConstants.FIELD_ID))
                                 .first();
-                        long order = nextEntry == null ? 0 : nextEntry.getLong(FIELD_ID) + 1;
+                        long order = nextEntry == null ? 0 : nextEntry.getLong(MongoDbDistributedConstants.FIELD_ID) + 1;
 
                         List<Document> documents = new ArrayList<>();
                         for (var e : items) {
@@ -146,9 +143,9 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
                             }
                             String jsonValue = JsonTools.compactPrintWithoutNulls(e);
                             documents.add(new Document()
-                                    .append(FIELD_ID, order++)
-                                    .append(FIELD_JSON_VALUE, jsonValue)
-                                    .append(FIELD_HASH_JSON_VALUE, HashSha1.hashString(jsonValue))
+                                    .append(MongoDbDistributedConstants.FIELD_ID, order++)
+                                    .append(MongoDbDistributedConstants.FIELD_JSON_VALUE, jsonValue)
+                                    .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, HashSha1.hashString(jsonValue))
                             );
                         }
 
@@ -167,24 +164,24 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
     @Override
     public E peekFirst() {
         var result = mongoCollection.find()
-                .sort(Sorts.ascending(FIELD_ID))
+                .sort(Sorts.ascending(MongoDbDistributedConstants.FIELD_ID))
                 .first();
         if (result == null) {
             return null;
         } else {
-            return JsonTools.readFromString(result.getString(FIELD_JSON_VALUE), entityType);
+            return JsonTools.readFromString(result.getString(MongoDbDistributedConstants.FIELD_JSON_VALUE), entityType);
         }
     }
 
     @Override
     public E peekLast() {
         var result = mongoCollection.find()
-                .sort(Sorts.descending(FIELD_ID))
+                .sort(Sorts.descending(MongoDbDistributedConstants.FIELD_ID))
                 .first();
         if (result == null) {
             return null;
         } else {
-            return JsonTools.readFromString(result.getString(FIELD_JSON_VALUE), entityType);
+            return JsonTools.readFromString(result.getString(MongoDbDistributedConstants.FIELD_JSON_VALUE), entityType);
         }
     }
 
@@ -195,7 +192,7 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         }
 
         var hashJsonValue = HashSha1.hashString(JsonTools.compactPrintWithoutNulls(o));
-        return mongoCollection.find(new Document().append(FIELD_HASH_JSON_VALUE, hashJsonValue)).first() != null;
+        return mongoCollection.find(new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, hashJsonValue)).first() != null;
     }
 
     @Override
@@ -215,102 +212,33 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
 
         // Get the count of unique hashJsonValues in that list
         long count = StreamSupport.stream(mongoCollection.find(new Document()
-                                .append(FIELD_HASH_JSON_VALUE, new Document().append("$in", allHashJsonValues)))
-                        .projection(new Document().append(FIELD_HASH_JSON_VALUE, 1))
+                                .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, new Document().append("$in", allHashJsonValues)))
+                        .projection(new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1))
                         .spliterator(), false)
-                .map(document -> document.getString(FIELD_HASH_JSON_VALUE))
+                .map(document -> document.getString(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE))
                 .sorted().distinct()
                 .count();
 
         return count == allHashJsonValues.size();
     }
 
-    private class MongoDbDequeIterator implements Iterator<E> {
-        private Long lastId = null;
-        private final boolean ascending;
-
-        private E next;
-        private boolean completed;
-
-        public MongoDbDequeIterator(boolean ascending) {
-            this.ascending = ascending;
-        }
-
-        @Override
-        public boolean hasNext() {
-            loadNext();
-            return !completed;
-        }
-
-        @Override
-        public E next() {
-
-            if (next != null) {
-                var toReturn = next;
-                next = null;
-                return toReturn;
-            }
-
-            loadNext();
-            if (completed) {
-                throw new NoSuchElementException();
-            }
-            var toReturn = next;
-            next = null;
-            return toReturn;
-        }
-
-        private void loadNext() {
-            next = null;
-
-            if (completed) {
-                return;
-            }
-
-            var query = new Document();
-            if (lastId != null) {
-                query.append(FIELD_ID, new Document().append(ascending ? "$gt" : "$lt", lastId));
-            }
-
-            var sort = new Document().append(FIELD_ID, ascending ? 1 : -1);
-            var result = mongoCollection.find(query)
-                    .sort(sort)
-                    .first();
-            if (result == null) {
-                completed = true;
-                return;
-            }
-
-            lastId = result.getLong(FIELD_ID);
-            next = JsonTools.readFromString(result.getString(FIELD_JSON_VALUE), entityType);
-        }
-
-        @Override
-        public void remove() {
-            if (lastId == null) {
-                throw new IllegalStateException();
-            }
-            mongoCollection.deleteOne(new Document().append(FIELD_ID, lastId));
-        }
-    }
-
     @Override
     public Iterator<E> iterator() {
-        return new MongoDbDequeIterator(true);
+        return new MongoDbDequeIterator<>(entityType, mongoCollection, true);
     }
 
     @Override
     public Iterator<E> descendingIterator() {
-        return new MongoDbDequeIterator(false);
+        return new MongoDbDequeIterator<>(entityType, mongoCollection, false);
     }
 
     @Override
     public Object[] toArray() {
         return StreamSupport.stream(mongoCollection.find()
-                        .sort(Sorts.ascending(FIELD_ID))
-                        .projection(new Document().append(FIELD_JSON_VALUE, 1))
+                        .sort(Sorts.ascending(MongoDbDistributedConstants.FIELD_ID))
+                        .projection(new Document().append(MongoDbDistributedConstants.FIELD_JSON_VALUE, 1))
                         .spliterator(), false)
-                .map(document -> JsonTools.readFromString(document.getString(FIELD_JSON_VALUE), entityType))
+                .map(document -> JsonTools.readFromString(document.getString(MongoDbDistributedConstants.FIELD_JSON_VALUE), entityType))
                 .toArray();
     }
 
@@ -318,13 +246,13 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
     public E pollFirst() {
         var entry = mongoCollection.findOneAndDelete(
                 new Document(),
-                new FindOneAndDeleteOptions().sort(Sorts.ascending(FIELD_ID))
+                new FindOneAndDeleteOptions().sort(Sorts.ascending(MongoDbDistributedConstants.FIELD_ID))
         );
         if (entry == null) {
             return null;
         }
 
-        return JsonTools.readFromString(entry.getString(FIELD_JSON_VALUE), entityType);
+        return JsonTools.readFromString(entry.getString(MongoDbDistributedConstants.FIELD_JSON_VALUE), entityType);
     }
 
     @Override
@@ -359,13 +287,13 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
     public E pollLast() {
         var entry = mongoCollection.findOneAndDelete(
                 new Document(),
-                new FindOneAndDeleteOptions().sort(Sorts.descending(FIELD_ID))
+                new FindOneAndDeleteOptions().sort(Sorts.descending(MongoDbDistributedConstants.FIELD_ID))
         );
         if (entry == null) {
             return null;
         }
 
-        return JsonTools.readFromString(entry.getString(FIELD_JSON_VALUE), entityType);
+        return JsonTools.readFromString(entry.getString(MongoDbDistributedConstants.FIELD_JSON_VALUE), entityType);
     }
 
     @Override
@@ -403,17 +331,17 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
                 int toGet = Math.min(left.get(), 10);
                 List<Long> idsToDelete = new ArrayList<>(10);
                 mongoCollection.find()
-                        .sort(Sorts.ascending(FIELD_ID))
+                        .sort(Sorts.ascending(MongoDbDistributedConstants.FIELD_ID))
                         .limit(toGet)
                         .forEach(document -> {
-                            c.add(JsonTools.readFromString(document.getString(FIELD_JSON_VALUE), entityType));
-                            idsToDelete.add(document.getLong(FIELD_ID));
+                            c.add(JsonTools.readFromString(document.getString(MongoDbDistributedConstants.FIELD_JSON_VALUE), entityType));
+                            idsToDelete.add(document.getLong(MongoDbDistributedConstants.FIELD_ID));
                         });
                 if (idsToDelete.isEmpty()) {
                     left.set(0);
                     return null;
                 }
-                mongoCollection.deleteMany(new Document().append(FIELD_ID, new Document().append("$in", idsToDelete)));
+                mongoCollection.deleteMany(new Document().append(MongoDbDistributedConstants.FIELD_ID, new Document().append("$in", idsToDelete)));
 
                 count.addAndGet(idsToDelete.size());
                 left.addAndGet(-idsToDelete.size());
@@ -434,8 +362,8 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         var hashJsonValue = HashSha1.hashString(JsonTools.compactPrintWithoutNulls(o));
         return mongoClient.startSession().withTransaction(() -> {
             var entry = mongoCollection.findOneAndDelete(
-                    new Document().append(FIELD_HASH_JSON_VALUE, hashJsonValue),
-                    new FindOneAndDeleteOptions().sort(Sorts.ascending(FIELD_ID))
+                    new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, hashJsonValue),
+                    new FindOneAndDeleteOptions().sort(Sorts.ascending(MongoDbDistributedConstants.FIELD_ID))
             );
             return entry != null;
         });
@@ -450,8 +378,8 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         var hashJsonValue = HashSha1.hashString(JsonTools.compactPrintWithoutNulls(o));
         return mongoClient.startSession().withTransaction(() -> {
             var entry = mongoCollection.findOneAndDelete(
-                    new Document().append(FIELD_HASH_JSON_VALUE, hashJsonValue),
-                    new FindOneAndDeleteOptions().sort(Sorts.descending(FIELD_ID))
+                    new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, hashJsonValue),
+                    new FindOneAndDeleteOptions().sort(Sorts.descending(MongoDbDistributedConstants.FIELD_ID))
             );
             return entry != null;
         });
@@ -466,18 +394,18 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         AtomicBoolean found = new AtomicBoolean(false);
         BufferBatchesTools.<String>autoClose(10, hashJsonValues -> {
             // Find all the entries with the hashJsonValue
-            var entries = mongoCollection.find(new Document().append(FIELD_HASH_JSON_VALUE, new Document().append("$in", hashJsonValues)));
+            var entries = mongoCollection.find(new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, new Document().append("$in", hashJsonValues)));
 
             // List their ids
             var idsToDelete = new ArrayList<Long>();
             entries.forEach(document -> {
-                idsToDelete.add(document.getLong(FIELD_ID));
+                idsToDelete.add(document.getLong(MongoDbDistributedConstants.FIELD_ID));
                 found.set(true);
             });
 
             // Delete them
             if (!idsToDelete.isEmpty()) {
-                mongoCollection.deleteMany(new Document().append(FIELD_ID, new Document().append("$in", idsToDelete)));
+                mongoCollection.deleteMany(new Document().append(MongoDbDistributedConstants.FIELD_ID, new Document().append("$in", idsToDelete)));
                 found.set(true);
             }
         }, bufferBatchesTools -> {
@@ -506,7 +434,7 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         });
 
         // Delete all the entries that are not in the list
-        var result = mongoCollection.deleteMany(new Document().append(FIELD_HASH_JSON_VALUE, new Document().append("$nin", allHashJsonValues)));
+        var result = mongoCollection.deleteMany(new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, new Document().append("$nin", allHashJsonValues)));
 
         // Return true if there were deleted entries
         return result.getDeletedCount() > 0;
@@ -514,7 +442,7 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
 
     @Override
     public void clear() {
-        mongoCollection.deleteMany(new Document());
+        mongoCollection.deleteMany(Filters.empty());
     }
 
     @Override

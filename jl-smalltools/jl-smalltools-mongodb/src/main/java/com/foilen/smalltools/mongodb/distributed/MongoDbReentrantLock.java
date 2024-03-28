@@ -38,10 +38,6 @@ public class MongoDbReentrantLock extends AbstractBasics {
 
     private static final ThreadLocal<String> threadUniqueId = ThreadLocal.withInitial(() -> UUID.randomUUID().toString());
 
-    private static final String FIELD_ID = "_id";
-    private static final String FIELD_HOLDING_THREAD_ID = "holdingThreadId";
-    private static final String FIELD_EXPIRE_AT = "expireAt";
-
     private final MongoCollection<Document> mongoCollection;
     private final long stopChangeStreamAfterNoThreadWaitedInMs;
     private final long heartbeatIntervalInMs;
@@ -103,7 +99,7 @@ public class MongoDbReentrantLock extends AbstractBasics {
         MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
         MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
                 "expireAt", new Tuple2<>(
-                        new Document().append(FIELD_EXPIRE_AT, 1),
+                        new Document().append(MongoDbDistributedConstants.FIELD_EXPIRE_AT, 1),
                         new IndexOptions().expireAfter(0L, TimeUnit.MILLISECONDS)
                 )
         ));
@@ -135,9 +131,9 @@ public class MongoDbReentrantLock extends AbstractBasics {
         // Try to lock from MongoDB
         try {
             mongoCollection.insertOne(new Document()
-                    .append(FIELD_ID, lockName)
-                    .append(FIELD_HOLDING_THREAD_ID, currentThreadUniqueId)
-                    .append(FIELD_EXPIRE_AT, new Date(System.currentTimeMillis() + expireLockAfterNoHeartbeatInMs))
+                    .append(MongoDbDistributedConstants.FIELD_ID, lockName)
+                    .append(MongoDbDistributedConstants.FIELD_HOLDING_THREAD_ID, currentThreadUniqueId)
+                    .append(MongoDbDistributedConstants.FIELD_EXPIRE_AT, new Date(System.currentTimeMillis() + expireLockAfterNoHeartbeatInMs))
             );
             holdingByLockName.put(lockName, new HoldingLockDetails(currentThreadUniqueId, dropLockAfterHeldForTooLongInMs));
             startHeartbeatThread();
@@ -226,7 +222,7 @@ public class MongoDbReentrantLock extends AbstractBasics {
         holdingByLockName.remove(lockName);
 
         // Remove from MongoDB
-        mongoCollection.deleteOne(new Document().append(FIELD_ID, lockName));
+        mongoCollection.deleteOne(new Document().append(MongoDbDistributedConstants.FIELD_ID, lockName));
 
     }
 
@@ -337,10 +333,10 @@ public class MongoDbReentrantLock extends AbstractBasics {
             try {
                 var holdingThreadDetails = holdingByLockName.get(lockName);
                 var result = mongoCollection.updateOne(new Document()
-                                .append(FIELD_ID, lockName)
-                                .append(FIELD_HOLDING_THREAD_ID, holdingThreadDetails.getThreadUniqueId()),
+                                .append(MongoDbDistributedConstants.FIELD_ID, lockName)
+                                .append(MongoDbDistributedConstants.FIELD_HOLDING_THREAD_ID, holdingThreadDetails.getThreadUniqueId()),
                         new Document().append("$set", new Document()
-                                .append(FIELD_EXPIRE_AT, new Date(System.currentTimeMillis() + expireLockAfterNoHeartbeatInMs))
+                                .append(MongoDbDistributedConstants.FIELD_EXPIRE_AT, new Date(System.currentTimeMillis() + expireLockAfterNoHeartbeatInMs))
                         ));
                 if (result.getModifiedCount() == 0) {
                     logger.error("Lost the lock {}", lockName);
