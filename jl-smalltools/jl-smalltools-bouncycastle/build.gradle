@@ -15,11 +15,11 @@ sourceCompatibility = 17
 
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
-    api 'org.bouncycastle:bcpkix-jdk18on:1.76'
-    api 'org.bouncycastle:bcpg-jdk18on:1.76'
-    api 'org.bouncycastle:bcprov-jdk18on:1.76'
+    api "org.bouncycastle:bcpkix-jdk18on:$bouncyCastleVersion"
+    api "org.bouncycastle:bcpg-jdk18on:$bouncyCastleVersion"
+    api "org.bouncycastle:bcprov-jdk18on:$bouncyCastleVersion"
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:$junit4Version"
 }
 
 jar {

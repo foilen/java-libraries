@@ -17,9 +17,9 @@ dependencies {
     api project(':jl-smalltools:jl-smalltools-database')
     api 'org.hibernate.orm:hibernate-ant:6.1.7.Final'
     api 'org.hibernate.orm:hibernate-core:6.1.7.Final'
-    api 'org.springframework.boot:spring-boot:3.1.5'
+    api "org.springframework.boot:spring-boot:$springBootVersion"
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:$junit4Version"
 }
 
 jar {
