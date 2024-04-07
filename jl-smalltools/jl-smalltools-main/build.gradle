@@ -11,7 +11,7 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 17
+sourceCompatibility = "$javaVersion"
 
 dependencies {
     api 'ch.qos.logback:logback-classic:1.5.3'

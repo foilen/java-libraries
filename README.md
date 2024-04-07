@@ -25,9 +25,11 @@ Sub-projects
 - jl-smalltools-hibernate61: Some more tools to work with Hibernate 6.1 (for now, mostly just a tool to generate an SQL file for a specific dialect using the Entity classes).
 - jl-smalltools-hibernate63: Some more tools to work with Hibernate 6.3 (for now, mostly just a tool to generate an SQL file for a specific dialect using the Entity classes).
 - jl-smalltools-mongodb: Some more tools to work with MongoDB.
-  - the Upgrader tracker and abstract task to manage MongoDB databases.
-  - Some distributed basic data structures that are backed by MongoDB. (Map, Queue/Deque, ReentrantLock)
+  - the Upgrader tracker.
+  - Some distributed basic data structures that are backed by MongoDB. (Map, Queue/Deque, ReentrantLock, Spring Cache)
   - Some helpers to manage collections and wait on Change Streams.
+- jl-smalltools-mongodb-spring:
+  - the Upgrader abstract task to manage MongoDB databases.
 - jl-smalltools-spring: Some more tools to work with Spring.
   - Some basic POJOs to create a REST API.
   - Some tools to copy POJOs values.

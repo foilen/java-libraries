@@ -11,14 +11,13 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 17
+sourceCompatibility = "$javaVersion"
 
 dependencies {
-    api project(':jl-smalltools:jl-smalltools-spring')
+    api project(':jl-smalltools:jl-smalltools-main')
     api 'org.mongodb:mongodb-driver-sync:5.0.1'
-    api 'org.springframework.data:spring-data-mongodb:4.2.4'
 
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.12.6'
+    testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:$flapdoodleVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5Version"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
 }
