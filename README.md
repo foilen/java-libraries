@@ -11,11 +11,36 @@ Projects
 
 - jl-smalltools: A couple of small tools that are mostly one class each.
 
+Sub-projects
+------------
+
+- jl-smalltools-main: The core with a lot of tools.
+  - Converters: frequency, time, space.
+  - Smooth triggers.
+  - Standard hashers: MD5, SHA-1, SHA-256, SHA-512
+  - Files and directories helpers.
+  - and more.
+- jl-smalltools-bouncycastle: Some more tools to work with encryption by using Bouncy Castle.
+- jl-smalltools-database: Some more tools to work with JDBC databases (for now, mostly just the Upgrader tracker and abstract task to manage JDBC databases).
+- jl-smalltools-hibernate61: Some more tools to work with Hibernate 6.1 (for now, mostly just a tool to generate an SQL file for a specific dialect using the Entity classes).
+- jl-smalltools-hibernate63: Some more tools to work with Hibernate 6.3 (for now, mostly just a tool to generate an SQL file for a specific dialect using the Entity classes).
+- jl-smalltools-mongodb: Some more tools to work with MongoDB.
+  - the Upgrader tracker and abstract task to manage MongoDB databases.
+  - Some distributed basic data structures that are backed by MongoDB. (Map, Queue/Deque, ReentrantLock)
+  - Some helpers to manage collections and wait on Change Streams.
+- jl-smalltools-spring: Some more tools to work with Spring.
+  - Some basic POJOs to create a REST API.
+  - Some tools to copy POJOs values.
+  - Helpers to send emails in text or HTML. Can also send emails with attachments and use Freemarker template.
+- jl-smalltools-ssh:
+  - Some helpers to use jsch to connect to a SSH server.
+  - Can execute commands and redirect the output to a file or a stream.
+  - Can create an SFTP channel and let you upload/download files.
+
 Usage
 -----
 
 Include this library to your project.
-When you use any classes, check the Javadoc to see which dependencies you should add.
 
 Process
 -------
