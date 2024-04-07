@@ -8,15 +8,14 @@
  */
 package com.foilen.smalltools.streamwrapper;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.FileTools;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * When closing this stream, it will rename the specified file. Mostly used to have a staging file that will get its final name when finished to write to it (e.g. downloading file).
@@ -33,8 +32,8 @@ public class RenamingOnCloseOutputStreamWrapper extends AbstractOutputStreamWrap
 
     private static final Logger logger = LoggerFactory.getLogger(RenamingOnCloseOutputStreamWrapper.class);
 
-    private File renameSourceFile;
-    private File renameDestinationFile;
+    private final File renameSourceFile;
+    private final File renameDestinationFile;
 
     private boolean deleteOnClose = false;
 
@@ -78,7 +77,7 @@ public class RenamingOnCloseOutputStreamWrapper extends AbstractOutputStreamWrap
         try {
 
             if (deleteOnClose) {
-                logger.debug("Discarding the file ", renameSourceFile.getAbsolutePath());
+                logger.debug("Discarding the file {}", renameSourceFile.getAbsolutePath());
                 renameSourceFile.delete();
             } else {
                 logger.debug("Renaming the file {} -> {}", renameSourceFile.getAbsolutePath(), renameDestinationFile.getAbsolutePath());

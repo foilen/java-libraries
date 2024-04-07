@@ -8,11 +8,10 @@
  */
 package com.foilen.smalltools.upgrader.trackers;
 
-import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.FileTools;
 import com.foilen.smalltools.tools.JsonTools;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ import java.util.Set;
  */
 public class JsonFileUpgraderTracker implements UpgraderTracker {
 
-    private String fileName;
+    private final String fileName;
 
     private Set<String> successfulTasks = new HashSet<>();
 
@@ -48,8 +47,12 @@ public class JsonFileUpgraderTracker implements UpgraderTracker {
 
     private void save() {
         String tmpFile = fileName + ".tmp";
-        JsonTools.writeToFile(tmpFile, successfulTasks);
-        AssertTools.assertTrue(new File(tmpFile).renameTo(new File(fileName)), "Could not move the temporary file");
+        try (var staging = FileTools.createStagingFile(tmpFile, fileName, true)) {
+            JsonTools.writeToStream(staging, successfulTasks);
+            staging.setDeleteOnClose(false);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @SuppressWarnings("unchecked")

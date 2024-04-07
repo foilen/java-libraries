@@ -8,6 +8,7 @@
  */
 package com.foilen.smalltools.tools;
 
+import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.test.asserts.AssertTools;
 import com.google.common.base.Joiner;
 import org.junit.Assert;
@@ -73,20 +74,26 @@ public class DirectoryToolsTest {
         Assert.assertEquals(5, removed);
 
         String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
-        AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList( //
-                        "a/", //
-                        "a/a/", //
-                        "a/a/one.txt", //
-                        "b/", //
-                        "b/b/", //
-                        "b/b/b/", //
-                        "b/b/b/one.txt" //
-                )), //
+        actual = actual.replaceAll("\\\\", "/");
+        AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList(
+                        "a/",
+                        "a/a/",
+                        "a/a/one.txt",
+                        "b/",
+                        "b/b/",
+                        "b/b/b/",
+                        "b/b/b/one.txt"
+                )),
                 actual);
     }
 
     @Test
     public void testDeleteFolder() throws IOException {
+
+
+        if (JavaEnvironmentValues.getOperatingSystem().toLowerCase().startsWith("windows")) {
+            return;
+        }
 
         File toDelete = Files.createTempDirectory("junit").toFile();
         String toDeletePath = toDelete.getAbsolutePath();
@@ -152,22 +159,23 @@ public class DirectoryToolsTest {
         Assert.assertEquals(110 - 9, removed);
 
         String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
-        AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList( //
-                        "a/", //
-                        "a/a/", //
-                        "a/a/0.txt", //
-                        "a/a/1.txt", //
-                        "a/a/2.txt", //
-                        "a/c/", //
-                        "a/c/d/", //
-                        "a/c/d/0.txt", //
-                        "a/c/d/1.txt", //
-                        "a/c/d/2.txt", //
-                        "b/", //
-                        "b/0.txt", //
-                        "b/1.txt", //
-                        "b/2.txt" //
-                )), //
+        actual = actual.replaceAll("\\\\", "/");
+        AssertTools.assertIgnoreLineFeed(Joiner.on('\n').join(Arrays.asList(
+                        "a/",
+                        "a/a/",
+                        "a/a/0.txt",
+                        "a/a/1.txt",
+                        "a/a/2.txt",
+                        "a/c/",
+                        "a/c/d/",
+                        "a/c/d/0.txt",
+                        "a/c/d/1.txt",
+                        "a/c/d/2.txt",
+                        "b/",
+                        "b/0.txt",
+                        "b/1.txt",
+                        "b/2.txt"
+                )),
                 actual);
     }
 

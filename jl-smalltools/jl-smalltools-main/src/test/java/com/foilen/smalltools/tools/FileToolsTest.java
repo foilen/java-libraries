@@ -8,21 +8,17 @@
  */
 package com.foilen.smalltools.tools;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import com.foilen.smalltools.JavaEnvironmentValues;
+import com.foilen.smalltools.tuple.Tuple2;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.foilen.smalltools.tuple.Tuple2;
 
 public class FileToolsTest {
 
@@ -271,6 +267,11 @@ public class FileToolsTest {
 
     @Test
     public void testPermissions() throws IOException {
+
+        if (JavaEnvironmentValues.getOperatingSystem().toLowerCase().startsWith("windows")) {
+            return;
+        }
+
         File tmpFile = File.createTempFile("junit", null);
 
         // Test a file

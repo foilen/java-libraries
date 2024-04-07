@@ -8,31 +8,19 @@
  */
 package com.foilen.smalltools.tools;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CountDownLatch;
-
+import com.foilen.smalltools.exception.EndOfStreamException;
+import com.foilen.smalltools.tuple.Tuple2;
+import com.google.common.primitives.Ints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
-import com.foilen.smalltools.exception.EndOfStreamException;
-import com.foilen.smalltools.tuple.Tuple2;
-import com.google.common.primitives.Ints;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
+
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link StreamsTools}.
@@ -41,12 +29,12 @@ public class StreamsToolsTest {
 
     @Test
     public void testConsumeAsString() {
-        Assert.assertEquals("Hello World", StreamsTools.consumeAsString(getClass().getResourceAsStream("StStreamsToolsTest-file.txt")));
+        Assert.assertEquals("Hello World", StreamsTools.consumeAsString(getClass().getResourceAsStream("StreamsToolsTest-file.txt")));
     }
 
     @Test
     public void testConsumeAsString_UTF8() {
-        Assert.assertEquals("L'école de la vie", StreamsTools.consumeAsString(getClass().getResourceAsStream("StStreamsToolsTest-testConsumeAsString_UTF8.txt")));
+        Assert.assertEquals("L'école de la vie", StreamsTools.consumeAsString(getClass().getResourceAsStream("StreamsToolsTest-testConsumeAsString_UTF8.txt")));
     }
 
     @Test
@@ -103,7 +91,7 @@ public class StreamsToolsTest {
     @Test
     public void testFlowStream() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        StreamsTools.flowStream(getClass().getResourceAsStream("StStreamsToolsTest-file.txt"), outputStream);
+        StreamsTools.flowStream(getClass().getResourceAsStream("StreamsToolsTest-file.txt"), outputStream);
 
         Assert.assertEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
     }
@@ -111,7 +99,7 @@ public class StreamsToolsTest {
     @Test
     public void testFlowStreamNonBlocking() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        StreamsTools.flowStreamNonBlocking(getClass().getResourceAsStream("StStreamsToolsTest-file.txt"), outputStream);
+        StreamsTools.flowStreamNonBlocking(getClass().getResourceAsStream("StreamsToolsTest-file.txt"), outputStream);
 
         // Shouldn't have the time to already copy the stream
         Assert.assertNotEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
