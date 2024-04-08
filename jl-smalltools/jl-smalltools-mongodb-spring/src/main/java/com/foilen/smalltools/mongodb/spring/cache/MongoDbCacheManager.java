@@ -15,9 +15,7 @@ import org.bson.Document;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
-import java.util.Collection;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * A distributed cache using MongoDB that creates {@link com.foilen.smalltools.mongodb.distributed.MongoDbSortedMapStringObject} using the prefix and the cache name.
@@ -28,31 +26,50 @@ public class MongoDbCacheManager implements CacheManager {
     private final String databaseName;
     private final String collectionNamePrefix;
     private final MongoDbReentrantLock lock;
-    private final long maxDurationInSec;
+    private final long defaultMaxDurationInSec;
+    private final Map<String, Long> maxDurationInSecByCacheName = new HashMap<>();
 
     /**
      * Create a cache manager.
      *
-     * @param mongoClient          the mongo client
-     * @param databaseName         the database name
-     * @param collectionNamePrefix the collection name prefix
-     * @param lock                 (optional) the lock to use for atomic operations
-     * @param maxDurationInSec     the maximum duration of an element in the cache (MongoDB can take up to 60 seconds to clean up after the expiration)
+     * @param mongoClient             the mongo client
+     * @param databaseName            the database name
+     * @param collectionNamePrefix    the collection name prefix
+     * @param lock                    (optional) the lock to use for atomic operations
+     * @param defaultMaxDurationInSec the default maximum duration of an element in the cache (MongoDB can take up to 60 seconds to clean up after the expiration)
      */
     public MongoDbCacheManager(MongoClient mongoClient, String databaseName, String collectionNamePrefix,
-                               MongoDbReentrantLock lock, long maxDurationInSec
+                               MongoDbReentrantLock lock, long defaultMaxDurationInSec
+    ) {
+        this(mongoClient, databaseName, collectionNamePrefix, lock, defaultMaxDurationInSec, Map.of());
+    }
+
+    /**
+     * Create a cache manager.
+     *
+     * @param mongoClient                 the mongo client
+     * @param databaseName                the database name
+     * @param collectionNamePrefix        the collection name prefix
+     * @param lock                        (optional) the lock to use for atomic operations
+     * @param defaultMaxDurationInSec     the default maximum duration of an element in the cache (MongoDB can take up to 60 seconds to clean up after the expiration)
+     * @param maxDurationInSecByCacheName the specific maximum duration of an element in the cache by cache name
+     */
+    public MongoDbCacheManager(MongoClient mongoClient, String databaseName, String collectionNamePrefix,
+                               MongoDbReentrantLock lock, long defaultMaxDurationInSec, Map<String, Long> maxDurationInSecByCacheName
     ) {
         this.mongoClient = mongoClient;
         this.databaseName = databaseName;
         this.collectionNamePrefix = collectionNamePrefix;
         this.lock = lock;
-        this.maxDurationInSec = maxDurationInSec;
+        this.defaultMaxDurationInSec = defaultMaxDurationInSec;
+        this.maxDurationInSecByCacheName.putAll(maxDurationInSecByCacheName);
     }
 
     @Override
-    public Cache getCache(String name) {
-        MongoCollection<Document> mongoCollection = mongoClient.getDatabase(databaseName).getCollection(collectionNamePrefix + name);
-        return new MongoDbCache(name, mongoClient, mongoCollection, lock, maxDurationInSec);
+    public Cache getCache(String cacheName) {
+        Long durationInSec = maxDurationInSecByCacheName.getOrDefault(cacheName, defaultMaxDurationInSec);
+        MongoCollection<Document> mongoCollection = mongoClient.getDatabase(databaseName).getCollection(collectionNamePrefix + cacheName);
+        return new MongoDbCache(cacheName, mongoClient, mongoCollection, lock, durationInSec);
     }
 
     @Override
