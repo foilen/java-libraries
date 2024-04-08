@@ -15,7 +15,7 @@ sourceCompatibility = "$javaVersion"
 
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
-    api 'org.mongodb:mongodb-driver-sync:5.0.1'
+    api 'org.mongodb:mongodb-driver-sync:4.11.2'
 
     testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:$flapdoodleVersion"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5Version"
