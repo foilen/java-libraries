@@ -22,9 +22,11 @@ import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A distributed Map using MongoDB with keys that are strings and value that will be any json serializable type.
+ * You can also use it as a cache by providing a maxDurationInSec.
  *
  * @param <V> the value type
  */
@@ -33,17 +35,46 @@ public class MongoDbSortedMapStringObject<V> extends AbstractBasics implements S
     private final Class<V> valueType;
     private final MongoCollection<Document> mongoCollection;
 
+    /**
+     * Create a new instance of the map.
+     *
+     * @param valueType       the value type
+     * @param mongoClient     the mongo client
+     * @param mongoCollection the mongo collection
+     */
     public MongoDbSortedMapStringObject(Class<V> valueType, MongoClient mongoClient, MongoCollection<Document> mongoCollection) {
+        this(valueType, mongoClient, mongoCollection, null);
+    }
+
+    /**
+     * Create a new instance of the map.
+     *
+     * @param valueType        the value type
+     * @param mongoClient      the mongo client
+     * @param mongoCollection  the mongo collection
+     * @param maxDurationInSec the maximum duration of an element in the cache (MongoDB can take up to 60 seconds to clean up after the expiration)
+     */
+    public MongoDbSortedMapStringObject(Class<V> valueType, MongoClient mongoClient, MongoCollection<Document> mongoCollection, Long maxDurationInSec) {
         this.valueType = valueType;
         this.mongoCollection = mongoCollection;
 
+        // Collection
         MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
-        MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
-                "hashJsonValue_id", new Tuple2<>(
-                        new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
-                        new IndexOptions()
-                )
+
+        // Indexes
+        Map<String, Tuple2<Document, IndexOptions>> indexes = new HashMap<>();
+        indexes.put("hashJsonValue_id", new Tuple2<>(
+                new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
+                new IndexOptions()
         ));
+        if (maxDurationInSec != null) {
+            indexes.put("createdAt_" + maxDurationInSec, new Tuple2<>(
+                    new Document().append(MongoDbDistributedConstants.FIELD_CREATED_AT, 1),
+                    new IndexOptions().expireAfter(maxDurationInSec, TimeUnit.SECONDS)
+            ));
+        }
+        MongoDbManageCollectionTools.manageIndexes(mongoCollection, indexes);
+
     }
 
     @Override
@@ -78,7 +109,8 @@ public class MongoDbSortedMapStringObject<V> extends AbstractBasics implements S
         var document = new Document()
                 .append(MongoDbDistributedConstants.FIELD_ID, key)
                 .append(MongoDbDistributedConstants.FIELD_JSON_VALUE, jsonValue)
-                .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, hashJsonValue);
+                .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, hashJsonValue)
+                .append(MongoDbDistributedConstants.FIELD_CREATED_AT, new Date());
 
         // Save the document
         var previousDocument = mongoCollection.findOneAndReplace(Filters.eq(MongoDbDistributedConstants.FIELD_ID, key),
@@ -104,7 +136,8 @@ public class MongoDbSortedMapStringObject<V> extends AbstractBasics implements S
                         return new Document()
                                 .append(MongoDbDistributedConstants.FIELD_ID, entry.getKey())
                                 .append(MongoDbDistributedConstants.FIELD_JSON_VALUE, jsonValue)
-                                .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, hashJsonValue);
+                                .append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, hashJsonValue)
+                                .append(MongoDbDistributedConstants.FIELD_CREATED_AT, new Date());
                     })
                     .toList());
         }, bufferBatchesTools -> {
@@ -127,6 +160,16 @@ public class MongoDbSortedMapStringObject<V> extends AbstractBasics implements S
     @Override
     public void clear() {
         mongoCollection.deleteMany(Filters.empty());
+    }
+
+    /**
+     * Like {@link #clear()} but returns true if the map was already empty.
+     *
+     * @return true if the map was already empty
+     */
+    public boolean clearAndTellIfWasEmpty() {
+        var result = mongoCollection.deleteMany(Filters.empty());
+        return result.getDeletedCount() != 0;
     }
 
     @Override

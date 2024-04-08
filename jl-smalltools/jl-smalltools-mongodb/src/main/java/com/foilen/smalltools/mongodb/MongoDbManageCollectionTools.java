@@ -8,10 +8,12 @@
  */
 package com.foilen.smalltools.mongodb;
 
+import com.foilen.smalltools.tools.SpaceConverterTools;
 import com.foilen.smalltools.tuple.Tuple2;
 import com.mongodb.MongoNamespace;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.IndexOptions;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -38,6 +40,36 @@ public class MongoDbManageCollectionTools {
         if (!mongoDatabase.listCollectionNames().into(new ArrayList<>()).contains(namespace.getCollectionName())) {
             logger.info("Creating collection {}", namespace.getCollectionName());
             mongoDatabase.createCollection(namespace.getCollectionName());
+        }
+    }
+
+    /**
+     * Create the collection if it does not exist or the capped size is incorrect.
+     *
+     * @param mongoClient              the mongo client
+     * @param namespace                the namespace
+     * @param maxCollectionSizeInBytes the max collection size in bytes
+     */
+    public static void addCollectionIfMissing(MongoClient mongoClient, MongoNamespace namespace, long maxCollectionSizeInBytes) {
+        var mongoDatabase = mongoClient.getDatabase(namespace.getDatabaseName());
+
+        // Check the capped size
+        Document collectionInfo = mongoDatabase.runCommand(new Document("collStats", namespace.getCollectionName()));
+        if (collectionInfo.containsKey("maxSize")) {
+            long currentMaxCollectionSizeInBytes = collectionInfo.getLong("maxSize");
+            if (currentMaxCollectionSizeInBytes != maxCollectionSizeInBytes) {
+                logger.info("Dropping collection {} to recreate it with a max size of {}", namespace.getCollectionName(), maxCollectionSizeInBytes);
+                mongoDatabase.getCollection(namespace.getCollectionName()).drop();
+            }
+        }
+
+        // Create collection if missing
+        if (!mongoDatabase.listCollectionNames().into(new ArrayList<>()).contains(namespace.getCollectionName())) {
+            logger.info("Creating collection {} with max size {} ({})", namespace.getCollectionName(), maxCollectionSizeInBytes, SpaceConverterTools.convertToBiggestBUnit(maxCollectionSizeInBytes));
+            mongoDatabase.createCollection(namespace.getCollectionName(), new CreateCollectionOptions()
+                    .capped(true)
+                    .sizeInBytes(maxCollectionSizeInBytes)
+            );
         }
     }
 

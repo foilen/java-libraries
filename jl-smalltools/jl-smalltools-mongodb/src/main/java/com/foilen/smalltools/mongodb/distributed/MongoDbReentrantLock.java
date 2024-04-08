@@ -105,7 +105,6 @@ public class MongoDbReentrantLock extends AbstractBasics {
         ));
     }
 
-
     /**
      * Lock the lockName. If the lock is free, it will be locked. If the lock is already held, it will return false.
      * <p>
