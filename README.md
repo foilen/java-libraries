@@ -83,4 +83,4 @@ Execute:
 
 You can see releases available:
 
-- https://repo1.maven.org/maven2/com/foilen/jl-smalltools
+- https://repo1.maven.org/maven2/com/foilen/jl-smalltools-main/
