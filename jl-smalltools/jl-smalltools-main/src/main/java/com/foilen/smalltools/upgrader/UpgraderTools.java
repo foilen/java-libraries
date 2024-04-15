@@ -8,14 +8,13 @@
  */
 package com.foilen.smalltools.upgrader;
 
-import com.foilen.smalltools.comparator.ClassNameComparator;
+import com.foilen.smalltools.comparator.ClassSimpleNameComparator;
 import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.upgrader.tasks.UpgradeTask;
 import com.foilen.smalltools.upgrader.trackers.UpgraderTracker;
 import jakarta.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -23,10 +22,10 @@ import java.util.*;
  * A tool to help manage upgrade tasks. (E.g: database, file updates, ...)
  * <p>
  * You can choose different backends to keep track of what was already executed.
+ * <p>
+ * The execution of the tasks will be by their simple classname so that you can move them around packages.
  */
-public class UpgraderTools {
-
-    static private final Logger logger = LoggerFactory.getLogger(UpgraderTools.class);
+public class UpgraderTools extends AbstractBasics {
 
     private UpgraderTracker defaultUpgraderTracker;
     private Map<String, UpgraderTracker> upgraderTrackerByName = new HashMap<>();
@@ -71,7 +70,7 @@ public class UpgraderTools {
         logger.info("Starting upgrades");
 
         if (sortByClassName) {
-            Collections.sort(tasks, new ClassNameComparator());
+            Collections.sort(tasks, new ClassSimpleNameComparator());
         }
 
         // Begin all trackers
@@ -148,33 +147,6 @@ public class UpgraderTools {
     }
 
     /**
-     * Get the tasks.
-     *
-     * @return the tasks
-     */
-    public List<UpgradeTask> getTasks() {
-        return tasks;
-    }
-
-    /**
-     * Get the trackers by name.
-     *
-     * @return the trackers by name
-     */
-    public Map<String, UpgraderTracker> getUpgraderTrackerByName() {
-        return upgraderTrackerByName;
-    }
-
-    /**
-     * If the tasks should be sorted by class name.
-     *
-     * @return true if sorted
-     */
-    public boolean isSortByClassName() {
-        return sortByClassName;
-    }
-
-    /**
      * Set the default tracker.
      *
      * @param defaultUpgraderTracker the default tracker
@@ -184,12 +156,12 @@ public class UpgraderTools {
     }
 
     /**
-     * If the tasks should be sorted by class name.
+     * Get the tasks.
      *
-     * @param sortByClassName true if sorted
+     * @return the tasks
      */
-    public void setSortByClassName(boolean sortByClassName) {
-        this.sortByClassName = sortByClassName;
+    public List<UpgradeTask> getTasks() {
+        return tasks;
     }
 
     /**
@@ -202,12 +174,39 @@ public class UpgraderTools {
     }
 
     /**
+     * Get the trackers by name.
+     *
+     * @return the trackers by name
+     */
+    public Map<String, UpgraderTracker> getUpgraderTrackerByName() {
+        return upgraderTrackerByName;
+    }
+
+    /**
      * Set the trackers by name.
      *
      * @param upgraderTrackerByName the trackers by name
      */
     public void setUpgraderTrackerByName(Map<String, UpgraderTracker> upgraderTrackerByName) {
         this.upgraderTrackerByName = upgraderTrackerByName;
+    }
+
+    /**
+     * If the tasks should be sorted by class name.
+     *
+     * @return true if sorted
+     */
+    public boolean isSortByClassName() {
+        return sortByClassName;
+    }
+
+    /**
+     * If the tasks should be sorted by class name.
+     *
+     * @param sortByClassName true if sorted
+     */
+    public void setSortByClassName(boolean sortByClassName) {
+        this.sortByClassName = sortByClassName;
     }
 
 }

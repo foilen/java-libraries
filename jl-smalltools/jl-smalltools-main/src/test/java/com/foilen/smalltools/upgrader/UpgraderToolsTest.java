@@ -8,63 +8,53 @@
  */
 package com.foilen.smalltools.upgrader;
 
-import java.io.File;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.foilen.smalltools.upgrader.tasks.UpgradeTask;
+import com.foilen.smalltools.upgrader.p1.Stub1UpgradeTask;
+import com.foilen.smalltools.upgrader.p1.Stub3UpgradeTask;
+import com.foilen.smalltools.upgrader.p2.Stub2UpgradeTask;
 import com.foilen.smalltools.upgrader.trackers.JsonFileUpgraderTracker;
 import com.foilen.smalltools.upgrader.trackers.UpgraderTracker;
+import org.junit.Test;
+
+import java.io.File;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class UpgraderToolsTest {
 
-    private static class StubOneUpgradeTask implements UpgradeTask {
+    public static AtomicInteger taskCalledOrder = new AtomicInteger(0);
 
-        private String useTracker = UpgradeTask.DEFAULT_TRACKER;
-        private boolean called = false;
+    @Test
+    public void testExecuteRightOrder() throws Exception {
 
-        private void assertCalled() {
-            Assert.assertTrue("Was not called", called);
-        }
+        taskCalledOrder.set(0);
 
-        @Override
-        public void execute() {
-            Assert.assertFalse("Was already called", called);
-            called = true;
-        }
+        // Prepare tracker
+        File file = File.createTempFile("upgrader", null);
+        file.delete();
+        UpgraderTracker upgraderTracker = new JsonFileUpgraderTracker(file.getAbsolutePath());
 
-        @Override
-        public String useTracker() {
-            return useTracker;
-        }
+        UpgraderTools upgraderTools = new UpgraderTools();
+        upgraderTools.setDefaultUpgraderTracker(upgraderTracker);
 
-    }
+        // All tasks
+        var task1 = new Stub1UpgradeTask();
+        var task3 = new Stub3UpgradeTask();
+        var task2 = new Stub2UpgradeTask();
+        upgraderTools.getTasks().add(task1);
+        upgraderTools.getTasks().add(task3);
+        upgraderTools.getTasks().add(task2);
+        upgraderTools.execute();
 
-    private static class StubTwoUpgradeTask implements UpgradeTask {
-
-        private String useTracker = UpgradeTask.DEFAULT_TRACKER;
-        private boolean called = false;
-
-        private void assertCalled() {
-            Assert.assertTrue("Was not called", called);
-        }
-
-        @Override
-        public void execute() {
-            Assert.assertFalse("Was already called", called);
-            called = true;
-        }
-
-        @Override
-        public String useTracker() {
-            return useTracker;
-        }
+        task1.assertCalled(1);
+        task2.assertCalled(2);
+        task3.assertCalled(3);
 
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecuteDifferentRuns() throws Exception {
+
+        taskCalledOrder.set(0);
+
         // Prepare tracker
         File file = File.createTempFile("upgrader", null);
         file.delete();
@@ -74,19 +64,19 @@ public class UpgraderToolsTest {
         upgraderTools.setDefaultUpgraderTracker(upgraderTracker);
 
         // One task
-        StubOneUpgradeTask taskOne = new StubOneUpgradeTask();
+        Stub1UpgradeTask taskOne = new Stub1UpgradeTask();
         upgraderTools.getTasks().add(taskOne);
         upgraderTools.execute();
         upgraderTools.execute();
 
         // 2 tasks
-        StubTwoUpgradeTask taskTwo = new StubTwoUpgradeTask();
+        Stub3UpgradeTask taskTwo = new Stub3UpgradeTask();
         upgraderTools.getTasks().add(taskTwo);
         upgraderTools.execute();
         upgraderTools.execute();
 
-        taskOne.assertCalled();
-        taskTwo.assertCalled();
+        taskOne.assertCalled(1);
+        taskTwo.assertCalled(2);
 
     }
 
