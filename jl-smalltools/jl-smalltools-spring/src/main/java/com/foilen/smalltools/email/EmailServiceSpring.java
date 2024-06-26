@@ -31,6 +31,7 @@ public class EmailServiceSpring implements EmailService {
             var message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
             helper.setFrom(emailBuilder.getFrom());
+            helper.setReplyTo(emailBuilder.getReplyTo());
             for (String to : emailBuilder.getTos()) {
                 helper.addTo(to);
             }

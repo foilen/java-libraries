@@ -42,16 +42,18 @@ import java.util.Map;
 public class EmailBuilder {
 
     private String from;
-    private List<String> tos = new ArrayList<String>();
-    private List<String> ccs = new ArrayList<String>();
-    private List<String> bccs = new ArrayList<String>();
+    private String replyTo;
+
+    private final List<String> tos = new ArrayList<>();
+    private final List<String> ccs = new ArrayList<>();
+    private final List<String> bccs = new ArrayList<>();
     private String subject;
 
     private boolean isHtml;
     private String body;
 
-    private List<EmailAttachment> inlineAttachments = new ArrayList<EmailAttachment>();
-    private List<EmailAttachment> attachments = new ArrayList<EmailAttachment>();
+    private final List<EmailAttachment> inlineAttachments = new ArrayList<>();
+    private final List<EmailAttachment> attachments = new ArrayList<>();
 
     /**
      * Include an attachment.
@@ -201,6 +203,26 @@ public class EmailBuilder {
      */
     public String getFrom() {
         return from;
+    }
+
+    /**
+     * Get the email to reply to.
+     *
+     * @return the reply to
+     */
+    public String getReplyTo() {
+        return replyTo;
+    }
+
+    /**
+     * Set the email to reply to.
+     *
+     * @param replyTo the reply to
+     * @return this
+     */
+    public EmailBuilder setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
+        return this;
     }
 
     /**
