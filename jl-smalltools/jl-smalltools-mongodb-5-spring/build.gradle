@@ -14,7 +14,7 @@ repositories {
 sourceCompatibility = "$javaVersion"
 
 dependencies {
-    api project(':jl-smalltools:jl-smalltools-mongodb')
+    api project(':jl-smalltools:jl-smalltools-mongodb-5')
     api project(':jl-smalltools:jl-smalltools-spring')
     api 'org.springframework.data:spring-data-mongodb:4.2.4'
 
