@@ -12,6 +12,7 @@ import com.foilen.smalltools.tools.StringTools;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -113,13 +114,31 @@ public class MongoDbIdStringSortedSet implements SortedSet<String> {
     }
 
     @Override
-    public boolean add(String s) {
-        throw new UnsupportedOperationException();
+    public boolean add(String value) {
+        if (fromId != null && value.compareTo(fromId) < 0)
+            throw new IllegalArgumentException("Value is smaller than the fromId");
+
+        if (toId != null && value.compareTo(toId) >= 0)
+            throw new IllegalArgumentException("Value is greater or equal to the toId");
+
+        var result = mongoCollection.updateOne(
+                Filters.eq(MongoDbDistributedConstants.FIELD_ID, value),
+                new Document("$setOnInsert", new Document(MongoDbDistributedConstants.FIELD_ID, value)),
+                new UpdateOptions().upsert(true)
+        );
+        return result.getMatchedCount() == 0;
     }
 
     @Override
-    public boolean addAll(Collection<? extends String> c) {
-        throw new UnsupportedOperationException();
+    public boolean addAll(Collection<? extends String> value) {
+        boolean anyAdded = false;
+
+        for (String v : value) {
+            if (add(v)) {
+                anyAdded = true;
+            }
+        }
+        return anyAdded;
     }
 
     @Override
