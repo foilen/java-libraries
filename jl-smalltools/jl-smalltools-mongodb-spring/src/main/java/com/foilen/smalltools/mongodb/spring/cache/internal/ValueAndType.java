@@ -1,6 +1,6 @@
 /*
     Java Libraries https://github.com/foilen/java-libraries
-    Copyright (c) 2015-2024 Foilen (https://foilen.com)
+    Copyright (c) 2015-2025 Foilen (https://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
@@ -21,7 +21,7 @@ public class ValueAndType extends AbstractApiBase {
         if (this.type == null) {
             return null;
         }
-        
+
         Class<?> type = ReflectionTools.safelyGetClass(this.type);
         if (type == null) {
             throw new IllegalArgumentException("The type is unknown " + this.type);
