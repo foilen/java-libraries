@@ -20,7 +20,6 @@ fi
 export LANG="C.UTF-8"
 export VERSION=$1
 
-./step-update-copyrights.sh
 ./step-clean-compile.sh
 ./step-upload-ossrh.sh
 ./step-git-tag.sh

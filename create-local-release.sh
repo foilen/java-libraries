@@ -13,5 +13,4 @@ if [ -z "$VERSION" ]; then
     export VERSION=$(git rev-parse --abbrev-ref HEAD)-SNAPSHOT
 fi
 
-./step-update-copyrights.sh
 ./step-clean-compile.sh
