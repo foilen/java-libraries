@@ -8,15 +8,14 @@
  */
 package com.foilen.smalltools.solver;
 
+import com.foilen.smalltools.test.asserts.AssertTools;
+import com.foilen.smalltools.tools.ResourceTools;
+import com.google.common.base.Joiner;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.foilen.smalltools.tools.ResourceTools;
-import com.google.common.base.Joiner;
 
 public class SolverPickItemsToolsTest {
 
@@ -50,7 +49,7 @@ public class SolverPickItemsToolsTest {
 
         List<String> results = solutions.stream().map(it -> Joiner.on(",").join(it)).collect(Collectors.toList());
         String expected = ResourceTools.getResourceAsString("SolverPickItemsToolsTest-testCannotReuse.txt", this.getClass());
-        Assert.assertEquals(expected, Joiner.on("\n").join(results));
+        AssertTools.assertIgnoreLineFeed(expected, Joiner.on("\n").join(results));
 
     }
 
@@ -83,7 +82,7 @@ public class SolverPickItemsToolsTest {
 
         List<String> results = solutions.stream().map(it -> Joiner.on(",").join(it)).collect(Collectors.toList());
         String expected = ResourceTools.getResourceAsString("SolverPickItemsToolsTest-testCanReuse.txt", this.getClass());
-        Assert.assertEquals(expected, Joiner.on("\n").join(results));
+        AssertTools.assertIgnoreLineFeed(expected, Joiner.on("\n").join(results));
 
     }
 
