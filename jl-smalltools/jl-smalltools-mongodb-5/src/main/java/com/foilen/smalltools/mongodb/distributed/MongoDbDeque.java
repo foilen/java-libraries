@@ -60,6 +60,10 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
                 "hashJsonValue_id", new Tuple2<>(
                         new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
                         new IndexOptions()
+                ),
+                "operationType_1", new Tuple2<>(
+                        new Document().append("operationType", 1),
+                        new IndexOptions()
                 )
         ));
     }

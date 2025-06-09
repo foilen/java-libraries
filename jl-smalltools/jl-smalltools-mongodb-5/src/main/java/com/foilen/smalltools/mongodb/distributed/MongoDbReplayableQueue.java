@@ -80,6 +80,10 @@ public class MongoDbReplayableQueue<E> extends AbstractBasics implements Blockin
                 "createdAt_" + maxDurationInSec, new Tuple2<>(
                         new Document().append(MongoDbDistributedConstants.FIELD_CREATED_AT, 1),
                         new IndexOptions().expireAfter(maxDurationInSec, TimeUnit.SECONDS)
+                ),
+                "operationType_1", new Tuple2<>(
+                        new Document().append("operationType", 1),
+                        new IndexOptions()
                 )
         ));
     }

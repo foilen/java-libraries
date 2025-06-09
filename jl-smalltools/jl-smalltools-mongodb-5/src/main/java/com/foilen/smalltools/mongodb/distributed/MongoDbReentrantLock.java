@@ -101,6 +101,10 @@ public class MongoDbReentrantLock extends AbstractBasics {
                 "expireAt", new Tuple2<>(
                         new Document().append(MongoDbDistributedConstants.FIELD_EXPIRE_AT, 1),
                         new IndexOptions().expireAfter(0L, TimeUnit.MILLISECONDS)
+                ),
+                "operationType_1", new Tuple2<>(
+                        new Document().append("operationType", 1),
+                        new IndexOptions()
                 )
         ));
     }
