@@ -21,17 +21,14 @@ export LANG="C.UTF-8"
 export VERSION=$1
 
 ./step-clean-compile.sh
-./step-upload-ossrh.sh
+./step-upload-maven-central.sh
 ./step-git-tag.sh
 
 echo ----[ Operation completed successfully ]----
 
 echo
-echo To deploy the new release:
-echo '- go on https://oss.sonatype.org/#stagingRepositories'
-echo '- close it (wait for it to be closed)'
-echo '- release it'
-echo 
-echo Then, can see published items on 
+echo You can see the publishing progress on https://central.sonatype.com/publishing/deployments
+echo
+echo Then, you can see published items on
 echo https://repo1.maven.org/maven2/com/foilen/jl-smalltools-main/
 echo You can send the tag: git push --tags
