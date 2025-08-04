@@ -357,6 +357,26 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
     }
 
     /**
+     * Drop an index if it exists.
+     *
+     * @param collectionName the name of the collection
+     * @param indexName      the name of the index to drop
+     */
+    protected void dropIndex(String collectionName, String indexName) {
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
+
+        logger.info("Drop index {} from collection {}", indexName, collectionName);
+        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
+        try {
+            collection.dropIndex(indexName);
+        } catch (MongoCommandException e) {
+            if (e.getErrorCode() != 27) { // Index not found
+                throw e;
+            }
+        }
+    }
+
+    /**
      * Get the database name.
      *
      * @return the database name
