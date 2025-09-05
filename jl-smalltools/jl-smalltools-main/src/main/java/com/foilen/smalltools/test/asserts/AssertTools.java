@@ -1,5 +1,10 @@
 package com.foilen.smalltools.test.asserts;
 
+import com.foilen.smalltools.JavaEnvironmentValues;
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.*;
+import org.junit.Assert;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,21 +12,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import org.junit.Assert;
-
-import com.foilen.smalltools.JavaEnvironmentValues;
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.CollectionsTools;
-import com.foilen.smalltools.tools.DirectoryTools;
-import com.foilen.smalltools.tools.FileTools;
-import com.foilen.smalltools.tools.JsonTools;
-import com.foilen.smalltools.tools.ResourceTools;
-import com.foilen.smalltools.tools.SystemTools;
-
 /**
  * Assertions.
  */
 public final class AssertTools {
+
+    private static volatile List<String> allWorkingDirectoryFiles;
 
     /**
      * Diff the initial vs final items (by comparing their JSON dump) and output as JSON dump (by their JSON dump).
@@ -297,7 +293,16 @@ public final class AssertTools {
             } else {
                 String filename = url.toString().substring(5);
                 String filePart = new File(filename).getName();
-                List<String> availableFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true).stream()
+
+                // Load and cache working directory files only once
+                if (allWorkingDirectoryFiles == null) {
+                    synchronized (AssertTools.class) {
+                        if (allWorkingDirectoryFiles == null) {
+                            allWorkingDirectoryFiles = DirectoryTools.listFilesAndFoldersRecursively(JavaEnvironmentValues.getWorkingDirectory(), true);
+                        }
+                    }
+                }
+                List<String> availableFiles = allWorkingDirectoryFiles.stream()
                         .filter(it -> it.endsWith(filePart) && !it.equals(filename))
                         .filter(it -> "true".equals(updateExpectedFileContains) || it.contains(updateExpectedFileContains))
                         .toList();
