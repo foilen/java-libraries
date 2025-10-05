@@ -4,6 +4,9 @@ import com.foilen.smalltools.systemusage.implementations.MemoryUsageOsMxImpl;
 import com.foilen.smalltools.systemusage.implementations.MemoryUsageProcImpl;
 import com.foilen.smalltools.systemusage.implementations.MemoryUsageStrategy;
 import com.foilen.smalltools.systemusage.implementations.MemoryUsageSunOsMxImpl;
+import com.foilen.smalltools.systemusage.results.MemoryUsageSnapshot;
+import com.foilen.smalltools.tools.JsonTools;
+import com.foilen.smalltools.tools.SpaceConverterTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,14 +95,120 @@ public class MemoryUsage {
     }
 
     /**
+     * The free memory of the JVM heap.
+     *
+     * @return the free memory of the JVM heap in bytes
+     */
+    public static long getJvmFreeMemory() {
+        Runtime runtime = Runtime.getRuntime();
+        return runtime.freeMemory();
+    }
+
+    /**
+     * The free memory of the JVM heap in percent.
+     *
+     * @return the free memory of the JVM heap in percent
+     */
+    public static double getJvmFreeMemoryPercent() {
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory();
+        if (totalMemory == 0) {
+            return 0.0;
+        }
+        return getJvmFreeMemory() * 100.0 / totalMemory;
+    }
+
+    /**
+     * The maximum memory that the JVM will attempt to use.
+     *
+     * @return the maximum memory of the JVM heap in bytes
+     */
+    public static long getJvmMaxMemory() {
+        return Runtime.getRuntime().maxMemory();
+    }
+
+    /**
+     * The total memory currently available to the JVM.
+     *
+     * @return the total memory currently available to the JVM in bytes
+     */
+    public static long getJvmTotalMemory() {
+        return Runtime.getRuntime().totalMemory();
+    }
+
+    /**
+     * The used memory of the JVM heap.
+     *
+     * @return the used memory of the JVM heap in bytes
+     */
+    public static long getJvmUsedMemory() {
+        Runtime runtime = Runtime.getRuntime();
+        return runtime.totalMemory() - runtime.freeMemory();
+    }
+
+    /**
+     * The used memory of the JVM heap in percent.
+     *
+     * @return the used memory of the JVM heap in percent
+     */
+    public static double getJvmUsedMemoryPercent() {
+        return 100.0 - getJvmFreeMemoryPercent();
+    }
+
+    /**
+     * Creates a snapshot of the current memory usage.
+     *
+     * @return a snapshot of the current memory usage
+     */
+    public static MemoryUsageSnapshot getSnapshot() {
+        Runtime runtime = Runtime.getRuntime();
+        return new MemoryUsageSnapshot(
+                getSystemTotalMemory(),
+                getSystemUsedMemory(),
+                runtime.maxMemory(),
+                runtime.totalMemory(),
+                runtime.freeMemory()
+        );
+    }
+
+    /**
      * To test.
      *
      * @param args ignored
      */
     public static void main(String[] args) {
-        System.out.println("getSystemFreeMemory: " + getSystemFreeMemory() + " " + getSystemFreeMemoryPercent() + "%");
-        System.out.println("getSystemUsedMemory: " + getSystemUsedMemory() + " " + getSystemUsedMemoryPercent() + "%");
-        System.out.println("getSystemTotalMemory: " + getSystemTotalMemory());
+        System.out.println("=== System Memory ===");
+        System.out.println("getSystemFreeMemory: " + getSystemFreeMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(getSystemFreeMemory()) + ") " + getSystemFreeMemoryPercent() + "%");
+        System.out.println("getSystemUsedMemory: " + getSystemUsedMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(getSystemUsedMemory()) + ") " + getSystemUsedMemoryPercent() + "%");
+        System.out.println("getSystemTotalMemory: " + getSystemTotalMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(getSystemTotalMemory()) + ")");
+
+        System.out.println("\n=== JVM Memory ===");
+        System.out.println("getJvmFreeMemory: " + getJvmFreeMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(getJvmFreeMemory()) + ") " + getJvmFreeMemoryPercent() + "%");
+        System.out.println("getJvmUsedMemory: " + getJvmUsedMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(getJvmUsedMemory()) + ") " + getJvmUsedMemoryPercent() + "%");
+        System.out.println("getJvmTotalMemory: " + getJvmTotalMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(getJvmTotalMemory()) + ")");
+        System.out.println("getJvmMaxMemory: " + getJvmMaxMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(getJvmMaxMemory()) + ")");
+
+        System.out.println("\n=== Using Snapshot ===");
+        var snapshot = getSnapshot();
+
+        System.out.println("=== System Memory (from snapshot) ===");
+        System.out.println("getSystemFreeMemory: " + snapshot.getSystemFreeMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(snapshot.getSystemFreeMemory()) + ") " + snapshot.getSystemFreeMemoryPercent() + "%");
+        System.out.println("getSystemUsedMemory: " + snapshot.getSystemUsedMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(snapshot.getSystemUsedMemory()) + ") " + snapshot.getSystemUsedMemoryPercent() + "%");
+        System.out.println("getSystemTotalMemory: " + snapshot.getSystemTotalMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(snapshot.getSystemTotalMemory()) + ")");
+
+        System.out.println("\n=== JVM Memory (from snapshot) ===");
+        System.out.println("getJvmFreeMemory: " + snapshot.getJvmFreeMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(snapshot.getJvmFreeMemory()) + ") " + snapshot.getJvmFreeMemoryPercent() + "%");
+        System.out.println("getJvmUsedMemory: " + snapshot.getJvmUsedMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(snapshot.getJvmUsedMemory()) + ") " + snapshot.getJvmUsedMemoryPercent() + "%");
+        System.out.println("getJvmTotalMemory: " + snapshot.getJvmTotalMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(snapshot.getJvmTotalMemory()) + ")");
+        System.out.println("getJvmMaxMemory: " + snapshot.getJvmMaxMemory() + " (" + SpaceConverterTools.convertToBiggestBUnit(snapshot.getJvmMaxMemory()) + ")");
+
+        System.out.println("\n=== JSON (snapshot) ===");
+        System.out.println(JsonTools.prettyPrint(snapshot));
+
+        var clonedSnapshot = JsonTools.clone(snapshot);
+        System.out.println("\n=== JSON (cloned snapshot) ===");
+        System.out.println(JsonTools.prettyPrint(clonedSnapshot));
+
     }
 
 }
