@@ -1,27 +1,40 @@
 package com.foilen.smalltools.systemusage;
 
-import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.systemusage.implementations.MemoryUsageOsMxImpl;
 import com.foilen.smalltools.systemusage.implementations.MemoryUsageProcImpl;
 import com.foilen.smalltools.systemusage.implementations.MemoryUsageStrategy;
+import com.foilen.smalltools.systemusage.implementations.MemoryUsageSunOsMxImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * To retrieve the usage of the memory of the system.
  */
 public class MemoryUsage {
 
+    private static final Logger logger = LoggerFactory.getLogger(MemoryUsage.class);
+
+    private static final List<MemoryUsageStrategy> MEMORY_USAGE_STRATEGIES = List.of(
+            new MemoryUsageOsMxImpl(),
+            new MemoryUsageSunOsMxImpl(),
+            new MemoryUsageProcImpl()
+    );
+
     private static MemoryUsageStrategy memoryUsageStrategy;
 
     static {
-
-        if (JavaEnvironmentValues.getJavaClassVersion() <= 52) {
-            memoryUsageStrategy = new MemoryUsageOsMxImpl();
-        } else {
-            if (JavaEnvironmentValues.getOperatingSystem().toLowerCase().startsWith("linux")) {
-                memoryUsageStrategy = new MemoryUsageProcImpl();
+        for (MemoryUsageStrategy candidate : MEMORY_USAGE_STRATEGIES) {
+            if (candidate.getSystemTotalMemory() != null) {
+                memoryUsageStrategy = candidate;
+                break;
             }
         }
-
+        if (memoryUsageStrategy == null) {
+            memoryUsageStrategy = MEMORY_USAGE_STRATEGIES.stream().findFirst().get();
+        }
+        logger.info("Using {} for memory usage", memoryUsageStrategy.getClass().getSimpleName());
     }
 
     /**

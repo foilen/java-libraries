@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
  */
 public class MemoryUsageOsMxImpl implements MemoryUsageStrategy {
 
-    private OperatingSystemMXBean operatingSystemBean;
-    private Method systemFreeMemory;
-    private Method systemTotalMemory;
+    private final OperatingSystemMXBean operatingSystemBean;
+    private final Method systemFreeMemory;
+    private final Method systemTotalMemory;
 
     /**
      * Constructor.
