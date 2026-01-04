@@ -32,6 +32,8 @@ public class MongoDbReplayableQueue<E> extends AbstractBasics implements Blockin
     private final MongoCollection<Document> mongoCollection;
     private final long stopChangeStreamAfterNoThreadWaitedInMs;
 
+    private final Runnable collectionCreate;
+
     private MongoDbChangeStreamWaitAnyChange mongoDbChangeStreamWaitAnyChange;
 
     private long pointer = -1;
@@ -63,17 +65,25 @@ public class MongoDbReplayableQueue<E> extends AbstractBasics implements Blockin
         this.mongoCollection = mongoCollection;
         this.stopChangeStreamAfterNoThreadWaitedInMs = stopChangeStreamAfterNoThreadWaitedInMs;
 
-        MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
-        MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
-                "hashJsonValue_id", new Tuple2<>(
-                        new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
-                        new IndexOptions()
-                ),
-                "createdAt_" + maxDurationInSec, new Tuple2<>(
-                        new Document().append(MongoDbDistributedConstants.FIELD_CREATED_AT, 1),
-                        new IndexOptions().expireAfter(maxDurationInSec, TimeUnit.SECONDS)
-                )
-        ));
+        collectionCreate = () -> {
+            MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
+            MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
+                    "hashJsonValue_id", new Tuple2<>(
+                            new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
+                            new IndexOptions()
+                    ),
+                    "createdAt_" + maxDurationInSec, new Tuple2<>(
+                            new Document().append(MongoDbDistributedConstants.FIELD_CREATED_AT, 1),
+                            new IndexOptions().expireAfter(maxDurationInSec, TimeUnit.SECONDS)
+                    ),
+                    "operationType_1", new Tuple2<>(
+                            new Document().append("operationType", 1),
+                            new IndexOptions()
+                    )
+            ));
+            movePointerToEnd();
+        };
+        collectionCreate.run();
     }
 
     public MongoDbReplayableQueue<E> movePointerToEnd() {
@@ -268,7 +278,7 @@ public class MongoDbReplayableQueue<E> extends AbstractBasics implements Blockin
     private void waitForChange(long timeInMs) throws InterruptedException {
         synchronized (this) {
             if (mongoDbChangeStreamWaitAnyChange == null) {
-                mongoDbChangeStreamWaitAnyChange = new MongoDbChangeStreamWaitAnyChange(mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs, "insert");
+                mongoDbChangeStreamWaitAnyChange = new MongoDbChangeStreamWaitAnyChange(collectionCreate, mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs, "insert");
             }
         }
         mongoDbChangeStreamWaitAnyChange.waitForChange(timeInMs);

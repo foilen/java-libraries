@@ -120,7 +120,7 @@ public class MongoDbSortedMapStringObject<V> extends AbstractBasics implements S
     @Override
     public void putAll(Map<? extends String, ? extends V> m) {
 
-        BufferBatchesTools.<Map.Entry<String, V>>autoClose(10, items -> {
+        BufferBatchesTools.<Entry<String, V>>autoClose(10, items -> {
             mongoCollection.insertMany(items.stream()
                     .map(entry -> {
                         String jsonValue = JsonTools.compactPrintWithoutNulls(entry.getValue());

@@ -36,6 +36,8 @@ public class MongoDbReentrantLock extends AbstractBasics {
     private final long expireLockAfterNoHeartbeatInMs;
     private final long dropLockAfterHeldForTooLongInMs;
 
+    private final Runnable collectionCreate;
+
     private final ConcurrentMap<String, HoldingLockDetails> holdingByLockName = new ConcurrentHashMap<>();
     private MongoDbChangeStreamWaitAnyChange mongoDbChangeStreamWaitAnyChange;
 
@@ -88,17 +90,20 @@ public class MongoDbReentrantLock extends AbstractBasics {
         this.expireLockAfterNoHeartbeatInMs = expireLockAfterNoHeartbeatInMs;
         this.dropLockAfterHeldForTooLongInMs = dropLockAfterHeldForTooLongInMs;
 
-        MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
-        MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
-                "expireAt", new Tuple2<>(
-                        new Document().append(MongoDbDistributedConstants.FIELD_EXPIRE_AT, 1),
-                        new IndexOptions().expireAfter(0L, TimeUnit.MILLISECONDS)
-                ),
-                "operationType_1", new Tuple2<>(
-                        new Document().append("operationType", 1),
-                        new IndexOptions()
-                )
-        ));
+        collectionCreate = () -> {
+            MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
+            MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
+                    "expireAt", new Tuple2<>(
+                            new Document().append(MongoDbDistributedConstants.FIELD_EXPIRE_AT, 1),
+                            new IndexOptions().expireAfter(0L, TimeUnit.MILLISECONDS)
+                    ),
+                    "operationType_1", new Tuple2<>(
+                            new Document().append("operationType", 1),
+                            new IndexOptions()
+                    )
+            ));
+        };
+        collectionCreate.run();
     }
 
     /**
@@ -179,7 +184,7 @@ public class MongoDbReentrantLock extends AbstractBasics {
     private void waitForChange(String lockName, long timeInMs) throws InterruptedException {
         synchronized (this) {
             if (mongoDbChangeStreamWaitAnyChange == null) {
-                mongoDbChangeStreamWaitAnyChange = new MongoDbChangeStreamWaitAnyChange(mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs, "delete");
+                mongoDbChangeStreamWaitAnyChange = new MongoDbChangeStreamWaitAnyChange(collectionCreate, mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs, "delete");
             }
         }
         mongoDbChangeStreamWaitAnyChange.waitForChange(lockName, timeInMs);

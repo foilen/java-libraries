@@ -9,6 +9,7 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.util.ArrayList;
 import java.util.Deque;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MongoDbDequeTest extends AbstractEmbeddedMongoDbTest {
 
@@ -644,6 +646,53 @@ public class MongoDbDequeTest extends AbstractEmbeddedMongoDbTest {
         });
 
         Assertions.assertTrue(executionTimeInMs > 2000 && executionTimeInMs < 2500);
+    }
+
+    @Test
+    @Timeout(60)
+    public void testCollectionDroppedWhileUsing() throws InterruptedException {
+
+        String collectionName = SecureRandomTools.randomHexString(10);
+        MongoCollection<Document> mongoCollection = mongoClient.getDatabase("test").getCollection(collectionName);
+
+        // Create instance (creates collection and indexes)
+        var deque = new MongoDbDeque<>(String.class, mongoClient, mongoCollection);
+
+        // Use it normally
+        deque.addLast("item1");
+        deque.addFirst("item0");
+        deque.addLast("item2");
+        Assertions.assertEquals(3, deque.size());
+        Assertions.assertEquals("item0", deque.pollFirst());
+        Assertions.assertEquals("item2", deque.pollLast());
+
+        deque.clear();
+
+        // Poll for 15 seconds in another thread
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<String> polledItem = new AtomicReference<>();
+        ExecutorsTools.getCachedDaemonThreadPool().submit(() -> {
+            try {
+                latch.countDown();
+                polledItem.set(deque.pollFirst(15, TimeUnit.SECONDS));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Drop the collection
+        latch.await();
+        ThreadTools.sleep(1000);
+        mongoCollection.drop();
+
+        // After some time, add an item
+        ThreadTools.sleep(2000);
+        deque.addLast("itemNew");
+        // Wait for the polled item to be set
+        ThreadTools.sleep(5000);
+
+        Assertions.assertEquals("itemNew", polledItem.get());
+
     }
 
     private static MongoDbDeque<Integer> getDeque(MongoCollection<Document> mongoCollection) {

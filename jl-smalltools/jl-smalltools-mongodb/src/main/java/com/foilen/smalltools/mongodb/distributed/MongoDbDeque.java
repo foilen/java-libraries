@@ -35,6 +35,8 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
     private final MongoCollection<Document> mongoCollection;
     private final long stopChangeStreamAfterNoThreadWaitedInMs;
 
+    private final Runnable collectionCreate;
+
     private MongoDbChangeStreamWaitAnyChange mongoDbChangeStreamWaitAnyChange;
 
     public MongoDbDeque(Class<E> entityType, MongoClient mongoClient, MongoCollection<Document> mongoCollection) {
@@ -47,13 +49,20 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
         this.mongoCollection = mongoCollection;
         this.stopChangeStreamAfterNoThreadWaitedInMs = stopChangeStreamAfterNoThreadWaitedInMs;
 
-        MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
-        MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
-                "hashJsonValue_id", new Tuple2<>(
-                        new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
-                        new IndexOptions()
-                )
-        ));
+        collectionCreate = () -> {
+            MongoDbManageCollectionTools.addCollectionIfMissing(mongoClient, mongoCollection.getNamespace());
+            MongoDbManageCollectionTools.manageIndexes(mongoCollection, Map.of(
+                    "hashJsonValue_id", new Tuple2<>(
+                            new Document().append(MongoDbDistributedConstants.FIELD_HASH_JSON_VALUE, 1).append(MongoDbDistributedConstants.FIELD_ID, 1),
+                            new IndexOptions()
+                    ),
+                    "operationType_1", new Tuple2<>(
+                            new Document().append("operationType", 1),
+                            new IndexOptions()
+                    )
+            ));
+        };
+        collectionCreate.run();
     }
 
     @Override
@@ -269,7 +278,7 @@ public class MongoDbDeque<E> extends AbstractBasics implements BlockingDeque<E> 
     private void waitForChange(long timeInMs) throws InterruptedException {
         synchronized (this) {
             if (mongoDbChangeStreamWaitAnyChange == null) {
-                mongoDbChangeStreamWaitAnyChange = new MongoDbChangeStreamWaitAnyChange(mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs, "insert");
+                mongoDbChangeStreamWaitAnyChange = new MongoDbChangeStreamWaitAnyChange(collectionCreate, mongoCollection, stopChangeStreamAfterNoThreadWaitedInMs, "insert");
             }
         }
         mongoDbChangeStreamWaitAnyChange.waitForChange(timeInMs);

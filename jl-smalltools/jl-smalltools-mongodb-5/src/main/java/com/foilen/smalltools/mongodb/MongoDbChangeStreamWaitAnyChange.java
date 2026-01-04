@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
 
+    private final Runnable collectionCreate;
+
     private final MongoCollection<Document> mongoCollection;
     private final long stopAfterNoThreadWaitedInMs;
     private final List<String> changeTypes;
@@ -36,7 +38,8 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
     private Thread thread;
     private ChangeStreamIterable<Document> changeStream;
 
-    public MongoDbChangeStreamWaitAnyChange(MongoCollection<Document> mongoCollection, long stopAfterNoThreadWaitedInMs, String firstChangeType, String... changeTypes) {
+    public MongoDbChangeStreamWaitAnyChange(Runnable collectionCreate, MongoCollection<Document> mongoCollection, long stopAfterNoThreadWaitedInMs, String firstChangeType, String... changeTypes) {
+        this.collectionCreate = collectionCreate;
         this.mongoCollection = mongoCollection;
         this.stopAfterNoThreadWaitedInMs = stopAfterNoThreadWaitedInMs;
         this.changeTypes = new ArrayList<>();
@@ -69,8 +72,10 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
                     try {
                         // Start the stream
                         logger.info("Starting change stream");
+                        var watchedChangeTypes = new ArrayList<>(changeTypes);
+                        watchedChangeTypes.add("drop");
                         changeStream = mongoCollection.watch(List.of(
-                                        Aggregates.match(new Document("operationType", new Document("$in", changeTypes))),
+                                        Aggregates.match(new Document("operationType", new Document("$in", watchedChangeTypes))),
                                         Aggregates.project(new Document("fullDocument", 0))
                                 ))
                                 .fullDocument(FullDocument.DEFAULT);
@@ -81,6 +86,17 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
 
                         // Look for changes
                         changeStream.forEach(change -> {
+                            // Detect collection drop
+                            if ("drop".equals(change.getOperationTypeString())) {
+                                logger.error("Collection {} was dropped. Calling the callback to recreate it", mongoCollection.getNamespace());
+                                collectionCreate.run();
+                                // Restart the change stream
+                                logger.info("Restarting change stream after recreation of collection {}", mongoCollection.getNamespace());
+                                thread = null;
+                                startIfNeeded();
+                                return;
+                            }
+
                             // By id
                             Object id = change.getDocumentKey().get("_id");
                             if (id instanceof BsonString) {

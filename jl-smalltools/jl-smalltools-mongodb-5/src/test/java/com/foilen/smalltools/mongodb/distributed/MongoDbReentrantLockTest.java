@@ -8,6 +8,7 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MongoDbReentrantLockTest extends AbstractEmbeddedMongoDbTest {
 
@@ -169,6 +171,58 @@ public class MongoDbReentrantLockTest extends AbstractEmbeddedMongoDbTest {
         }
         Assertions.assertEquals(expected, actual1);
         Assertions.assertEquals(expected, actual2);
+
+    }
+
+    @Test
+    @Timeout(60)
+    public void testCollectionDroppedWhileUsing() throws InterruptedException {
+
+        String collectionName = SecureRandomTools.randomHexString(10);
+        MongoCollection<Document> mongoCollection = mongoClient.getDatabase("test").getCollection(collectionName);
+
+        // Create instance (creates collection and indexes)
+        var lock = new MongoDbReentrantLock(mongoClient, mongoCollection);
+
+        // Use it normally
+        lock.lock("lock1");
+        lock.unlock("lock1");
+        boolean gotLock = lock.tryLock("lock2", 1000);
+        Assertions.assertTrue(gotLock);
+        lock.unlock("lock2");
+
+        // Try to acquire lock for 15 seconds in another thread
+        CountDownLatch latchReady = new CountDownLatch(1);
+        CountDownLatch latchLocked = new CountDownLatch(1);
+        AtomicBoolean lockAcquired = new AtomicBoolean(false);
+        ExecutorsTools.getCachedDaemonThreadPool().submit(() -> {
+            try {
+                latchReady.countDown();
+                latchLocked.await();
+                lockAcquired.set(lock.tryLock("lock3", 15000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Drop the collection
+        latchReady.await();
+        ThreadTools.sleep(1000);
+        mongoCollection.drop();
+
+        // After some time, acquire
+        ThreadTools.sleep(2000);
+        lock.lock("lock3");
+        latchLocked.countDown();
+
+        // Wait while holding the lock and release
+        ThreadTools.sleep(5000);
+        lock.unlock("lock3");
+
+        // Wait for the lock to be acquired
+        ThreadTools.sleep(5000);
+
+        Assertions.assertTrue(lockAcquired.get());
 
     }
 
