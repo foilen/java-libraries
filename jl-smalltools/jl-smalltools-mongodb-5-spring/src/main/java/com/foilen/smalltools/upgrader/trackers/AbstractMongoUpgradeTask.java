@@ -11,6 +11,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Sorts;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,6 +171,28 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
 
         });
 
+    }
+
+    protected void exportAllCollections(String fileNamePrefix) {
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(databaseName);
+
+        // Save all `insertInCollection` calls in a file named `fileNamePrefix` + `_inserts.txt`
+        try (PrintWriter insertsFile = new PrintWriter(fileNamePrefix + "_inserts.txt", StandardCharsets.UTF_8)) {
+            // Each collection
+            StreamTools.toStream(mongoDatabase.listCollectionNames().spliterator())
+                    .filter(collectionName -> !collectionName.startsWith("system.") && !StringTools.safeEquals(collectionName, "upgraderTools"))
+                    .sorted()
+                    .forEach(collectionName -> {
+                        exportFromCollection(fileNamePrefix + "_" + collectionName + ".json", collectionName, new Document(), findIterable ->
+                                findIterable.sort(Sorts.ascending("_id"))
+                        );
+
+                        // Write the insertInCollection call to the inserts file
+                        insertsFile.println("insertInCollection(\"" + collectionName + "\", \"" + fileNamePrefix + "_" + collectionName + ".json" + "\", getClass());");
+                    });
+        } catch (Exception e) {
+            throw new RuntimeException("Problem exporting inserts", e);
+        }
     }
 
     protected void exportFromCollection(String fileName, String collectionName, Bson filter, Consumer<FindIterable<Document>> findConsumer) {
