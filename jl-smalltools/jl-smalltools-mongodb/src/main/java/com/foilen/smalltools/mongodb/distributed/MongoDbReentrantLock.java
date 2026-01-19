@@ -107,6 +107,16 @@ public class MongoDbReentrantLock extends AbstractBasics {
     }
 
     /**
+     * Check if the lock is currently held (by any thread, local or distributed).
+     *
+     * @param lockName the name of the lock
+     * @return true if the lock is currently held
+     */
+    public boolean isLockHeld(String lockName) {
+        return mongoCollection.countDocuments(new Document().append(MongoDbDistributedConstants.FIELD_ID, lockName)) > 0;
+    }
+
+    /**
      * Lock the lockName. If the lock is free, it will be locked. If the lock is already held, it will return false.
      * <p>
      * If the lock is already held by the current thread, it will increase its holding count and it will return true.
