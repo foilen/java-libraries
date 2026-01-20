@@ -316,7 +316,7 @@ public class MongoDbReentrantLock extends AbstractBasics {
                         // Check if needs to stop
                         if (holdingByLockName.isEmpty()) {
                             synchronized (reentrantLock) {
-                                holdingByLockName.isEmpty();
+                                heartbeatThread = null;
                             }
                             logger.info("Stopping heartbeat thread");
                             return;
