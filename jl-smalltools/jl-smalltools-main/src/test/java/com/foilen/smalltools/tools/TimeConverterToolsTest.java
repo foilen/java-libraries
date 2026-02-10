@@ -5,19 +5,6 @@ import org.junit.Test;
 
 public class TimeConverterToolsTest {
 
-    @SuppressWarnings("deprecation")
-    @Test
-    public void testConvertToText() {
-        Assert.assertEquals(null, TimeConverterTools.convertToText(null));
-        Assert.assertEquals("0ms", TimeConverterTools.convertToText(0L));
-        Assert.assertEquals("10ms", TimeConverterTools.convertToText(10L));
-        Assert.assertEquals("250ms", TimeConverterTools.convertToText(250L));
-        Assert.assertEquals("24s 0ms", TimeConverterTools.convertToText(24000L));
-        Assert.assertEquals("24s 34ms", TimeConverterTools.convertToText(24034L));
-        Assert.assertEquals("1m 15s 856ms", TimeConverterTools.convertToText(75856L));
-        Assert.assertEquals("34w 5d 16h 1m 15s 856ms", TimeConverterTools.convertToText(21052875856L));
-    }
-
     @Test
     public void testConvertToTextFromMin() {
         Assert.assertEquals(null, TimeConverterTools.convertToTextFromMin(null));

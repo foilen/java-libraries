@@ -12,18 +12,6 @@ public class TimeConverterTools {
     static private final long WEEK = 7L * DAY;
 
     /**
-     * Take an amount of milliseconds and transform them to text up to weeks.
-     *
-     * @param totalInMs the time to convert
-     * @return the time like "24s 34ms" or "34w 5d 16h 1m 15s 856ms"
-     * @deprecated use {@link #convertToTextFromMs(Long)}
-     */
-    @Deprecated
-    static public String convertToText(Long totalInMs) {
-        return convertToTextFromMs(totalInMs);
-    }
-
-    /**
      * Take an amount of minutes and transform them to text up to weeks.
      *
      * @param totalInMin the time to convert

@@ -11,11 +11,9 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = "$javaVersion"
-
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
-    api 'com.jcraft:jsch:0.1.55'
+    api "com.jcraft:jsch:$jschVersion"
 }
 
 jar {
@@ -23,6 +21,8 @@ jar {
 }
 
 java {
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
+    targetCompatibility = JavaVersion.toVersion(javaVersion)
     withJavadocJar()
     withSourcesJar()
 }

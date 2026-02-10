@@ -11,8 +11,6 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = "$javaVersion"
-
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
     api "org.bouncycastle:bcpkix-jdk18on:$bouncyCastleVersion"
@@ -27,6 +25,8 @@ jar {
 }
 
 java {
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
+    targetCompatibility = JavaVersion.toVersion(javaVersion)
     withJavadocJar()
     withSourcesJar()
 }
