@@ -2,8 +2,8 @@ package com.foilen.smalltools.tools;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 
@@ -35,12 +35,12 @@ public class DomainToolsTest {
 
     @Test
     public void testReverse() {
-        Assert.assertEquals(null, DomainTools.reverse(null));
-        Assert.assertEquals("", DomainTools.reverse(""));
-        Assert.assertEquals("com", DomainTools.reverse("com"));
-        Assert.assertEquals("com.foilen", DomainTools.reverse("foilen.com"));
-        Assert.assertEquals("com.foilen.test", DomainTools.reverse("test.foilen.com"));
-        Assert.assertEquals("com.foilen.test.sub", DomainTools.reverse("sub.test.foilen.com"));
+        Assertions.assertEquals(null, DomainTools.reverse(null));
+        Assertions.assertEquals("", DomainTools.reverse(""));
+        Assertions.assertEquals("com", DomainTools.reverse("com"));
+        Assertions.assertEquals("com.foilen", DomainTools.reverse("foilen.com"));
+        Assertions.assertEquals("com.foilen.test", DomainTools.reverse("test.foilen.com"));
+        Assertions.assertEquals("com.foilen.test.sub", DomainTools.reverse("sub.test.foilen.com"));
     }
 
 }

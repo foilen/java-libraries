@@ -20,7 +20,13 @@ dependencies {
     api "org.springframework:spring-webmvc:$springVersion"
     api "org.springframework.security:spring-security-web:$springSecurityVersion"
 
-    testImplementation "junit:junit:$junit4Version"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit6Version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit6Version"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {

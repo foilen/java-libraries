@@ -1,7 +1,7 @@
 package com.foilen.smalltools.tools;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ExceptionToolsTest {
 
@@ -11,9 +11,9 @@ public class ExceptionToolsTest {
 
         String fullStack = ExceptionTools.getFullStack(exception);
         System.out.println(fullStack);
-        Assert.assertTrue(fullStack.contains("java.lang.RuntimeException: aaaa"));
-        Assert.assertTrue(fullStack.contains("\tjava.lang.RuntimeException: bbbb"));
-        Assert.assertTrue(fullStack.contains("\t\tjava.lang.RuntimeException: cccc"));
+        Assertions.assertTrue(fullStack.contains("java.lang.RuntimeException: aaaa"));
+        Assertions.assertTrue(fullStack.contains("\tjava.lang.RuntimeException: bbbb"));
+        Assertions.assertTrue(fullStack.contains("\t\tjava.lang.RuntimeException: cccc"));
 
     }
 

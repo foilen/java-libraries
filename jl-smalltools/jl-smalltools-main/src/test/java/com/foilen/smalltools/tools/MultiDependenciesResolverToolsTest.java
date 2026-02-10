@@ -1,12 +1,13 @@
 package com.foilen.smalltools.tools;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.foilen.smalltools.exception.SmallToolsException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MultiDependenciesResolverToolsTest {
 
@@ -15,13 +16,15 @@ public class MultiDependenciesResolverToolsTest {
      * A -&gt; B -&gt; A
      * </pre>
      */
-    @Test(expected = SmallToolsException.class)
+    @Test
     public void testCircular() {
-        MultiDependenciesResolverTools resolver = new MultiDependenciesResolverTools();
-        resolver.addDependency("B", "A");
-        resolver.addDependency("A", "B");
+        assertThrows(SmallToolsException.class, () -> {
+            MultiDependenciesResolverTools resolver = new MultiDependenciesResolverTools();
+            resolver.addDependency("B", "A");
+            resolver.addDependency("A", "B");
 
-        resolver.getExecution();
+            resolver.getExecution();
+        });
     }
 
     /**
@@ -30,16 +33,18 @@ public class MultiDependenciesResolverToolsTest {
      * E -&gt; F
      * </pre>
      */
-    @Test(expected = SmallToolsException.class)
+    @Test
     public void testCircular2() {
-        MultiDependenciesResolverTools resolver = new MultiDependenciesResolverTools();
-        resolver.addDependency("B", "A");
-        resolver.addDependency("C", "B");
-        resolver.addDependency("D", "C");
-        resolver.addDependency("A", "D");
-        resolver.addDependency("F", "E");
+        assertThrows(SmallToolsException.class, () -> {
+            MultiDependenciesResolverTools resolver = new MultiDependenciesResolverTools();
+            resolver.addDependency("B", "A");
+            resolver.addDependency("C", "B");
+            resolver.addDependency("D", "C");
+            resolver.addDependency("A", "D");
+            resolver.addDependency("F", "E");
 
-        resolver.getExecution();
+            resolver.getExecution();
+        });
     }
 
     /**
@@ -51,25 +56,26 @@ public class MultiDependenciesResolverToolsTest {
      *             -&gt; H -&gt; (E)
      * </pre>
      */
-    @Test(expected = SmallToolsException.class)
+    @Test
     public void testCircularComplex() {
+        assertThrows(SmallToolsException.class, () -> {
+            MultiDependenciesResolverTools resolver = new MultiDependenciesResolverTools();
+            // Add some items that might be dangling
+            resolver.addItems("A", "B", "C", "D", "H");
 
-        MultiDependenciesResolverTools resolver = new MultiDependenciesResolverTools();
-        // Add some items that might be dangling
-        resolver.addItems("A", "B", "C", "D", "H");
+            // Add dependencies
+            resolver.addDependency("C", "B");
+            resolver.addDependency("C", "G");
+            resolver.addDependency("D", "C");
+            resolver.addDependency("D", "E");
+            resolver.addDependency("E", "B");
+            resolver.addDependency("E", "H");
+            resolver.addDependency("F", "E");
+            resolver.addDependency("G", "F");
+            resolver.addDependency("H", "F");
 
-        // Add dependencies
-        resolver.addDependency("C", "B");
-        resolver.addDependency("C", "G");
-        resolver.addDependency("D", "C");
-        resolver.addDependency("D", "E");
-        resolver.addDependency("E", "B");
-        resolver.addDependency("E", "H");
-        resolver.addDependency("F", "E");
-        resolver.addDependency("G", "F");
-        resolver.addDependency("H", "F");
-
-        resolver.getExecution();
+            resolver.getExecution();
+        });
     }
 
     /**
@@ -87,7 +93,7 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
     /**
@@ -118,7 +124,7 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList( //
+        Assertions.assertEquals(Arrays.asList( //
                 "A", "B", "H", //
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
@@ -152,7 +158,7 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList( //
+        Assertions.assertEquals(Arrays.asList( //
                 "A", "B", "H", //
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
@@ -177,13 +183,13 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList( //
+        Assertions.assertEquals(Arrays.asList( //
                 "A", "B", "H", //
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
 
         executionPlan = resolver.getExecution();
-        Assert.assertEquals(Arrays.asList( //
+        Assertions.assertEquals(Arrays.asList( //
                 "A", "B", "H", //
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
@@ -200,7 +206,7 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C"), executionPlan);
     }
 
     /**
@@ -219,7 +225,7 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
     /**
@@ -238,7 +244,7 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
     /**
@@ -257,7 +263,7 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
 }

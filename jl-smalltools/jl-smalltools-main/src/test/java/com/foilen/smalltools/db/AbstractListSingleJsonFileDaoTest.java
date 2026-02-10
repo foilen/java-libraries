@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.StringTools;
@@ -52,7 +52,7 @@ public class AbstractListSingleJsonFileDaoTest extends AbstractBasics {
     public void test() throws Exception {
 
         File dbFile = File.createTempFile("junit", ".json");
-        Assert.assertTrue(dbFile.delete());
+        Assertions.assertTrue(dbFile.delete());
 
         TestListSingleDao firstDao = new TestListSingleDao(dbFile);
         firstDao.init();
@@ -61,17 +61,17 @@ public class AbstractListSingleJsonFileDaoTest extends AbstractBasics {
         for (int i = 1; i <= 5; ++i) {
             firstDao.add(new TestDbEntity("id" + i, i));
         }
-        Assert.assertEquals(5, firstDao.count());
+        Assertions.assertEquals(5, firstDao.count());
 
         // Retrieve one
         Optional<TestDbEntity> optional = firstDao.findOne("id2");
-        Assert.assertTrue(optional.isPresent());
+        Assertions.assertTrue(optional.isPresent());
         TestDbEntity entity = optional.get();
         entity.assertValue("id2", 2);
 
         // Retrieve one that does not exist
         optional = firstDao.findOne("id7");
-        Assert.assertFalse(optional.isPresent());
+        Assertions.assertFalse(optional.isPresent());
 
         // Changing the entity does not affect the DB
         entity.setNumber(55);
@@ -80,15 +80,15 @@ public class AbstractListSingleJsonFileDaoTest extends AbstractBasics {
         entity.assertValue("id2", 2);
 
         // Delete one
-        Assert.assertTrue(firstDao.delete("id1"));
-        Assert.assertEquals(4, firstDao.count());
-        Assert.assertFalse(firstDao.delete("id1"));
+        Assertions.assertTrue(firstDao.delete("id1"));
+        Assertions.assertEquals(4, firstDao.count());
+        Assertions.assertFalse(firstDao.delete("id1"));
 
         // Update
         entity.setNumber(55);
         entity.assertValue("id2", 55);
         firstDao.update("id2", entity);
-        Assert.assertEquals(4, firstDao.count());
+        Assertions.assertEquals(4, firstDao.count());
         entity = firstDao.findOne("id2").get();
         entity.assertValue("id2", 55);
 
@@ -98,17 +98,17 @@ public class AbstractListSingleJsonFileDaoTest extends AbstractBasics {
             entities.add(new TestDbEntity("id" + i, i));
         }
         firstDao.add(entities);
-        Assert.assertEquals(9, firstDao.count());
+        Assertions.assertEquals(9, firstDao.count());
 
         // List all
         List<String> expectedIds = Arrays.asList("id3", "id4", "id5", "id2", "id6", "id7", "id8", "id9", "id10");
         List<String> actualIds = firstDao.findAllAsList().stream().map(it -> it.getId()).collect(Collectors.toList());
-        Assert.assertEquals(expectedIds, actualIds);
+        Assertions.assertEquals(expectedIds, actualIds);
 
         // List some
         expectedIds = Arrays.asList("id2", "id7", "id8", "id9", "id10");
         actualIds = firstDao.findAllAsList(it -> it.getNumber() >= 7).stream().map(it -> it.getId()).collect(Collectors.toList());
-        Assert.assertEquals(expectedIds, actualIds);
+        Assertions.assertEquals(expectedIds, actualIds);
 
         // Flush and get from new dao
         firstDao.flush();
@@ -116,7 +116,7 @@ public class AbstractListSingleJsonFileDaoTest extends AbstractBasics {
         secondDao.init();
         expectedIds = Arrays.asList("id3", "id4", "id5", "id2", "id6", "id7", "id8", "id9", "id10");
         actualIds = secondDao.findAllAsList().stream().map(it -> it.getId()).collect(Collectors.toList());
-        Assert.assertEquals(expectedIds, actualIds);
+        Assertions.assertEquals(expectedIds, actualIds);
 
         // Try saving slowly
         ThreadTools.sleep(2100);
@@ -131,19 +131,19 @@ public class AbstractListSingleJsonFileDaoTest extends AbstractBasics {
         thirdDao.init();
         expectedIds = Arrays.asList("id3", "id4", "id5", "id2", "id6", "id7", "id8", "id9", "id10", "idSlow");
         actualIds = thirdDao.findAllAsList().stream().map(it -> it.getId()).collect(Collectors.toList());
-        Assert.assertEquals(expectedIds, actualIds);
+        Assertions.assertEquals(expectedIds, actualIds);
 
         // Changing the value and reverting back before saving won't save to the file
         thirdDao.add(new TestDbEntity("idExtra", 10));
-        Assert.assertEquals(11, thirdDao.count());
+        Assertions.assertEquals(11, thirdDao.count());
         thirdDao.delete("idExtra");
-        Assert.assertEquals(10, thirdDao.count());
+        Assertions.assertEquals(10, thirdDao.count());
 
         modifiedTime = dbFile.lastModified();
         for (int i = 0; i < 8 && dbFile.lastModified() == modifiedTime; ++i) {
             ThreadTools.sleep(500);
         }
-        Assert.assertEquals(dbFile.lastModified(), modifiedTime);
+        Assertions.assertEquals(dbFile.lastModified(), modifiedTime);
 
     }
 

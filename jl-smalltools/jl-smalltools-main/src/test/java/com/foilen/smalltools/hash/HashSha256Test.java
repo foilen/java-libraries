@@ -3,8 +3,8 @@ package com.foilen.smalltools.hash;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.tools.ResourceTools;
 
@@ -20,12 +20,12 @@ public class HashSha256Test {
         ResourceTools.copyToFile("HashUtils.txt", HashSha256Test.class, tmpFile);
 
         // Hash it
-        Assert.assertEquals("a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e", HashSha256.hashFile(tmpFile));
+        Assertions.assertEquals("a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e", HashSha256.hashFile(tmpFile));
     }
 
     @Test
     public void testHashString() {
-        Assert.assertEquals("a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e", HashSha256.hashString("Hello World"));
+        Assertions.assertEquals("a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e", HashSha256.hashString("Hello World"));
     }
 
 }

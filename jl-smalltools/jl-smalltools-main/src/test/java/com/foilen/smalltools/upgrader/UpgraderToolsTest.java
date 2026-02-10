@@ -5,7 +5,7 @@ import com.foilen.smalltools.upgrader.p1.Stub3UpgradeTask;
 import com.foilen.smalltools.upgrader.p2.Stub2UpgradeTask;
 import com.foilen.smalltools.upgrader.trackers.JsonFileUpgraderTracker;
 import com.foilen.smalltools.upgrader.trackers.UpgraderTracker;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicInteger;

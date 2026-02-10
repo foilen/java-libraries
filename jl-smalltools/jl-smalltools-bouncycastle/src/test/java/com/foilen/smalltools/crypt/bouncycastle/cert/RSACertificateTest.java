@@ -10,8 +10,8 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.X509KeyManager;
 
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
 import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
@@ -22,8 +22,8 @@ public class RSACertificateTest {
     private RSACrypt rsaCrypt = new RSACrypt();
 
     private void assertCerts(RSACertificate expected, RSACertificate actual) {
-        Assert.assertEquals(expected.getCommonName(), actual.getCommonName());
-        Assert.assertEquals(expected.getThumbprint(), actual.getThumbprint());
+        Assertions.assertEquals(expected.getCommonName(), actual.getCommonName());
+        Assertions.assertEquals(expected.getThumbprint(), actual.getThumbprint());
     }
 
     private void assertCommonNamesAndSans(RSACertificate certificate, String[] expectedCommonNames, String[] expectedSans) {
@@ -65,40 +65,40 @@ public class RSACertificateTest {
         fakeRootCertificate.selfSign(new CertificateDetails().setCommonName("CA root"));
 
         // Assert certificates
-        Assert.assertTrue(rootCertificate.isValidSignature(rootCertificate));
-        Assert.assertTrue(nodeCertificate.isValidSignature(rootCertificate));
-        Assert.assertTrue(fakeRootCertificate.isValidSignature(fakeRootCertificate));
+        Assertions.assertTrue(rootCertificate.isValidSignature(rootCertificate));
+        Assertions.assertTrue(nodeCertificate.isValidSignature(rootCertificate));
+        Assertions.assertTrue(fakeRootCertificate.isValidSignature(fakeRootCertificate));
 
-        Assert.assertFalse(rootCertificate.isValidSignature(nodeCertificate));
-        Assert.assertFalse(rootCertificate.isValidSignature(fakeRootCertificate));
-        Assert.assertFalse(nodeCertificate.isValidSignature(nodeCertificate));
-        Assert.assertFalse(nodeCertificate.isValidSignature(fakeRootCertificate));
-        Assert.assertFalse(fakeRootCertificate.isValidSignature(rootCertificate));
-        Assert.assertFalse(fakeRootCertificate.isValidSignature(nodeCertificate));
+        Assertions.assertFalse(rootCertificate.isValidSignature(nodeCertificate));
+        Assertions.assertFalse(rootCertificate.isValidSignature(fakeRootCertificate));
+        Assertions.assertFalse(nodeCertificate.isValidSignature(nodeCertificate));
+        Assertions.assertFalse(nodeCertificate.isValidSignature(fakeRootCertificate));
+        Assertions.assertFalse(fakeRootCertificate.isValidSignature(rootCertificate));
+        Assertions.assertFalse(fakeRootCertificate.isValidSignature(nodeCertificate));
 
         // Assert key pair
-        Assert.assertTrue(rootCertificate.isValidSignature(rootKeys));
-        Assert.assertTrue(nodeCertificate.isValidSignature(rootKeys));
-        Assert.assertTrue(fakeRootCertificate.isValidSignature(fakeRootKeys));
+        Assertions.assertTrue(rootCertificate.isValidSignature(rootKeys));
+        Assertions.assertTrue(nodeCertificate.isValidSignature(rootKeys));
+        Assertions.assertTrue(fakeRootCertificate.isValidSignature(fakeRootKeys));
 
-        Assert.assertFalse(rootCertificate.isValidSignature(nodeKeys));
-        Assert.assertFalse(rootCertificate.isValidSignature(fakeRootKeys));
-        Assert.assertFalse(nodeCertificate.isValidSignature(nodeKeys));
-        Assert.assertFalse(nodeCertificate.isValidSignature(fakeRootKeys));
-        Assert.assertFalse(fakeRootCertificate.isValidSignature(rootKeys));
-        Assert.assertFalse(fakeRootCertificate.isValidSignature(nodeKeys));
+        Assertions.assertFalse(rootCertificate.isValidSignature(nodeKeys));
+        Assertions.assertFalse(rootCertificate.isValidSignature(fakeRootKeys));
+        Assertions.assertFalse(nodeCertificate.isValidSignature(nodeKeys));
+        Assertions.assertFalse(nodeCertificate.isValidSignature(fakeRootKeys));
+        Assertions.assertFalse(fakeRootCertificate.isValidSignature(rootKeys));
+        Assertions.assertFalse(fakeRootCertificate.isValidSignature(nodeKeys));
 
         // Assert key
-        Assert.assertTrue(rootCertificate.isValidSignature(rootPublicKey));
-        Assert.assertTrue(nodeCertificate.isValidSignature(rootPublicKey));
-        Assert.assertTrue(fakeRootCertificate.isValidSignature(fakeRootPublicKey));
+        Assertions.assertTrue(rootCertificate.isValidSignature(rootPublicKey));
+        Assertions.assertTrue(nodeCertificate.isValidSignature(rootPublicKey));
+        Assertions.assertTrue(fakeRootCertificate.isValidSignature(fakeRootPublicKey));
 
-        Assert.assertFalse(rootCertificate.isValidSignature(nodePublicKey));
-        Assert.assertFalse(rootCertificate.isValidSignature(fakeRootPublicKey));
-        Assert.assertFalse(nodeCertificate.isValidSignature(nodePublicKey));
-        Assert.assertFalse(nodeCertificate.isValidSignature(fakeRootPublicKey));
-        Assert.assertFalse(fakeRootCertificate.isValidSignature(rootPublicKey));
-        Assert.assertFalse(fakeRootCertificate.isValidSignature(nodePublicKey));
+        Assertions.assertFalse(rootCertificate.isValidSignature(nodePublicKey));
+        Assertions.assertFalse(rootCertificate.isValidSignature(fakeRootPublicKey));
+        Assertions.assertFalse(nodeCertificate.isValidSignature(nodePublicKey));
+        Assertions.assertFalse(nodeCertificate.isValidSignature(fakeRootPublicKey));
+        Assertions.assertFalse(fakeRootCertificate.isValidSignature(rootPublicKey));
+        Assertions.assertFalse(fakeRootCertificate.isValidSignature(nodePublicKey));
     }
 
     @Test
@@ -126,8 +126,8 @@ public class RSACertificateTest {
         assertCerts(rootCertificate, loadedRootCertificate);
         assertCerts(nodeCertificate, loadedNodeCertificate);
 
-        Assert.assertNull(loadedRootCertificate.getKeysForSigning().getPrivateKey());
-        Assert.assertNotNull(loadedRootCertificate.getKeysForSigning().getPublicKey());
+        Assertions.assertNull(loadedRootCertificate.getKeysForSigning().getPrivateKey());
+        Assertions.assertNotNull(loadedRootCertificate.getKeysForSigning().getPublicKey());
     }
 
     @Test
@@ -141,16 +141,16 @@ public class RSACertificateTest {
         String privateKeyPem = RSACrypt.RSA_CRYPT.savePrivateKeyPemAsString(rootCertificate.getKeysForSigning());
         String publicKeyPem = RSACrypt.RSA_CRYPT.savePublicKeyPemAsString(rootCertificate.getKeysForSigning());
 
-        Assert.assertFalse(certificatePem.contains("RSA PRIVATE KEY"));
-        Assert.assertFalse(certificatePem.contains("PUBLIC KEY"));
+        Assertions.assertFalse(certificatePem.contains("RSA PRIVATE KEY"));
+        Assertions.assertFalse(certificatePem.contains("PUBLIC KEY"));
 
         // Load
         RSACertificate loadedRootCertificate = RSACertificate.loadPemFromString(certificatePem, privateKeyPem, publicKeyPem, null);
 
         // Assert
         assertCerts(rootCertificate, loadedRootCertificate);
-        Assert.assertNotNull(loadedRootCertificate.getKeysForSigning().getPrivateKey());
-        Assert.assertNotNull(loadedRootCertificate.getKeysForSigning().getPublicKey());
+        Assertions.assertNotNull(loadedRootCertificate.getKeysForSigning().getPrivateKey());
+        Assertions.assertNotNull(loadedRootCertificate.getKeysForSigning().getPublicKey());
     }
 
     @Test
@@ -162,10 +162,10 @@ public class RSACertificateTest {
         KeyManagerFactory keyManagerFactory = RSATools.createKeyManagerFactory(rsaCertificate);
 
         KeyManager[] keyManagers = keyManagerFactory.getKeyManagers();
-        Assert.assertEquals(1, keyManagers.length);
+        Assertions.assertEquals(1, keyManagers.length);
         X509KeyManager keyManager = (X509KeyManager) keyManagers[0];
-        Assert.assertNotNull(keyManager.getPrivateKey("me"));
-        Assert.assertNull(keyManager.getPrivateKey("you"));
+        Assertions.assertNotNull(keyManager.getPrivateKey("me"));
+        Assertions.assertNull(keyManager.getPrivateKey("you"));
 
     }
 

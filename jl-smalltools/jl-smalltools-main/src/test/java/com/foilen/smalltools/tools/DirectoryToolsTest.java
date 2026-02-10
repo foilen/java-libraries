@@ -3,8 +3,8 @@ package com.foilen.smalltools.tools;
 import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.test.asserts.AssertTools;
 import com.google.common.base.Joiner;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,19 +32,19 @@ public class DirectoryToolsTest {
 
     @Test
     public void testCleanupDots() {
-        Assert.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/file"));
-        Assert.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/../file"));
-        Assert.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../file"));
-        Assert.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../../../file"));
-        Assert.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/./file"));
-        Assert.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/.././file"));
+        Assertions.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/file"));
+        Assertions.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/../file"));
+        Assertions.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../file"));
+        Assertions.assertEquals("file", DirectoryTools.cleanupDots("tmp/dir/../../../../file"));
+        Assertions.assertEquals("tmp/dir/file", DirectoryTools.cleanupDots("tmp/dir/./file"));
+        Assertions.assertEquals("tmp/file", DirectoryTools.cleanupDots("tmp/dir/.././file"));
 
-        Assert.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/file"));
-        Assert.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/../file"));
-        Assert.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../file"));
-        Assert.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../../../file"));
-        Assert.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/./file"));
-        Assert.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/.././file"));
+        Assertions.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/file"));
+        Assertions.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/../file"));
+        Assertions.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../file"));
+        Assertions.assertEquals("/file", DirectoryTools.cleanupDots("/tmp/dir/../../../../file"));
+        Assertions.assertEquals("/tmp/dir/file", DirectoryTools.cleanupDots("/tmp/dir/./file"));
+        Assertions.assertEquals("/tmp/file", DirectoryTools.cleanupDots("/tmp/dir/.././file"));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class DirectoryToolsTest {
         int removed = DirectoryTools.deleteEmptySubFolders(rootDir.getAbsolutePath());
 
         // Assert
-        Assert.assertEquals(5, removed);
+        Assertions.assertEquals(5, removed);
 
         String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
         actual = actual.replaceAll("\\\\", "/");
@@ -93,7 +93,7 @@ public class DirectoryToolsTest {
         String keepSafePath = keepSafe.getAbsolutePath();
 
         // Create the directories, the files and the symlink
-        Assert.assertTrue((DirectoryTools.createPath(toDeletePath + "/subOne/subTwo/subThree")));
+        Assertions.assertTrue((DirectoryTools.createPath(toDeletePath + "/subOne/subTwo/subThree")));
         FileTools.writeFile("a", keepSafePath + "/aFile");
         java.nio.file.Files.createSymbolicLink( //
                 new File(toDeletePath + "/subOne/NotFollow").toPath(), //
@@ -120,7 +120,7 @@ public class DirectoryToolsTest {
         DirectoryTools.deleteFolder(toDelete);
 
         // Assert all deleted, but the keepSafe
-        Assert.assertFalse(toDelete.exists());
+        Assertions.assertFalse(toDelete.exists());
         AssertTools.assertJsonComparison(expected, actual);
 
         expected = new ArrayList<>();
@@ -148,7 +148,7 @@ public class DirectoryToolsTest {
         int removed = DirectoryTools.deleteOlderFilesInDirectory(rootDir.getAbsolutePath(), DateTools.addDate(Calendar.MINUTE, -130));
 
         // Assert
-        Assert.assertEquals(110 - 9, removed);
+        Assertions.assertEquals(110 - 9, removed);
 
         String actual = Joiner.on('\n').join(DirectoryTools.listFilesAndFoldersRecursively(rootDir, false));
         actual = actual.replaceAll("\\\\", "/");
@@ -184,10 +184,10 @@ public class DirectoryToolsTest {
 
         // Check
         List<String> actual = DirectoryTools.listFilesStartingWith(directory, "#yes");
-        Assert.assertEquals(2, actual.size());
+        Assertions.assertEquals(2, actual.size());
         int i = 0;
-        Assert.assertEquals("exact", actual.get(i++));
-        Assert.assertEquals("yesAndMore", actual.get(i++));
+        Assertions.assertEquals("exact", actual.get(i++));
+        Assertions.assertEquals("yesAndMore", actual.get(i++));
     }
 
 }

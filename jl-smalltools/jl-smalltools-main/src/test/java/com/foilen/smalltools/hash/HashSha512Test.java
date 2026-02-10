@@ -3,8 +3,8 @@ package com.foilen.smalltools.hash;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.tools.ResourceTools;
 
@@ -20,12 +20,12 @@ public class HashSha512Test {
         ResourceTools.copyToFile("HashUtils.txt", HashSha512Test.class, tmpFile);
 
         // Hash it
-        Assert.assertEquals("2c74fd17edafd80e8447b0d46741ee243b7eb74dd2149a0ab1b9246fb30382f27e853d8585719e0e67cbda0daa8f51671064615d645ae27acb15bfb1447f459b", HashSha512.hashFile(tmpFile));
+        Assertions.assertEquals("2c74fd17edafd80e8447b0d46741ee243b7eb74dd2149a0ab1b9246fb30382f27e853d8585719e0e67cbda0daa8f51671064615d645ae27acb15bfb1447f459b", HashSha512.hashFile(tmpFile));
     }
 
     @Test
     public void testHashString() {
-        Assert.assertEquals("2c74fd17edafd80e8447b0d46741ee243b7eb74dd2149a0ab1b9246fb30382f27e853d8585719e0e67cbda0daa8f51671064615d645ae27acb15bfb1447f459b", HashSha512.hashString("Hello World"));
+        Assertions.assertEquals("2c74fd17edafd80e8447b0d46741ee243b7eb74dd2149a0ab1b9246fb30382f27e853d8585719e0e67cbda0daa8f51671064615d645ae27acb15bfb1447f459b", HashSha512.hashString("Hello World"));
     }
 
 }

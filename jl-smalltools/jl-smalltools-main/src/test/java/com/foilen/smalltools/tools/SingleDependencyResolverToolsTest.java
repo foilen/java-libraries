@@ -1,12 +1,13 @@
 package com.foilen.smalltools.tools;
 
+import com.foilen.smalltools.exception.SmallToolsException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.foilen.smalltools.exception.SmallToolsException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SingleDependencyResolverToolsTest {
 
@@ -15,13 +16,15 @@ public class SingleDependencyResolverToolsTest {
      * A -> B -> A
      * </pre>
      */
-    @Test(expected = SmallToolsException.class)
+    @Test
     public void testCircular() {
-        SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
-        resolver.addDependency("B", "A");
-        resolver.addDependency("A", "B");
+        assertThrows(SmallToolsException.class, () -> {
+            SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
+            resolver.addDependency("B", "A");
+            resolver.addDependency("A", "B");
 
-        resolver.getExecution();
+            resolver.getExecution();
+        });
     }
 
     /**
@@ -30,16 +33,18 @@ public class SingleDependencyResolverToolsTest {
      * E -> F
      * </pre>
      */
-    @Test(expected = SmallToolsException.class)
+    @Test
     public void testCircular2() {
-        SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
-        resolver.addDependency("B", "A");
-        resolver.addDependency("C", "B");
-        resolver.addDependency("D", "C");
-        resolver.addDependency("A", "D");
-        resolver.addDependency("F", "E");
+        assertThrows(SmallToolsException.class, () -> {
+            SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
+            resolver.addDependency("B", "A");
+            resolver.addDependency("C", "B");
+            resolver.addDependency("D", "C");
+            resolver.addDependency("A", "D");
+            resolver.addDependency("F", "E");
 
-        resolver.getExecution();
+            resolver.getExecution();
+        });
     }
 
     /**
@@ -57,7 +62,7 @@ public class SingleDependencyResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
     /**
@@ -76,7 +81,7 @@ public class SingleDependencyResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
     /**
@@ -95,7 +100,7 @@ public class SingleDependencyResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
     /**
@@ -114,17 +119,19 @@ public class SingleDependencyResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assert.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
+        Assertions.assertEquals(Arrays.asList("A", "B", "C", "D", "E"), executionPlan);
     }
 
     /**
      * A,B -> C
      */
-    @Test(expected = SmallToolsException.class)
+    @Test
     public void testTooManyDependencies() {
-        SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
-        resolver.addDependency("C", "A");
-        resolver.addDependency("C", "B");
+        assertThrows(SmallToolsException.class, () -> {
+            SingleDependencyResolverTools resolver = new SingleDependencyResolverTools();
+            resolver.addDependency("C", "A");
+            resolver.addDependency("C", "B");
+        });
     }
 
 }

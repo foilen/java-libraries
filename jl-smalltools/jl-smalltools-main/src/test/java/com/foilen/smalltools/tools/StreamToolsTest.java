@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class StreamToolsTest {
 
@@ -15,7 +15,7 @@ public class StreamToolsTest {
                 Arrays.asList(3, 1, 2).stream() //
         ).sorted().collect(Collectors.toList());
 
-        Assert.assertEquals(Arrays.asList(1, 2, 3), actual);
+        Assertions.assertEquals(Arrays.asList(1, 2, 3), actual);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class StreamToolsTest {
                 Arrays.asList(4, 2).stream() //
         ).sorted().collect(Collectors.toList());
 
-        Assert.assertEquals(Arrays.asList(1, 2, 3, 4, 5), actual);
+        Assertions.assertEquals(Arrays.asList(1, 2, 3, 4, 5), actual);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class StreamToolsTest {
                 Arrays.asList(4, 2).stream() //
         ).sorted().collect(Collectors.toList());
 
-        Assert.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8), actual);
+        Assertions.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8), actual);
     }
 
     @Test
@@ -49,14 +49,14 @@ public class StreamToolsTest {
                 Arrays.asList(4, 2).stream() //
         ).sorted().collect(Collectors.toList());
 
-        Assert.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), actual);
+        Assertions.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), actual);
     }
 
     @Test
     public void testConcat_none() {
         List<Object> actual = StreamTools.concat().sorted().collect(Collectors.toList());
 
-        Assert.assertEquals(0, actual.size());
+        Assertions.assertEquals(0, actual.size());
     }
 
 }

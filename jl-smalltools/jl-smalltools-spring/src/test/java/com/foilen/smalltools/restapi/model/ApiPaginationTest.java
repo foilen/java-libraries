@@ -1,6 +1,6 @@
 package com.foilen.smalltools.restapi.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 

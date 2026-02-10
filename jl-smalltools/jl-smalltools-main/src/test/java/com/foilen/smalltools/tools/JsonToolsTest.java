@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 
@@ -96,7 +96,7 @@ public class JsonToolsTest {
 
     private File tmpFile;
 
-    @Before
+    @BeforeEach
     public void before() throws IOException {
         tmpFile = File.createTempFile("junit", null);
     }
@@ -110,15 +110,15 @@ public class JsonToolsTest {
 
         Type clone = JsonTools.clone(original);
 
-        Assert.assertTrue(original != clone);
-        Assert.assertEquals("Some text", clone.getA());
-        Assert.assertEquals(5, clone.getB());
+        Assertions.assertTrue(original != clone);
+        Assertions.assertEquals("Some text", clone.getA());
+        Assertions.assertEquals(5, clone.getB());
     }
 
     @Test
     public void testClone_null() {
         Type clone = JsonTools.clone(null);
-        Assert.assertNull(clone);
+        Assertions.assertNull(clone);
     }
 
     @SuppressWarnings("rawtypes")
@@ -131,12 +131,12 @@ public class JsonToolsTest {
 
         Object clone = JsonTools.clone(original, Object.class);
 
-        Assert.assertTrue(original != clone);
-        Assert.assertTrue(clone instanceof Map);
+        Assertions.assertTrue(original != clone);
+        Assertions.assertTrue(clone instanceof Map);
         Map<?, ?> cloneMap = (Map) clone;
 
-        Assert.assertEquals("Some text", cloneMap.get("a"));
-        Assert.assertEquals(5, cloneMap.get("b"));
+        Assertions.assertEquals("Some text", cloneMap.get("a"));
+        Assertions.assertEquals(5, cloneMap.get("b"));
     }
 
     @SuppressWarnings("unchecked")
@@ -156,11 +156,11 @@ public class JsonToolsTest {
         AssertTools.assertJsonComparisonWithoutNulls("JsonToolsTest-testCloneAsSortedMap-expected.json", getClass(), clone);
 
         // Assert
-        Assert.assertTrue(clone.get("c") instanceof SortedMap);
+        Assertions.assertTrue(clone.get("c") instanceof SortedMap);
         Map<String, Object> cDepth1 = (Map<String, Object>) clone.get("c");
-        Assert.assertTrue(cDepth1.get("c") instanceof SortedMap);
+        Assertions.assertTrue(cDepth1.get("c") instanceof SortedMap);
         List<Object> clonedList = (List<Object>) cDepth1.get("d");
-        Assert.assertTrue(clonedList.get(0) instanceof SortedMap);
+        Assertions.assertTrue(clonedList.get(0) instanceof SortedMap);
 
     }
 
@@ -172,7 +172,7 @@ public class JsonToolsTest {
         type.setA("hello");
         type.setB(10);
         String actual = JsonTools.compactPrint(type).replaceAll("\r", "");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -182,7 +182,7 @@ public class JsonToolsTest {
         Type type = new Type();
         type.setB(10);
         String actual = JsonTools.compactPrint(type).replaceAll("\r", "");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -192,7 +192,7 @@ public class JsonToolsTest {
         Type type = new Type();
         type.setB(10);
         String actual = JsonTools.compactPrintWithoutNulls(type).replaceAll("\r", "");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -203,7 +203,7 @@ public class JsonToolsTest {
         type.setA("hello");
         type.setB(10);
         String actual = JsonTools.prettyPrint(type).replaceAll("\r", "");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -213,7 +213,7 @@ public class JsonToolsTest {
         Type type = new Type();
         type.setB(10);
         String actual = JsonTools.prettyPrint(type).replaceAll("\r", "");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -223,7 +223,7 @@ public class JsonToolsTest {
         Type type = new Type();
         type.setB(10);
         String actual = JsonTools.prettyPrintWithoutNulls(type).replaceAll("\r", "");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -232,8 +232,8 @@ public class JsonToolsTest {
         FileTools.writeFile(content, tmpFile);
         Type type = JsonTools.readFromFile(tmpFile, Type.class);
 
-        Assert.assertEquals("hello", type.getA());
-        Assert.assertEquals(10, type.getB());
+        Assertions.assertEquals("hello", type.getA());
+        Assertions.assertEquals(10, type.getB());
     }
 
     @Test
@@ -246,8 +246,8 @@ public class JsonToolsTest {
         type.setB(1);
         JsonTools.readFromFile(tmpFile, type);
 
-        Assert.assertEquals("hello", type.getA());
-        Assert.assertEquals(10, type.getB());
+        Assertions.assertEquals("hello", type.getA());
+        Assertions.assertEquals(10, type.getB());
     }
 
     @Test
@@ -256,8 +256,8 @@ public class JsonToolsTest {
         FileTools.writeFile(content, tmpFile);
         Type type = JsonTools.readFromFile(tmpFile.getAbsolutePath(), Type.class);
 
-        Assert.assertEquals("hello", type.getA());
-        Assert.assertEquals(10, type.getB());
+        Assertions.assertEquals("hello", type.getA());
+        Assertions.assertEquals(10, type.getB());
     }
 
     @Test
@@ -270,21 +270,21 @@ public class JsonToolsTest {
         type.setB(1);
         JsonTools.readFromFile(tmpFile.getAbsolutePath(), type);
 
-        Assert.assertEquals("hello", type.getA());
-        Assert.assertEquals(10, type.getB());
+        Assertions.assertEquals("hello", type.getA());
+        Assertions.assertEquals(10, type.getB());
     }
 
     @Test
     public void testReadFromResourceAsList() {
         List<Type> actual = JsonTools.readFromResourceAsList("JsonToolsTest-testReadFromResourceAsList.json", Type.class, this.getClass());
 
-        Assert.assertEquals(2, actual.size());
+        Assertions.assertEquals(2, actual.size());
 
-        Assert.assertEquals("aa", actual.get(0).getA());
-        Assert.assertEquals(12, actual.get(0).getB());
+        Assertions.assertEquals("aa", actual.get(0).getA());
+        Assertions.assertEquals(12, actual.get(0).getB());
 
-        Assert.assertEquals("bb", actual.get(1).getA());
-        Assert.assertEquals(34, actual.get(1).getB());
+        Assertions.assertEquals("bb", actual.get(1).getA());
+        Assertions.assertEquals(34, actual.get(1).getB());
     }
 
     @Test
@@ -292,13 +292,13 @@ public class JsonToolsTest {
         String json = ResourceTools.getResourceAsString("JsonToolsTest-testReadFromResourceAsList.json", this.getClass());
         List<Type> actual = JsonTools.readFromStringAsList(json, Type.class);
 
-        Assert.assertEquals(2, actual.size());
+        Assertions.assertEquals(2, actual.size());
 
-        Assert.assertEquals("aa", actual.get(0).getA());
-        Assert.assertEquals(12, actual.get(0).getB());
+        Assertions.assertEquals("aa", actual.get(0).getA());
+        Assertions.assertEquals(12, actual.get(0).getB());
 
-        Assert.assertEquals("bb", actual.get(1).getA());
-        Assert.assertEquals(34, actual.get(1).getB());
+        Assertions.assertEquals("bb", actual.get(1).getA());
+        Assertions.assertEquals(34, actual.get(1).getB());
     }
 
     @Test
@@ -310,7 +310,7 @@ public class JsonToolsTest {
         stream.close();
 
         String actual = FileTools.getFileAsString(tmpFile);
-        Assert.assertEquals("\"First\"\"Second\"", actual);
+        Assertions.assertEquals("\"First\"\"Second\"", actual);
     }
 
 }

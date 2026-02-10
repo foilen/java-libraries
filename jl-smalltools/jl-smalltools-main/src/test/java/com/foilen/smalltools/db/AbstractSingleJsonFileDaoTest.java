@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import com.foilen.smalltools.tools.ExecutorsTools;
 import com.foilen.smalltools.tools.FileTools;
@@ -42,10 +43,11 @@ public class AbstractSingleJsonFileDaoTest {
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void test() throws Exception {
         File dbFile = File.createTempFile("junit", ".json");
-        Assert.assertTrue(dbFile.delete());
+        Assertions.assertTrue(dbFile.delete());
 
         TestSingleDao firstDao = new TestSingleDao(dbFile);
 
@@ -55,7 +57,7 @@ public class AbstractSingleJsonFileDaoTest {
 
         // Changing the entity does not affect the DB
         entity.setId("anId");
-        Assert.assertEquals("anId", entity.getId());
+        Assertions.assertEquals("anId", entity.getId());
         entity = firstDao.load();
         entity.assertValue(null, 0);
 
@@ -66,7 +68,7 @@ public class AbstractSingleJsonFileDaoTest {
 
         // Changing the entity does not affect the DB
         entity.setId("anId");
-        Assert.assertEquals("anId", entity.getId());
+        Assertions.assertEquals("anId", entity.getId());
         entity = firstDao.load();
         entity.assertValue("id1", 2);
 
@@ -104,17 +106,18 @@ public class AbstractSingleJsonFileDaoTest {
         for (int i = 0; i < 8 && dbFile.lastModified() == modifiedTime; ++i) {
             ThreadTools.sleep(500);
         }
-        Assert.assertEquals(dbFile.lastModified(), modifiedTime);
+        Assertions.assertEquals(dbFile.lastModified(), modifiedTime);
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void test_not_transaction() throws Exception {
 
         int loop = 1000;
 
         File dbFile = File.createTempFile("junit", ".json");
-        Assert.assertTrue(dbFile.delete());
+        Assertions.assertTrue(dbFile.delete());
 
         TestSingleDao dao = new TestSingleDao(dbFile);
 
@@ -149,7 +152,7 @@ public class AbstractSingleJsonFileDaoTest {
         });
 
         // Assert
-        Assert.assertTrue(dao.load().getNumber() < (loop * .9));
+        Assertions.assertTrue(dao.load().getNumber() < (loop * .9));
 
     }
 
@@ -161,17 +164,18 @@ public class AbstractSingleJsonFileDaoTest {
 
         TestSingleDao dao = new TestSingleDao(dbFile);
         TestDbEntity entity = dao.load();
-        Assert.assertNotNull(entity);
+        Assertions.assertNotNull(entity);
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void test_transaction() throws Exception {
 
         int loop = 1000;
 
         File dbFile = File.createTempFile("junit", ".json");
-        Assert.assertTrue(dbFile.delete());
+        Assertions.assertTrue(dbFile.delete());
 
         TestSingleDao dao = new TestSingleDao(dbFile);
 
@@ -211,11 +215,12 @@ public class AbstractSingleJsonFileDaoTest {
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void test_transactions_nested_not_allowed() throws Exception {
 
         File dbFile = File.createTempFile("junit", ".json");
-        Assert.assertTrue(dbFile.delete());
+        Assertions.assertTrue(dbFile.delete());
 
         TestSingleDao dao = new TestSingleDao(dbFile);
 
@@ -230,9 +235,9 @@ public class AbstractSingleJsonFileDaoTest {
                     // Expect crash
                 });
             });
-            Assert.fail("Expecting an exception");
+            Assertions.fail("Expecting an exception");
         } catch (Exception e) {
-            Assert.assertEquals("Nested transactions are not supported", e.getMessage());
+            Assertions.assertEquals("Nested transactions are not supported", e.getMessage());
         }
 
     }

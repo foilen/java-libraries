@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.tools.FileTools;
 
@@ -25,16 +25,16 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         // Create the wrapper
         FileOutputStream wrappedOutputStream = new FileOutputStream(renameSrc);
         RenamingOnCloseOutputStreamWrapper renamingOnCloseOutputStreamWrapper = new RenamingOnCloseOutputStreamWrapper(wrappedOutputStream, renameSrc, renameDst, true);
-        Assert.assertTrue(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertTrue(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
         // Send some data to it and close
         renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the discarding
-        Assert.assertFalse(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertFalse(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
     }
 
@@ -49,8 +49,8 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         // Create the wrapper
         FileOutputStream wrappedOutputStream = new FileOutputStream(renameSrc);
         RenamingOnCloseOutputStreamWrapper renamingOnCloseOutputStreamWrapper = new RenamingOnCloseOutputStreamWrapper(wrappedOutputStream, renameSrc, renameDst, true);
-        Assert.assertTrue(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertTrue(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
         // Send some data to it, change state and close
         renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
@@ -58,11 +58,11 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the renaming
-        Assert.assertFalse(renameSrc.exists());
-        Assert.assertTrue(renameDst.exists());
+        Assertions.assertFalse(renameSrc.exists());
+        Assertions.assertTrue(renameDst.exists());
 
         // Assert the final content
-        Assert.assertEquals("Hello World", FileTools.getFileAsString(renameDst));
+        Assertions.assertEquals("Hello World", FileTools.getFileAsString(renameDst));
     }
 
     @Test
@@ -76,8 +76,8 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         // Create the wrapper
         FileOutputStream wrappedOutputStream = new FileOutputStream(renameSrc);
         RenamingOnCloseOutputStreamWrapper renamingOnCloseOutputStreamWrapper = new RenamingOnCloseOutputStreamWrapper(wrappedOutputStream, renameSrc, renameDst, true);
-        Assert.assertTrue(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertTrue(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
         // Send some data to it and close
         renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
@@ -85,8 +85,8 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the discarding
-        Assert.assertFalse(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertFalse(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
     }
 
@@ -101,19 +101,19 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         // Create the wrapper
         FileOutputStream wrappedOutputStream = new FileOutputStream(renameSrc);
         RenamingOnCloseOutputStreamWrapper renamingOnCloseOutputStreamWrapper = new RenamingOnCloseOutputStreamWrapper(wrappedOutputStream, renameSrc, renameDst);
-        Assert.assertTrue(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertTrue(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
         // Send some data to it and close
         renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the renaming
-        Assert.assertFalse(renameSrc.exists());
-        Assert.assertTrue(renameDst.exists());
+        Assertions.assertFalse(renameSrc.exists());
+        Assertions.assertTrue(renameDst.exists());
 
         // Assert the final content
-        Assert.assertEquals("Hello World", FileTools.getFileAsString(renameDst));
+        Assertions.assertEquals("Hello World", FileTools.getFileAsString(renameDst));
 
     }
 
@@ -128,8 +128,8 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         // Create the wrapper
         FileOutputStream wrappedOutputStream = new FileOutputStream(renameSrc);
         RenamingOnCloseOutputStreamWrapper renamingOnCloseOutputStreamWrapper = new RenamingOnCloseOutputStreamWrapper(wrappedOutputStream, renameSrc, renameDst);
-        Assert.assertTrue(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertTrue(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
         // Send some data to it, change state and close
         renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
@@ -137,8 +137,8 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the discarding
-        Assert.assertFalse(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertFalse(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
     }
 
@@ -153,8 +153,8 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         // Create the wrapper
         FileOutputStream wrappedOutputStream = new FileOutputStream(renameSrc);
         RenamingOnCloseOutputStreamWrapper renamingOnCloseOutputStreamWrapper = new RenamingOnCloseOutputStreamWrapper(wrappedOutputStream, renameSrc, renameDst);
-        Assert.assertTrue(renameSrc.exists());
-        Assert.assertFalse(renameDst.exists());
+        Assertions.assertTrue(renameSrc.exists());
+        Assertions.assertFalse(renameDst.exists());
 
         // Send some data to it and close
         renamingOnCloseOutputStreamWrapper.write("Hello World".getBytes(StandardCharsets.UTF_8));
@@ -162,11 +162,11 @@ public class RenamingOnCloseOutputStreamWrapperTest {
         renamingOnCloseOutputStreamWrapper.close();
 
         // Assert the renaming
-        Assert.assertFalse(renameSrc.exists());
-        Assert.assertTrue(renameDst.exists());
+        Assertions.assertFalse(renameSrc.exists());
+        Assertions.assertTrue(renameDst.exists());
 
         // Assert the final content
-        Assert.assertEquals("Hello World", FileTools.getFileAsString(renameDst));
+        Assertions.assertEquals("Hello World", FileTools.getFileAsString(renameDst));
 
     }
 

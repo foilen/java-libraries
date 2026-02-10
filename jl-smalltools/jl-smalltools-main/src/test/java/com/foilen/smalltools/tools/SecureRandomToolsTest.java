@@ -1,7 +1,7 @@
 package com.foilen.smalltools.tools;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SecureRandomToolsTest {
 
@@ -17,7 +17,7 @@ public class SecureRandomToolsTest {
 
     private void testRandomBase64String(int length) {
         String actual = SecureRandomTools.randomBase64String(length);
-        Assert.assertEquals(length, actual.length());
+        Assertions.assertEquals(length, actual.length());
     }
 
     @Test
@@ -32,7 +32,7 @@ public class SecureRandomToolsTest {
 
     private void testRandomHexString(int length) {
         String actual = SecureRandomTools.randomHexString(length);
-        Assert.assertEquals(length, actual.length());
+        Assertions.assertEquals(length, actual.length());
     }
 
 }

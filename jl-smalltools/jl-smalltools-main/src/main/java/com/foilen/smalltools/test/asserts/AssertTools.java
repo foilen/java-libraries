@@ -3,7 +3,7 @@ package com.foilen.smalltools.test.asserts;
 import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.*;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,7 +81,7 @@ public final class AssertTools {
         if (Math.abs(expected - actual) > delta) {
             long expectedLow = expected - delta;
             long expectedHigh = expected + delta;
-            Assert.fail("Expecting value between " + expectedLow + " and " + expectedHigh + ", but got " + actual);
+            Assertions.fail("Expecting value between " + expectedLow + " and " + expectedHigh + ", but got " + actual);
         }
     }
 
@@ -96,7 +96,7 @@ public final class AssertTools {
         if (Math.abs(expected - actual) > delta) {
             long expectedLow = expected - delta;
             long expectedHigh = expected + delta;
-            Assert.fail("Expecting value between " + expectedLow + " and " + expectedHigh + ", but got " + actual);
+            Assertions.fail("Expecting value between " + expectedLow + " and " + expectedHigh + ", but got " + actual);
         }
     }
 
@@ -108,7 +108,7 @@ public final class AssertTools {
      */
     public static void assertFileContent(File expectedFile, File actualFile) {
         // Check the file size
-        Assert.assertEquals(expectedFile.length(), actualFile.length());
+        Assertions.assertEquals(expectedFile.length(), actualFile.length());
 
         // Check the files
         try {
@@ -141,7 +141,7 @@ public final class AssertTools {
      * @param actual   the actual text
      */
     public static void assertIgnoreLineFeed(String expected, String actual) {
-        Assert.assertEquals(expected.replaceAll("\r", ""), actual.replaceAll("\r", ""));
+        Assertions.assertEquals(expected.replaceAll("\r", ""), actual.replaceAll("\r", ""));
     }
 
     /**
@@ -228,8 +228,8 @@ public final class AssertTools {
                 expectedLen = expectedStream.read(expectedBytes);
                 actualLen = actualStream.read(actualBytes);
 
-                Assert.assertEquals(expectedLen, actualLen);
-                Assert.assertArrayEquals("Position: " + position, expectedBytes, actualBytes);
+                Assertions.assertEquals(expectedLen, actualLen);
+                Assertions.assertArrayEquals(expectedBytes, actualBytes, "Position: " + position);
 
                 position += expectedLen;
             } while (expectedLen != -1);
@@ -289,7 +289,7 @@ public final class AssertTools {
         if (!"false".equals(updateExpectedFileContains)) {
             URL url = expectedContext.getResource(expectedResource);
             if (url == null) {
-                Assert.fail("The file must already exists (you can create an empty file)");
+                Assertions.fail("The file must already exists (you can create an empty file)");
             } else {
                 String filename = url.toString().substring(5);
                 String filePart = new File(filename).getName();
@@ -308,13 +308,13 @@ public final class AssertTools {
                         .toList();
 
                 if (availableFiles.isEmpty()) {
-                    Assert.fail("No file found for " + filePart);
+                    Assertions.fail("No file found for " + filePart);
                 }
                 if (availableFiles.size() > 1) {
                     System.out.println("Too many files found for " + filePart + ":");
                     availableFiles.forEach(System.out::println);
                     System.out.println("You can configure ASSERT_TOOLS_UPDATE_EXPECTED_FILE to filter the path containing that value");
-                    Assert.fail("Too many files found for " + filePart);
+                    Assertions.fail("Too many files found for " + filePart);
                 }
                 String fileToUpdate = availableFiles.get(0);
                 System.out.println("Updating " + fileToUpdate);

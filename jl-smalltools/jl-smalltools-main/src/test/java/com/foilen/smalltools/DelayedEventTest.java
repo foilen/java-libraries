@@ -1,8 +1,9 @@
 package com.foilen.smalltools;
 
 import com.foilen.smalltools.tools.ThreadTools;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
@@ -11,7 +12,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class DelayedEventTest {
 
-    @Test(timeout = 5000)
+    @Test
+    @Timeout(5)
     public void testCancel() throws Exception {
 
         AtomicLong doneTime = new AtomicLong();
@@ -25,10 +27,11 @@ public class DelayedEventTest {
         // Wait
         ThreadTools.sleep(1000);
 
-        Assert.assertEquals(0, doneTime.get());
+        Assertions.assertEquals(0, doneTime.get());
     }
 
-    @Test(timeout = 5000)
+    @Test
+    @Timeout(5)
     public void testExecute() throws Exception {
 
         AtomicLong doneTime = new AtomicLong();
@@ -47,10 +50,11 @@ public class DelayedEventTest {
         // Check delay
         long delta = doneTime.get() - startTime;
         long deltaFromExpected = delta - 1000;
-        Assert.assertTrue(Math.abs(deltaFromExpected) <= 200);
+        Assertions.assertTrue(Math.abs(deltaFromExpected) <= 200);
     }
 
-    @Test(timeout = 20000)
+    @Test
+    @Timeout(20)
     public void testExecuteMultipleInMixedOrder() throws InterruptedException {
 
         long startTime = System.currentTimeMillis();
@@ -99,7 +103,7 @@ public class DelayedEventTest {
         completed.await();
 
         // Check text in order
-        Assert.assertEquals("12345", String.join("", texts));
+        Assertions.assertEquals("12345", String.join("", texts));
 
         // Check delay
         var deltas = doneTimes.stream()
@@ -109,7 +113,7 @@ public class DelayedEventTest {
         for (int i = 1000; i <= 5000; i += 1000) {
             var delta = deltas.get(i / 1000 - 1);
             var deltaFromExpected = delta - i;
-            Assert.assertTrue("Delta " + delta + " is not close to " + i, Math.abs(deltaFromExpected) <= 200);
+            Assertions.assertTrue(Math.abs(deltaFromExpected) <= 200, "Delta " + delta + " is not close to " + i);
         }
 
     }

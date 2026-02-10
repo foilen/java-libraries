@@ -1,7 +1,8 @@
 package com.foilen.smalltools.tools;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
@@ -15,12 +16,14 @@ public class ResourceToolsTest {
         String expected = "This is a test";
         String actual = ResourceTools.getResourceAsString("/com/foilen/smalltools/tools/ResourceToolsTest-getResourceString.txt");
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
-    @Test(expected = SmallToolsException.class)
+    @Test
     public void testGetResourceAsStringNotExists() {
-        ResourceTools.getResourceAsString("does_not_exists.txt");
+        assertThrows(SmallToolsException.class, () -> {
+            ResourceTools.getResourceAsString("does_not_exists.txt");
+        });
     }
 
     @Test
@@ -28,7 +31,7 @@ public class ResourceToolsTest {
         String expected = "This is a test";
         String actual = ResourceTools.getResourceAsString("ResourceToolsTest-getResourceString.txt", this.getClass());
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
 }

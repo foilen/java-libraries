@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link ListsComparator}.
@@ -14,8 +14,8 @@ import org.junit.Test;
 public class ListsComparatorTest {
 
     private void assertComparison(ListsComparatorDifference<String> diffComparison, String object, int side) {
-        Assert.assertEquals(object, diffComparison.getObject());
-        Assert.assertEquals(side, diffComparison.getSide());
+        Assertions.assertEquals(object, diffComparison.getObject());
+        Assertions.assertEquals(side, diffComparison.getSide());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareLists(left, right);
 
-        Assert.assertEquals(9, diffComparisons.size());
+        Assertions.assertEquals(9, diffComparisons.size());
 
         assertComparison(diffComparisons.get(0), "bbb", -1);
         assertComparison(diffComparisons.get(1), "ccc", 1);
@@ -48,7 +48,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareLists(left, right);
 
-        Assert.assertEquals(0, diffComparisons.size());
+        Assertions.assertEquals(0, diffComparisons.size());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareLists(left, right);
 
-        Assert.assertEquals(2, diffComparisons.size());
+        Assertions.assertEquals(2, diffComparisons.size());
 
         assertComparison(diffComparisons.get(0), "aaa", -1);
         assertComparison(diffComparisons.get(1), "bbb", -1);
@@ -75,7 +75,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareLists(left, right);
 
-        Assert.assertEquals(2, diffComparisons.size());
+        Assertions.assertEquals(2, diffComparisons.size());
 
         assertComparison(diffComparisons.get(0), "aaa", 1);
         assertComparison(diffComparisons.get(1), "bbb", 1);
@@ -90,7 +90,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareStreams(left.stream(), right.stream()).collect(Collectors.toList());
 
-        Assert.assertEquals(9, diffComparisons.size());
+        Assertions.assertEquals(9, diffComparisons.size());
 
         assertComparison(diffComparisons.get(0), "bbb", -1);
         assertComparison(diffComparisons.get(1), "ccc", 1);
@@ -112,7 +112,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareStreams(left.stream(), right.stream()).collect(Collectors.toList());
 
-        Assert.assertEquals(0, diffComparisons.size());
+        Assertions.assertEquals(0, diffComparisons.size());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareStreams(left.stream(), right.stream()).collect(Collectors.toList());
 
-        Assert.assertEquals(2, diffComparisons.size());
+        Assertions.assertEquals(2, diffComparisons.size());
 
         assertComparison(diffComparisons.get(0), "aaa", -1);
         assertComparison(diffComparisons.get(1), "bbb", -1);
@@ -139,7 +139,7 @@ public class ListsComparatorTest {
 
         List<ListsComparatorDifference<String>> diffComparisons = ListsComparator.compareStreams(left.stream(), right.stream()).collect(Collectors.toList());
 
-        Assert.assertEquals(2, diffComparisons.size());
+        Assertions.assertEquals(2, diffComparisons.size());
 
         assertComparison(diffComparisons.get(0), "aaa", 1);
         assertComparison(diffComparisons.get(1), "bbb", 1);

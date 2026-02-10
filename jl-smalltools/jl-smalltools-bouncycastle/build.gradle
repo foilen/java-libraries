@@ -17,7 +17,13 @@ dependencies {
     api "org.bouncycastle:bcpg-jdk18on:$bouncyCastleVersion"
     api "org.bouncycastle:bcprov-jdk18on:$bouncyCastleVersion"
 
-    testImplementation "junit:junit:$junit4Version"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit6Version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit6Version"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {

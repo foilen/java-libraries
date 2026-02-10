@@ -3,9 +3,9 @@ package com.foilen.smalltools;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link DarkLaunchingDisabledFeatures}.
@@ -22,7 +22,7 @@ public class DarkLaunchingDisabledFeaturesTest {
 
     private DarkLaunchingDisabledFeatures darkLaunchingDisabledFeatures;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         darkLaunchingDisabledFeatures = new DarkLaunchingDisabledFeatures();
         darkLaunchingDisabledFeatures.setDisabledFeatures(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3);
@@ -30,66 +30,66 @@ public class DarkLaunchingDisabledFeaturesTest {
 
     @Test
     public void testIsAllFeaturesDisabled() {
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled());
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled());
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_ENA_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_ENA_1));
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_DIS_2));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_ENA_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_DIS_2));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_ENA_1));
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
     }
 
     @Test
     public void testIsAllFeaturesEnabled() {
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesEnabled());
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesEnabled());
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1));
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_ENA_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_ENA_1));
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_DIS_2));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_ENA_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_DIS_2));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_ENA_1));
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesEnabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
     }
 
     @Test
     public void testIsAnyFeaturesDisabled() {
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled());
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled());
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_ENA_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_ENA_1));
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_DIS_2));
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_ENA_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_DIS_2));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_ENA_1));
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesDisabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
     }
 
     @Test
     public void testIsAnyFeaturesEnabled() {
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled());
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled());
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1));
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_ENA_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_ENA_1));
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_DIS_2));
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_ENA_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_DIS_2));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_ENA_1));
 
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_DIS_1, FEA_DIS_2, FEA_DIS_3, FEA_ENA_1));
 
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAnyFeaturesEnabled(FEA_ENA_1, FEA_ENA_2, FEA_ENA_3));
     }
 
     @Test
@@ -97,18 +97,18 @@ public class DarkLaunchingDisabledFeaturesTest {
         List<String> disabledFeaturesList = new ArrayList<String>();
         disabledFeaturesList.add(FEA_DIS_1);
         darkLaunchingDisabledFeatures.setDisabledFeatures(disabledFeaturesList);
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_2));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_2));
 
         darkLaunchingDisabledFeatures.setDisabledFeatures("FEA_DIS_1,FEA_DIS_2");
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
-        Assert.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_2));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_3));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
+        Assertions.assertTrue(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_2));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_3));
 
         darkLaunchingDisabledFeatures.setDisabledFeatures("");
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_2));
-        Assert.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_3));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_1));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_2));
+        Assertions.assertFalse(darkLaunchingDisabledFeatures.isAllFeaturesDisabled(FEA_DIS_3));
     }
 
 }

@@ -1,9 +1,7 @@
 package com.foilen.smalltools.crypt.bouncycastle.asymmetric;
 
-import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.IsNot;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
@@ -48,45 +46,45 @@ public abstract class AbstractAsymmetricCryptTest<T extends AsymmetricCrypt<K>, 
         byte[] cryptedData = crypt.encrypt(keyPair, data);
 
         // Validate
-        Assert.assertNotNull(cryptedData);
-        Assert.assertThat(cryptedData, IsNot.not(IsEqual.equalTo(data)));
+        Assertions.assertNotNull(cryptedData);
+        Assertions.assertNotEquals(data, cryptedData);
 
         // Decrypt
         byte[] decryptedData = crypt.decrypt(keyPair, cryptedData);
 
         // Validate
-        Assert.assertNotNull(decryptedData);
-        Assert.assertArrayEquals(data, decryptedData);
+        Assertions.assertNotNull(decryptedData);
+        Assertions.assertArrayEquals(data, decryptedData);
 
         // Recrypt
         byte[] cryptedData2 = crypt.encrypt(keyPair, data);
-        Assert.assertThat(cryptedData, IsNot.not(IsEqual.equalTo(cryptedData2)));
+        Assertions.assertNotEquals(cryptedData2, cryptedData);
 
         // Decrypt
         decryptedData = crypt.decrypt(keyPair, cryptedData2);
 
         // Validate
-        Assert.assertNotNull(decryptedData);
-        Assert.assertArrayEquals(data, decryptedData);
+        Assertions.assertNotNull(decryptedData);
+        Assertions.assertArrayEquals(data, decryptedData);
     }
 
     @Test
     public void testGenerateKeyPair() {
         // Generate a first key
         AsymmetricKeys keyPair = crypt.generateKeyPair(keySize);
-        Assert.assertNotNull(keyPair);
-        Assert.assertNotNull(keyPair.getPublicKey());
-        Assert.assertNotNull(keyPair.getPrivateKey());
-        Assert.assertNotEquals(keyPair.getPublicKey(), keyPair.getPrivateKey());
+        Assertions.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair.getPublicKey());
+        Assertions.assertNotNull(keyPair.getPrivateKey());
+        Assertions.assertNotEquals(keyPair.getPublicKey(), keyPair.getPrivateKey());
 
         // Generate a second key
         AsymmetricKeys keyPair2 = crypt.generateKeyPair(keySize);
-        Assert.assertNotNull(keyPair2);
-        Assert.assertNotNull(keyPair2.getPublicKey());
-        Assert.assertNotNull(keyPair2.getPrivateKey());
-        Assert.assertNotEquals(keyPair2.getPublicKey(), keyPair2.getPrivateKey());
-        Assert.assertNotEquals(keyPair2.getPublicKey(), keyPair.getPublicKey());
-        Assert.assertNotEquals(keyPair2.getPrivateKey(), keyPair.getPrivateKey());
+        Assertions.assertNotNull(keyPair2);
+        Assertions.assertNotNull(keyPair2.getPublicKey());
+        Assertions.assertNotNull(keyPair2.getPrivateKey());
+        Assertions.assertNotEquals(keyPair2.getPublicKey(), keyPair2.getPrivateKey());
+        Assertions.assertNotEquals(keyPair2.getPublicKey(), keyPair.getPublicKey());
+        Assertions.assertNotEquals(keyPair2.getPrivateKey(), keyPair.getPrivateKey());
 
         // Check the internals
         assertGeneratedKeyPairInternals(keyPair);

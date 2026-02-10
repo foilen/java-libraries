@@ -3,9 +3,10 @@ package com.foilen.smalltools.trigger;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ public class SmoothTriggerTest {
     private List<Long> triggers;
     private Runnable action;
 
-    @Before
+    @BeforeEach
     public void before() {
         triggers = new ArrayList<>();
         action = () -> {
@@ -37,7 +38,8 @@ public class SmoothTriggerTest {
         startTime = System.currentTimeMillis();
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testPassthru_Warmup_Max_Cancel() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
@@ -97,10 +99,11 @@ public class SmoothTriggerTest {
         AssertTools.assertEqualsDelta(8 * DELAY + HALF_DELAY, triggers.get(4), HALF_DELAY);
         AssertTools.assertEqualsDelta(10 * DELAY, triggers.get(5), HALF_DELAY);
         AssertTools.assertEqualsDelta(11 * DELAY, triggers.get(6), DELAY);
-        Assert.assertEquals(7, triggers.size());
+        Assertions.assertEquals(7, triggers.size());
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testWarmup() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
@@ -114,7 +117,7 @@ public class SmoothTriggerTest {
             smoothTrigger.request();
         } // At 2D
         smoothTrigger.stop(false);
-        Assert.assertEquals(0, triggers.size());
+        Assertions.assertEquals(0, triggers.size());
 
         // Send multiple events in one shot (2 times) and get 2 triggers at the end
         startTime = System.currentTimeMillis(); // At 0ms
@@ -126,13 +129,14 @@ public class SmoothTriggerTest {
             ThreadTools.sleep(HALF_MAX_DELAY);
         } // At 3D
         smoothTrigger.stop(false);
-        Assert.assertEquals(2, triggers.size());
+        Assertions.assertEquals(2, triggers.size());
         AssertTools.assertEqualsDelta(DELAY, triggers.get(0), HALF_DELAY);
         AssertTools.assertEqualsDelta(2 * DELAY + HALF_DELAY, triggers.get(1), HALF_DELAY);
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testWarmup_Max() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
@@ -146,13 +150,14 @@ public class SmoothTriggerTest {
             ThreadTools.sleep(HALF_DELAY);
         } // At 7D
         smoothTrigger.stop(false);
-        Assert.assertEquals(2, triggers.size());
+        Assertions.assertEquals(2, triggers.size());
         AssertTools.assertEqualsDelta(MAX_DELAY, triggers.get(0), HALF_DELAY);
         AssertTools.assertEqualsDelta(2 * MAX_DELAY, triggers.get(1), DELAY);
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testWarmup_Max_Cancel() {
         SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
                 .setDelayAfterLastTriggerMs(DELAY) //
@@ -172,7 +177,7 @@ public class SmoothTriggerTest {
         ThreadTools.sleep(DELAY + HALF_DELAY);
 
         smoothTrigger.stop(false);
-        Assert.assertEquals(2, triggers.size());
+        Assertions.assertEquals(2, triggers.size());
         AssertTools.assertEqualsDelta(MAX_DELAY, triggers.get(0), HALF_DELAY);
         AssertTools.assertEqualsDelta(5 * DELAY, triggers.get(1), HALF_DELAY);
 

@@ -5,8 +5,8 @@ import com.foilen.smalltools.systemusage.results.MemoryInfo;
 import com.foilen.smalltools.systemusage.results.NetworkInfo;
 import com.foilen.smalltools.tools.JsonTools;
 import com.foilen.smalltools.tools.ResourceTools;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,11 +21,11 @@ public class ProcUsageTest {
     }
 
     private void assertNetworkInfo(NetworkInfo networkInfo, String interfaceName, long inBytes, long inPackets, long outBytes, long outPackets) {
-        Assert.assertEquals(interfaceName, networkInfo.getInterfaceName());
-        Assert.assertEquals(inBytes, networkInfo.getInBytes());
-        Assert.assertEquals(inPackets, networkInfo.getInPackets());
-        Assert.assertEquals(outPackets, networkInfo.getOutPackets());
-        Assert.assertEquals(outPackets, networkInfo.getOutPackets());
+        Assertions.assertEquals(interfaceName, networkInfo.getInterfaceName());
+        Assertions.assertEquals(inBytes, networkInfo.getInBytes());
+        Assertions.assertEquals(inPackets, networkInfo.getInPackets());
+        Assertions.assertEquals(outPackets, networkInfo.getOutPackets());
+        Assertions.assertEquals(outPackets, networkInfo.getOutPackets());
     }
 
     @Test
@@ -39,17 +39,17 @@ public class ProcUsageTest {
         CpuInfo cpuInfo = ProcUsage.getMainCpuInfo(procStatPath);
 
         // Assert
-        Assert.assertEquals(27144761, cpuInfo.getUser());
-        Assert.assertEquals(53247, cpuInfo.getNice());
-        Assert.assertEquals(7825100, cpuInfo.getSystem());
-        Assert.assertEquals(300401755, cpuInfo.getIdle());
-        Assert.assertEquals(746107, cpuInfo.getIowait());
-        Assert.assertEquals(82, cpuInfo.getIrq());
-        Assert.assertEquals(45861, cpuInfo.getSoftirq());
+        Assertions.assertEquals(27144761, cpuInfo.getUser());
+        Assertions.assertEquals(53247, cpuInfo.getNice());
+        Assertions.assertEquals(7825100, cpuInfo.getSystem());
+        Assertions.assertEquals(300401755, cpuInfo.getIdle());
+        Assertions.assertEquals(746107, cpuInfo.getIowait());
+        Assertions.assertEquals(82, cpuInfo.getIrq());
+        Assertions.assertEquals(45861, cpuInfo.getSoftirq());
 
-        Assert.assertEquals(336216913, cpuInfo.calculateTotal());
-        Assert.assertEquals(35815158, cpuInfo.calculateBusy());
-        Assert.assertEquals(11, cpuInfo.calculateBusyPercent());
+        Assertions.assertEquals(336216913, cpuInfo.calculateTotal());
+        Assertions.assertEquals(35815158, cpuInfo.calculateBusy());
+        Assertions.assertEquals(11, cpuInfo.calculateBusyPercent());
     }
 
     @Test
@@ -63,17 +63,17 @@ public class ProcUsageTest {
         CpuInfo cpuInfo = ProcUsage.getMainCpuInfo(procStatPath);
 
         // Assert
-        Assert.assertEquals(27144761, cpuInfo.getUser());
-        Assert.assertEquals(53247, cpuInfo.getNice());
-        Assert.assertEquals(7825100, cpuInfo.getSystem());
-        Assert.assertEquals(2181659790L, cpuInfo.getIdle());
-        Assert.assertEquals(746107, cpuInfo.getIowait());
-        Assert.assertEquals(82, cpuInfo.getIrq());
-        Assert.assertEquals(45861, cpuInfo.getSoftirq());
+        Assertions.assertEquals(27144761, cpuInfo.getUser());
+        Assertions.assertEquals(53247, cpuInfo.getNice());
+        Assertions.assertEquals(7825100, cpuInfo.getSystem());
+        Assertions.assertEquals(2181659790L, cpuInfo.getIdle());
+        Assertions.assertEquals(746107, cpuInfo.getIowait());
+        Assertions.assertEquals(82, cpuInfo.getIrq());
+        Assertions.assertEquals(45861, cpuInfo.getSoftirq());
 
-        Assert.assertEquals(2217474948L, cpuInfo.calculateTotal());
-        Assert.assertEquals(35815158, cpuInfo.calculateBusy());
-        Assert.assertEquals(2, cpuInfo.calculateBusyPercent());
+        Assertions.assertEquals(2217474948L, cpuInfo.calculateTotal());
+        Assertions.assertEquals(35815158, cpuInfo.calculateBusy());
+        Assertions.assertEquals(2, cpuInfo.calculateBusyPercent());
     }
 
     @Test
@@ -86,12 +86,12 @@ public class ProcUsageTest {
         // Execute
         MemoryInfo memoryInfo = ProcUsage.getMemoryInfo(procMemPath);
 
-        Assert.assertEquals(377956000l, memoryInfo.getPhysicalAvailable());
-        Assert.assertEquals(638984000l, memoryInfo.getPhysicalUsed());
-        Assert.assertEquals(1016940000l, memoryInfo.getPhysicalTotal());
-        Assert.assertEquals(4820480000l, memoryInfo.getSwapAvailable());
-        Assert.assertEquals(179516000l, memoryInfo.getSwapUsed());
-        Assert.assertEquals(4999996000l, memoryInfo.getSwapTotal());
+        Assertions.assertEquals(377956000l, memoryInfo.getPhysicalAvailable());
+        Assertions.assertEquals(638984000l, memoryInfo.getPhysicalUsed());
+        Assertions.assertEquals(1016940000l, memoryInfo.getPhysicalTotal());
+        Assertions.assertEquals(4820480000l, memoryInfo.getSwapAvailable());
+        Assertions.assertEquals(179516000l, memoryInfo.getSwapUsed());
+        Assertions.assertEquals(4999996000l, memoryInfo.getSwapTotal());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ProcUsageTest {
         List<NetworkInfo> networkInfos = ProcUsage.getNetworkInfos(procNetDevPath);
 
         // Assert
-        Assert.assertEquals(2, networkInfos.size());
+        Assertions.assertEquals(2, networkInfos.size());
         assertNetworkInfo(networkInfos.get(0), "eth0", 8265769858l, 35975533l, 71073501742l, 37114397l);
         assertNetworkInfo(networkInfos.get(1), "lo", 7817850194l, 14495896l, 7817850194l, 14495896l);
     }

@@ -2,9 +2,9 @@ package com.foilen.smalltools.tools;
 
 import java.util.Date;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 
@@ -13,21 +13,20 @@ import com.foilen.smalltools.exception.SmallToolsException;
  */
 public class AssertToolsTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testAssertFalseBooleanFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Value must be false");
-        AssertTools.assertFalse(true);
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertFalse(true);
+        });
+        assertTrue(exception.getMessage().contains("Value must be false"));
     }
 
     @Test
     public void testAssertFalseBooleanStringFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Custom");
-        AssertTools.assertFalse(true, "Custom");
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertFalse(true, "Custom");
+        });
+        assertTrue(exception.getMessage().contains("Custom"));
     }
 
     @Test
@@ -42,16 +41,18 @@ public class AssertToolsTest {
 
     @Test
     public void testAssertNotNullBooleanFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Value must not be null");
-        AssertTools.assertNotNull(null);
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertNotNull(null);
+        });
+        assertTrue(exception.getMessage().contains("Value must not be null"));
     }
 
     @Test
     public void testAssertNotNullBooleanStringFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Custom");
-        AssertTools.assertNotNull(null, "Custom");
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertNotNull(null, "Custom");
+        });
+        assertTrue(exception.getMessage().contains("Custom"));
     }
 
     @Test
@@ -66,16 +67,18 @@ public class AssertToolsTest {
 
     @Test
     public void testAssertNullBooleanFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Value must be null");
-        AssertTools.assertNull(new Date());
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertNull(new Date());
+        });
+        assertTrue(exception.getMessage().contains("Value must be null"));
     }
 
     @Test
     public void testAssertNullBooleanStringFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Custom");
-        AssertTools.assertNull(new Date(), "Custom");
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertNull(new Date(), "Custom");
+        });
+        assertTrue(exception.getMessage().contains("Custom"));
     }
 
     @Test
@@ -90,16 +93,18 @@ public class AssertToolsTest {
 
     @Test
     public void testAssertTrueBooleanFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Value must be true");
-        AssertTools.assertTrue(false);
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertTrue(false);
+        });
+        assertTrue(exception.getMessage().contains("Value must be true"));
     }
 
     @Test
     public void testAssertTrueBooleanStringFail() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("Custom");
-        AssertTools.assertTrue(false, "Custom");
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            AssertTools.assertTrue(false, "Custom");
+        });
+        assertTrue(exception.getMessage().contains("Custom"));
     }
 
     @Test

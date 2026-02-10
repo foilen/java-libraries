@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 
@@ -43,11 +43,11 @@ public class CollectionsToolsTest {
         Map<String, List<String>> map = new HashMap<>();
         List<String> actual = CollectionsTools.getOrCreateEmptyArrayList(map, "first", String.class);
         actual.add("itemA");
-        Assert.assertEquals(Arrays.asList("itemA"), actual);
+        Assertions.assertEquals(Arrays.asList("itemA"), actual);
 
         actual = CollectionsTools.getOrCreateEmptyArrayList(map, "first", String.class);
         actual.add("itemB");
-        Assert.assertEquals(Arrays.asList("itemA", "itemB"), actual);
+        Assertions.assertEquals(actual, Arrays.asList("itemA", "itemB"));
     }
 
     @Test
@@ -60,12 +60,12 @@ public class CollectionsToolsTest {
         Set<String> expected = new HashSet<>();
         expected.add("itemA");
         expected.add("itemB");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
         actual = CollectionsTools.getOrCreateEmptyHashSet(map, "first", String.class);
         actual.add("itemC");
         expected.add("itemC");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -78,104 +78,104 @@ public class CollectionsToolsTest {
         Set<String> expected = new HashSet<>();
         expected.add("itemA");
         expected.add("itemB");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
         actual = CollectionsTools.getOrCreateEmptyTreeSet(map, "first", String.class);
         actual.add("itemC");
         expected.add("itemC");
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void testIsAllItemNotNullArray() {
-        Assert.assertTrue(CollectionsTools.isAllItemNotNull());
-        Assert.assertTrue(CollectionsTools.isAllItemNotNull("a", "b", "c", ""));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNull((String) null));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNull("a", null, "c"));
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNull());
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNull("a", "b", "c", ""));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNull((String) null));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNull("a", null, "c"));
     }
 
     @Test
     public void testIsAllItemNotNullCollection() {
-        Assert.assertTrue(CollectionsTools.isAllItemNotNull(Arrays.asList()));
-        Assert.assertTrue(CollectionsTools.isAllItemNotNull(Arrays.asList("a", "b", "c", "")));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNull(Arrays.asList((String) null)));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNull(Arrays.asList("a", null, "c")));
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNull(Arrays.asList()));
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNull(Arrays.asList("a", "b", "c", "")));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNull(Arrays.asList((String) null)));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNull(Arrays.asList("a", null, "c")));
     }
 
     @Test
     public void testIsAllItemNotNullOrEmptyArray() {
-        Assert.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty());
-        Assert.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty("a", "b", "c"));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(""));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty((String) null));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty("a", "", "c"));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty("a", null, "c"));
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty());
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty("a", "b", "c"));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(""));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty((String) null));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty("a", "", "c"));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty("a", null, "c"));
     }
 
     @Test
     public void testIsAllItemNotNullOrEmptyCollection() {
-        Assert.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList()));
-        Assert.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("a", "b", "c")));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("")));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList((String) null)));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("a", "", "c")));
-        Assert.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("a", null, "c")));
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList()));
+        Assertions.assertTrue(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("a", "b", "c")));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("")));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList((String) null)));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("a", "", "c")));
+        Assertions.assertFalse(CollectionsTools.isAllItemNotNullOrEmpty(Arrays.asList("a", null, "c")));
     }
 
     @Test
     public void testIsAnyItemNotNullArray() {
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNull());
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNull("a", "b", "c", ""));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNull((String) null));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNull((String) null, (String) null));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNull("a", null, "c"));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNull());
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNull("a", "b", "c", ""));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNull((String) null));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNull((String) null, (String) null));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNull("a", null, "c"));
     }
 
     @Test
     public void testIsAnyItemNotNullCollection() {
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNull(Arrays.asList()));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNull(Arrays.asList("a", "b", "c", "")));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNull(Arrays.asList((String) null)));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNull(Arrays.asList((String) null, (String) null)));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNull(Arrays.asList("a", null, "c")));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNull(Arrays.asList()));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNull(Arrays.asList("a", "b", "c", "")));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNull(Arrays.asList((String) null)));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNull(Arrays.asList((String) null, (String) null)));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNull(Arrays.asList("a", null, "c")));
     }
 
     @Test
     public void testIsAnyItemNotNullOrEmptyArray() {
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty());
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("a", "b", "c"));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(""));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty("", ""));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("", "a", ""));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty((String) null));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty((String) null, (String) null));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("a", "", "c"));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("a", null, "c"));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty());
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("a", "b", "c"));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(""));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty("", ""));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("", "a", ""));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty((String) null));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty((String) null, (String) null));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("a", "", "c"));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty("a", null, "c"));
     }
 
     @Test
     public void testIsAnyItemNotNullOrEmptyCollection() {
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList()));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("a", "b", "c")));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("")));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("", "")));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("", "a", "")));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList((String) null)));
-        Assert.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList((String) null, (String) null)));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("a", "", "c")));
-        Assert.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("a", null, "c")));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList()));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("a", "b", "c")));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("")));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("", "")));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("", "a", "")));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList((String) null)));
+        Assertions.assertFalse(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList((String) null, (String) null)));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("a", "", "c")));
+        Assertions.assertTrue(CollectionsTools.isAnyItemNotNullOrEmpty(Arrays.asList("a", null, "c")));
     }
 
     @Test
     public void testIsNullOrEmpty() {
         List<String> actual = null;
-        Assert.assertTrue(CollectionsTools.isNullOrEmpty(actual));
+        Assertions.assertTrue(CollectionsTools.isNullOrEmpty(actual));
 
         actual = new ArrayList<>();
-        Assert.assertTrue(CollectionsTools.isNullOrEmpty(actual));
+        Assertions.assertTrue(CollectionsTools.isNullOrEmpty(actual));
 
         actual.add("a");
-        Assert.assertFalse(CollectionsTools.isNullOrEmpty(actual));
+        Assertions.assertFalse(CollectionsTools.isNullOrEmpty(actual));
     }
 
     @Test
@@ -186,16 +186,16 @@ public class CollectionsToolsTest {
         map.put("key3", 5);
         map.put("key4", 1);
 
-        Assert.assertEquals(4, map.size());
+        Assertions.assertEquals(4, map.size());
 
-        Assert.assertEquals("key2", CollectionsTools.removeValue(map, 5));
-        Assert.assertEquals(3, map.size());
-        Assert.assertEquals("key3", CollectionsTools.removeValue(map, 5));
-        Assert.assertEquals(2, map.size());
-        Assert.assertNull(CollectionsTools.removeValue(map, 5));
-        Assert.assertEquals(2, map.size());
-        Assert.assertEquals(Integer.valueOf(1), map.get("key1"));
-        Assert.assertEquals(Integer.valueOf(1), map.get("key4"));
+        Assertions.assertEquals("key2", CollectionsTools.removeValue(map, 5));
+        Assertions.assertEquals(3, map.size());
+        Assertions.assertEquals("key3", CollectionsTools.removeValue(map, 5));
+        Assertions.assertEquals(2, map.size());
+        Assertions.assertNull(CollectionsTools.removeValue(map, 5));
+        Assertions.assertEquals(2, map.size());
+        Assertions.assertEquals(Integer.valueOf(1), map.get("key1"));
+        Assertions.assertEquals(Integer.valueOf(1), map.get("key4"));
     }
 
     @Test
@@ -206,12 +206,12 @@ public class CollectionsToolsTest {
         map.put("key3", 5);
         map.put("key4", 1);
 
-        Assert.assertEquals(4, map.size());
+        Assertions.assertEquals(4, map.size());
 
         CollectionsTools.removeValues(map, 5);
-        Assert.assertEquals(2, map.size());
-        Assert.assertEquals(Integer.valueOf(1), map.get("key1"));
-        Assert.assertEquals(Integer.valueOf(1), map.get("key4"));
+        Assertions.assertEquals(2, map.size());
+        Assertions.assertEquals(Integer.valueOf(1), map.get("key1"));
+        Assertions.assertEquals(Integer.valueOf(1), map.get("key4"));
     }
 
 }

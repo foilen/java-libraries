@@ -3,7 +3,7 @@ package com.foilen.smalltools.solver;
 import com.foilen.smalltools.test.asserts.AssertTools;
 import com.foilen.smalltools.tools.ResourceTools;
 import com.google.common.base.Joiner;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

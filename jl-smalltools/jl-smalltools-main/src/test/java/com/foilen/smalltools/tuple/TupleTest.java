@@ -2,8 +2,8 @@ package com.foilen.smalltools.tuple;
 
 import com.foilen.smalltools.db.TestInt;
 import com.foilen.smalltools.test.asserts.AssertTools;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class TupleTest {
         list.add(new Tuple2<>("c", new TestInt(1)));
 
         // Expect exception with "The objects are not comparable"
-        Assert.assertThrows("The objects are not comparable", IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             list.stream().sorted().distinct().collect(Collectors.toList());
         });
 
@@ -82,7 +82,7 @@ public class TupleTest {
         list.add(new Tuple3<>("c", new TestInt(1), 1));
 
         // Expect exception with "The objects are not comparable"
-        Assert.assertThrows("The objects are not comparable", IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             list.stream().sorted().distinct().collect(Collectors.toList());
         });
 

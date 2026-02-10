@@ -17,12 +17,18 @@ dependencies {
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
     api "com.google.guava:guava:$guavaVersion"
     api "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
-    api "junit:junit:$junit4Version"
+    api "org.junit.jupiter:junit-jupiter-api:$junit6Version"
     api "org.apache.commons:commons-lang3:$commonsLang3Version"
     api "org.freemarker:freemarker:$freemarkerVersion"
     api "org.slf4j:slf4j-api:$slf4jVersion"
 
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit6Version"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {

@@ -1,6 +1,6 @@
 package com.foilen.smalltools.db;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import com.foilen.smalltools.tools.AbstractBasics;
 
@@ -25,8 +25,8 @@ public class TestDbEntityWithPolymorphism extends AbstractBasics {
     }
 
     public void assertValue(String expectedId, int expectedNumber) {
-        Assert.assertEquals(expectedId, id);
-        Assert.assertEquals(expectedNumber, number);
+        Assertions.assertEquals(expectedId, id);
+        Assertions.assertEquals(expectedNumber, number);
     }
 
     public String getId() {

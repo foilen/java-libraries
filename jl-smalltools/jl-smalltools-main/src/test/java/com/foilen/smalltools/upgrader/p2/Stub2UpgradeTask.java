@@ -2,7 +2,7 @@ package com.foilen.smalltools.upgrader.p2;
 
 import com.foilen.smalltools.upgrader.UpgraderToolsTest;
 import com.foilen.smalltools.upgrader.tasks.UpgradeTask;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class Stub2UpgradeTask implements UpgradeTask {
 
@@ -10,13 +10,13 @@ public class Stub2UpgradeTask implements UpgradeTask {
     private Integer calledOrder = null;
 
     public void assertCalled(Integer expectedOrder) {
-        Assert.assertNotNull("Was not called", calledOrder);
-        Assert.assertEquals(expectedOrder, calledOrder);
+        Assertions.assertNotNull(calledOrder, "Was not called");
+        Assertions.assertEquals(expectedOrder, calledOrder);
     }
 
     @Override
     public void execute() {
-        Assert.assertNull("Was already called", calledOrder);
+        Assertions.assertNull(calledOrder, "Was already called");
         calledOrder = UpgraderToolsTest.taskCalledOrder.incrementAndGet();
     }
 

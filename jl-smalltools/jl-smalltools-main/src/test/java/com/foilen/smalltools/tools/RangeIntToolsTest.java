@@ -1,8 +1,8 @@
 package com.foilen.smalltools.tools;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ public class RangeIntToolsTest {
         // Empty
         var rangeTool = new RangeIntTools();
         AssertTools.assertJsonComparison(List.of(), rangeTool.getRanges());
-        Assert.assertFalse(rangeTool.isInRange(0));
-        Assert.assertFalse(rangeTool.isInRange(1));
+        Assertions.assertFalse(rangeTool.isInRange(0));
+        Assertions.assertFalse(rangeTool.isInRange(1));
 
         // 3 ranges (1-3, 5-7 , 9-11)
         rangeTool.addValue(11);
@@ -32,16 +32,16 @@ public class RangeIntToolsTest {
                 new RangeInt(5, 7),
                 new RangeInt(9, 11)
         ), rangeTool.getRanges());
-        Assert.assertFalse(rangeTool.isInRange(0));
+        Assertions.assertFalse(rangeTool.isInRange(0));
         for (int i = 1; i <= 3; ++i)
-            Assert.assertTrue(rangeTool.isInRange(i));
-        Assert.assertFalse(rangeTool.isInRange(4));
+            Assertions.assertTrue(rangeTool.isInRange(i));
+        Assertions.assertFalse(rangeTool.isInRange(4));
         for (int i = 5; i <= 7; ++i)
-            Assert.assertTrue(rangeTool.isInRange(i));
-        Assert.assertFalse(rangeTool.isInRange(8));
+            Assertions.assertTrue(rangeTool.isInRange(i));
+        Assertions.assertFalse(rangeTool.isInRange(8));
         for (int i = 9; i <= 11; ++i)
-            Assert.assertTrue(rangeTool.isInRange(i));
-        Assert.assertFalse(rangeTool.isInRange(12));
+            Assertions.assertTrue(rangeTool.isInRange(i));
+        Assertions.assertFalse(rangeTool.isInRange(12));
 
     }
 

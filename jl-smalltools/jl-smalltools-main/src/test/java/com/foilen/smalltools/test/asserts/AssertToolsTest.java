@@ -3,8 +3,8 @@ package com.foilen.smalltools.test.asserts;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AssertToolsTest {
 
@@ -37,22 +37,22 @@ public class AssertToolsTest {
         try {
             AssertTools.assertEqualsDelta(expected, actual, delta);
         } catch (Throwable t) {
-            Assert.assertEquals(errorMessage, t.getMessage());
+            Assertions.assertEquals(errorMessage, t.getMessage());
             return;
         }
 
-        Assert.fail("Did not fail");
+        Assertions.fail("Did not fail");
     }
 
     private void testAssertEqualsDeltaFail(long expected, long actual, long delta, String errorMessage) {
         try {
             AssertTools.assertEqualsDelta(expected, actual, delta);
         } catch (Throwable t) {
-            Assert.assertEquals(errorMessage, t.getMessage());
+            Assertions.assertEquals(errorMessage, t.getMessage());
             return;
         }
 
-        Assert.fail("Did not fail");
+        Assertions.fail("Did not fail");
     }
 
     @Test

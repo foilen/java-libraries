@@ -2,26 +2,26 @@ package com.foilen.smalltools.tools;
 
 import java.util.Date;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.tuple.Tuple2;
 
 public class ThreadToolsTest {
 
     private void assertThreadName(String expected) {
-        Assert.assertEquals(expected, Thread.currentThread().getName());
+        Assertions.assertEquals(expected, Thread.currentThread().getName());
     }
 
     @Test
     public void testGetStackMethod_ofTest() {
-        Assert.assertEquals("testGetStackMethod_ofTest", ThreadTools.getStackMethodName(getClass()).get());
+        Assertions.assertEquals("testGetStackMethod_ofTest", ThreadTools.getStackMethodName(getClass()).get());
         ThreadTools.printStackTrace(Thread.currentThread());
     }
 
     @Test
     public void testGetStackMethod_ofThreadTools() {
-        Assert.assertEquals("getStackMethodName", ThreadTools.getStackMethodName(ThreadTools.class).get());
+        Assertions.assertEquals("getStackMethodName", ThreadTools.getStackMethodName(ThreadTools.class).get());
         ThreadTools.printStackTrace(Thread.currentThread());
     }
 

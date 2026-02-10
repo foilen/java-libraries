@@ -3,8 +3,9 @@ package com.foilen.smalltools.tools;
 import com.foilen.smalltools.exception.EndOfStreamException;
 import com.foilen.smalltools.tuple.Tuple2;
 import com.google.common.primitives.Ints;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
 
@@ -21,12 +22,12 @@ public class StreamsToolsTest {
 
     @Test
     public void testConsumeAsString() {
-        Assert.assertEquals("Hello World", StreamsTools.consumeAsString(getClass().getResourceAsStream("StreamsToolsTest-file.txt")));
+        Assertions.assertEquals("Hello World", StreamsTools.consumeAsString(getClass().getResourceAsStream("StreamsToolsTest-file.txt")));
     }
 
     @Test
     public void testConsumeAsString_UTF8() {
-        Assert.assertEquals("L'école de la vie", StreamsTools.consumeAsString(getClass().getResourceAsStream("StreamsToolsTest-testConsumeAsString_UTF8.txt")));
+        Assertions.assertEquals("L'école de la vie", StreamsTools.consumeAsString(getClass().getResourceAsStream("StreamsToolsTest-testConsumeAsString_UTF8.txt")));
     }
 
     @Test
@@ -46,7 +47,8 @@ public class StreamsToolsTest {
         verifyNoMoreInteractions(outputLogger);
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testFillBuffer() throws Throwable {
         Tuple2<PipedInputStream, PipedOutputStream> pipe = StreamsTools.createPipe();
         InputStream in = pipe.getA();
@@ -56,7 +58,7 @@ public class StreamsToolsTest {
         Tuple2<Throwable, Void> exception = new Tuple2<>();
         new Thread(() -> {
             try {
-                Assert.assertEquals("Hello World", StreamsTools.readString(in));
+                Assertions.assertEquals("Hello World", StreamsTools.readString(in));
             } catch (Exception e) {
                 exception.setA(e);
             }
@@ -85,7 +87,7 @@ public class StreamsToolsTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         StreamsTools.flowStream(getClass().getResourceAsStream("StreamsToolsTest-file.txt"), outputStream);
 
-        Assert.assertEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
+        Assertions.assertEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
     }
 
     @Test
@@ -94,14 +96,15 @@ public class StreamsToolsTest {
         StreamsTools.flowStreamNonBlocking(getClass().getResourceAsStream("StreamsToolsTest-file.txt"), outputStream);
 
         // Shouldn't have the time to already copy the stream
-        Assert.assertNotEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
+        Assertions.assertNotEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
 
         // Wait one second and retry
         ThreadTools.sleep(1000);
-        Assert.assertEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
+        Assertions.assertEquals("Hello World", StreamsTools.consumeAsString(new ByteArrayInputStream(outputStream.toByteArray())));
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testWriteAndRead() {
         Tuple2<PipedInputStream, PipedOutputStream> pipe = StreamsTools.createPipe();
         InputStream in = pipe.getA();
@@ -111,12 +114,13 @@ public class StreamsToolsTest {
         StreamsTools.write(out, "Hello World");
         StreamsTools.write(out, "Hello World");
 
-        Assert.assertEquals(10, StreamsTools.readInt(in));
-        Assert.assertEquals("Hello World", StreamsTools.readString(in));
-        Assert.assertEquals("Hello World", StreamsTools.readString(in, 15));
+        Assertions.assertEquals(10, StreamsTools.readInt(in));
+        Assertions.assertEquals("Hello World", StreamsTools.readString(in));
+        Assertions.assertEquals("Hello World", StreamsTools.readString(in, 15));
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testWriteAndRead_CorruptedContent() throws IOException {
 
         File tmpFile = File.createTempFile("junit", null);
@@ -130,21 +134,22 @@ public class StreamsToolsTest {
         out.close();
 
         InputStream in = new FileInputStream(tmpFile);
-        Assert.assertEquals(10, StreamsTools.readInt(in));
-        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+        Assertions.assertEquals(10, StreamsTools.readInt(in));
+        Assertions.assertEquals("Hello World", StreamsTools.readString(in));
 
         boolean gotException = false;
         try {
             StreamsTools.readString(in, 15);
         } catch (EndOfStreamException e) {
             gotException = true;
-            Assert.assertTrue(e.isCorrupted());
+            Assertions.assertTrue(e.isCorrupted());
         }
-        Assert.assertTrue(gotException);
+        Assertions.assertTrue(gotException);
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testWriteAndRead_CorruptedLength() throws IOException {
 
         File tmpFile = File.createTempFile("junit", null);
@@ -157,21 +162,22 @@ public class StreamsToolsTest {
         out.close();
 
         InputStream in = new FileInputStream(tmpFile);
-        Assert.assertEquals(10, StreamsTools.readInt(in));
-        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+        Assertions.assertEquals(10, StreamsTools.readInt(in));
+        Assertions.assertEquals("Hello World", StreamsTools.readString(in));
 
         boolean gotException = false;
         try {
             StreamsTools.readString(in, 15);
         } catch (EndOfStreamException e) {
             gotException = true;
-            Assert.assertTrue(e.isCorrupted());
+            Assertions.assertTrue(e.isCorrupted());
         }
-        Assert.assertTrue(gotException);
+        Assertions.assertTrue(gotException);
 
     }
 
-    @Test(timeout = 30000)
+    @Test
+    @Timeout(30)
     public void testWriteAndRead_EOF() throws IOException {
 
         File tmpFile = File.createTempFile("junit", null);
@@ -183,18 +189,18 @@ public class StreamsToolsTest {
         StreamsTools.write(out, "Hello World");
 
         InputStream in = new FileInputStream(tmpFile);
-        Assert.assertEquals(10, StreamsTools.readInt(in));
-        Assert.assertEquals("Hello World", StreamsTools.readString(in));
-        Assert.assertEquals("Hello World", StreamsTools.readString(in));
+        Assertions.assertEquals(10, StreamsTools.readInt(in));
+        Assertions.assertEquals("Hello World", StreamsTools.readString(in));
+        Assertions.assertEquals("Hello World", StreamsTools.readString(in));
 
         boolean gotException = false;
         try {
             StreamsTools.readString(in);
         } catch (EndOfStreamException e) {
             gotException = true;
-            Assert.assertFalse(e.isCorrupted());
+            Assertions.assertFalse(e.isCorrupted());
         }
-        Assert.assertTrue(gotException);
+        Assertions.assertTrue(gotException);
 
     }
 

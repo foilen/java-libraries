@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.inputstream.ZerosInputStream;
 
@@ -157,7 +157,7 @@ public class ReflectionToolsTest {
                 return;
             }
         }
-        Assert.fail("Field " + fieldName + " is not part of the list");
+        Assertions.fail("Field " + fieldName + " is not part of the list");
     }
 
     private void assertContainMethod(List<Method> methods, String methodName) {
@@ -166,7 +166,7 @@ public class ReflectionToolsTest {
                 return;
             }
         }
-        Assert.fail("Method " + methodName + " is not part of the list");
+        Assertions.fail("Method " + methodName + " is not part of the list");
     }
 
     @Test
@@ -177,7 +177,7 @@ public class ReflectionToolsTest {
             // Coverage test
             assertContainField(fields, "$jacocoData");
         } else {
-            Assert.assertEquals(expectedSize, fields.size());
+            Assertions.assertEquals(expectedSize, fields.size());
         }
         assertContainField(fields, "age");
         assertContainField(fields, "animal");
@@ -189,7 +189,7 @@ public class ReflectionToolsTest {
     @Test
     public void testAllFieldsWithAnnotation() {
         List<Field> fields = ReflectionTools.allFieldsWithAnnotation(Anything2.class, MyAnnotation.class);
-        Assert.assertEquals(2, fields.size());
+        Assertions.assertEquals(2, fields.size());
         assertContainField(fields, "animal");
         assertContainField(fields, "something");
     }
@@ -197,7 +197,7 @@ public class ReflectionToolsTest {
     @Test
     public void testAllMethodsWithAnnotations() {
         List<Method> methods = ReflectionTools.allMethodsWithAnnotation(Anything2.class, MyAnnotation.class);
-        Assert.assertEquals(2, methods.size());
+        Assertions.assertEquals(2, methods.size());
         assertContainMethod(methods, "getName");
         assertContainMethod(methods, "init");
     }
@@ -211,9 +211,9 @@ public class ReflectionToolsTest {
         dog.setAge(10);
         dog.setName("Fido");
         ReflectionTools.copyAllProperties(dog, anything);
-        Assert.assertEquals(10, anything.getAge());
-        Assert.assertEquals("Fido", anything.getName());
-        Assert.assertNull(anything.getAnimal());
+        Assertions.assertEquals(10, anything.getAge());
+        Assertions.assertEquals("Fido", anything.getName());
+        Assertions.assertNull(anything.getAnimal());
 
         // Simple reverse
         dog = new Dog();
@@ -222,41 +222,41 @@ public class ReflectionToolsTest {
         anything.setName("Rick");
         anything.setAnimal(setDog);
         ReflectionTools.copyAllProperties(anything, dog);
-        Assert.assertEquals(20, dog.getAge());
-        Assert.assertEquals("Rick", dog.getName());
+        Assertions.assertEquals(20, dog.getAge());
+        Assertions.assertEquals("Rick", dog.getName());
 
         // With sub-class
         AnimalContainer animalContainer = new AnimalContainer();
         ReflectionTools.copyAllProperties(anything, animalContainer);
-        Assert.assertEquals(setDog, animalContainer.getAnimal());
+        Assertions.assertEquals(setDog, animalContainer.getAnimal());
 
         // With sub-class (wrong way)
         anything = new Anything();
         animalContainer.setAnimal(new Cat());
         ReflectionTools.copyAllProperties(animalContainer, anything);
-        Assert.assertEquals(0, anything.getAge());
-        Assert.assertNull(anything.getName());
-        Assert.assertNull(anything.getAnimal());
+        Assertions.assertEquals(0, anything.getAge());
+        Assertions.assertNull(anything.getName());
+        Assertions.assertNull(anything.getAnimal());
 
         // Partial Properties
         PartialProperties partial = new PartialProperties();
         partial.setName("Joe");
         PartialProperties copiedPartial = new PartialProperties();
         ReflectionTools.copyAllProperties(partial, copiedPartial);
-        Assert.assertEquals("Joe", copiedPartial.getName());
-        Assert.assertEquals("JoeYaY", copiedPartial.getSpecialName());
+        Assertions.assertEquals("Joe", copiedPartial.getName());
+        Assertions.assertEquals("JoeYaY", copiedPartial.getSpecialName());
     }
 
     @Test
     public void testInstantiateEmptyContructor() {
         AtomicLong actual = ReflectionTools.instantiate(AtomicLong.class);
-        Assert.assertNotNull(actual);
+        Assertions.assertNotNull(actual);
     }
 
     @Test
     public void testInstantiateNonEmptyContructor() {
         ZerosInputStream actual = ReflectionTools.instantiate(ZerosInputStream.class, 10L);
-        Assert.assertNotNull(actual);
+        Assertions.assertNotNull(actual);
     }
 
 }

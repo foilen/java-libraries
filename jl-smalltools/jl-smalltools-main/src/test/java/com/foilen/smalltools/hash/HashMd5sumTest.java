@@ -3,8 +3,8 @@ package com.foilen.smalltools.hash;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.tools.ResourceTools;
 
@@ -20,12 +20,12 @@ public class HashMd5sumTest {
         ResourceTools.copyToFile("HashUtils.txt", HashSha256Test.class, tmpFile);
 
         // Hash it
-        Assert.assertEquals("b10a8db164e0754105b7a99be72e3fe5", HashMd5sum.hashFile(tmpFile));
+        Assertions.assertEquals("b10a8db164e0754105b7a99be72e3fe5", HashMd5sum.hashFile(tmpFile));
     }
 
     @Test
     public void testHashString() {
-        Assert.assertEquals("b10a8db164e0754105b7a99be72e3fe5", HashMd5sum.hashString("Hello World"));
+        Assertions.assertEquals("b10a8db164e0754105b7a99be72e3fe5", HashMd5sum.hashString("Hello World"));
     }
 
 }

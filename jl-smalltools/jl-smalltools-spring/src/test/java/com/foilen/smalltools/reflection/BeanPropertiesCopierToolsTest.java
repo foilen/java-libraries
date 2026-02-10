@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.reflection.model.DestinationBeanPropertiesCopierTools;
 import com.foilen.smalltools.reflection.model.SourceBeanPropertiesCopierTools;
@@ -15,11 +15,11 @@ import com.foilen.smalltools.reflection.model.SourceBeanPropertiesCopierTools;
 public class BeanPropertiesCopierToolsTest {
 
     private void assertCollectionNoOrder(Collection<String> collection, String... values) {
-        Assert.assertNotNull(collection);
+        Assertions.assertNotNull(collection);
         for (String value : values) {
-            Assert.assertTrue(collection.contains(value));
+            Assertions.assertTrue(collection.contains(value));
         }
-        Assert.assertEquals(values.length, collection.size());
+        Assertions.assertEquals(values.length, collection.size());
     }
 
     private Set<String> newHashSet(String... values) {
@@ -41,10 +41,10 @@ public class BeanPropertiesCopierToolsTest {
 
         new BeanPropertiesCopierTools(source, destination).copyAllSameProperties();
 
-        Assert.assertEquals("Some text", destination.getText());
-        Assert.assertEquals(45, destination.getNumber());
-        Assert.assertEquals(new HashSet<>(Arrays.asList("One", "Two")), destination.getTexts());
-        Assert.assertNull(destination.getDifferent());
+        Assertions.assertEquals("Some text", destination.getText());
+        Assertions.assertEquals(45, destination.getNumber());
+        Assertions.assertEquals(new HashSet<>(Arrays.asList("One", "Two")), destination.getTexts());
+        Assertions.assertNull(destination.getDifferent());
 
     }
 
@@ -61,8 +61,8 @@ public class BeanPropertiesCopierToolsTest {
         copierTools.copyProperty("text");
         copierTools.copyProperty("number");
 
-        Assert.assertEquals("Hello World", destination.getText());
-        Assert.assertEquals(5, destination.getNumber());
+        Assertions.assertEquals("Hello World", destination.getText());
+        Assertions.assertEquals(5, destination.getNumber());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class BeanPropertiesCopierToolsTest {
         BeanPropertiesCopierTools copierTools = new BeanPropertiesCopierTools(source, destination);
         copierTools.copyProperty("texts");
 
-        Assert.assertEquals(Arrays.asList("One", "Two"), destination.getTexts());
+        Assertions.assertEquals(Arrays.asList("One", "Two"), destination.getTexts());
     }
 
     @Test
@@ -88,8 +88,8 @@ public class BeanPropertiesCopierToolsTest {
         copierTools.copyProperty("text");
         copierTools.copyProperty("texts");
 
-        Assert.assertNull(destination.getText());
-        Assert.assertNull(destination.getTexts());
+        Assertions.assertNull(destination.getText());
+        Assertions.assertNull(destination.getTexts());
     }
 
     @Test
@@ -105,10 +105,10 @@ public class BeanPropertiesCopierToolsTest {
         copierTools.copyProperty("text", "secondText");
         copierTools.copyProperty("number", "secondNumber");
 
-        Assert.assertNull(destination.getText());
-        Assert.assertEquals("Hello World", destination.getSecondText());
-        Assert.assertEquals(10, destination.getNumber());
-        Assert.assertEquals(5, destination.getSecondNumber());
+        Assertions.assertNull(destination.getText());
+        Assertions.assertEquals("Hello World", destination.getSecondText());
+        Assertions.assertEquals(10, destination.getNumber());
+        Assertions.assertEquals(5, destination.getSecondNumber());
     }
 
     @Test
@@ -120,8 +120,8 @@ public class BeanPropertiesCopierToolsTest {
         BeanPropertiesCopierTools copierTools = new BeanPropertiesCopierTools(source, destination);
         copierTools.copyProperty("texts", "secondTexts");
 
-        Assert.assertNull(destination.getTexts());
-        Assert.assertEquals(Arrays.asList("One", "Two"), destination.getSecondTexts());
+        Assertions.assertNull(destination.getTexts());
+        Assertions.assertEquals(Arrays.asList("One", "Two"), destination.getSecondTexts());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class BeanPropertiesCopierToolsTest {
         BeanPropertiesCopierTools copierTools = new BeanPropertiesCopierTools(source, destination);
         copierTools.updateCollection("texts");
 
-        Assert.assertEquals(Arrays.asList("AAA", "BBB", "CCC"), destination.getTexts());
+        Assertions.assertEquals(Arrays.asList("AAA", "BBB", "CCC"), destination.getTexts());
     }
 
     @Test
@@ -172,7 +172,7 @@ public class BeanPropertiesCopierToolsTest {
         BeanPropertiesCopierTools copierTools = new BeanPropertiesCopierTools(source, destination);
         copierTools.updateCollection("texts");
 
-        Assert.assertEquals(Arrays.asList(), destination.getTexts());
+        Assertions.assertEquals(Arrays.asList(), destination.getTexts());
     }
 
     @Test
@@ -184,7 +184,7 @@ public class BeanPropertiesCopierToolsTest {
         BeanPropertiesCopierTools copierTools = new BeanPropertiesCopierTools(source, destination);
         copierTools.updateCollection("texts", "secondTexts");
 
-        Assert.assertNull(destination.getTexts());
+        Assertions.assertNull(destination.getTexts());
         assertCollectionNoOrder(destination.getSecondTexts(), "AAA", "BBB", "CCC");
 
     }

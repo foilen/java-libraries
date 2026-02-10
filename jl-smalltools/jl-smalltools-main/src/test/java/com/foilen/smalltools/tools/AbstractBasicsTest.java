@@ -1,7 +1,7 @@
 package com.foilen.smalltools.tools;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.tools.model.OneBasic;
 
@@ -13,14 +13,14 @@ public class AbstractBasicsTest {
         OneBasic aBis = new OneBasic("first", 1);
         OneBasic b = new OneBasic("second", 2);
 
-        Assert.assertEquals("OneBasic[number=1,text=first]", a.toString());
+        Assertions.assertEquals("OneBasic[number=1,text=first]", a.toString());
 
-        Assert.assertTrue(a.equals(aBis));
-        Assert.assertFalse(a.equals(b));
-        Assert.assertFalse(aBis.equals(b));
+        Assertions.assertTrue(a.equals(aBis));
+        Assertions.assertFalse(a.equals(b));
+        Assertions.assertFalse(aBis.equals(b));
 
-        Assert.assertEquals(a.hashCode(), aBis.hashCode());
-        Assert.assertNotEquals(b.hashCode(), aBis.hashCode());
+        Assertions.assertEquals(a.hashCode(), aBis.hashCode());
+        Assertions.assertNotEquals(b.hashCode(), aBis.hashCode());
     }
 
 }

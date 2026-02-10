@@ -3,8 +3,8 @@ package com.foilen.smalltools;
 import com.foilen.smalltools.compress.UnzipFiles;
 import com.foilen.smalltools.compress.ZipFiles;
 import com.foilen.smalltools.tools.FileTools;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,8 +18,8 @@ public class ZipAndUnzipFilesTest {
 
     private void assertFile(File baseDirectory, String filePath, String expectedContent) {
         File file = new File(baseDirectory.getAbsolutePath() + File.separatorChar + filePath);
-        Assert.assertTrue(file.exists());
-        Assert.assertEquals(expectedContent, FileTools.getFileAsString(file));
+        Assertions.assertTrue(file.exists());
+        Assertions.assertEquals(expectedContent, FileTools.getFileAsString(file));
     }
 
     @Test

@@ -11,9 +11,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
 import com.foilen.smalltools.tools.DateTools;
@@ -36,25 +36,25 @@ public class RSATrustedCertificatesTest {
     private void assertInvalid(RSATrustedCertificates rsaTrustedCertificates, RSACertificate... rsaCertificates) {
         for (RSACertificate rsaCertificate : rsaCertificates) {
             String errorMessage = "Certificate " + rsaCertificate.getCommonName() + " is trusted";
-            Assert.assertFalse(errorMessage, rsaTrustedCertificates.isTrusted(rsaCertificate));
+            Assertions.assertFalse(rsaTrustedCertificates.isTrusted(rsaCertificate), errorMessage);
         }
     }
 
     private void assertValid(RSATrustedCertificates rsaTrustedCertificates, RSACertificate... rsaCertificates) {
         for (RSACertificate rsaCertificate : rsaCertificates) {
             String errorMessage = "Certificate " + rsaCertificate.getCommonName() + " is not trusted";
-            Assert.assertTrue(errorMessage, rsaTrustedCertificates.isTrusted(rsaCertificate));
+            Assertions.assertTrue(rsaTrustedCertificates.isTrusted(rsaCertificate), errorMessage);
         }
     }
 
     private void assertValidWithIntermediates(RSATrustedCertificates rsaTrustedCertificates, RSACertificate intermediate, RSACertificate... rsaCertificates) {
         for (RSACertificate rsaCertificate : rsaCertificates) {
             String errorMessage = "Certificate " + rsaCertificate.getCommonName() + " is not trusted";
-            Assert.assertTrue(errorMessage, rsaTrustedCertificates.isTrusted(rsaCertificate, intermediate));
+            Assertions.assertTrue(rsaTrustedCertificates.isTrusted(rsaCertificate, intermediate), errorMessage);
         }
     }
 
-    @Before
+    @BeforeEach
     public void before() {
 
         Date now = new Date();
@@ -130,9 +130,9 @@ public class RSATrustedCertificatesTest {
 
         KeyStore keyStore = RSATools.createKeyStore(rsaTrustedCertificates);
 
-        Assert.assertTrue(keyStore.containsAlias(certA.getThumbprint()));
-        Assert.assertTrue(keyStore.containsAlias(certM.getThumbprint()));
-        Assert.assertFalse(keyStore.containsAlias(certAB.getThumbprint()));
+        Assertions.assertTrue(keyStore.containsAlias(certA.getThumbprint()));
+        Assertions.assertTrue(keyStore.containsAlias(certM.getThumbprint()));
+        Assertions.assertFalse(keyStore.containsAlias(certAB.getThumbprint()));
     }
 
     @Test
@@ -144,7 +144,7 @@ public class RSATrustedCertificatesTest {
 
         TrustManagerFactory trustManagerFactory = RSATools.createTrustManagerFactory(rsaTrustedCertificates);
         TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
-        Assert.assertEquals(1, trustManagers.length);
+        Assertions.assertEquals(1, trustManagers.length);
         X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
 
         // Try success (with intermediate)
@@ -169,7 +169,7 @@ public class RSATrustedCertificatesTest {
         } catch (CertificateException e) {
             hadException = true;
         }
-        Assert.assertTrue(hadException);
+        Assertions.assertTrue(hadException);
 
     }
 

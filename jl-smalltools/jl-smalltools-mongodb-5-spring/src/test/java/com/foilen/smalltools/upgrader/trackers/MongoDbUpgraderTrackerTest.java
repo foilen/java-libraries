@@ -7,7 +7,7 @@ import com.foilen.smalltools.upgrader.tasks.UpgradeTask;
 import com.foilen.smalltools.upgrader.trackers.tasks.V_1_InsertTask;
 import com.foilen.smalltools.upgrader.trackers.tasks.V_2_InsertTask;
 import com.mongodb.client.model.Sorts;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class MongoDbUpgraderTrackerTest extends AbstractEmbeddedMongoDbTest {
         // No tasks
         upgraderTools.setTasks(List.of());
         upgraderTools.execute();
-        Assert.assertEquals(List.of(),
+        Assertions.assertEquals(List.of(),
                 StreamTools.toStream(mongoCollection.find().sort(Sorts.ascending("_id")).spliterator())
                         .map(doc -> doc.getString("_id"))
                         .toList()
@@ -42,7 +42,7 @@ public class MongoDbUpgraderTrackerTest extends AbstractEmbeddedMongoDbTest {
                 createTask(new V_1_InsertTask())
         ));
         upgraderTools.execute();
-        Assert.assertEquals(List.of("id-1"),
+        Assertions.assertEquals(List.of("id-1"),
                 StreamTools.toStream(mongoCollection.find().sort(Sorts.ascending("_id")).spliterator())
                         .map(doc -> doc.getString("_id"))
                         .toList()
@@ -50,7 +50,7 @@ public class MongoDbUpgraderTrackerTest extends AbstractEmbeddedMongoDbTest {
 
         // Reexecute (must not do anything)
         upgraderTools.execute();
-        Assert.assertEquals(List.of("id-1"),
+        Assertions.assertEquals(List.of("id-1"),
                 StreamTools.toStream(mongoCollection.find().sort(Sorts.ascending("_id")).spliterator())
                         .map(doc -> doc.getString("_id"))
                         .toList()
@@ -62,7 +62,7 @@ public class MongoDbUpgraderTrackerTest extends AbstractEmbeddedMongoDbTest {
                 createTask(new V_2_InsertTask())
         ));
         upgraderTools.execute();
-        Assert.assertEquals(List.of("id-1", "id-2"),
+        Assertions.assertEquals(List.of("id-1", "id-2"),
                 StreamTools.toStream(mongoCollection.find().sort(Sorts.ascending("_id")).spliterator())
                         .map(doc -> doc.getString("_id"))
                         .toList()
@@ -70,7 +70,7 @@ public class MongoDbUpgraderTrackerTest extends AbstractEmbeddedMongoDbTest {
 
         // Reeexecute (must not do anything)
         upgraderTools.execute();
-        Assert.assertEquals(List.of("id-1", "id-2"),
+        Assertions.assertEquals(List.of("id-1", "id-2"),
                 StreamTools.toStream(mongoCollection.find().sort(Sorts.ascending("_id")).spliterator())
                         .map(doc -> doc.getString("_id"))
                         .toList()

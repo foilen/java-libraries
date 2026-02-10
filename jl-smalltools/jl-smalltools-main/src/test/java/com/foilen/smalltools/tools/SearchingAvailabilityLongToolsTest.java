@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SearchingAvailabilityLongToolsTest {
 
@@ -27,20 +27,20 @@ public class SearchingAvailabilityLongToolsTest {
 
         // Get them all
         for (long i = 0; i < 10; ++i) {
-            Assert.assertEquals(i, (long) searchingAvailability.getNext().get());
+            Assertions.assertEquals(i, (long) searchingAvailability.getNext().get());
         }
-        Assert.assertFalse(searchingAvailability.getNext().isPresent());
+        Assertions.assertFalse(searchingAvailability.getNext().isPresent());
 
         // Release 6th
         used.remove(6L);
-        Assert.assertEquals(6, (long) searchingAvailability.getNext().get());
+        Assertions.assertEquals(6, (long) searchingAvailability.getNext().get());
 
         // Release 1, 5
         used.remove(1L);
         used.remove(5L);
-        Assert.assertEquals(1, (long) searchingAvailability.getNext().get());
-        Assert.assertEquals(5, (long) searchingAvailability.getNext().get());
-        Assert.assertFalse(searchingAvailability.getNext().isPresent());
+        Assertions.assertEquals(1, (long) searchingAvailability.getNext().get());
+        Assertions.assertEquals(5, (long) searchingAvailability.getNext().get());
+        Assertions.assertFalse(searchingAvailability.getNext().isPresent());
 
     }
 

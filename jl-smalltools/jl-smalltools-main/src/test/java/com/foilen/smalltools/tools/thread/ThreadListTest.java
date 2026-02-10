@@ -2,8 +2,9 @@ package com.foilen.smalltools.tools.thread;
 
 import java.util.concurrent.Semaphore;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import com.foilen.smalltools.tools.ThreadTools;
 
@@ -27,7 +28,8 @@ public class ThreadListTest {
         }
     }
 
-    @Test(timeout = 20000)
+    @Test
+    @Timeout(20)
     public void test() throws InterruptedException {
 
         Semaphore sa = new Semaphore(0);
@@ -40,31 +42,31 @@ public class ThreadListTest {
                 new ThreadListTestRunnable(sc) //
         );
 
-        Assert.assertFalse(threadList.areAllAlive());
-        Assert.assertFalse(threadList.isAnyAlive());
-        Assert.assertEquals(0, threadList.countActive());
+        Assertions.assertFalse(threadList.areAllAlive());
+        Assertions.assertFalse(threadList.isAnyAlive());
+        Assertions.assertEquals(0, threadList.countActive());
 
         // 3 alive
         threadList.start();
-        Assert.assertTrue(threadList.areAllAlive());
-        Assert.assertTrue(threadList.isAnyAlive());
-        Assert.assertEquals(3, threadList.countActive());
+        Assertions.assertTrue(threadList.areAllAlive());
+        Assertions.assertTrue(threadList.isAnyAlive());
+        Assertions.assertEquals(3, threadList.countActive());
 
         // 1 down and join
         sa.release();
         threadList.join(100);
         ThreadTools.sleep(500);
-        Assert.assertFalse(threadList.areAllAlive());
-        Assert.assertTrue(threadList.isAnyAlive());
-        Assert.assertEquals(2, threadList.countActive());
+        Assertions.assertFalse(threadList.areAllAlive());
+        Assertions.assertTrue(threadList.isAnyAlive());
+        Assertions.assertEquals(2, threadList.countActive());
 
         // 2 down and join
         sb.release();
         sc.release();
         threadList.join();
-        Assert.assertFalse(threadList.areAllAlive());
-        Assert.assertFalse(threadList.isAnyAlive());
-        Assert.assertEquals(0, threadList.countActive());
+        Assertions.assertFalse(threadList.areAllAlive());
+        Assertions.assertFalse(threadList.isAnyAlive());
+        Assertions.assertEquals(0, threadList.countActive());
     }
 
 }

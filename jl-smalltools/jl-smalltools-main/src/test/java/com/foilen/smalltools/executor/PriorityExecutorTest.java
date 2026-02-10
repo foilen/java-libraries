@@ -2,7 +2,7 @@ package com.foilen.smalltools.executor;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 import com.foilen.smalltools.tools.ThreadTools;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;

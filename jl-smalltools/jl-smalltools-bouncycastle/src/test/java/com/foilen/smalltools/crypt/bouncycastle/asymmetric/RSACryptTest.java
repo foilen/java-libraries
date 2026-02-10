@@ -3,8 +3,8 @@ package com.foilen.smalltools.crypt.bouncycastle.asymmetric;
 import java.io.File;
 import java.math.BigInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link RSACrypt}.
@@ -18,10 +18,10 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
     @Override
     protected void assertGeneratedKeyPairInternals(AsymmetricKeys keyPair) {
         RSAKeyDetails keyDetails = crypt.retrieveKeyDetails(keyPair);
-        Assert.assertNotNull(keyDetails.getModulus());
-        Assert.assertNotNull(keyDetails.getPublicExponent());
-        Assert.assertNotNull(keyDetails.getPrivateExponent());
-        Assert.assertNotEquals(keyDetails.getPublicExponent(), keyDetails.getPrivateExponent());
+        Assertions.assertNotNull(keyDetails.getModulus());
+        Assertions.assertNotNull(keyDetails.getPublicExponent());
+        Assertions.assertNotNull(keyDetails.getPrivateExponent());
+        Assertions.assertNotEquals(keyDetails.getPublicExponent(), keyDetails.getPrivateExponent());
     }
 
     @Override
@@ -38,9 +38,9 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
 
         // Validate
         keyDetails = crypt.retrieveKeyDetails(createdKeyPair);
-        Assert.assertEquals(modulus, keyDetails.getModulus());
-        Assert.assertEquals(publicExponent, keyDetails.getPublicExponent());
-        Assert.assertEquals(privateExponent, keyDetails.getPrivateExponent());
+        Assertions.assertEquals(modulus, keyDetails.getModulus());
+        Assertions.assertEquals(publicExponent, keyDetails.getPublicExponent());
+        Assertions.assertEquals(privateExponent, keyDetails.getPrivateExponent());
     }
 
     @Test
@@ -51,12 +51,12 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         RSAKeyDetails keyDetails = crypt.retrieveKeyDetails(asymmetricKeys);
 
         // Make sure the private key is CRT
-        Assert.assertNotNull(keyDetails.getCrtCoefficient());
-        Assert.assertNotNull(keyDetails.getPrimeExponentP());
-        Assert.assertNotNull(keyDetails.getPrimeExponentQ());
-        Assert.assertNotNull(keyDetails.getPrimeP());
-        Assert.assertNotNull(keyDetails.getPrimeQ());
-        Assert.assertTrue(keyDetails.isCrt());
+        Assertions.assertNotNull(keyDetails.getCrtCoefficient());
+        Assertions.assertNotNull(keyDetails.getPrimeExponentP());
+        Assertions.assertNotNull(keyDetails.getPrimeExponentQ());
+        Assertions.assertNotNull(keyDetails.getPrimeP());
+        Assertions.assertNotNull(keyDetails.getPrimeQ());
+        Assertions.assertTrue(keyDetails.isCrt());
 
         // Save
         crypt.saveKeysPem(asymmetricKeys, file.getAbsolutePath());
@@ -65,18 +65,18 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPemFromFile(file.getAbsolutePath());
         RSAKeyDetails loadedKeyDetails = crypt.retrieveKeyDetails(loadedAsymmetricKeys);
 
-        Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
-        Assert.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
-        Assert.assertEquals(keyDetails.getPrivateExponent(), loadedKeyDetails.getPrivateExponent());
-        Assert.assertEquals(keyDetails.getPublicExponent(), loadedKeyDetails.getPublicExponent());
+        Assertions.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
+        Assertions.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
+        Assertions.assertEquals(keyDetails.getPrivateExponent(), loadedKeyDetails.getPrivateExponent());
+        Assertions.assertEquals(keyDetails.getPublicExponent(), loadedKeyDetails.getPublicExponent());
 
         // Make sure the private key is CRT
-        Assert.assertEquals(keyDetails.getCrtCoefficient(), loadedKeyDetails.getCrtCoefficient());
-        Assert.assertEquals(keyDetails.getPrimeExponentP(), loadedKeyDetails.getPrimeExponentP());
-        Assert.assertEquals(keyDetails.getPrimeExponentQ(), loadedKeyDetails.getPrimeExponentQ());
-        Assert.assertEquals(keyDetails.getPrimeP(), loadedKeyDetails.getPrimeP());
-        Assert.assertEquals(keyDetails.getPrimeQ(), loadedKeyDetails.getPrimeQ());
-        Assert.assertEquals(keyDetails.isCrt(), loadedKeyDetails.isCrt());
+        Assertions.assertEquals(keyDetails.getCrtCoefficient(), loadedKeyDetails.getCrtCoefficient());
+        Assertions.assertEquals(keyDetails.getPrimeExponentP(), loadedKeyDetails.getPrimeExponentP());
+        Assertions.assertEquals(keyDetails.getPrimeExponentQ(), loadedKeyDetails.getPrimeExponentQ());
+        Assertions.assertEquals(keyDetails.getPrimeP(), loadedKeyDetails.getPrimeP());
+        Assertions.assertEquals(keyDetails.getPrimeQ(), loadedKeyDetails.getPrimeQ());
+        Assertions.assertEquals(keyDetails.isCrt(), loadedKeyDetails.isCrt());
     }
 
     @Test
@@ -86,37 +86,37 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         RSAKeyDetails keyDetails = crypt.retrieveKeyDetails(asymmetricKeys);
 
         // Make sure the private key is CRT
-        Assert.assertNotNull(keyDetails.getCrtCoefficient());
-        Assert.assertNotNull(keyDetails.getPrimeExponentP());
-        Assert.assertNotNull(keyDetails.getPrimeExponentQ());
-        Assert.assertNotNull(keyDetails.getPrimeP());
-        Assert.assertNotNull(keyDetails.getPrimeQ());
-        Assert.assertTrue(keyDetails.isCrt());
+        Assertions.assertNotNull(keyDetails.getCrtCoefficient());
+        Assertions.assertNotNull(keyDetails.getPrimeExponentP());
+        Assertions.assertNotNull(keyDetails.getPrimeExponentQ());
+        Assertions.assertNotNull(keyDetails.getPrimeP());
+        Assertions.assertNotNull(keyDetails.getPrimeQ());
+        Assertions.assertTrue(keyDetails.isCrt());
 
         // Save
         String privatePem = crypt.savePrivateKeyPemAsString(asymmetricKeys);
         String publicPem = crypt.savePublicKeyPemAsString(asymmetricKeys);
-        Assert.assertTrue(privatePem.contains("RSA PRIVATE KEY"));
-        Assert.assertFalse(privatePem.contains("PUBLIC KEY"));
-        Assert.assertFalse(publicPem.contains("RSA PRIVATE KEY"));
-        Assert.assertTrue(publicPem.contains("PUBLIC KEY"));
+        Assertions.assertTrue(privatePem.contains("RSA PRIVATE KEY"));
+        Assertions.assertFalse(privatePem.contains("PUBLIC KEY"));
+        Assertions.assertFalse(publicPem.contains("RSA PRIVATE KEY"));
+        Assertions.assertTrue(publicPem.contains("PUBLIC KEY"));
 
         // Load
         AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPemFromString(publicPem, privatePem, null, null);
         RSAKeyDetails loadedKeyDetails = crypt.retrieveKeyDetails(loadedAsymmetricKeys);
 
-        Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
-        Assert.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
-        Assert.assertEquals(keyDetails.getPrivateExponent(), loadedKeyDetails.getPrivateExponent());
-        Assert.assertEquals(keyDetails.getPublicExponent(), loadedKeyDetails.getPublicExponent());
+        Assertions.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
+        Assertions.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
+        Assertions.assertEquals(keyDetails.getPrivateExponent(), loadedKeyDetails.getPrivateExponent());
+        Assertions.assertEquals(keyDetails.getPublicExponent(), loadedKeyDetails.getPublicExponent());
 
         // Make sure the private key is CRT
-        Assert.assertEquals(keyDetails.getCrtCoefficient(), loadedKeyDetails.getCrtCoefficient());
-        Assert.assertEquals(keyDetails.getPrimeExponentP(), loadedKeyDetails.getPrimeExponentP());
-        Assert.assertEquals(keyDetails.getPrimeExponentQ(), loadedKeyDetails.getPrimeExponentQ());
-        Assert.assertEquals(keyDetails.getPrimeP(), loadedKeyDetails.getPrimeP());
-        Assert.assertEquals(keyDetails.getPrimeQ(), loadedKeyDetails.getPrimeQ());
-        Assert.assertEquals(keyDetails.isCrt(), loadedKeyDetails.isCrt());
+        Assertions.assertEquals(keyDetails.getCrtCoefficient(), loadedKeyDetails.getCrtCoefficient());
+        Assertions.assertEquals(keyDetails.getPrimeExponentP(), loadedKeyDetails.getPrimeExponentP());
+        Assertions.assertEquals(keyDetails.getPrimeExponentQ(), loadedKeyDetails.getPrimeExponentQ());
+        Assertions.assertEquals(keyDetails.getPrimeP(), loadedKeyDetails.getPrimeP());
+        Assertions.assertEquals(keyDetails.getPrimeQ(), loadedKeyDetails.getPrimeQ());
+        Assertions.assertEquals(keyDetails.isCrt(), loadedKeyDetails.isCrt());
     }
 
     @Test
@@ -127,12 +127,12 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         RSAKeyDetails keyDetails = crypt.retrieveKeyDetails(asymmetricKeys);
 
         // Make sure the private key is CRT
-        Assert.assertNotNull(keyDetails.getCrtCoefficient());
-        Assert.assertNotNull(keyDetails.getPrimeExponentP());
-        Assert.assertNotNull(keyDetails.getPrimeExponentQ());
-        Assert.assertNotNull(keyDetails.getPrimeP());
-        Assert.assertNotNull(keyDetails.getPrimeQ());
-        Assert.assertTrue(keyDetails.isCrt());
+        Assertions.assertNotNull(keyDetails.getCrtCoefficient());
+        Assertions.assertNotNull(keyDetails.getPrimeExponentP());
+        Assertions.assertNotNull(keyDetails.getPrimeExponentQ());
+        Assertions.assertNotNull(keyDetails.getPrimeP());
+        Assertions.assertNotNull(keyDetails.getPrimeQ());
+        Assertions.assertTrue(keyDetails.isCrt());
 
         // Save
         crypt.savePrivateKeyPem(asymmetricKeys, file.getAbsolutePath());
@@ -141,18 +141,18 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPemFromFile(file.getAbsolutePath());
         RSAKeyDetails loadedKeyDetails = crypt.retrieveKeyDetails(loadedAsymmetricKeys);
 
-        Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
-        Assert.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
-        Assert.assertEquals(keyDetails.getPrivateExponent(), loadedKeyDetails.getPrivateExponent());
-        Assert.assertNotNull(loadedKeyDetails.getPublicExponent());
+        Assertions.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
+        Assertions.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
+        Assertions.assertEquals(keyDetails.getPrivateExponent(), loadedKeyDetails.getPrivateExponent());
+        Assertions.assertNotNull(loadedKeyDetails.getPublicExponent());
 
         // Make sure the private key is CRT
-        Assert.assertEquals(keyDetails.getCrtCoefficient(), loadedKeyDetails.getCrtCoefficient());
-        Assert.assertEquals(keyDetails.getPrimeExponentP(), loadedKeyDetails.getPrimeExponentP());
-        Assert.assertEquals(keyDetails.getPrimeExponentQ(), loadedKeyDetails.getPrimeExponentQ());
-        Assert.assertEquals(keyDetails.getPrimeP(), loadedKeyDetails.getPrimeP());
-        Assert.assertEquals(keyDetails.getPrimeQ(), loadedKeyDetails.getPrimeQ());
-        Assert.assertEquals(keyDetails.isCrt(), loadedKeyDetails.isCrt());
+        Assertions.assertEquals(keyDetails.getCrtCoefficient(), loadedKeyDetails.getCrtCoefficient());
+        Assertions.assertEquals(keyDetails.getPrimeExponentP(), loadedKeyDetails.getPrimeExponentP());
+        Assertions.assertEquals(keyDetails.getPrimeExponentQ(), loadedKeyDetails.getPrimeExponentQ());
+        Assertions.assertEquals(keyDetails.getPrimeP(), loadedKeyDetails.getPrimeP());
+        Assertions.assertEquals(keyDetails.getPrimeQ(), loadedKeyDetails.getPrimeQ());
+        Assertions.assertEquals(keyDetails.isCrt(), loadedKeyDetails.isCrt());
     }
 
     @Test
@@ -169,10 +169,10 @@ public class RSACryptTest extends AbstractAsymmetricCryptTest<RSACrypt, RSAKeyDe
         AsymmetricKeys loadedAsymmetricKeys = crypt.loadKeysPemFromFile(file.getAbsolutePath());
         RSAKeyDetails loadedKeyDetails = crypt.retrieveKeyDetails(loadedAsymmetricKeys);
 
-        Assert.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
-        Assert.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
-        Assert.assertNull(loadedKeyDetails.getPrivateExponent());
-        Assert.assertEquals(keyDetails.getPublicExponent(), loadedKeyDetails.getPublicExponent());
+        Assertions.assertNotSame(asymmetricKeys, loadedAsymmetricKeys);
+        Assertions.assertEquals(keyDetails.getModulus(), loadedKeyDetails.getModulus());
+        Assertions.assertNull(loadedKeyDetails.getPrivateExponent());
+        Assertions.assertEquals(keyDetails.getPublicExponent(), loadedKeyDetails.getPublicExponent());
     }
 
 }

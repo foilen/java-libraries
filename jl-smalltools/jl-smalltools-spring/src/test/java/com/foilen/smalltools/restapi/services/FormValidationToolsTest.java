@@ -2,7 +2,7 @@ package com.foilen.smalltools.restapi.services;
 
 import com.foilen.smalltools.restapi.model.FormResult;
 import com.foilen.smalltools.test.asserts.AssertTools;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 

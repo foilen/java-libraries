@@ -11,10 +11,10 @@ import java.io.PipedOutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 import com.foilen.smalltools.tools.StreamsTools;
@@ -29,13 +29,13 @@ public abstract class AbstractStreamWrapperTest {
     protected InputStream inputStreamInitial;
     protected OutputStream outputStreamInitial;
 
-    @After
+    @AfterEach
     public void after() throws IOException {
         outputStream.close();
         inputStream.close();
     }
 
-    @Before
+    @BeforeEach
     public void before() throws IOException {
         PipedOutputStream pipedOutputStream = new PipedOutputStream();
         PipedInputStream pipedInputStream = new PipedInputStream(pipedOutputStream);
@@ -93,9 +93,9 @@ public abstract class AbstractStreamWrapperTest {
         outputStream.flush();
         outputStream.close();
         int len = inputStream.read(actual);
-        Assert.assertEquals(b.length, len);
+        Assertions.assertEquals(b.length, len);
         for (int i = 0; i < len; ++i) {
-            Assert.assertEquals(b[i], actual[i]);
+            Assertions.assertEquals(b[i], actual[i]);
         }
     }
 
@@ -107,9 +107,9 @@ public abstract class AbstractStreamWrapperTest {
         outputStream.flush();
         outputStream.close();
         int len = inputStream.read(actual);
-        Assert.assertEquals(3, len);
+        Assertions.assertEquals(3, len);
         for (int i = 0; i < len; ++i) {
-            Assert.assertEquals(b[i + 6], actual[i]);
+            Assertions.assertEquals(b[i + 6], actual[i]);
         }
     }
 
@@ -118,7 +118,7 @@ public abstract class AbstractStreamWrapperTest {
         outputStream.write(10);
         outputStream.flush();
         outputStream.close();
-        Assert.assertEquals(10, inputStream.read());
+        Assertions.assertEquals(10, inputStream.read());
     }
 
     /**

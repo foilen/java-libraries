@@ -1,19 +1,19 @@
 package com.foilen.smalltools.inputstream;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ZerosInputStreamTest {
 
     private void assertAllZeros(byte[] bytes, int start, int end) {
         for (int i = start; i < end; ++i) {
-            Assert.assertEquals(0, bytes[i]);
+            Assertions.assertEquals(0, bytes[i]);
         }
     }
 
     private void assertNotZeros(byte[] bytes, int start, int end) {
         for (int i = start; i < end; ++i) {
-            Assert.assertEquals(1, bytes[i]);
+            Assertions.assertEquals(1, bytes[i]);
         }
     }
 
@@ -32,30 +32,30 @@ public class ZerosInputStreamTest {
         int next;
         while ((next = zerosInputStream.read()) != -1) {
             ++actual;
-            Assert.assertEquals(0, next);
+            Assertions.assertEquals(0, next);
         }
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
         zerosInputStream.close();
     }
 
     @Test
     public void testReadByteArray() throws Exception {
         ZerosInputStream zerosInputStream = new ZerosInputStream(500);
-        Assert.assertEquals(500, zerosInputStream.available());
+        Assertions.assertEquals(500, zerosInputStream.available());
         byte[] bytes = new byte[321];
 
         fillWithJunk(bytes);
-        Assert.assertEquals(321, zerosInputStream.read(bytes));
+        Assertions.assertEquals(321, zerosInputStream.read(bytes));
         assertAllZeros(bytes, 0, 321);
-        Assert.assertEquals(179, zerosInputStream.available());
+        Assertions.assertEquals(179, zerosInputStream.available());
 
         fillWithJunk(bytes);
-        Assert.assertEquals(179, zerosInputStream.read(bytes));
+        Assertions.assertEquals(179, zerosInputStream.read(bytes));
         assertAllZeros(bytes, 0, 179);
         assertNotZeros(bytes, 179, 321);
 
-        Assert.assertEquals(0, zerosInputStream.available());
+        Assertions.assertEquals(0, zerosInputStream.available());
 
         zerosInputStream.close();
     }
@@ -63,22 +63,22 @@ public class ZerosInputStreamTest {
     @Test
     public void testReadByteArrayIntInt() throws Exception {
         ZerosInputStream zerosInputStream = new ZerosInputStream(500);
-        Assert.assertEquals(500, zerosInputStream.available());
+        Assertions.assertEquals(500, zerosInputStream.available());
         byte[] bytes = new byte[321];
 
         fillWithJunk(bytes);
-        Assert.assertEquals(290, zerosInputStream.read(bytes, 10, 290));
+        Assertions.assertEquals(290, zerosInputStream.read(bytes, 10, 290));
         assertNotZeros(bytes, 0, 10);
         assertAllZeros(bytes, 10, 300);
         assertNotZeros(bytes, 300, 321);
-        Assert.assertEquals(210, zerosInputStream.available());
+        Assertions.assertEquals(210, zerosInputStream.available());
 
         fillWithJunk(bytes);
-        Assert.assertEquals(210, zerosInputStream.read(bytes, 20, 300));
+        Assertions.assertEquals(210, zerosInputStream.read(bytes, 20, 300));
         assertNotZeros(bytes, 0, 20);
         assertAllZeros(bytes, 20, 230);
         assertNotZeros(bytes, 230, 321);
-        Assert.assertEquals(0, zerosInputStream.available());
+        Assertions.assertEquals(0, zerosInputStream.available());
 
         zerosInputStream.close();
     }
@@ -86,16 +86,16 @@ public class ZerosInputStreamTest {
     @Test
     public void testSkip() throws Exception {
         ZerosInputStream zerosInputStream = new ZerosInputStream(500);
-        Assert.assertEquals(500, zerosInputStream.available());
-        Assert.assertEquals(0, zerosInputStream.skip(-10));
-        Assert.assertEquals(0, zerosInputStream.skip(0));
-        Assert.assertEquals(500, zerosInputStream.available());
-        Assert.assertEquals(300, zerosInputStream.skip(300));
-        Assert.assertEquals(200, zerosInputStream.available());
-        Assert.assertEquals(200, zerosInputStream.skip(250));
-        Assert.assertEquals(0, zerosInputStream.available());
-        Assert.assertEquals(0, zerosInputStream.skip(250));
-        Assert.assertEquals(0, zerosInputStream.available());
+        Assertions.assertEquals(500, zerosInputStream.available());
+        Assertions.assertEquals(0, zerosInputStream.skip(-10));
+        Assertions.assertEquals(0, zerosInputStream.skip(0));
+        Assertions.assertEquals(500, zerosInputStream.available());
+        Assertions.assertEquals(300, zerosInputStream.skip(300));
+        Assertions.assertEquals(200, zerosInputStream.available());
+        Assertions.assertEquals(200, zerosInputStream.skip(250));
+        Assertions.assertEquals(0, zerosInputStream.available());
+        Assertions.assertEquals(0, zerosInputStream.skip(250));
+        Assertions.assertEquals(0, zerosInputStream.available());
         zerosInputStream.close();
     }
 

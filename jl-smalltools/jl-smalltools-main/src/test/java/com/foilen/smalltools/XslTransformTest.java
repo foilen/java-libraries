@@ -3,10 +3,10 @@ package com.foilen.smalltools;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.FileTools;
@@ -23,9 +23,6 @@ public class XslTransformTest {
     private static String OUTPUT_RESOURCE_PATH = "/com/foilen/smalltools/XslTransformTest-resources/output.xml";
     private static String OUTPUT2_RESOURCE_PATH = "/com/foilen/smalltools/XslTransformTest-resources/output2.xml";
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testMultipleCalls() throws IOException {
 
@@ -35,13 +32,13 @@ public class XslTransformTest {
         String xml = ResourceTools.getResourceAsString(INPUT_RESOURCE_PATH);
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
         String actual = new XslTransform().usingText(xsl).fromText(xml).toText();
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
         // Second call
         xml = ResourceTools.getResourceAsString(INPUT2_RESOURCE_PATH);
         expected = ResourceTools.getResourceAsString(OUTPUT2_RESOURCE_PATH);
         actual = new XslTransform().usingText(xsl).fromText(xml).toText();
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -59,7 +56,7 @@ public class XslTransformTest {
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
         String actual = FileTools.getFileAsString(finalFile.getAbsolutePath());
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -77,7 +74,7 @@ public class XslTransformTest {
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
         String actual = FileTools.getFileAsString(finalFile);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -85,7 +82,7 @@ public class XslTransformTest {
         String actual = new XslTransform().usingResource(TRANSFORMATION_RESOURCE_PATH).fromResource(INPUT_RESOURCE_PATH).toText();
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -97,23 +94,23 @@ public class XslTransformTest {
         String expected = ResourceTools.getResourceAsString(OUTPUT_RESOURCE_PATH);
         String actual = new XslTransform().usingText(xsl).fromText(xml).toText();
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void testXmlNotSet() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("XML not set. Call any from* methods prior");
-
-        new XslTransform().usingResource(TRANSFORMATION_RESOURCE_PATH).toText();
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            new XslTransform().usingResource(TRANSFORMATION_RESOURCE_PATH).toText();
+        });
+        assertTrue(exception.getMessage().contains("XML not set. Call any from* methods prior"));
     }
 
     @Test
     public void testXslNotSet() {
-        thrown.expect(SmallToolsException.class);
-        thrown.expectMessage("XSL not set. Call any using* methods prior");
-
-        new XslTransform().fromResource(INPUT_RESOURCE_PATH).toText();
+        SmallToolsException exception = assertThrows(SmallToolsException.class, () -> {
+            new XslTransform().fromResource(INPUT_RESOURCE_PATH).toText();
+        });
+        assertTrue(exception.getMessage().contains("XSL not set. Call any using* methods prior"));
     }
 
 }

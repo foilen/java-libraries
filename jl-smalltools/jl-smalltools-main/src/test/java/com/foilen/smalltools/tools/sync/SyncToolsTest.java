@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.foilen.smalltools.test.asserts.AssertTools;
 import com.foilen.smalltools.tuple.Tuple2;
@@ -19,7 +19,7 @@ public class SyncToolsTest {
     private List<SyncTestItem> destinationItems = new ArrayList<>();
     private SyncConfiguration<String, SyncTestItem, Tuple2<String, Long>> syncConfiguration;
 
-    @Before
+    @BeforeEach
     public void init() {
         sourceItems = new ArrayList<>();
         destinationItems = new ArrayList<>();
@@ -58,9 +58,9 @@ public class SyncToolsTest {
         }
 
         SyncChanges syncChanges = SyncTools.sync(syncConfiguration);
-        Assert.assertEquals(0, syncChanges.getAdded());
-        Assert.assertEquals(0, syncChanges.getUpdated());
-        Assert.assertEquals(0, syncChanges.getDeleted());
+        Assertions.assertEquals(0, syncChanges.getAdded());
+        Assertions.assertEquals(0, syncChanges.getUpdated());
+        Assertions.assertEquals(0, syncChanges.getDeleted());
 
         Collections.sort(sourceItems);
         Collections.sort(destinationItems);
@@ -76,9 +76,9 @@ public class SyncToolsTest {
         }
 
         SyncChanges syncChanges = SyncTools.sync(syncConfiguration);
-        Assert.assertEquals(50, syncChanges.getAdded());
-        Assert.assertEquals(0, syncChanges.getUpdated());
-        Assert.assertEquals(0, syncChanges.getDeleted());
+        Assertions.assertEquals(50, syncChanges.getAdded());
+        Assertions.assertEquals(0, syncChanges.getUpdated());
+        Assertions.assertEquals(0, syncChanges.getDeleted());
 
         Collections.sort(sourceItems);
         Collections.sort(destinationItems);
@@ -100,9 +100,9 @@ public class SyncToolsTest {
         }
 
         SyncChanges syncChanges = SyncTools.sync(syncConfiguration);
-        Assert.assertEquals(0, syncChanges.getAdded());
-        Assert.assertEquals(50, syncChanges.getUpdated());
-        Assert.assertEquals(40, syncChanges.getDeleted());
+        Assertions.assertEquals(0, syncChanges.getAdded());
+        Assertions.assertEquals(50, syncChanges.getUpdated());
+        Assertions.assertEquals(40, syncChanges.getDeleted());
 
         Collections.sort(sourceItems);
         Collections.sort(destinationItems);
@@ -138,9 +138,9 @@ public class SyncToolsTest {
 
         // Execute and assert
         SyncChanges syncChanges = SyncTools.sync(syncConfiguration, new SyncSlice<String>().setAfterId(Optional.of("id105")).setBeforeOrEqualId(Optional.of("id130")));
-        Assert.assertEquals(0, syncChanges.getAdded());
-        Assert.assertEquals(11, syncChanges.getUpdated());
-        Assert.assertEquals(4, syncChanges.getDeleted());
+        Assertions.assertEquals(0, syncChanges.getAdded());
+        Assertions.assertEquals(11, syncChanges.getUpdated());
+        Assertions.assertEquals(4, syncChanges.getDeleted());
 
         Collections.sort(expectedItems);
         Collections.sort(destinationItems);
@@ -156,9 +156,9 @@ public class SyncToolsTest {
         }
 
         SyncChanges syncChanges = SyncTools.sync(syncConfiguration);
-        Assert.assertEquals(0, syncChanges.getAdded());
-        Assert.assertEquals(0, syncChanges.getUpdated());
-        Assert.assertEquals(50, syncChanges.getDeleted());
+        Assertions.assertEquals(0, syncChanges.getAdded());
+        Assertions.assertEquals(0, syncChanges.getUpdated());
+        Assertions.assertEquals(50, syncChanges.getDeleted());
 
         Collections.sort(sourceItems);
         Collections.sort(destinationItems);

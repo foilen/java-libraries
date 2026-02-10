@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SearchingAvailabilityBigIntegerToolsTest {
 
@@ -28,20 +28,20 @@ public class SearchingAvailabilityBigIntegerToolsTest {
 
         // Get them all
         for (BigInteger i = BigInteger.ZERO; i.compareTo(new BigInteger("10")) < 0; i = i.add(BigInteger.ONE)) {
-            Assert.assertEquals(i, searchingAvailability.getNext().get());
+            Assertions.assertEquals(i, searchingAvailability.getNext().get());
         }
-        Assert.assertFalse(searchingAvailability.getNext().isPresent());
+        Assertions.assertFalse(searchingAvailability.getNext().isPresent());
 
         // Release 6th
         used.remove(new BigInteger("6"));
-        Assert.assertEquals(new BigInteger("6"), searchingAvailability.getNext().get());
+        Assertions.assertEquals(new BigInteger("6"), searchingAvailability.getNext().get());
 
         // Release 1, 5
         used.remove(new BigInteger("1"));
         used.remove(new BigInteger("5"));
-        Assert.assertEquals(new BigInteger("1"), searchingAvailability.getNext().get());
-        Assert.assertEquals(new BigInteger("5"), searchingAvailability.getNext().get());
-        Assert.assertFalse(searchingAvailability.getNext().isPresent());
+        Assertions.assertEquals(new BigInteger("1"), searchingAvailability.getNext().get());
+        Assertions.assertEquals(new BigInteger("5"), searchingAvailability.getNext().get());
+        Assertions.assertFalse(searchingAvailability.getNext().isPresent());
 
     }
 
