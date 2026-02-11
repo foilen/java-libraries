@@ -1,21 +1,14 @@
 package com.foilen.smalltools.reflection;
 
-import java.beans.PropertyDescriptor;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.tools.AssertTools;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.TypeMismatchException;
 
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.tools.AssertTools;
+import java.beans.PropertyDescriptor;
+import java.util.*;
 
 /**
  * Helps copying properties from one bean to another bean. It can also update a collection's items on place. See {@link #updateCollection(String)}.
@@ -30,7 +23,6 @@ import com.foilen.smalltools.tools.AssertTools;
  * copierTools.copyProperty("firstName");
  * copierTools.copyProperty("LastName");
  *
- * //
  * copierTools.copyProperty("LastName");
  *
  * // Different property name

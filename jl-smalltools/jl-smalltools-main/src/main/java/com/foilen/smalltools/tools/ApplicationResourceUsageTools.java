@@ -13,12 +13,12 @@ import java.util.Map.Entry;
  * Usage:
  *
  * <pre>
- * new ApplicationResourceUsageTools() //
+ * new ApplicationResourceUsageTools()
  *         .setDelayBetweenOutputInMs(60000) // 1 minute
- *         .setShowJvmMemory(true) //
- *         .setShowSystemMemory(true) //
- *         .setShowThreadCount(true) //
- *         .setShowThreadStackstrace(true) //
+ *         .setShowJvmMemory(true)
+ *         .setShowSystemMemory(true)
+ *         .setShowThreadCount(true)
+ *         .setShowThreadStackstrace(true)
  *         .start();
  * </pre>
  */
@@ -31,12 +31,12 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
      */
     public static void main(String[] args) {
 
-        new ApplicationResourceUsageTools() //
+        new ApplicationResourceUsageTools()
                 .setDelayBetweenOutputInMs(1000) // 1 second
-                .setShowJvmMemory(true) //
-                .setShowSystemMemory(true) //
-                .setShowThreadCount(true) //
-                .setShowThreadStackstrace(true) //
+                .setShowJvmMemory(true)
+                .setShowSystemMemory(true)
+                .setShowThreadCount(true)
+                .setShowThreadStackstrace(true)
                 .start();
 
         // Use more and more memory
@@ -124,11 +124,11 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
                     long max = Runtime.getRuntime().maxMemory();
                     long used = total - free;
                     logger.info("JVM Memory: used: {} ; (free: {} ; total: {}) ; max: {}", used, free, total, max);
-                    logger.info("JVM Memory (human): used: {} ; (free: {} ; total: {}) ; max: {}", //
-                            SpaceConverterTools.convertToBiggestBUnit(used), //
-                            SpaceConverterTools.convertToBiggestBUnit(free), //
-                            SpaceConverterTools.convertToBiggestBUnit(total), //
-                            SpaceConverterTools.convertToBiggestBUnit(max) //
+                    logger.info("JVM Memory (human): used: {} ; (free: {} ; total: {}) ; max: {}",
+                            SpaceConverterTools.convertToBiggestBUnit(used),
+                            SpaceConverterTools.convertToBiggestBUnit(free),
+                            SpaceConverterTools.convertToBiggestBUnit(total),
+                            SpaceConverterTools.convertToBiggestBUnit(max)
                     );
                 }
 
@@ -138,10 +138,10 @@ public class ApplicationResourceUsageTools extends AbstractBasics implements Run
                     long used = MemoryUsage.getSystemUsedMemory();
                     long total = MemoryUsage.getSystemTotalMemory();
                     logger.info("System Memory: used: {} ; free: {} ; total: {}", used, free, total);
-                    logger.info("System Memory (human): used: {} ; free: {} ; total: {}", //
-                            SpaceConverterTools.convertToBiggestBUnit(used), //
-                            SpaceConverterTools.convertToBiggestBUnit(free), //
-                            SpaceConverterTools.convertToBiggestBUnit(total) //
+                    logger.info("System Memory (human): used: {} ; free: {} ; total: {}",
+                            SpaceConverterTools.convertToBiggestBUnit(used),
+                            SpaceConverterTools.convertToBiggestBUnit(free),
+                            SpaceConverterTools.convertToBiggestBUnit(total)
                     );
                 }
 

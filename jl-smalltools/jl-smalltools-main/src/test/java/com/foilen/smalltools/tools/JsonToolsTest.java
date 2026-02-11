@@ -147,8 +147,8 @@ public class JsonToolsTest {
         list.add(new TypeDeep().setA("first"));
         list.add(new TypeDeep().setA("second"));
 
-        TypeDeep original = new TypeDeep().setA("Some text").setB(5).setC(new TypeDeep() //
-                .setA("Some text depth 2").setB(10).setD(list).setC(new TypeDeep() //
+        TypeDeep original = new TypeDeep().setA("Some text").setB(5).setC(new TypeDeep()
+                .setA("Some text depth 2").setB(10).setD(list).setC(new TypeDeep()
                         .setA("Some text depth 3").setB(15).setE(Arrays.asList("abc", "def"))));
 
         SortedMap<String, Object> clone = JsonTools.cloneAsSortedMap(original);

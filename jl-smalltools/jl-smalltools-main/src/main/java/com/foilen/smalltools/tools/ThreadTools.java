@@ -70,11 +70,11 @@ public final class ThreadTools {
      * To help change the name of a thread and revert back later.
      *
      * <pre>
-     * ThreadNameStateTool threadNameStateTool = ThreadTools.nameThread() //
-     *         .clear() //
-     *         .appendText(threadName) //
-     *         .appendText("-") //
-     *         .appendObjectText(executionCount) //
+     * ThreadNameStateTool threadNameStateTool = ThreadTools.nameThread()
+     *         .clear()
+     *         .appendText(threadName)
+     *         .appendText("-")
+     *         .appendObjectText(executionCount)
      *         .change();
      *
      * threadNameStateTool.revert();

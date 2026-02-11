@@ -20,10 +20,10 @@ public class SyncTestItem extends AbstractBasics implements Comparable<SyncTestI
 
     @Override
     public int compareTo(SyncTestItem o) {
-        return ComparisonChain.start() //
-                .compare(this.id, o.id) //
-                .compare(this.version, o.version) //
-                .compare(this.content, o.content) //
+        return ComparisonChain.start()
+                .compare(this.id, o.id)
+                .compare(this.version, o.version)
+                .compare(this.content, o.content)
                 .result();
     }
 

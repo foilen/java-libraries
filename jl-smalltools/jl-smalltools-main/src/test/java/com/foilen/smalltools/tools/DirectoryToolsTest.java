@@ -95,8 +95,8 @@ public class DirectoryToolsTest {
         // Create the directories, the files and the symlink
         Assertions.assertTrue((DirectoryTools.createPath(toDeletePath + "/subOne/subTwo/subThree")));
         FileTools.writeFile("a", keepSafePath + "/aFile");
-        java.nio.file.Files.createSymbolicLink( //
-                new File(toDeletePath + "/subOne/NotFollow").toPath(), //
+        java.nio.file.Files.createSymbolicLink(
+                new File(toDeletePath + "/subOne/NotFollow").toPath(),
                 keepSafe.toPath());
         FileTools.writeFile("a", toDeletePath + "/subOne/subTwo/hello");
 

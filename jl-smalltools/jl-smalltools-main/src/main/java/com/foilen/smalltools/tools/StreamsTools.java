@@ -86,11 +86,11 @@ public final class StreamsTools {
         new Thread(() -> {
 
             // Set the thread's name
-            ThreadTools.nameThread() //
-                    .setSeparator(" - ") //
-                    .clear() //
-                    .appendText("OutputStream pipe to Logger") //
-                    .appendDate() //
+            ThreadTools.nameThread()
+                    .setSeparator(" - ")
+                    .clear()
+                    .appendText("OutputStream pipe to Logger")
+                    .appendDate()
                     .change();
 
             String line;

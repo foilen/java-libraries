@@ -44,8 +44,8 @@ public class MongoDbUpgraderTracker implements UpgraderTracker {
             document.put("appliedDate", appliedDate);
             document.put("appliedDateText", DateTools.formatFull(appliedDate));
 
-            mongoClient.getDatabase(databaseName) //
-                    .getCollection(collectionName) //
+            mongoClient.getDatabase(databaseName)
+                    .getCollection(collectionName)
                     .insertOne(new Document(document));
         }
     }
@@ -69,8 +69,8 @@ public class MongoDbUpgraderTracker implements UpgraderTracker {
 
     @Override
     public boolean wasExecutedSuccessfully(String taskSimpleName) {
-        return mongoClient.getDatabase(databaseName) //
-                .getCollection(collectionName) //
+        return mongoClient.getDatabase(databaseName)
+                .getCollection(collectionName)
                 .countDocuments(Filters.eq("_id", taskSimpleName)) > 0;
     }
 

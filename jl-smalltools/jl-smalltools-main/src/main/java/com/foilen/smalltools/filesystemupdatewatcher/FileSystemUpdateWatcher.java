@@ -146,11 +146,11 @@ public class FileSystemUpdateWatcher implements Closeable {
 
         // Start the watch thread
         thread = new Thread(() -> {
-            ThreadTools.nameThread().setSeparator("-").clear() //
-                    .appendObjectClassSimple(this) //
-                    .appendText("Started at") //
-                    .appendDate() //
-                    .appendObjectText("Folder") //
+            ThreadTools.nameThread().setSeparator("-").clear()
+                    .appendObjectClassSimple(this)
+                    .appendText("Started at")
+                    .appendDate()
+                    .appendObjectText("Folder")
                     .appendObjectText(basePath).change();
 
             for (; ; ) {

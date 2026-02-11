@@ -470,10 +470,10 @@ public final class DirectoryTools {
      * @return the sorted list of file names
      */
     public static List<String> listOnlyFileNames(String directory) {
-        return Arrays.asList(safeListFiles(new File(directory))).stream() //
-                .filter(File::isFile) //
-                .map(File::getName) //
-                .sorted() //
+        return Arrays.asList(safeListFiles(new File(directory))).stream()
+                .filter(File::isFile)
+                .map(File::getName)
+                .sorted()
                 .collect(Collectors.toList());
     }
 

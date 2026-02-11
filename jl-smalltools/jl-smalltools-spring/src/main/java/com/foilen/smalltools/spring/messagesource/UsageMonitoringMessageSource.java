@@ -238,10 +238,10 @@ public class UsageMonitoringMessageSource implements MessageSource {
                 logger.info("Done saving locale files");
             }
 
-        }) //
-                .setDelayAfterLastTriggerMs(5000) //
-                .setMaxDelayAfterFirstRequestMs(10000) //
-                .setFirstPassThrough(true) //
+        })
+                .setDelayAfterLastTriggerMs(5000)
+                .setMaxDelayAfterFirstRequestMs(10000)
+                .setFirstPassThrough(true)
                 .start();
 
         smoothTrigger.request();

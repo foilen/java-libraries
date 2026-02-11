@@ -124,8 +124,8 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assertions.assertEquals(Arrays.asList( //
-                "A", "B", "H", //
+        Assertions.assertEquals(Arrays.asList(
+                "A", "B", "H",
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
     }
@@ -158,8 +158,8 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assertions.assertEquals(Arrays.asList( //
-                "A", "B", "H", //
+        Assertions.assertEquals(Arrays.asList(
+                "A", "B", "H",
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
     }
@@ -183,14 +183,14 @@ public class MultiDependenciesResolverToolsTest {
 
         List<String> executionPlan = resolver.getExecution();
 
-        Assertions.assertEquals(Arrays.asList( //
-                "A", "B", "H", //
+        Assertions.assertEquals(Arrays.asList(
+                "A", "B", "H",
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
 
         executionPlan = resolver.getExecution();
-        Assertions.assertEquals(Arrays.asList( //
-                "A", "B", "H", //
+        Assertions.assertEquals(Arrays.asList(
+                "A", "B", "H",
                 "E", "F", "G", "C", "D" // strict order
         ), executionPlan);
     }

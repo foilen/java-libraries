@@ -41,10 +41,10 @@ public class SmoothTriggerTest {
     @Test
     @Timeout(30)
     public void testPassthru_Warmup_Max_Cancel() {
-        SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
-                .setDelayAfterLastTriggerMs(DELAY) //
-                .setMaxDelayAfterFirstRequestMs(MAX_DELAY) //
-                .setFirstPassThrough(true) //
+        SmoothTrigger smoothTrigger = new SmoothTrigger(action)
+                .setDelayAfterLastTriggerMs(DELAY)
+                .setMaxDelayAfterFirstRequestMs(MAX_DELAY)
+                .setFirstPassThrough(true)
                 .start();
 
         // Trigger first and at max
@@ -105,10 +105,10 @@ public class SmoothTriggerTest {
     @Test
     @Timeout(30)
     public void testWarmup() {
-        SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
-                .setDelayAfterLastTriggerMs(DELAY) //
-                .setMaxDelayAfterFirstRequestMs(Long.MAX_VALUE) //
-                .setFirstPassThrough(false) //
+        SmoothTrigger smoothTrigger = new SmoothTrigger(action)
+                .setDelayAfterLastTriggerMs(DELAY)
+                .setMaxDelayAfterFirstRequestMs(Long.MAX_VALUE)
+                .setFirstPassThrough(false)
                 .start();
 
         // Send too many requests to let it execute
@@ -138,10 +138,10 @@ public class SmoothTriggerTest {
     @Test
     @Timeout(30)
     public void testWarmup_Max() {
-        SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
-                .setDelayAfterLastTriggerMs(DELAY) //
-                .setMaxDelayAfterFirstRequestMs(MAX_DELAY) //
-                .setFirstPassThrough(false) //
+        SmoothTrigger smoothTrigger = new SmoothTrigger(action)
+                .setDelayAfterLastTriggerMs(DELAY)
+                .setMaxDelayAfterFirstRequestMs(MAX_DELAY)
+                .setFirstPassThrough(false)
                 .start();
 
         // Send too many requests. Catched by max
@@ -159,10 +159,10 @@ public class SmoothTriggerTest {
     @Test
     @Timeout(30)
     public void testWarmup_Max_Cancel() {
-        SmoothTrigger smoothTrigger = new SmoothTrigger(action) //
-                .setDelayAfterLastTriggerMs(DELAY) //
-                .setMaxDelayAfterFirstRequestMs(MAX_DELAY) //
-                .setFirstPassThrough(false) //
+        SmoothTrigger smoothTrigger = new SmoothTrigger(action)
+                .setDelayAfterLastTriggerMs(DELAY)
+                .setMaxDelayAfterFirstRequestMs(MAX_DELAY)
+                .setFirstPassThrough(false)
                 .start();
 
         // Send too many requests. Catched by max

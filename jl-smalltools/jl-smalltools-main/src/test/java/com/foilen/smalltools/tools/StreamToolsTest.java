@@ -11,8 +11,8 @@ public class StreamToolsTest {
 
     @Test
     public void testConcat_1() {
-        List<Integer> actual = StreamTools.concat( //
-                Arrays.asList(3, 1, 2).stream() //
+        List<Integer> actual = StreamTools.concat(
+                Arrays.asList(3, 1, 2).stream()
         ).sorted().collect(Collectors.toList());
 
         Assertions.assertEquals(Arrays.asList(1, 2, 3), actual);
@@ -20,9 +20,9 @@ public class StreamToolsTest {
 
     @Test
     public void testConcat_2() {
-        List<Integer> actual = StreamTools.concat( //
-                Arrays.asList(3, 1, 5).stream(), //
-                Arrays.asList(4, 2).stream() //
+        List<Integer> actual = StreamTools.concat(
+                Arrays.asList(3, 1, 5).stream(),
+                Arrays.asList(4, 2).stream()
         ).sorted().collect(Collectors.toList());
 
         Assertions.assertEquals(Arrays.asList(1, 2, 3, 4, 5), actual);
@@ -30,10 +30,10 @@ public class StreamToolsTest {
 
     @Test
     public void testConcat_3() {
-        List<Integer> actual = StreamTools.concat( //
-                Arrays.asList(3, 1, 5).stream(), //
-                Arrays.asList(7, 6, 8).stream(), //
-                Arrays.asList(4, 2).stream() //
+        List<Integer> actual = StreamTools.concat(
+                Arrays.asList(3, 1, 5).stream(),
+                Arrays.asList(7, 6, 8).stream(),
+                Arrays.asList(4, 2).stream()
         ).sorted().collect(Collectors.toList());
 
         Assertions.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8), actual);
@@ -41,12 +41,12 @@ public class StreamToolsTest {
 
     @Test
     public void testConcat_5() {
-        List<Integer> actual = StreamTools.concat( //
-                Arrays.asList(3, 1, 5).stream(), //
-                Arrays.asList(7, 6, 8).stream(), //
-                Arrays.asList(9, 12, 14, 15).stream(), //
-                Arrays.asList(11, 10, 13).stream(), //
-                Arrays.asList(4, 2).stream() //
+        List<Integer> actual = StreamTools.concat(
+                Arrays.asList(3, 1, 5).stream(),
+                Arrays.asList(7, 6, 8).stream(),
+                Arrays.asList(9, 12, 14, 15).stream(),
+                Arrays.asList(11, 10, 13).stream(),
+                Arrays.asList(4, 2).stream()
         ).sorted().collect(Collectors.toList());
 
         Assertions.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), actual);

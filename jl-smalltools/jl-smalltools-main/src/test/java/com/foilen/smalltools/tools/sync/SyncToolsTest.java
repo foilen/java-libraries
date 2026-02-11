@@ -24,29 +24,29 @@ public class SyncToolsTest {
         sourceItems = new ArrayList<>();
         destinationItems = new ArrayList<>();
 
-        syncConfiguration = new SyncConfiguration<String, SyncTestItem, Tuple2<String, Long>>() //
-                .setMaxSliceSize(7) //
-                .setIdFromEntity(it -> it.getId()) //
-                .setIdFromPartial(it -> it.getA()) //
-                .setCompareId((source, destination) -> source.compareTo(destination)) //
-                .setSourceSlice((slice, maxSliceSize) -> sourceItems.stream() //
-                        .filter(it -> slice.getAfterId().isEmpty() || it.getId().compareTo(slice.getAfterId().get()) > 0) //
-                        .filter(it -> slice.getBeforeOrEqualId().isEmpty() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0) //
-                        .sorted() //
-                        .limit(maxSliceSize) //
-                        .collect(Collectors.toList()) //
-                ) //
-                .setDestinationSlice((slice, maxSliceSize) -> destinationItems.stream() //
-                        .filter(it -> slice.getAfterId().isEmpty() || it.getId().compareTo(slice.getAfterId().get()) > 0) //
-                        .filter(it -> slice.getBeforeOrEqualId().isEmpty() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0) //
-                        .sorted() //
-                        .limit(maxSliceSize) //
-                        .map(it -> new Tuple2<>(it.getId(), it.getVersion())) //
-                        .collect(Collectors.toList()) //
-                ) //
-                .setNeedsUpdate((source, destination) -> source.getVersion() != destination.getB()) //
-                .setAddHandler(entities -> destinationItems.addAll(entities)) //
-                .setDeleteHandler(ids -> destinationItems.removeIf(it -> ids.contains(it.getId()))) //
+        syncConfiguration = new SyncConfiguration<String, SyncTestItem, Tuple2<String, Long>>()
+                .setMaxSliceSize(7)
+                .setIdFromEntity(it -> it.getId())
+                .setIdFromPartial(it -> it.getA())
+                .setCompareId((source, destination) -> source.compareTo(destination))
+                .setSourceSlice((slice, maxSliceSize) -> sourceItems.stream()
+                        .filter(it -> slice.getAfterId().isEmpty() || it.getId().compareTo(slice.getAfterId().get()) > 0)
+                        .filter(it -> slice.getBeforeOrEqualId().isEmpty() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0)
+                        .sorted()
+                        .limit(maxSliceSize)
+                        .collect(Collectors.toList())
+                )
+                .setDestinationSlice((slice, maxSliceSize) -> destinationItems.stream()
+                        .filter(it -> slice.getAfterId().isEmpty() || it.getId().compareTo(slice.getAfterId().get()) > 0)
+                        .filter(it -> slice.getBeforeOrEqualId().isEmpty() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0)
+                        .sorted()
+                        .limit(maxSliceSize)
+                        .map(it -> new Tuple2<>(it.getId(), it.getVersion()))
+                        .collect(Collectors.toList())
+                )
+                .setNeedsUpdate((source, destination) -> source.getVersion() != destination.getB())
+                .setAddHandler(entities -> destinationItems.addAll(entities))
+                .setDeleteHandler(ids -> destinationItems.removeIf(it -> ids.contains(it.getId())))
         ;
     }
 

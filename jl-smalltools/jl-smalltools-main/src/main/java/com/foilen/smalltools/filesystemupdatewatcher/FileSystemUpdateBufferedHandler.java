@@ -102,9 +102,9 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
                 }
             }
 
-        }) //
-                .setDelayAfterLastTriggerMs(delayAfterLastEventMs) //
-                .setMaxDelayAfterFirstRequestMs(maxDelayMs) //
+        })
+                .setDelayAfterLastTriggerMs(delayAfterLastEventMs)
+                .setMaxDelayAfterFirstRequestMs(maxDelayMs)
                 .start();
 
     }

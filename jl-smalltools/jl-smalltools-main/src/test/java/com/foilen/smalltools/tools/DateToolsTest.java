@@ -18,9 +18,9 @@ public class DateToolsTest {
 
     @Test
     public void testAddDate_Now() throws Exception {
-        AssertTools.assertEqualsDelta( //
-                DateTools.addDate(new Date(), Calendar.DAY_OF_MONTH, 9).getTime(), //
-                DateTools.addDate(Calendar.DAY_OF_MONTH, 9).getTime(), //
+        AssertTools.assertEqualsDelta(
+                DateTools.addDate(new Date(), Calendar.DAY_OF_MONTH, 9).getTime(),
+                DateTools.addDate(Calendar.DAY_OF_MONTH, 9).getTime(),
                 1000L);
     }
 

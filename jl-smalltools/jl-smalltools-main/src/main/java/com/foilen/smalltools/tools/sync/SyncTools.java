@@ -27,9 +27,9 @@ public final class SyncTools {
 
         if (!sourceEntities.isEmpty()) {
             if (syncSlice.getAfterId().isPresent()) {
-                Optional<I> first = sourceEntities.stream() //
-                        .map(it -> syncConfiguration.getIdFromEntity().apply(it)) //
-                        .filter(it -> syncConfiguration.getCompareId().apply(it, syncSlice.getAfterId().get()) > 0) //
+                Optional<I> first = sourceEntities.stream()
+                        .map(it -> syncConfiguration.getIdFromEntity().apply(it))
+                        .filter(it -> syncConfiguration.getCompareId().apply(it, syncSlice.getAfterId().get()) > 0)
                         .findFirst();
                 if (first.isPresent()) {
                     from = first.get();
@@ -43,10 +43,10 @@ public final class SyncTools {
 
             I finalFrom = from;
 
-            Optional<I> first = destinationEntities.stream() //
-                    .map(it -> syncConfiguration.getIdFromPartial().apply(it)) //
-                    .filter(it -> syncSlice.getAfterId().isEmpty() || syncConfiguration.getCompareId().apply(it, syncSlice.getAfterId().get()) > 0) //
-                    .filter(it -> finalFrom == null || syncConfiguration.getCompareId().apply(it, finalFrom) < 0) //
+            Optional<I> first = destinationEntities.stream()
+                    .map(it -> syncConfiguration.getIdFromPartial().apply(it))
+                    .filter(it -> syncSlice.getAfterId().isEmpty() || syncConfiguration.getCompareId().apply(it, syncSlice.getAfterId().get()) > 0)
+                    .filter(it -> finalFrom == null || syncConfiguration.getCompareId().apply(it, finalFrom) < 0)
                     .findFirst();
             if (first.isPresent()) {
                 from = first.get();
@@ -142,15 +142,15 @@ public final class SyncTools {
                 I finalToId = toId;
 
                 // Get both iterators
-                Iterator<Tuple2<I, E>> sourceIt = sourceEntities.stream() //
-                        .map(it -> new Tuple2<>(syncConfiguration.getIdFromEntity().apply(it), it)) //
-                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalFromId) >= 0) //
-                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalToId) <= 0) //
+                Iterator<Tuple2<I, E>> sourceIt = sourceEntities.stream()
+                        .map(it -> new Tuple2<>(syncConfiguration.getIdFromEntity().apply(it), it))
+                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalFromId) >= 0)
+                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalToId) <= 0)
                         .iterator();
-                Iterator<Tuple2<I, P>> destinationIt = destinationEntities.stream() //
-                        .map(it -> new Tuple2<>(syncConfiguration.getIdFromPartial().apply(it), it)) //
-                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalFromId) >= 0) //
-                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalToId) <= 0) //
+                Iterator<Tuple2<I, P>> destinationIt = destinationEntities.stream()
+                        .map(it -> new Tuple2<>(syncConfiguration.getIdFromPartial().apply(it), it))
+                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalFromId) >= 0)
+                        .filter(it -> syncConfiguration.getCompareId().apply(it.getA(), finalToId) <= 0)
                         .iterator();
 
                 // Get first items of both
@@ -213,7 +213,7 @@ public final class SyncTools {
                 changes.deleted += toRemove.size();
 
                 // Check what needs to advance
-                if (!sourceEntities.isEmpty() && //
+                if (!sourceEntities.isEmpty() &&
                         syncConfiguration.getIdFromEntity().apply(sourceEntities.getLast()).equals(toId)) {
                     log.debug("Will advance source");
                     updateSource = true;

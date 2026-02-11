@@ -36,10 +36,10 @@ public class ThreadListTest {
         Semaphore sb = new Semaphore(0);
         Semaphore sc = new Semaphore(0);
 
-        ThreadList threadList = new ThreadList( //
-                new ThreadListTestRunnable(sa), //
-                new ThreadListTestRunnable(sb), //
-                new ThreadListTestRunnable(sc) //
+        ThreadList threadList = new ThreadList(
+                new ThreadListTestRunnable(sa),
+                new ThreadListTestRunnable(sb),
+                new ThreadListTestRunnable(sc)
         );
 
         Assertions.assertFalse(threadList.areAllAlive());
