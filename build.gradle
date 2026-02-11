@@ -14,7 +14,7 @@ rewrite {
 }
 
 repositories {
-    mavenCentral() // rewrite-spring is published to Maven Central
+    mavenCentral()
 }
 
 dependencies {
