@@ -99,8 +99,8 @@ public class MongoDbSortedMapStringObjectTest extends AbstractEmbeddedMongoDbTes
         // Key set
         var keySet = map.keySet();
         AssertTools.assertJsonComparison(new TreeSet<>(Set.of("A", "B", "C", "D")), keySet);
-        Assertions.assertEquals("A", keySet.first());
-        Assertions.assertEquals("D", keySet.last());
+        Assertions.assertEquals("A", keySet.getFirst());
+        Assertions.assertEquals("D", keySet.getLast());
         Assertions.assertEquals(4, keySet.size());
         Assertions.assertTrue(keySet.contains("A"));
         Assertions.assertFalse(keySet.contains("E"));
@@ -154,8 +154,8 @@ public class MongoDbSortedMapStringObjectTest extends AbstractEmbeddedMongoDbTes
         // A sub one
         var keySetSub = keySet.subSet("B", "D");
         AssertTools.assertJsonComparison(new TreeSet<>(Set.of("B", "C")), keySetSub);
-        Assertions.assertEquals("B", keySetSub.first());
-        Assertions.assertEquals("C", keySetSub.last());
+        Assertions.assertEquals("B", keySetSub.getFirst());
+        Assertions.assertEquals("C", keySetSub.getLast());
         Assertions.assertEquals(2, keySetSub.size());
         Assertions.assertTrue(keySetSub.contains("B"));
         Assertions.assertFalse(keySetSub.contains("A"));
@@ -245,8 +245,8 @@ public class MongoDbSortedMapStringObjectTest extends AbstractEmbeddedMongoDbTes
         expectedEntrySet.add(new ImmutableMapEntry<>("C", "X3"));
         expectedEntrySet.add(new ImmutableMapEntry<>("D", "W4"));
         AssertTools.assertJsonComparison(expectedEntrySet, entrySet);
-        Assertions.assertEquals(new ImmutableMapEntry<>("A", "Z1"), entrySet.first());
-        Assertions.assertEquals(new ImmutableMapEntry<>("D", "W4"), entrySet.last());
+        Assertions.assertEquals(new ImmutableMapEntry<>("A", "Z1"), entrySet.getFirst());
+        Assertions.assertEquals(new ImmutableMapEntry<>("D", "W4"), entrySet.getLast());
         Assertions.assertEquals(4, entrySet.size());
         Assertions.assertTrue(entrySet.contains(new ImmutableMapEntry<>("A", "Z1")));
         Assertions.assertFalse(entrySet.contains(new ImmutableMapEntry<>("A", "Z2")));
@@ -283,8 +283,8 @@ public class MongoDbSortedMapStringObjectTest extends AbstractEmbeddedMongoDbTes
         expectedEntrySetSub.add(new ImmutableMapEntry<>("B", "Y2"));
         expectedEntrySetSub.add(new ImmutableMapEntry<>("C", "X3"));
         AssertTools.assertJsonComparison(expectedEntrySetSub, entrySetSub);
-        Assertions.assertEquals(new ImmutableMapEntry<>("B", "Y2"), entrySetSub.first());
-        Assertions.assertEquals(new ImmutableMapEntry<>("C", "X3"), entrySetSub.last());
+        Assertions.assertEquals(new ImmutableMapEntry<>("B", "Y2"), entrySetSub.getFirst());
+        Assertions.assertEquals(new ImmutableMapEntry<>("C", "X3"), entrySetSub.getLast());
         Assertions.assertEquals(2, entrySetSub.size());
         Assertions.assertTrue(entrySetSub.contains(new ImmutableMapEntry<>("B", "Y2")));
         Assertions.assertFalse(entrySetSub.contains(new ImmutableMapEntry<>("A", "Z1")));
@@ -318,10 +318,10 @@ public class MongoDbSortedMapStringObjectTest extends AbstractEmbeddedMongoDbTes
 
         // Clear
         map.clear();
-        Assertions.assertNull(keySet.first());
-        Assertions.assertNull(keySet.last());
-        Assertions.assertNull(entrySet.first());
-        Assertions.assertNull(entrySet.last());
+        Assertions.assertNull(keySet.getFirst());
+        Assertions.assertNull(keySet.getLast());
+        Assertions.assertNull(entrySet.getFirst());
+        Assertions.assertNull(entrySet.getLast());
 
     }
 

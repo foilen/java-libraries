@@ -28,7 +28,7 @@ public class ListsComparatorTest {
 
         Assertions.assertEquals(9, diffComparisons.size());
 
-        assertComparison(diffComparisons.get(0), "bbb", -1);
+        assertComparison(diffComparisons.getFirst(), "bbb", -1);
         assertComparison(diffComparisons.get(1), "ccc", 1);
         assertComparison(diffComparisons.get(2), "ddd", -1);
         assertComparison(diffComparisons.get(3), "eee", 1);
@@ -62,7 +62,7 @@ public class ListsComparatorTest {
 
         Assertions.assertEquals(2, diffComparisons.size());
 
-        assertComparison(diffComparisons.get(0), "aaa", -1);
+        assertComparison(diffComparisons.getFirst(), "aaa", -1);
         assertComparison(diffComparisons.get(1), "bbb", -1);
     }
 
@@ -77,7 +77,7 @@ public class ListsComparatorTest {
 
         Assertions.assertEquals(2, diffComparisons.size());
 
-        assertComparison(diffComparisons.get(0), "aaa", 1);
+        assertComparison(diffComparisons.getFirst(), "aaa", 1);
         assertComparison(diffComparisons.get(1), "bbb", 1);
     }
 
@@ -92,7 +92,7 @@ public class ListsComparatorTest {
 
         Assertions.assertEquals(9, diffComparisons.size());
 
-        assertComparison(diffComparisons.get(0), "bbb", -1);
+        assertComparison(diffComparisons.getFirst(), "bbb", -1);
         assertComparison(diffComparisons.get(1), "ccc", 1);
         assertComparison(diffComparisons.get(2), "ddd", -1);
         assertComparison(diffComparisons.get(3), "eee", 1);
@@ -126,7 +126,7 @@ public class ListsComparatorTest {
 
         Assertions.assertEquals(2, diffComparisons.size());
 
-        assertComparison(diffComparisons.get(0), "aaa", -1);
+        assertComparison(diffComparisons.getFirst(), "aaa", -1);
         assertComparison(diffComparisons.get(1), "bbb", -1);
     }
 
@@ -141,7 +141,7 @@ public class ListsComparatorTest {
 
         Assertions.assertEquals(2, diffComparisons.size());
 
-        assertComparison(diffComparisons.get(0), "aaa", 1);
+        assertComparison(diffComparisons.getFirst(), "aaa", 1);
         assertComparison(diffComparisons.get(1), "bbb", 1);
     }
 }

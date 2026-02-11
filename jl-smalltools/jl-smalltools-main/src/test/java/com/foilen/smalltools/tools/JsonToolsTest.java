@@ -160,7 +160,7 @@ public class JsonToolsTest {
         Map<String, Object> cDepth1 = (Map<String, Object>) clone.get("c");
         Assertions.assertTrue(cDepth1.get("c") instanceof SortedMap);
         List<Object> clonedList = (List<Object>) cDepth1.get("d");
-        Assertions.assertTrue(clonedList.get(0) instanceof SortedMap);
+        Assertions.assertTrue(clonedList.getFirst() instanceof SortedMap);
 
     }
 
@@ -280,8 +280,8 @@ public class JsonToolsTest {
 
         Assertions.assertEquals(2, actual.size());
 
-        Assertions.assertEquals("aa", actual.get(0).getA());
-        Assertions.assertEquals(12, actual.get(0).getB());
+        Assertions.assertEquals("aa", actual.getFirst().getA());
+        Assertions.assertEquals(12, actual.getFirst().getB());
 
         Assertions.assertEquals("bb", actual.get(1).getA());
         Assertions.assertEquals(34, actual.get(1).getB());
@@ -294,8 +294,8 @@ public class JsonToolsTest {
 
         Assertions.assertEquals(2, actual.size());
 
-        Assertions.assertEquals("aa", actual.get(0).getA());
-        Assertions.assertEquals(12, actual.get(0).getB());
+        Assertions.assertEquals("aa", actual.getFirst().getA());
+        Assertions.assertEquals(12, actual.getFirst().getB());
 
         Assertions.assertEquals("bb", actual.get(1).getA());
         Assertions.assertEquals(34, actual.get(1).getB());

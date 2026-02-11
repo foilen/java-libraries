@@ -18,7 +18,7 @@ public final class ConsoleTools {
     public static int executeAndWait(String command) {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(command);
+            Process process = runtime.exec(command.split(" "));
 
             process.getOutputStream().close();
             StreamsTools.flowStreamNonBlocking(process.getInputStream(), System.out);

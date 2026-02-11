@@ -106,7 +106,7 @@ public class FileSystemUpdateWatcher implements Closeable {
      * @param basePath the directory
      */
     public FileSystemUpdateWatcher(String basePath) {
-        this.basePath = Paths.get(basePath);
+        this.basePath = Path.of(basePath);
     }
 
     /**

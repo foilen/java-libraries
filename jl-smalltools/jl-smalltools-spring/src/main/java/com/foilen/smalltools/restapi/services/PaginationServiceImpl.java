@@ -45,7 +45,7 @@ public class PaginationServiceImpl implements PaginationService {
         if (page.getSize() == 0) {
             results.setItems(Collections.emptyList());
         } else {
-            if (conversionService.canConvert(page.getContent().get(0).getClass(), apiType)) {
+            if (conversionService.canConvert(page.getContent().getFirst().getClass(), apiType)) {
                 results.setItems(page.getContent().stream().map(i -> conversionService.convert(i, apiType)).collect(Collectors.toList()));
             } else {
                 results.setItems(page.getContent().stream().map(i -> JsonTools.clone(i, apiType)).collect(Collectors.toList()));

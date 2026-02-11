@@ -30,15 +30,15 @@ public class SyncToolsTest {
                 .setIdFromPartial(it -> it.getA()) //
                 .setCompareId((source, destination) -> source.compareTo(destination)) //
                 .setSourceSlice((slice, maxSliceSize) -> sourceItems.stream() //
-                        .filter(it -> !slice.getAfterId().isPresent() || it.getId().compareTo(slice.getAfterId().get()) > 0) //
-                        .filter(it -> !slice.getBeforeOrEqualId().isPresent() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0) //
+                        .filter(it -> slice.getAfterId().isEmpty() || it.getId().compareTo(slice.getAfterId().get()) > 0) //
+                        .filter(it -> slice.getBeforeOrEqualId().isEmpty() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0) //
                         .sorted() //
                         .limit(maxSliceSize) //
                         .collect(Collectors.toList()) //
                 ) //
                 .setDestinationSlice((slice, maxSliceSize) -> destinationItems.stream() //
-                        .filter(it -> !slice.getAfterId().isPresent() || it.getId().compareTo(slice.getAfterId().get()) > 0) //
-                        .filter(it -> !slice.getBeforeOrEqualId().isPresent() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0) //
+                        .filter(it -> slice.getAfterId().isEmpty() || it.getId().compareTo(slice.getAfterId().get()) > 0) //
+                        .filter(it -> slice.getBeforeOrEqualId().isEmpty() || it.getId().compareTo(slice.getBeforeOrEqualId().get()) <= 0) //
                         .sorted() //
                         .limit(maxSliceSize) //
                         .map(it -> new Tuple2<>(it.getId(), it.getVersion())) //

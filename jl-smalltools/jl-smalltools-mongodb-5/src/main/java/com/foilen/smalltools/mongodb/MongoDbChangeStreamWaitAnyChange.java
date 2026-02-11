@@ -99,8 +99,8 @@ public class MongoDbChangeStreamWaitAnyChange extends AbstractBasics {
 
                             // By id
                             Object id = change.getDocumentKey().get("_id");
-                            if (id instanceof BsonString) {
-                                id = ((BsonString) id).getValue();
+                            if (id instanceof BsonString string) {
+                                id = string.getValue();
                             }
                             logger.debug("Change {} for {} - {}", change.getOperationTypeString(), mongoCollection.getNamespace(), id);
                             var semaphoreForId = semaphoreById.get(id);

@@ -1,3 +1,27 @@
 plugins {
+    id "java"
     id "com.github.ben-manes.versions" version "$versionsVersion"
+    id "org.openrewrite.rewrite" version "$openRewriteVersion"
+}
+
+rewrite {
+    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava21")
+    activeRecipe("org.openrewrite.java.spring.boot2.SpringBoot2JUnit4to5Migration")
+    activeRecipe("org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0")
+    activeRecipe("com.foilen.RemoveFlyway")
+    activeStyle("org.openrewrite.java.IntelliJ")
+    setExportDatatables(true)
+}
+
+repositories {
+    mavenCentral() // rewrite-spring is published to Maven Central
+}
+
+dependencies {
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:$openRewriteRecipeBomVersion"))
+    rewrite("org.openrewrite.recipe:rewrite-migrate-java")
+    rewrite("org.openrewrite.recipe:rewrite-spring:$openRewriteSpringVersion")
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }

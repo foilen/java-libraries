@@ -316,7 +316,7 @@ public final class AssertTools {
                     System.out.println("You can configure ASSERT_TOOLS_UPDATE_EXPECTED_FILE to filter the path containing that value");
                     Assertions.fail("Too many files found for " + filePart);
                 }
-                String fileToUpdate = availableFiles.get(0);
+                String fileToUpdate = availableFiles.getFirst();
                 System.out.println("Updating " + fileToUpdate);
                 FileTools.writeFile(actualJson, fileToUpdate);
             }

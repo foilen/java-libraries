@@ -1,5 +1,7 @@
 package com.foilen.smalltools.tools;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Tools to help with retrying.
  */
@@ -20,7 +22,7 @@ public class RetryTools {
                 runnable.run();
                 return;
             } catch (Exception e) {
-                int sleepMs = minRetryMs + (int) (Math.random() * (maxRetryMs - minRetryMs));
+                int sleepMs = minRetryMs + (int) (ThreadLocalRandom.current().nextDouble() * (maxRetryMs - minRetryMs));
                 ThreadTools.sleep(sleepMs);
             }
         }

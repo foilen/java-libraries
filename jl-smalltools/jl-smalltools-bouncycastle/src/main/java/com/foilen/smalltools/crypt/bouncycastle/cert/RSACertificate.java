@@ -237,8 +237,7 @@ public class RSACertificate {
         Set<String> commonNames = new HashSet<>();
         for (RDN rdn : subject.getRDNs()) {
             ASN1Primitive primitive = rdn.toASN1Primitive();
-            if (primitive instanceof ASN1Set) {
-                ASN1Set asn1Set = (ASN1Set) primitive;
+            if (primitive instanceof ASN1Set asn1Set) {
                 for (int i = 0; i < asn1Set.size(); ++i) {
                     AttributeTypeAndValue next = AttributeTypeAndValue.getInstance(asn1Set.getObjectAt(i));
                     if (OID_COMMON_NAME.equals(next.getType().toString())) {

@@ -1,7 +1,17 @@
 package com.foilen.smalltools.tools;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.foilen.smalltools.exception.SmallToolsException;
+import com.foilen.smalltools.reflection.ReflectionTools;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.StreamWriteFeature;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.type.CollectionType;
+
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
@@ -9,56 +19,51 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.foilen.smalltools.exception.SmallToolsException;
-import com.foilen.smalltools.reflection.ReflectionTools;
-
 /**
  * A quick tool to serialize/deserialize to JSON.
  */
 public final class JsonTools {
 
-    private static final ObjectMapper COMPACT_OBJECT_MAPPER = new ObjectMapper();
-    private static final ObjectMapper COMPACT_SKIPNULL_OBJECT_MAPPER = new ObjectMapper();
-    private static final ObjectMapper PRETTY_OBJECT_MAPPER = new ObjectMapper();
-    private static final ObjectMapper PRETTY_SKIPNULL_OBJECT_MAPPER = new ObjectMapper();
-    private static final ObjectMapper NON_FAIL_OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper COMPACT_OBJECT_MAPPER;
+    private static final ObjectMapper COMPACT_SKIPNULL_OBJECT_MAPPER;
+    private static final ObjectMapper PRETTY_OBJECT_MAPPER;
+    private static final ObjectMapper PRETTY_SKIPNULL_OBJECT_MAPPER;
+    private static final ObjectMapper NON_FAIL_OBJECT_MAPPER;
 
     static {
-        PRETTY_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-        PRETTY_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        PRETTY_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
-        PRETTY_OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        PRETTY_OBJECT_MAPPER = JsonMapper.builder()
+                .configure(SerializationFeature.INDENT_OUTPUT, true)
+                .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
+                .configure(StreamWriteFeature.AUTO_CLOSE_TARGET, false)
+                .build();
 
-        PRETTY_SKIPNULL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-        PRETTY_SKIPNULL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        PRETTY_SKIPNULL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
-        PRETTY_SKIPNULL_OBJECT_MAPPER.setSerializationInclusion(Include.NON_NULL);
-        PRETTY_SKIPNULL_OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        PRETTY_SKIPNULL_OBJECT_MAPPER = ((JsonMapper) JsonMapper.builder()
+                .configure(SerializationFeature.INDENT_OUTPUT, true)
+                .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
+                .configure(StreamWriteFeature.AUTO_CLOSE_TARGET, false)
+                .build()).rebuild()
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(Include.NON_NULL))
+                .build();
 
-        COMPACT_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        COMPACT_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
-        COMPACT_OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        COMPACT_OBJECT_MAPPER = JsonMapper.builder()
+                .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
+                .configure(StreamWriteFeature.AUTO_CLOSE_TARGET, false)
+                .build();
 
-        COMPACT_SKIPNULL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        COMPACT_SKIPNULL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
-        COMPACT_SKIPNULL_OBJECT_MAPPER.setSerializationInclusion(Include.NON_NULL);
-        COMPACT_SKIPNULL_OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        COMPACT_SKIPNULL_OBJECT_MAPPER = ((JsonMapper) JsonMapper.builder()
+                .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
+                .configure(StreamWriteFeature.AUTO_CLOSE_TARGET, false)
+                .build()).rebuild()
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(Include.NON_NULL))
+                .build();
 
-        NON_FAIL_OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-        NON_FAIL_OBJECT_MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
-        NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
-        NON_FAIL_OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        NON_FAIL_OBJECT_MAPPER.disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
-        NON_FAIL_OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        NON_FAIL_OBJECT_MAPPER = JsonMapper.builder()
+                .configure(SerializationFeature.INDENT_OUTPUT, true)
+                .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
+                .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
+                .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false)
+                .configure(StreamWriteFeature.AUTO_CLOSE_TARGET, false)
+                .build();
     }
 
     /**
@@ -73,7 +78,7 @@ public final class JsonTools {
         if (object == null) {
             return null;
         }
-        String json = compactPrint(object);
+        String json = compactPrintWithoutNulls(object);
         return readFromString(json, clazz);
     }
 
@@ -120,7 +125,7 @@ public final class JsonTools {
     public static String compactPrint(Object object) {
         try {
             return COMPACT_OBJECT_MAPPER.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
     }
@@ -134,7 +139,7 @@ public final class JsonTools {
     public static String compactPrintWithoutNulls(Object object) {
         try {
             return COMPACT_SKIPNULL_OBJECT_MAPPER.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
     }
@@ -171,7 +176,7 @@ public final class JsonTools {
     public static String prettyPrint(Object object) {
         try {
             return PRETTY_OBJECT_MAPPER.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
     }
@@ -185,7 +190,7 @@ public final class JsonTools {
     public static String prettyPrintWithoutNulls(Object object) {
         try {
             return PRETTY_SKIPNULL_OBJECT_MAPPER.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
     }
@@ -406,7 +411,7 @@ public final class JsonTools {
     public static void writeToFile(File file, Object object) {
         try {
             PRETTY_OBJECT_MAPPER.writeValue(file, object);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
     }
@@ -430,7 +435,7 @@ public final class JsonTools {
     public static void writeToStream(OutputStream stream, Object object) {
         try {
             PRETTY_OBJECT_MAPPER.writeValue(stream, object);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             throw new SmallToolsException("Problem serializing in JSON", e);
         }
     }

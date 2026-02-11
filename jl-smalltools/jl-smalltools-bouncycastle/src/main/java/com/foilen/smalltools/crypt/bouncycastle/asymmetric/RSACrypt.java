@@ -199,8 +199,7 @@ public class RSACrypt extends AbstractAsymmetricCrypt<RSAKeyDetails> {
                 rsaKeyDetails.setPrivateExponent(rsaKeyParameters.getExponent());
 
                 // CRT parameters
-                if (key instanceof RSAPrivateCrtKeyParameters) {
-                    RSAPrivateCrtKeyParameters rsaPrivateCrtKeyParameters = (RSAPrivateCrtKeyParameters) key;
+                if (key instanceof RSAPrivateCrtKeyParameters rsaPrivateCrtKeyParameters) {
                     rsaKeyDetails.setCrt(true);
                     rsaKeyDetails.setPrimeP(rsaPrivateCrtKeyParameters.getP());
                     rsaKeyDetails.setPrimeQ(rsaPrivateCrtKeyParameters.getQ());

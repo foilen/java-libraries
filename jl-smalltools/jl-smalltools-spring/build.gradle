@@ -14,10 +14,10 @@ repositories {
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
     api "jakarta.mail:jakarta.mail-api:$jakartaMailVersion"
-    api "org.springframework.data:spring-data-commons:$springDataVersion"
     api "org.springframework:spring-context-support:$springVersion"
     api "org.springframework:spring-core:$springVersion"
     api "org.springframework:spring-webmvc:$springVersion"
+    api "org.springframework.data:spring-data-commons:$springDataVersion"
     api "org.springframework.security:spring-security-web:$springSecurityVersion"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit6Version"

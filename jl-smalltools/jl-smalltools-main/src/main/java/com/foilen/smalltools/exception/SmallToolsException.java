@@ -1,9 +1,12 @@
 package com.foilen.smalltools.exception;
 
+import java.io.Serial;
+
 /**
  * An exception that happens.
  */
 public class SmallToolsException extends RuntimeException {
+    @Serial
     private static final long serialVersionUID = 201501041L;
 
     /**

@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.URL;
+import java.net.URI;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -68,7 +68,7 @@ public class InternetTools {
      */
     public static String getPublicIp() {
         try {
-            return StreamsTools.consumeAsString(new URL("https://checkip.foilen.com/").openStream());
+            return StreamsTools.consumeAsString(URI.create("https://checkip.foilen.com/").toURL().openStream());
         } catch (Exception e) {
             logger.error("Could not retrieve the public ip", e);
             return null;

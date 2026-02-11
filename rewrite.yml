@@ -1,0 +1,9 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.foilen.RemoveFlyway
+displayName: Remove Flyway Dependencies
+description: Removes all Flyway dependencies from the project
+recipeList:
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-flyway

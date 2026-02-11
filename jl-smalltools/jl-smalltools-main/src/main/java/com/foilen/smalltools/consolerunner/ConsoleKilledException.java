@@ -1,10 +1,13 @@
 package com.foilen.smalltools.consolerunner;
 
+import java.io.Serial;
+
 /**
  * The console was killed.
  */
 public class ConsoleKilledException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

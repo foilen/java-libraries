@@ -106,7 +106,7 @@ public class ProcUsageTest {
 
         // Assert
         Assertions.assertEquals(2, networkInfos.size());
-        assertNetworkInfo(networkInfos.get(0), "eth0", 8265769858l, 35975533l, 71073501742l, 37114397l);
+        assertNetworkInfo(networkInfos.getFirst(), "eth0", 8265769858l, 35975533l, 71073501742l, 37114397l);
         assertNetworkInfo(networkInfos.get(1), "lo", 7817850194l, 14495896l, 7817850194l, 14495896l);
     }
 

@@ -35,7 +35,7 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
     @Autowired
     protected MongoOperations mongoOperations;
 
-    @Value("${spring.data.mongodb.database}")
+    @Value("${spring.mongodb.database}")
     protected String databaseName;
 
     /**
@@ -358,7 +358,7 @@ public abstract class AbstractMongoUpgradeTask extends AbstractBasics implements
             }
         });
         sb.append("new Document(");
-        sb.append(parts.get(0));
+        sb.append(parts.getFirst());
         if (parts.size() > 1) {
             logger.warn("More than one part is not supported for {}", document);
         }

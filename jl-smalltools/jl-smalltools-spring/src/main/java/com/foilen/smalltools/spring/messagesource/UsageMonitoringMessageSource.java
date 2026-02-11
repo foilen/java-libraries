@@ -147,7 +147,7 @@ public class UsageMonitoringMessageSource implements MessageSource {
             logger.info("Found messages file {}", directory.getAbsoluteFile());
             String filename = file.getName();
             String localePart = filename.substring(startswith.length(), filename.length() - endswith.length());
-            Locale locale = new Locale(localePart);
+            Locale locale = Locale.of(localePart);
             logger.info("Locale is {} -> {}", localePart, locale);
             filePerLocale.put(locale, file);
 

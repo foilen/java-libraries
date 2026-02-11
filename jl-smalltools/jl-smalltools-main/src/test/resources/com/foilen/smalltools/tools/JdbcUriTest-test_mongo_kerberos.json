@@ -1,13 +1,13 @@
 {
-  "schema" : "mongodb",
-  "username" : "username@REALM.com",
-  "password" : null,
-  "server" : "localhost:27017",
   "database" : null,
   "options" : {
     "authMechanism" : "GSSAPI",
     "authMechanismProperties" : "SERVICE_NAME:mongo,CANONICALIZE_HOST_NAME:true",
     "authSource" : "$external",
     "gssapiServiceName" : "mongo"
-  }
+  },
+  "password" : null,
+  "schema" : "mongodb",
+  "server" : "localhost:27017",
+  "username" : "username@REALM.com"
 }

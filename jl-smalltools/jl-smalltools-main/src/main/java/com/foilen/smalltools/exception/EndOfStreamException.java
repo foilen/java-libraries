@@ -1,13 +1,16 @@
 package com.foilen.smalltools.exception;
 
+import java.io.Serial;
+
 /**
  * When a stream is EOS.
  */
 public class EndOfStreamException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private boolean corrupted;
+    private final boolean corrupted;
 
     /**
      * Construct.

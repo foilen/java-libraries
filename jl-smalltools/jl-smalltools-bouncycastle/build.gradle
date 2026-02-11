@@ -13,8 +13,8 @@ repositories {
 
 dependencies {
     api project(':jl-smalltools:jl-smalltools-main')
-    api "org.bouncycastle:bcpkix-jdk18on:$bouncyCastleVersion"
     api "org.bouncycastle:bcpg-jdk18on:$bouncyCastleVersion"
+    api "org.bouncycastle:bcpkix-jdk18on:$bouncyCastleVersion"
     api "org.bouncycastle:bcprov-jdk18on:$bouncyCastleVersion"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit6Version"

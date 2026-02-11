@@ -84,11 +84,10 @@ public class FileSystemUpdateBufferedHandler implements FileSystemUpdateHandler 
                 } else {
                     fileState = matrixNotExisted[fileStatus.lastEvent.ordinal()];
                 }
-                if (fileState == null) {
-                    continue;
-                }
 
                 switch (fileState) {
+                    case null:
+                        continue;
                     case CREATED:
                         wrappedHandler.created(file);
                         break;

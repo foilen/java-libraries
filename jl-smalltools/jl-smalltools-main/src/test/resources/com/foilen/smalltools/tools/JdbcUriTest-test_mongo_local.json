@@ -1,8 +1,8 @@
 {
-  "schema" : "mongodb",
-  "username" : null,
-  "password" : null,
-  "server" : "localhost:27017",
   "database" : null,
-  "options" : { }
+  "options" : { },
+  "password" : null,
+  "schema" : "mongodb",
+  "server" : "localhost:27017",
+  "username" : null
 }

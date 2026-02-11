@@ -156,7 +156,7 @@ public class ThreadNameStateTool {
      */
     public ThreadNameStateTool pop() {
         if (!nextName.isEmpty()) {
-            nextName.remove(nextName.size() - 1);
+            nextName.removeLast();
         }
         return this;
     }

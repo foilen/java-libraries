@@ -16,8 +16,8 @@ public class MemoryUsageSunOsMxImpl implements MemoryUsageStrategy {
         OperatingSystemMXBean bean = null;
         try {
             var base = ManagementFactory.getOperatingSystemMXBean();
-            if (base instanceof OperatingSystemMXBean) {
-                bean = (OperatingSystemMXBean) base;
+            if (base instanceof OperatingSystemMXBean xBean) {
+                bean = xBean;
             }
         } catch (Throwable t) {
             // Ignore; will leave bean as null

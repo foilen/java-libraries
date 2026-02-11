@@ -35,7 +35,7 @@ public final class SyncTools {
                     from = first.get();
                 }
             } else {
-                from = syncConfiguration.getIdFromEntity().apply(sourceEntities.get(0));
+                from = syncConfiguration.getIdFromEntity().apply(sourceEntities.getFirst());
             }
         }
 
@@ -45,7 +45,7 @@ public final class SyncTools {
 
             Optional<I> first = destinationEntities.stream() //
                     .map(it -> syncConfiguration.getIdFromPartial().apply(it)) //
-                    .filter(it -> !syncSlice.getAfterId().isPresent() || syncConfiguration.getCompareId().apply(it, syncSlice.getAfterId().get()) > 0) //
+                    .filter(it -> syncSlice.getAfterId().isEmpty() || syncConfiguration.getCompareId().apply(it, syncSlice.getAfterId().get()) > 0) //
                     .filter(it -> finalFrom == null || syncConfiguration.getCompareId().apply(it, finalFrom) < 0) //
                     .findFirst();
             if (first.isPresent()) {
@@ -62,11 +62,11 @@ public final class SyncTools {
         I to = null;
 
         if (!sourceEntities.isEmpty()) {
-            to = syncConfiguration.getIdFromEntity().apply(sourceEntities.get(sourceEntities.size() - 1));
+            to = syncConfiguration.getIdFromEntity().apply(sourceEntities.getLast());
         }
 
         if (!destinationEntities.isEmpty()) {
-            I otherId = syncConfiguration.getIdFromPartial().apply(destinationEntities.get(destinationEntities.size() - 1));
+            I otherId = syncConfiguration.getIdFromPartial().apply(destinationEntities.getLast());
             if (to == null) {
                 to = otherId;
             } else {
@@ -214,11 +214,11 @@ public final class SyncTools {
 
                 // Check what needs to advance
                 if (!sourceEntities.isEmpty() && //
-                        syncConfiguration.getIdFromEntity().apply(sourceEntities.get(sourceEntities.size() - 1)).equals(toId)) {
+                        syncConfiguration.getIdFromEntity().apply(sourceEntities.getLast()).equals(toId)) {
                     log.debug("Will advance source");
                     updateSource = true;
                 }
-                if (!destinationEntities.isEmpty() && syncConfiguration.getIdFromPartial().apply(destinationEntities.get(destinationEntities.size() - 1)).equals(toId)) {
+                if (!destinationEntities.isEmpty() && syncConfiguration.getIdFromPartial().apply(destinationEntities.getLast()).equals(toId)) {
                     log.debug("Will advance destination");
                     updateDestination = true;
                 }

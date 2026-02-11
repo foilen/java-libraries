@@ -76,3 +76,6 @@ signing {
 tasks.withType(Sign) {
     onlyIf { isReleaseVersion }
 }
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}

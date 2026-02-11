@@ -92,7 +92,7 @@ public class SmoothTriggerTest {
 
         smoothTrigger.stop(true);
 
-        AssertTools.assertEqualsDelta(0, triggers.get(0), HALF_DELAY);
+        AssertTools.assertEqualsDelta(0, triggers.getFirst(), HALF_DELAY);
         AssertTools.assertEqualsDelta(3 * DELAY, triggers.get(1), HALF_DELAY);
         AssertTools.assertEqualsDelta(6 * DELAY, triggers.get(2), HALF_DELAY);
         AssertTools.assertEqualsDelta(7 * DELAY + HALF_DELAY, triggers.get(3), HALF_DELAY);
@@ -130,7 +130,7 @@ public class SmoothTriggerTest {
         } // At 3D
         smoothTrigger.stop(false);
         Assertions.assertEquals(2, triggers.size());
-        AssertTools.assertEqualsDelta(DELAY, triggers.get(0), HALF_DELAY);
+        AssertTools.assertEqualsDelta(DELAY, triggers.getFirst(), HALF_DELAY);
         AssertTools.assertEqualsDelta(2 * DELAY + HALF_DELAY, triggers.get(1), HALF_DELAY);
 
     }
@@ -151,7 +151,7 @@ public class SmoothTriggerTest {
         } // At 7D
         smoothTrigger.stop(false);
         Assertions.assertEquals(2, triggers.size());
-        AssertTools.assertEqualsDelta(MAX_DELAY, triggers.get(0), HALF_DELAY);
+        AssertTools.assertEqualsDelta(MAX_DELAY, triggers.getFirst(), HALF_DELAY);
         AssertTools.assertEqualsDelta(2 * MAX_DELAY, triggers.get(1), DELAY);
 
     }
@@ -178,7 +178,7 @@ public class SmoothTriggerTest {
 
         smoothTrigger.stop(false);
         Assertions.assertEquals(2, triggers.size());
-        AssertTools.assertEqualsDelta(MAX_DELAY, triggers.get(0), HALF_DELAY);
+        AssertTools.assertEqualsDelta(MAX_DELAY, triggers.getFirst(), HALF_DELAY);
         AssertTools.assertEqualsDelta(5 * DELAY, triggers.get(1), HALF_DELAY);
 
     }

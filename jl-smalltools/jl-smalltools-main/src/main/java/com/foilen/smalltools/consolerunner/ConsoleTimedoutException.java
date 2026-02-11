@@ -1,10 +1,13 @@
 package com.foilen.smalltools.consolerunner;
 
+import java.io.Serial;
+
 /**
  * An exception when the console timed out.
  */
 public class ConsoleTimedoutException extends RuntimeException {
 
+    @Serial
     private static final long serialVersionUID = 2015072101L;
 
     /**
