@@ -1,20 +1,15 @@
 package com.foilen.smalltools.tools;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-
+import com.foilen.smalltools.test.asserts.AssertTools;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.foilen.smalltools.test.asserts.AssertTools;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
 
 public class JsonToolsTest {
 
@@ -162,6 +157,41 @@ public class JsonToolsTest {
         List<Object> clonedList = (List<Object>) cDepth1.get("d");
         Assertions.assertTrue(clonedList.getFirst() instanceof SortedMap);
 
+    }
+
+    @Test
+    public void testCloneAsSortedMap_withNullValues_1() {
+
+        TypeDeep original = new TypeDeep().setA("Some text").setB(5).setC(new TypeDeep().setB(10));
+
+        SortedMap<String, Object> clone = JsonTools.cloneAsSortedMap(original);
+
+        AssertTools.assertJsonComparison("JsonToolsTest-testCloneAsSortedMap_withNullValues-expected.json", getClass(), clone);
+
+        // Assert null values are not present in the sorted map
+        Assertions.assertFalse(clone.containsValue(null));
+        Assertions.assertFalse(((Map<?, ?>) clone.get("c")).containsValue(null));
+    }
+
+    @Test
+    public void testCloneAsSortedMap_withNullValues_2() {
+
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> deepMap = new HashMap<>();
+        deepMap.put("b", 10);
+        deepMap.put("z", null);
+        map.put("a", "Some text");
+        map.put("b", 5);
+        map.put("z", null);
+        map.put("c", deepMap);
+
+        SortedMap<String, Object> clone = JsonTools.cloneAsSortedMap(map);
+
+        AssertTools.assertJsonComparison("JsonToolsTest-testCloneAsSortedMap_withNullValues-expected.json", getClass(), clone);
+
+        // Assert null values are not present in the sorted map
+        Assertions.assertFalse(clone.containsValue(null));
+        Assertions.assertFalse(((Map<?, ?>) clone.get("c")).containsValue(null));
     }
 
     @Test

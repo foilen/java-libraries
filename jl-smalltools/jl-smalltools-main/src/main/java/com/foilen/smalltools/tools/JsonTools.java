@@ -1,6 +1,6 @@
 package com.foilen.smalltools.tools;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.reflection.ReflectionTools;
 import tools.jackson.core.JacksonException;
@@ -42,7 +42,7 @@ public final class JsonTools {
                 .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
                 .configure(StreamWriteFeature.AUTO_CLOSE_TARGET, false)
                 .build()).rebuild()
-                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(Include.NON_NULL))
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_NULL))
                 .build();
 
         COMPACT_OBJECT_MAPPER = JsonMapper.builder()
@@ -54,7 +54,7 @@ public final class JsonTools {
                 .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
                 .configure(StreamWriteFeature.AUTO_CLOSE_TARGET, false)
                 .build()).rebuild()
-                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(Include.NON_NULL))
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_NULL))
                 .build();
 
         NON_FAIL_OBJECT_MAPPER = JsonMapper.builder()
@@ -111,9 +111,31 @@ public final class JsonTools {
         if (object == null) {
             return null;
         }
+
         SortedMap<String, Object> sortedMap = JsonTools.clone(object, SortedMap.class);
+        removeNulls(sortedMap);
         convertAllMapsToSortedMap(sortedMap);
+
         return sortedMap;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void removeNulls(Map<String, Object> map) {
+        for (String key : map.keySet().stream().collect(Collectors.toList())) {
+            Object value = map.get(key);
+            if (value == null) {
+                map.remove(key);
+            } else if (value instanceof Map) {
+                removeNulls((Map<String, Object>) value);
+            } else if (value instanceof List) {
+                List<Object> list = (List<Object>) value;
+                for (Object item : list) {
+                    if (item instanceof Map) {
+                        removeNulls((Map<String, Object>) item);
+                    }
+                }
+            }
+        }
     }
 
     /**
