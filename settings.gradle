@@ -1,5 +1,6 @@
 rootProject.name = 'jl-smalltools'
 include 'jl-smalltools:jl-smalltools-bouncycastle'
+include 'jl-smalltools:jl-smalltools-jce'
 include 'jl-smalltools:jl-smalltools-main'
 include 'jl-smalltools:jl-smalltools-mongodb-5'
 include 'jl-smalltools:jl-smalltools-mongodb-5-spring'
