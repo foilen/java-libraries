@@ -55,6 +55,16 @@ public class RSACertificate {
 
     // OID for Common Name
     private static final String OID_COMMON_NAME = "2.5.4.3";
+    // OID for Country
+    private static final String OID_COUNTRY = "2.5.4.6";
+    // OID for Organization
+    private static final String OID_ORGANIZATION = "2.5.4.10";
+    // OID for Organizational Unit
+    private static final String OID_ORG_UNIT = "2.5.4.11";
+    // OID for State/Province
+    private static final String OID_STATE = "2.5.4.8";
+    // OID for Locality
+    private static final String OID_LOCALITY = "2.5.4.7";
     // OID for Subject Alternative Name extension
     private static final String OID_SAN = "2.5.29.17";
     // OID for SHA256withRSA signature algorithm
@@ -663,14 +673,79 @@ public class RSACertificate {
     }
 
     /**
-     * Encode a DN with just a CN attribute.
+     * Encode a DN. The subjectString may be a simple CN value like "myhost",
+     * or a composite subject string like "myhost,C=CA,O=foilen" where the
+     * first segment without an '=' is the CN value and subsequent segments
+     * are KEY=VALUE pairs for additional attributes.
      */
-    private byte[] derName(String cn) {
-        byte[] cnOid = derOid(OID_COMMON_NAME);
-        byte[] cnValue = derUtf8String(cn);
-        byte[] atv = derSequence(concat(cnOid, cnValue));
-        byte[] rdn = derSet(atv);
-        return derSequence(rdn);
+    private byte[] derName(String subjectString) {
+        // Parse the composite subject string into ordered RDN components
+        List<String[]> rdns = parseSubjectString(subjectString);
+
+        // Encode each RDN and concatenate
+        ByteArrayOutputStream nameContent = new ByteArrayOutputStream();
+        for (String[] rdn : rdns) {
+            String key = rdn[0];
+            String value = rdn[1];
+            String oid = attributeKeyToOid(key);
+            byte[] attrOid = derOid(oid);
+            byte[] attrValue = "C".equalsIgnoreCase(key) ? derPrintableString(value) : derUtf8String(value);
+            byte[] atv = derSequence(concat(attrOid, attrValue));
+            byte[] rdnBytes = derSet(atv);
+            try {
+                nameContent.write(rdnBytes);
+            } catch (IOException e) {
+                throw new SmallToolsException("Error encoding DN", e);
+            }
+        }
+        return derSequence(nameContent.toByteArray());
+    }
+
+    /**
+     * Parse a subject string into an ordered list of [key, value] pairs.
+     * Input like "test,C=CA,O=foilen" is parsed as: CN=test, C=CA, O=foilen.
+     * Input like "test" is parsed as: CN=test.
+     */
+    private List<String[]> parseSubjectString(String subjectString) {
+        List<String[]> result = new ArrayList<>();
+        String[] parts = subjectString.split(",");
+        for (String part : parts) {
+            part = part.trim();
+            int eqIdx = part.indexOf('=');
+            if (eqIdx < 0) {
+                // No '=': treat as CN value
+                result.add(new String[]{"CN", part});
+            } else {
+                String key = part.substring(0, eqIdx).trim();
+                String value = part.substring(eqIdx + 1).trim();
+                result.add(new String[]{key, value});
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Map an attribute key abbreviation to its OID.
+     */
+    private String attributeKeyToOid(String key) {
+        switch (key.toUpperCase()) {
+            case "CN": return OID_COMMON_NAME;
+            case "C":  return OID_COUNTRY;
+            case "O":  return OID_ORGANIZATION;
+            case "OU": return OID_ORG_UNIT;
+            case "ST": return OID_STATE;
+            case "L":  return OID_LOCALITY;
+            default:
+                throw new SmallToolsException("Unknown DN attribute key: " + key);
+        }
+    }
+
+    private byte[] derPrintableString(String value) {
+        try {
+            return derTlv(0x13, value.getBytes("US-ASCII"));
+        } catch (UnsupportedEncodingException e) {
+            throw new SmallToolsException("ASCII not supported", e);
+        }
     }
 
     private byte[] derValidity(Date notBefore, Date notAfter) {

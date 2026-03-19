@@ -37,6 +37,24 @@ public class RSACertificateTest {
     }
 
     @Test
+    public void testCommonNameWithSubject() throws Exception {
+        File fileNode = File.createTempFile("junit", null);
+
+        // Node
+        AsymmetricKeys nodeKeys = rsaCrypt.generateKeyPair(2048);
+        RSACertificate nodeCertificate = new RSACertificate(nodeKeys);
+        nodeCertificate.selfSign(new CertificateDetails().setCommonName("test,C=CA,O=foilen,OU=unit,L=city,ST=state"));
+        nodeCertificate.saveCertificatePem(fileNode.getAbsolutePath());
+
+        // Load
+        RSACertificate loadedNodeCertificate = RSACertificate.loadPemFromFile(fileNode.getAbsolutePath());
+
+        // Assert
+        Assertions.assertEquals("test", loadedNodeCertificate.getCommonName());
+        Assertions.assertEquals("ST=state, L=city, OU=unit, O=foilen, C=CA, CN=test", loadedNodeCertificate.getCertificate().getSubjectX500Principal().toString());
+    }
+
+    @Test
     public void testIsValidSignature() {
         // Root
         AsymmetricKeys rootKeys = rsaCrypt.generateKeyPair(2048);
