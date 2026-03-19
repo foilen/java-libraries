@@ -199,33 +199,42 @@ public class RSATools {
      */
     public static List<RSACertificate> loadPemPkcs7FromString(String pem) {
         try {
-            // Extract the PKCS7 block
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            List<RSACertificate> result = new ArrayList<>();
+
             BufferedReader reader = new BufferedReader(new StringReader(pem));
             StringBuilder sb = new StringBuilder();
             String line;
-            boolean inBlock = false;
+            String blockType = null; // "PKCS7" or "CERTIFICATE"
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.equals("-----BEGIN PKCS7-----")) {
-                    inBlock = true;
-                } else if (line.equals("-----END PKCS7-----")) {
-                    break;
-                } else if (inBlock) {
+                    blockType = "PKCS7";
+                    sb.setLength(0);
+                } else if (line.equals("-----BEGIN CERTIFICATE-----")) {
+                    blockType = "CERTIFICATE";
+                    sb.setLength(0);
+                } else if (line.equals("-----END PKCS7-----") && "PKCS7".equals(blockType)) {
+                    byte[] der = Base64.getMimeDecoder().decode(sb.toString());
+                    Collection<? extends Certificate> certs = cf.generateCertificates(new ByteArrayInputStream(der));
+                    for (Certificate cert : certs) {
+                        result.add(new RSACertificate((X509Certificate) cert));
+                    }
+                    blockType = null;
+                    sb.setLength(0);
+                } else if (line.equals("-----END CERTIFICATE-----") && "CERTIFICATE".equals(blockType)) {
+                    byte[] der = Base64.getMimeDecoder().decode(sb.toString());
+                    Certificate cert = cf.generateCertificate(new ByteArrayInputStream(der));
+                    result.add(new RSACertificate((X509Certificate) cert));
+                    blockType = null;
+                    sb.setLength(0);
+                } else if (blockType != null) {
                     sb.append(line).append('\n');
                 }
             }
-            if (sb.length() == 0) {
-                throw new SmallToolsException("No PKCS7 block found in PEM");
-            }
-            byte[] der = Base64.getMimeDecoder().decode(sb.toString());
 
-            // Use CertificateFactory to parse the PKCS#7 bag
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            Collection<? extends Certificate> certs = cf.generateCertificates(new ByteArrayInputStream(der));
-
-            List<RSACertificate> result = new ArrayList<>();
-            for (Certificate cert : certs) {
-                result.add(new RSACertificate((X509Certificate) cert));
+            if (result.isEmpty()) {
+                throw new SmallToolsException("No PKCS7 or CERTIFICATE block found in PEM");
             }
             return result;
         } catch (SmallToolsException e) {
