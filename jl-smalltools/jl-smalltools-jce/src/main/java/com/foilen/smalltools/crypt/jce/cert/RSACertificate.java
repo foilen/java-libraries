@@ -13,6 +13,7 @@ import com.foilen.smalltools.tools.FileTools;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.*;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -69,10 +70,41 @@ public class RSACertificate {
     private static final String OID_SAN = "2.5.29.17";
     // OID for SHA256withRSA signature algorithm
     private static final String OID_SHA256_WITH_RSA = "1.2.840.113549.1.1.11";
-    // OID for rsaEncryption (used in AlgorithmIdentifier for public key)
-    private static final String OID_RSA_ENCRYPTION = "1.2.840.113549.1.1.1";
 
     private static final RSACrypt rsaCrypt = new RSACrypt();
+
+    /**
+     * Load all certificates from a PEM file that may contain multiple certificates.
+     *
+     * @param fileName the full path of the file
+     * @return the list of certificates
+     */
+    public static List<RSACertificate> loadPemAllCertificatesFromFile(String fileName) {
+        String pem = FileTools.getFileAsString(fileName);
+        return loadPemAllCertificatesFromString(pem);
+    }
+
+    /**
+     * Load all certificates from a PEM string that may contain multiple certificates.
+     *
+     * @param pem the PEM string
+     * @return the list of certificates
+     */
+    public static List<RSACertificate> loadPemAllCertificatesFromString(String pem) {
+        List<RSACertificate> certificates = new ArrayList<>();
+        try {
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            Collection<? extends Certificate> certs = cf.generateCertificates(new ByteArrayInputStream(pem.getBytes()));
+            for (var cert : certs) {
+                if (cert instanceof X509Certificate) {
+                    certificates.add(new RSACertificate((X509Certificate) cert));
+                }
+            }
+        } catch (Exception e) {
+            throw new SmallToolsException("Problem loading the certificates", e);
+        }
+        return certificates;
+    }
 
     /**
      * Load the certificate and keys (if present in the file).
@@ -728,16 +760,15 @@ public class RSACertificate {
      * Map an attribute key abbreviation to its OID.
      */
     private String attributeKeyToOid(String key) {
-        switch (key.toUpperCase()) {
-            case "CN": return OID_COMMON_NAME;
-            case "C":  return OID_COUNTRY;
-            case "O":  return OID_ORGANIZATION;
-            case "OU": return OID_ORG_UNIT;
-            case "ST": return OID_STATE;
-            case "L":  return OID_LOCALITY;
-            default:
-                throw new SmallToolsException("Unknown DN attribute key: " + key);
-        }
+        return switch (key.toUpperCase()) {
+            case "CN" -> OID_COMMON_NAME;
+            case "C" -> OID_COUNTRY;
+            case "O" -> OID_ORGANIZATION;
+            case "OU" -> OID_ORG_UNIT;
+            case "ST" -> OID_STATE;
+            case "L" -> OID_LOCALITY;
+            default -> throw new SmallToolsException("Unknown DN attribute key: " + key);
+        };
     }
 
     private byte[] derPrintableString(String value) {

@@ -7,15 +7,11 @@ import com.foilen.smalltools.tools.FileTools;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Some tools to help converting from the tools in the library to standard Java.
@@ -117,7 +113,7 @@ public class RSATools {
             keyStore.load(null, null);
 
             // Fill it with the trusted certificates
-            for (RSACertificate rsaCertificate : rsaTrustedCertificates.getTrustedCertificates()) {
+            for (var rsaCertificate : rsaTrustedCertificates.getTrustedCertificates()) {
                 String alias = rsaCertificate.getThumbprint();
                 Certificate certificate = rsaCertificate.getCertificate();
                 keyStore.setCertificateEntry(alias, certificate);
@@ -181,70 +177,6 @@ public class RSATools {
     }
 
     /**
-     * Load a list of certificates from a PKCS#7 PEM file
-     *
-     * @param fileName the full path of the PKCS#7 PEM file
-     * @return the list of certificates contained in the PKCS#7 bag
-     */
-    public static List<RSACertificate> loadPemPkcs7FromFile(String fileName) {
-        String pem = FileTools.getFileAsString(fileName);
-        return loadPemPkcs7FromString(pem);
-    }
-
-    /**
-     * Load a list of certificates from a PKCS#7 PEM string
-     *
-     * @param pem the PEM string
-     * @return the list of certificates contained in the PKCS#7 bag
-     */
-    public static List<RSACertificate> loadPemPkcs7FromString(String pem) {
-        try {
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            List<RSACertificate> result = new ArrayList<>();
-
-            BufferedReader reader = new BufferedReader(new StringReader(pem));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            String blockType = null; // "PKCS7" or "CERTIFICATE"
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.equals("-----BEGIN PKCS7-----")) {
-                    blockType = "PKCS7";
-                    sb.setLength(0);
-                } else if (line.equals("-----BEGIN CERTIFICATE-----")) {
-                    blockType = "CERTIFICATE";
-                    sb.setLength(0);
-                } else if (line.equals("-----END PKCS7-----") && "PKCS7".equals(blockType)) {
-                    byte[] der = Base64.getMimeDecoder().decode(sb.toString());
-                    Collection<? extends Certificate> certs = cf.generateCertificates(new ByteArrayInputStream(der));
-                    for (Certificate cert : certs) {
-                        result.add(new RSACertificate((X509Certificate) cert));
-                    }
-                    blockType = null;
-                    sb.setLength(0);
-                } else if (line.equals("-----END CERTIFICATE-----") && "CERTIFICATE".equals(blockType)) {
-                    byte[] der = Base64.getMimeDecoder().decode(sb.toString());
-                    Certificate cert = cf.generateCertificate(new ByteArrayInputStream(der));
-                    result.add(new RSACertificate((X509Certificate) cert));
-                    blockType = null;
-                    sb.setLength(0);
-                } else if (blockType != null) {
-                    sb.append(line).append('\n');
-                }
-            }
-
-            if (result.isEmpty()) {
-                throw new SmallToolsException("No PKCS7 or CERTIFICATE block found in PEM");
-            }
-            return result;
-        } catch (SmallToolsException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new SmallToolsException("Problem loading PKCS#7 certificates", e);
-        }
-    }
-
-    /**
      * Save a PKCS#10 Certificate Signing Request (CSR) as a PEM file for the given certificate's public key.
      * <p>
      * The {@link RSACertificate} must have keys set (both public and private) to generate and sign the CSR.
@@ -280,15 +212,9 @@ public class RSATools {
 
             PublicKey publicKey = keys.getPublicKey();
             PrivateKey privateKey = keys.getPrivateKey();
-            String commonName = certificate.getCommonName();
 
-            // Build CertificationRequestInfo (PKCS#10)
-            // Subject: SEQUENCE { SET { SEQUENCE { OID, UTF8String } } }
-            byte[] cnOid = derOid("2.5.4.3");
-            byte[] cnValue = derUtf8String(commonName);
-            byte[] atv = derSequence(concat(cnOid, cnValue));
-            byte[] rdn = derSet(atv);
-            byte[] subject = derSequence(rdn);
+            // Use the full subject DN from the certificate
+            byte[] subject = certificate.getCertificate().getSubjectX500Principal().getEncoded();
 
             // SubjectPublicKeyInfo: already DER-encoded from the public key
             byte[] spki = publicKey.getEncoded();

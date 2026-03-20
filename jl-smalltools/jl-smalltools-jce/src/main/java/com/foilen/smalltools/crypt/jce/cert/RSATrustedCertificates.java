@@ -31,8 +31,8 @@ import java.util.*;
 public class RSATrustedCertificates {
 
     // Key: subject DN (RFC 2253 string from X500Principal.getName())
-    private Map<String, List<RSACertificate>> trustedCertificatesBySubject = new HashMap<>();
-    private Map<String, List<RSACertificate>> intermediateCertificatesBySubject = new HashMap<>();
+    private final Map<String, List<RSACertificate>> trustedCertificatesBySubject = new HashMap<>();
+    private final Map<String, List<RSACertificate>> intermediateCertificatesBySubject = new HashMap<>();
 
     /**
      * Load all the certificates from a pem file.

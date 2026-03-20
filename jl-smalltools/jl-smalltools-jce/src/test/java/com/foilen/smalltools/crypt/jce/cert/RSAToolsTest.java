@@ -6,68 +6,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.List;
-import java.util.stream.Stream;
 
 public class RSAToolsTest {
 
-    private RSACrypt rsaCrypt = new RSACrypt();
-
-    @Test
-    public void testLoadPemPkcs7FromString() throws Exception {
-        // Generate a root cert and a node cert
-        AsymmetricKeys rootKeys = rsaCrypt.generateKeyPair(2048);
-        RSACertificate rootCertificate = new RSACertificate(rootKeys);
-        rootCertificate.selfSign(new CertificateDetails().setCommonName("pkcs7-root"));
-
-        AsymmetricKeys nodeKeys = rsaCrypt.generateKeyPair(2048);
-        RSACertificate nodeCertificate = rootCertificate.signPublicKey(nodeKeys, new CertificateDetails().setCommonName("pkcs7-node"));
-
-        // Build a PKCS#7 PEM string containing both certificates
-        // PKCS#7 SignedData with only certificates can be represented as a concatenation of DER-encoded certs
-        // wrapped in a PKCS7 ContentInfo. For testing purposes, we use CertificateFactory to produce the PKCS#7 bag.
-        // A simpler approach: build PKCS#7 manually using DER from the two certificates.
-        byte[] cert1Der = rootCertificate.getCertificate().getEncoded();
-        byte[] cert2Der = nodeCertificate.getCertificate().getEncoded();
-        String pkcs7Pem = buildSimplePkcs7Pem(cert1Der, cert2Der);
-
-        // Load the PKCS#7
-        List<RSACertificate> loaded = RSATools.loadPemPkcs7FromString(pkcs7Pem);
-        Assertions.assertEquals(2, loaded.size());
-
-        // The certs should be the root and node (order may vary, check thumbprints)
-        List<String> thumbprints = loaded.stream()
-                .map(RSACertificate::getThumbprint)
-                .sorted()
-                .toList();
-        List<String> expected = Stream.of(rootCertificate.getThumbprint(), nodeCertificate.getThumbprint())
-                .sorted()
-                .toList();
-        Assertions.assertEquals(expected, thumbprints);
-    }
-
-    @Test
-    public void testLoadPemPkcs7FromFile() throws Exception {
-        AsymmetricKeys rootKeys = rsaCrypt.generateKeyPair(2048);
-        RSACertificate rootCertificate = new RSACertificate(rootKeys);
-        rootCertificate.selfSign(new CertificateDetails().setCommonName("pkcs7-file-root"));
-
-        byte[] cert1Der = rootCertificate.getCertificate().getEncoded();
-        String pkcs7Pem = buildSimplePkcs7Pem(cert1Der);
-
-        File tmpFile = File.createTempFile("junit-pkcs7", ".pem");
-        tmpFile.deleteOnExit();
-        Files.writeString(tmpFile.toPath(), pkcs7Pem);
-
-        List<RSACertificate> loaded = RSATools.loadPemPkcs7FromFile(tmpFile.getAbsolutePath());
-        Assertions.assertEquals(1, loaded.size());
-        Assertions.assertEquals(rootCertificate.getThumbprint(), loaded.get(0).getThumbprint());
-    }
+    private final RSACrypt rsaCrypt = new RSACrypt();
 
     @Test
     public void testSaveCsrPkcs10Pem() throws Exception {
@@ -107,110 +53,6 @@ public class RSAToolsTest {
         String content = java.nio.file.Files.readString(tmpFile.toPath());
         Assertions.assertTrue(content.contains("-----BEGIN CERTIFICATE REQUEST-----"));
         Assertions.assertTrue(content.contains("-----END CERTIFICATE REQUEST-----"));
-    }
-
-    /**
-     * Build a PKCS#7 SignedData PEM containing only certificates (degenerate case).
-     * This uses ASN.1 DER encoding manually (no BouncyCastle dependency).
-     * Structure (simplified):
-     * ContentInfo ::= SEQUENCE {
-     * contentType OID (1.2.840.113549.1.7.2 signedData),
-     * content [0] EXPLICIT SignedData
-     * }
-     * SignedData ::= SEQUENCE {
-     * version INTEGER (1),
-     * digestAlgorithms SET {},
-     * encapContentInfo SEQUENCE { OID (1.2.840.113549.1.7.1) },
-     * certificates [0] IMPLICIT SEQUENCE OF Certificate,
-     * signerInfos SET {}
-     * }
-     */
-    private String buildSimplePkcs7Pem(byte[]... certDers) {
-        // Build the certificates [0] IMPLICIT - just concatenate the DER certs
-        byte[] certsContent = concatArrays(certDers);
-        byte[] certsTagged = tlv(0xA0, certsContent);
-
-        // version INTEGER 1
-        byte[] version = tlv(0x02, new byte[]{0x01});
-        // digestAlgorithms SET {}
-        byte[] digestAlgs = tlv(0x31, new byte[0]);
-        // encapContentInfo SEQUENCE { OID id-data }
-        byte[] idDataOid = oidEncoded("1.2.840.113549.1.7.1");
-        byte[] encapContentInfo = tlv(0x30, idDataOid);
-        // signerInfos SET {}
-        byte[] signerInfos = tlv(0x31, new byte[0]);
-
-        byte[] signedDataContent = concatArrays(version, digestAlgs, encapContentInfo, certsTagged, signerInfos);
-        byte[] signedData = tlv(0x30, signedDataContent);
-
-        // ContentInfo
-        byte[] signedDataOid = oidEncoded("1.2.840.113549.1.7.2");
-        byte[] contentTagged = tlv(0xA0, signedData);
-        byte[] contentInfo = tlv(0x30, concatArrays(signedDataOid, contentTagged));
-
-        String base64 = Base64.getMimeEncoder(64, new byte[]{'\n'}).encodeToString(contentInfo);
-        return "-----BEGIN PKCS7-----\n" + base64 + "\n-----END PKCS7-----\n";
-    }
-
-    private byte[] oidEncoded(String dotNotation) {
-        String[] parts = dotNotation.split("\\.");
-        java.io.ByteArrayOutputStream buf = new java.io.ByteArrayOutputStream();
-        int first = Integer.parseInt(parts[0]) * 40 + Integer.parseInt(parts[1]);
-        buf.write(first);
-        for (int i = 2; i < parts.length; i++) {
-            long v = Long.parseLong(parts[i]);
-            if (v < 128) {
-                buf.write((int) v);
-            } else {
-                byte[] enc = encodeBase128(v);
-                for (byte b : enc) buf.write(b);
-            }
-        }
-        return tlv(0x06, buf.toByteArray());
-    }
-
-    private byte[] encodeBase128(long value) {
-        int numBytes = 0;
-        long tmp = value;
-        while (tmp > 0) {
-            numBytes++;
-            tmp >>= 7;
-        }
-        byte[] result = new byte[numBytes];
-        for (int i = numBytes - 1; i >= 0; i--) {
-            result[i] = (byte) (value & 0x7F);
-            if (i < numBytes - 1) result[i] |= (byte) 0x80;
-            value >>= 7;
-        }
-        return result;
-    }
-
-    private byte[] tlv(int tag, byte[] value) {
-        byte[] len = derLen(value.length);
-        byte[] result = new byte[1 + len.length + value.length];
-        result[0] = (byte) tag;
-        System.arraycopy(len, 0, result, 1, len.length);
-        System.arraycopy(value, 0, result, 1 + len.length, value.length);
-        return result;
-    }
-
-    private byte[] derLen(int length) {
-        if (length < 0x80) return new byte[]{(byte) length};
-        else if (length < 0x100) return new byte[]{(byte) 0x81, (byte) length};
-        else if (length < 0x10000) return new byte[]{(byte) 0x82, (byte) (length >> 8), (byte) length};
-        else return new byte[]{(byte) 0x83, (byte) (length >> 16), (byte) (length >> 8), (byte) length};
-    }
-
-    private byte[] concatArrays(byte[]... arrays) {
-        int total = 0;
-        for (byte[] a : arrays) total += a.length;
-        byte[] result = new byte[total];
-        int pos = 0;
-        for (byte[] a : arrays) {
-            System.arraycopy(a, 0, result, pos, a.length);
-            pos += a.length;
-        }
-        return result;
     }
 
     /**
