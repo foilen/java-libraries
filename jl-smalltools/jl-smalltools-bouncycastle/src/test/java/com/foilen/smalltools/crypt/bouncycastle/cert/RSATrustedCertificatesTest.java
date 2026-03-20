@@ -1,6 +1,6 @@
-package com.foilen.smalltools.crypt.jce.cert;
+package com.foilen.smalltools.crypt.bouncycastle.cert;
 
-import com.foilen.smalltools.crypt.jce.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
 import com.foilen.smalltools.tools.DateTools;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

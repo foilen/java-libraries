@@ -1,7 +1,7 @@
-package com.foilen.smalltools.crypt.jce.cert;
+package com.foilen.smalltools.crypt.bouncycastle.cert;
 
-import com.foilen.smalltools.crypt.jce.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.jce.asymmetric.RSACrypt;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.RSACrypt;
 import com.foilen.smalltools.test.asserts.AssertTools;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.junit.jupiter.api.Assertions;

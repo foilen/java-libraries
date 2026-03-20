@@ -1,7 +1,7 @@
-package com.foilen.smalltools.crypt.jce.cert;
+package com.foilen.smalltools.crypt.bouncycastle.cert;
 
-import com.foilen.smalltools.crypt.jce.asymmetric.AsymmetricKeys;
-import com.foilen.smalltools.crypt.jce.cert.trustmanager.RSATrustManagerFactory;
+import com.foilen.smalltools.crypt.bouncycastle.asymmetric.AsymmetricKeys;
+import com.foilen.smalltools.crypt.bouncycastle.cert.trustmanager.RSATrustManagerFactory;
 import com.foilen.smalltools.exception.SmallToolsException;
 import org.bouncycastle.crypto.params.RSAKeyParameters;
 import org.bouncycastle.crypto.params.RSAPrivateCrtKeyParameters;

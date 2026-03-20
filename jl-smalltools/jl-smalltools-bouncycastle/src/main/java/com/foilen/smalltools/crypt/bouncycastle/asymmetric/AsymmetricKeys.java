@@ -1,4 +1,4 @@
-package com.foilen.smalltools.crypt.jce.asymmetric;
+package com.foilen.smalltools.crypt.bouncycastle.asymmetric;
 
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 

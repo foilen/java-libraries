@@ -1,4 +1,4 @@
-package com.foilen.smalltools.crypt.jce.cert;
+package com.foilen.smalltools.crypt.bouncycastle.cert;
 
 import com.foilen.smalltools.tools.DateTools;
 

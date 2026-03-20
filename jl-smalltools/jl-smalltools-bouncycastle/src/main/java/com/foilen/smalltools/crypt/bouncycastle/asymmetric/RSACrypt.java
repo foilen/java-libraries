@@ -1,4 +1,4 @@
-package com.foilen.smalltools.crypt.jce.asymmetric;
+package com.foilen.smalltools.crypt.bouncycastle.asymmetric;
 
 import com.foilen.smalltools.exception.SmallToolsException;
 import com.foilen.smalltools.tools.AssertTools;

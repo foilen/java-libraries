@@ -1,6 +1,6 @@
-package com.foilen.smalltools.crypt.jce.cert.trustmanager;
+package com.foilen.smalltools.crypt.bouncycastle.cert.trustmanager;
 
-import com.foilen.smalltools.crypt.jce.cert.RSATrustedCertificates;
+import com.foilen.smalltools.crypt.bouncycastle.cert.RSATrustedCertificates;
 import com.foilen.smalltools.exception.SmallToolsException;
 
 import javax.net.ssl.ManagerFactoryParameters;
