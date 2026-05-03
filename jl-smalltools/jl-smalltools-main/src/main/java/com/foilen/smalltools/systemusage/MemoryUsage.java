@@ -20,18 +20,21 @@ public class MemoryUsage {
     private static final Logger logger = LoggerFactory.getLogger(MemoryUsage.class);
 
     private static final List<MemoryUsageStrategy> MEMORY_USAGE_STRATEGIES = List.of(
+            new MemoryUsageProcImpl(),
             new MemoryUsageOsMxImpl(),
-            new MemoryUsageSunOsMxImpl(),
-            new MemoryUsageProcImpl()
+            new MemoryUsageSunOsMxImpl()
     );
 
     private static MemoryUsageStrategy memoryUsageStrategy;
 
     static {
         for (MemoryUsageStrategy candidate : MEMORY_USAGE_STRATEGIES) {
-            if (candidate.getSystemTotalMemory() != null) {
-                memoryUsageStrategy = candidate;
-                break;
+            try {
+                if (candidate.getSystemTotalMemory() != null) {
+                    memoryUsageStrategy = candidate;
+                    break;
+                }
+            } catch (Exception ignored) {
             }
         }
         if (memoryUsageStrategy == null) {

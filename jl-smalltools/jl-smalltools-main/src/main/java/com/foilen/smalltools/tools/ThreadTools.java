@@ -118,7 +118,7 @@ public final class ThreadTools {
     }
 
     /**
-     * Wait for the specified amount of time.
+     * Wait for the specified amount of time. When interrupted, will throw an exception.
      *
      * @param millis time in milliseconds
      */
@@ -127,6 +127,18 @@ public final class ThreadTools {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             throw new SmallToolsException("Sleeping interupted", e);
+        }
+    }
+
+    /**
+     * Wait for the specified amount of time. When interrupted, will not throw an exception. That means you need to check if you waited all the needed time.
+     *
+     * @param millis time in milliseconds
+     */
+    public static void sleepNoException(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
         }
     }
 
