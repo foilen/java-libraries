@@ -42,7 +42,7 @@ public class PaginationServiceImpl implements PaginationService {
     @Override
     public <T> void wrap(AbstractListResultWithPagination<T> results, Page<?> page, Class<T> apiType) {
         results.setPagination(new ApiPagination(page));
-        if (page.getSize() == 0) {
+        if (page.getContent().isEmpty()) {
             results.setItems(Collections.emptyList());
         } else {
             if (conversionService.canConvert(page.getContent().getFirst().getClass(), apiType)) {
